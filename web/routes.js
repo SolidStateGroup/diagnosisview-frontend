@@ -16,10 +16,6 @@ export default (
         <IndexRoute component={HomePage}/>
 
         {/*Examples*/}
-        <Route path="/example/sass" component={require('./components/examples/pages/SassPage')}/>
-        <Route path="/example/layout" component={require('./components/examples/pages/LayoutPage')}/>
-
-
         <Route path="admin" component={ManageCodesPage}/>
         <Route path="admin/codes" component={ManageCodesPage}/>
         <Route path="admin/users" component={ManageUsersPage}/>
