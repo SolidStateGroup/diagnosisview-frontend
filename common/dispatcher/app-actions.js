@@ -111,5 +111,11 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       id,
       details
     });
+  },
+  adminLogin: function (details) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.ADMIN_LOGIN,
+      details
+    });
   }
 });
