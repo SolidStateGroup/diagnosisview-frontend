@@ -74,7 +74,7 @@ module.exports = class extends React.Component {
                                                 <FormGroup className="centered-container">
                                                     <Button disabled={!this.state.email || !this.state.password} onClick={this.login}>Login</Button>
                                                 </FormGroup>
-                                                <div>{error}</div>
+                                                {error && error.message && <div className="text-danger">{error.message}</div>}
                                             </form>
                                         </Column>
                                     </Flex>
