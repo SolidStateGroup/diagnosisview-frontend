@@ -1,0 +1,14 @@
+stages:
+    - deployadmin
+
+deployadmin_staging:
+    stage: deployadmin
+    image: giannisp/node-docker-awscli
+    script:
+        - npm install
+        - npm run env_dev
+        - npm run bundle
+        - cd build
+        - aws s3 sync . s3://$S3_BUCKET_NAME --delete --region eu-west-1
+    only:
+        - master
