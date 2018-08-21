@@ -23,11 +23,6 @@ export default class App extends Component {
 
     onLogin = () => {
         const user = AccountStore.getUser();
-        // if (user.roleType !== 'ADMIN') {
-        //     // @TODO error
-        //     AccountStore.setUser(null);
-        //     return;
-        // }
         const { redirect } = this.props.location.query;
 
         //Redirect on login

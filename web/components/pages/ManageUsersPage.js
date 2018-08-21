@@ -168,11 +168,11 @@ module.exports = class extends React.Component {
         )
     }
 
-    renderReadOnly = (cellInfo) => {
+    renderReadOnly = (cellInfo, users) => {
         return (
             <Input
                 className="form-control table-input"
-                value={cellInfo.row.username}
+                value={users[cellInfo.index][cellInfo.column.id]}
                 disableHighlight={true}
                 readOnly
             />
@@ -201,7 +201,7 @@ module.exports = class extends React.Component {
                                 accessor: 'username',
                                 Header: 'Username',
                                 style: {cursor: 'pointer'},
-                                Cell: this.renderReadOnly
+                                Cell: (cellInfo) => this.renderReadOnly(cellInfo, users)
                             }, {
                                 accessor: 'firstName',
                                 Header: 'First Name',
@@ -228,8 +228,7 @@ module.exports = class extends React.Component {
                                 accessor: 'roleType',
                                 Header: 'Role',
                                 style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderEditableDropdown(cellInfo,
-                                    [{label: 'User', value: 'USER'}, {label: 'Admin', value: 'ADMIN'}], users, isSaving, true)
+                                Cell: (cellInfo) => this.renderReadOnly(cellInfo, users)
                             }, {
                                 style: {cursor: 'pointer'},
                                 Cell: (cellInfo) => <Button onClick={() => this.changePassword(cellInfo.original)}><span className="icon ion-ios-unlock" /></Button>,

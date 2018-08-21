@@ -15,7 +15,7 @@ module.exports = class extends React.Component {
     }
 
     login = () => {
-        AppActions.login({
+        AppActions.adminLogin({
             username: this.state.email,
             password: this.state.password
         })

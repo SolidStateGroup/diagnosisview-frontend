@@ -15,6 +15,15 @@ var controller = {
         setToken: (token) => {
             data.setToken(token);
         },
+        adminLogin: (details) => {
+            store.loading();
+            data.post(Project.api + 'admin/login', details)
+                .then(res => {
+                    controller.onLogin(res);
+                    store.loaded();
+                })
+                .catch(e => AjaxHandler.error(AccountStore, e));
+        },
         login: (details) => {
             store.loading();
             data.post(Project.api + 'login', details)
@@ -264,6 +273,9 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
             break;
         case Actions.SET_TOKEN:
             controller.setToken(action.token);
+            break;
+        case Actions.ADMIN_LOGIN:
+            controller.adminLogin(action.details);
             break;
         default:
             return;
