@@ -1,7 +1,6 @@
 import {Navigation} from "react-native-navigation";
 
 //BASE Routes
-Navigation.registerComponent('/', () => require('./screens/example/ExampleScreen'));
 Navigation.registerComponent('/webmodal', () => require('./components/base/NativeWebModal'));
 Navigation.registerComponent('/select', () => require('./components/base/SelectModal'));
 Navigation.registerComponent('/select-contact', () => require('./components/base/ContactSelectModal'));
