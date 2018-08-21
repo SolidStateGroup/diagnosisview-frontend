@@ -69,7 +69,7 @@ const Modal = class extends React.Component {
             <div className="modal-content">
               <div className="modal-header">{this.header()}</div>
               <div className="modal-body">{this.body()}</div>
-              <div className="modal-footer">{this.footer()}</div>
+              {this.footer() ? <div className="modal-footer">{this.footer()}</div> : null}
             </div>
           </div>
         </div>
