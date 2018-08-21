@@ -16,7 +16,7 @@ const TheComponent = class extends Component {
 
 	componentDidMount = () => {
 		setTimeout(() => {
-			this.oldPasswordInput.focus()
+			this.passwordInput.focus()
 		}, 500);
 	};
 
