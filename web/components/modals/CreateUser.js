@@ -21,8 +21,8 @@ const TheComponent = class extends Component {
 	};
 
 	isValid = () => {
-		const { username, password, repeatPassword, roleType } = this.state;
-		if (!username || !password || !repeatPassword || !roleType) {
+		const { username, password, repeatPassword } = this.state;
+		if (!username || !password || !repeatPassword) {
 			return false;
 		}
 
@@ -111,25 +111,6 @@ const TheComponent = class extends Component {
 							>
 								<option value=""></option>
 								{_.map(['University of Edinburgh', 'Other', 'None'], (option, i) => {
-									const isObj = typeof option === 'object';
-									const label = isObj ? option.label || option.value : option;
-									const value = isObj ? option.value : option;
-									return (
-										<option key={i} value={value}>{label}</option>
-									)
-								})}
-							</select>
-						</FormGroup>
-						<FormGroup>
-							<label>Role</label>
-							<select
-								className="form-control"
-								style={{padding: 0}}
-								disabled={isSaving}
-								onChange={e => this.setState({ roleType: Utils.safeParseEventValue(e) })}
-							>
-								<option value=""></option>
-								{_.map([{ label: 'User', value: 'USER' }, { label: 'Admin', value: 'ADMIN' }], (option, i) => {
 									const isObj = typeof option === 'object';
 									const label = isObj ? option.label || option.value : option;
 									const value = isObj ? option.value : option;
