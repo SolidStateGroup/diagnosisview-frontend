@@ -1,5 +1,5 @@
 //STANDARD REACT_NATIVE STUFF
-package com.solidstategroup.dvmobile.test;
+package com.solidstategroup.dvmobile;
 import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.dooboolab.RNIap.RNIapPackage;
