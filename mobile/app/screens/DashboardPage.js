@@ -40,7 +40,7 @@ const DashboardPage = class extends Component {
 				if (!user || !user.paymentData || !user.paymentData.length) return;
 
 				// Check whether user has cancelled their subscription
-				const lastPurchase = JSON.parse(_.last(res.paymentData).response);
+				const lastPurchase = JSON.parse(_.last(user.paymentData).response);
 				if (lastPurchase.autoRenewing && !purchase.autoRenewing) {
 					AppActions.subscribe(purchase, true);
 				}
