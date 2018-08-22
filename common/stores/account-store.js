@@ -113,9 +113,6 @@ var controller = {
             var historyToSync = controller.getHistoryToSync(store.model.history);
 
             // Validate purchase
-            // console('is valid?', Platform.OS === 'ios' ?
-            //     RNIap.validateReceiptIos(purchase.transactionReceipt, Project.debug) :
-            //     RNIap.validateReceiptAndroid("com.solidstategroup.dvmobile.test", iapItemSkus[0], purchase.purchaseToken, '', true));
             console.log(JSON.stringify(purchase));
             data.post(`${Project.api}user/validate/${Platform.OS}`, purchase)
                 .then(res => {
