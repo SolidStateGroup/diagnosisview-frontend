@@ -314,6 +314,10 @@ const AccountPage = class extends Component {
 	);
 
 	render() {
+		const manageSubscriptionLink = Platform.OS === 'android' ?
+			`https://play.google.com/store/account/subscriptions?sku=${iapItemSkus[0]}&package=${DeviceInfo.getBundleId()}` :
+			`itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions`;
+
 		return (
 			<AccountProvider ref={c => this.accountProvider = c} onLogin={this.onLogin} onLogout={this.onLogout} onSave={this.onLogin}>
 				{({user, isLoading, isSaving, error})=>(
@@ -325,7 +329,8 @@ const AccountPage = class extends Component {
 								<View style={[ Styles.stacked, Styles.padded]}>
 								{user && user.subscribed ? (
 									<View style={[Styles.whitePanel, Styles.padded]}>
-										<Text style={[Styles.textCenter]}>Your account is active.</Text>
+										<Text style={[Styles.textCenter, Styles.stacked]}>Your account is active.</Text>
+										<Text style={[Styles.textCenter, { color: '#2980b9', textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
 									</View>
 								) : null}
 								{!user || !user.subscribed ? (
