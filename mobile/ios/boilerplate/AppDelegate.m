@@ -20,6 +20,7 @@
 
 //REACT_NATIVE_FIREBASE
 #import <Firebase.h>
+#import "RNFirebaseNotifications.h"
 
 //REACT_NATIVE_NAVIGATION
 #import "RCCManager.h"
@@ -38,7 +39,7 @@
 
   //REACT_NATIVE_FUREBASE
   [FIRApp configure];
-  [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
+  [RNFirebaseNotifications configure];
 
   NSURL *jsCodeLocation;
 
@@ -80,6 +81,10 @@
     
     
   return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+  [[RNFirebaseNotifications instance] didReceiveLocalNotification:notification];
 }
   
 @end
