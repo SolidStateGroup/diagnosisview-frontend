@@ -52,10 +52,10 @@ android {
     buildToolsVersion "27.0.1"
 
     defaultConfig {
-        applicationId "com.solidstategroup.dvmobile"
+        applicationId "com.solidstategroup.dvmobile.test"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 1
+        versionCode 9
         versionName "1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
