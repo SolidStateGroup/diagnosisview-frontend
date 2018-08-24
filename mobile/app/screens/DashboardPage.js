@@ -37,11 +37,10 @@ const DashboardPage = class extends Component {
 
 				// Get users last payment
 				const user = AccountStore.getUser();
-				if (!user || !user.paymentData || !user.paymentData.length) return;
+				if (!user) return;
 
 				// Check whether user has cancelled their subscription
-				const lastPurchase = JSON.parse(_.last(user.paymentData).response);
-				if (lastPurchase.autoRenewing && !purchase.autoRenewing) {
+				if (user.autoRenewing && !purchase.autoRenewing) {
 					AppActions.subscribe(purchase, true);
 				}
 			});
