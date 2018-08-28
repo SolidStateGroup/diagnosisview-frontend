@@ -217,7 +217,7 @@ global.API = {
                         case 'You already own this item.':
                             Alert.alert('', 'You have already purchased a subscription on this device. Please login with the account that it was originally bought with.');
                             break;
-                        case 'Cancelled':
+                        case 'Cancelled.':
                             break;
 
                         default:

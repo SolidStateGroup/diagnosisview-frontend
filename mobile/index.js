@@ -51,15 +51,14 @@ const getUser = new Promise(function (resolve) {
             }
             if (res && res != 'null') {
                 var user = JSON.parse(res);
-                user.subscribed = user.subscribed || user.activeSubscription || (user.paymentData && user.paymentData.length ? moment(JSON.parse(_.last(user.paymentData).response).expiryTimeMillis).isAfter(moment()) : false);
                 if (Constants.simulate.SUBSCRIBED) {
                     console.log("WARNING: SIMULATING SUBSCRIPTION")
-                    user.subscribed = true;
+                    user.activeSubscription = true;
                     if (Constants.simulate.EXPIRY) {
                         user.paymentData = user.paymentData || [];
-                        const expiryDate = moment().add(1, 'y').subtract(14, 'days').valueOf();
-                        user.paymentData.unshift(JSON.stringify({expiryTimeMillis: expiryDate, autoRenewing: false}));
-                        user.subscribed = expiryDate.isAfter(moment());
+                        res.expiryDate = moment().add(1, 'y').subtract(14, 'days').valueOf();
+                        user.paymentData.unshift(JSON.stringify({expiryTimeMillis: res.expiryDate, autoRenewing: false}));
+                        user.activeSubscription = res.expiryDate.isAfter(moment());
                     }
                 }
                 AccountStore.setUser(user)
