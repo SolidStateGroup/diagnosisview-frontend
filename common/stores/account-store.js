@@ -156,18 +156,17 @@ var controller = {
                 });
         },
 
-        scheduleExpiryNotifications: (date) => {
-            const expiryDate = moment(date);
+        scheduleExpiryNotifications: (expiryDate) => {
             const now = moment();
-            if (now.isBefore(expiryDate.subtract(1, 'M'), 'd')) {
+            if (now.isBefore(moment(expiryDate).subtract(1, 'M'), 'd')) {
                 console.log('Scheduling expiry warning for 1 month before expiry');
                 API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${expiryDate.format('DD/MM/YY')}. Please renew now`, null, expiryDate.subtract(1, 'M').valueOf());
             }
-            if (now.isBefore(expiryDate.subtract(1, 'w'), 'd')) {
+            if (now.isBefore(moment(expiryDate).subtract(1, 'w'), 'd')) {
                 console.log('Scheduling expiry warning for 1 week before expiry');
                 API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${expiryDate.format('DD/MM/YY')}. Please renew now`, null, expiryDate.subtract(1, 'w').valueOf());
             }
-            if (now.isBefore(expiryDate.subtract(1, 'd'), 'd')) {
+            if (now.isBefore(moment(expiryDate).subtract(1, 'd'), 'd')) {
                 console.log('Scheduling expiry warning for 1 day before expiry');
                 API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', 'Your account expires tomorrow. Please renew now for continued access to unlimited history/favourites on all devices', null, expiryDate.subtract(1, 'd').valueOf());
             }
