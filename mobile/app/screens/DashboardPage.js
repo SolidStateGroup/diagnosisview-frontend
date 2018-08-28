@@ -109,18 +109,18 @@ const DashboardPage = class extends Component {
 							<ScrollView>
 								<View style={Styles.hero}></View>
 								<View style={Styles.padded}>
-									{!user || (!user.subscribed && (!user.paymentData || !user.paymentData.length)) ? (
+									{!user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length)) ? (
 										<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
 											<Text style={[Styles.textCenter, Styles.paragraph]}>Support DiagnosisView and subscribe for unlimited history/favourites on all devices</Text>
 											<Button onPress={this.subscribe}>Subscribe now</Button>
 										</View>
 									) : null}
-									{paymentData ? (() => {
-										const expiryDate = moment(paymentData.expiryTimeMillis);
-										if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment()) && !paymentData.autoRenewing) {
+									{user.expiryDate ? (() => {
+										const expiryDate = moment(user.expiryDate);
+										if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment()) && !user.autoRenewing) {
 											return (
 												<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account will expire on {expiryDate.format('DD-MM-YYYY')}</Text>
+													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account will expire {moment().isSame(expiryDate, 'd') ? 'today at ' + expiryDate.format('HH:mm') : 'on ' + expiryDate.format('DD-MM-YYYY')}</Text>
 													<Button onPress={this.subscribe}>Renew now</Button>
 												</View>
 											)
@@ -131,6 +131,8 @@ const DashboardPage = class extends Component {
 													<Button onPress={this.subscribe}>Renew now</Button>
 												</View>
 											);
+										} else {
+											return null;
 										}
 									})() : null}
 									<View style={[Styles.whitePanel, Styles.noPadding]}>

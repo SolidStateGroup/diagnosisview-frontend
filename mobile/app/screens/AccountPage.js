@@ -327,18 +327,18 @@ const AccountPage = class extends Component {
 						<KeyboardAwareScrollView style={{backgroundColor:pallette.backgroundBase}} keyboardShouldPersistTaps="handled">
 
 								<View style={[ Styles.stacked, Styles.padded]}>
-								{user && user.subscribed ? (
+								{user && user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.padded]}>
 										<Text style={[Styles.textCenter, Styles.stacked]}>Your account is active.</Text>
 										<Text style={[Styles.textCenter, { color: '#2980b9', textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
 									</View>
 								) : null}
-								{!user || !user.subscribed ? (
+								{!user || !user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.padded]}>
 										<Text style={[Styles.textMedium]}>
 										A user account costs only <Text style={[Styles.textSmall, Styles.semiBold]}>£3.99 / year</Text>, proceeds of which keep your info sources up and running, plus new trusted sources integrated where possible. An account will unlock access to unlimited search history and favourites across all of your devices, and provide access to paid resources in future.
 										</Text>
-										{user && !user.subscribed ? <Button style={{marginTop: 10}} onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe') + ' now'}</Button> : null}
+										{user && !user.activeSubscription ? <Button style={{marginTop: 10}} onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe') + ' now'}</Button> : null}
 									</View>
 								) : null}
 								{!user ? (

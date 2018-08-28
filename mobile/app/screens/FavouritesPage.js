@@ -66,14 +66,14 @@ const FavouritesPage = class extends Component {
 						<ScrollView>
 							<View style={Styles.hero}></View>
 							<View style={Styles.padded}>
-								{!user || !user.subscribed ? (
+								{!user || !user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
 										<Text style={[Styles.textCenter, Styles.paragraph]}>Saves up to 5 favourite links on this device only.</Text>
 										<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited favourites across all your devices, please {user && user.paymentData && user.paymentData.length ? 'renew' : 'subscribe'}.</Text>
 										<Button onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe') + ' now'}</Button>
 									</View>
 								) : null}
-								{user && user.subscribed ? (
+								{user && user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
 										<Text style={[Styles.textCenter]}>Your full favourites list across all your signed-in devices.</Text>
 									</View>
