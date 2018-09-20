@@ -28,21 +28,6 @@ const DashboardPage = class extends Component {
 			.then(() => RNIap.getAvailablePurchases())
 			.then(purchases => {
 				console.log('available purchases', purchases);
-
-				if (Platform.OS !== 'android') return;
-
-				// Get the subscription if subscribed
-				const purchase = _.find(purchases, {productId: iapItemSkus[0]});
-				if (!purchase) return;
-
-				// Get users last payment
-				const user = AccountStore.getUser();
-				if (!user) return;
-
-				// Check whether user has cancelled their subscription
-				if (user.autoRenewing && !purchase.autoRenewing) {
-					AppActions.subscribe(purchase, true);
-				}
 			});
 
 		AppActions.getAccount(this.props.retrySubscription);
@@ -115,9 +100,9 @@ const DashboardPage = class extends Component {
 											<Button onPress={this.subscribe}>Subscribe now</Button>
 										</View>
 									) : null}
-									{user.expiryDate ? (() => {
+									{user && user.expiryDate && !user.autoRenewing ? (() => {
 										const expiryDate = moment(user.expiryDate);
-										if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment()) && !user.autoRenewing) {
+										if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment())) {
 											return (
 												<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
 													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account will expire {moment().isSame(expiryDate, 'd') ? 'today at ' + expiryDate.format('HH:mm') : 'on ' + expiryDate.format('DD-MM-YYYY')}</Text>

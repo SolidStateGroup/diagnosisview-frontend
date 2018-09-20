@@ -151,6 +151,8 @@ var controller = {
                     AsyncStorage.setItem('user', JSON.stringify(store.model));
                     if (!res.autoRenewing) {
                         controller.scheduleExpiryNotifications(res.expiryDate);
+                    } else {
+                        API.push.cancelAllNotifications();
                     }
                     store.saved();
                 });
@@ -205,6 +207,11 @@ var controller = {
                         return controller.logout();
                     }
                     res = controller.processUser(res);
+
+                    if (store.model.autoRenewing && !res.autoRenewing && res.activeSubscription) {
+                        // Active subscription but cancelled (Android only), schedule expiry notifications
+                        controller.scheduleExpiryNotifications(res.expiryDate);
+                    }
 
                     if (retrySubscription) {
                         res.activeSubscription = true;
