@@ -34,6 +34,30 @@ var controller = {
                 return priority;
             }, 'friendlyName');
             return results;
+        },
+        updateCode: function (diagnosis) {
+            store.saving();
+            data.put(Project.api + 'code', diagnosis)
+                .then(res => {
+                    var index = _.findIndex(store.model, diagnosis => diagnosis.code === res.code);
+                    store.model[index] = res;
+                    store.saved();
+                })
+                .catch(e => AjaxHandler.error(DiagnosisStore, e));
+        },
+        updateLinkDifficulty: function (code, linkId, difficulty) {
+            store.saving();
+            data.put(Project.api + 'admin/code/link', {
+                id: linkId,
+                difficultyLevel: difficulty
+            })
+                .then(res => {
+                    var index = _.findIndex(store.model, diagnosis => diagnosis.code === code);
+                    const linkIndex = _.findIndex(store.model[index].links, link => link.id === res.id);
+                    store.model[index].links[linkIndex] = res;
+                    store.saved();
+                })
+                .catch(e => AjaxHandler.error(DiagnosisStore, e));
         }
     },
     store = Object.assign({}, BaseStore, {
@@ -64,6 +88,12 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
     switch (action.actionType) {
         case Actions.GET_CODES:
             controller.getCodes();
+            break;
+        case Actions.UPDATE_CODE:
+            controller.updateCode(action.diagnosis);
+            break;
+        case Actions.UPDATE_LINK_DIFFICULTY:
+            controller.updateLinkDifficulty(action.code, action.linkId, action.difficulty);
             break;
         default:
             return;
