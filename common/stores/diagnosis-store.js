@@ -13,6 +13,16 @@ var controller = {
                 })
                 .catch(e => AjaxHandler.error(DiagnosisStore, e));
         },
+        getCategories: function () {
+            store.loading();
+            data.get(Project.api + 'category')
+                .then(res => {
+                    store.categories = res;
+                    AsyncStorage.setItem('codeCategories', JSON.stringify(res));
+                    store.loaded();
+                })
+                .catch(e => AjaxHandler.error(DiagnosisStore, e));
+        },
         search: function (term) {
             var results = [];
             term = term.toLowerCase();
@@ -33,6 +43,14 @@ var controller = {
                 })
                 return priority;
             }, 'friendlyName');
+            return results;
+        },
+        categorySearch: function (term) {
+            var results = [];
+            term = term.toLowerCase();
+            results = _.sortBy(_.filter(store.categories, category => {
+                return !category.hidden && category.friendlyDescription.toLowerCase().indexOf(term) !== -1;
+            }), 'friendlyDescription');
             return results;
         },
         updateCode: function (diagnosis) {
@@ -65,8 +83,19 @@ var controller = {
         getCodes: function () {
             return store.model;
         },
+        getCategories: function () {
+            return store.categories;
+        },
         search: function(term) {
             return controller.search(term);
+        },
+        categorySearch: function (term) {
+            return controller.categorySearch(term);
+        },
+        filterByCategory: function (category) {
+            return _.filter(store.model, diagnosis => {
+                return _.find(diagnosis.categories, c => c.number === category.number);
+            })
         },
         getName: function (code) {
             if (!store.model) return '';
@@ -88,6 +117,9 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
     switch (action.actionType) {
         case Actions.GET_CODES:
             controller.getCodes();
+            break;
+        case Actions.GET_CODE_CATEGORIES:
+            controller.getCategories();
             break;
         case Actions.UPDATE_CODE:
             controller.updateCode(action.diagnosis);

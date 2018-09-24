@@ -101,6 +101,17 @@ const getCodes = new Promise(function (resolve) {
     }
 });
 
+const getCodeCategories = new Promise(function (resolve) {
+    if (Constants.simulate.NEW_USER) {
+        resolve(null)
+    } else {
+        AsyncStorage.getItem('codeCategories', (err, res) => {
+            DiagnosisStore.categories = res ? JSON.parse(res) : [];
+            resolve(res);
+        });
+    }
+});
+
 const retrySubscription = new Promise(function (resolve) {
     AsyncStorage.getItem('retrySubscription', (err, res) => {
         if (err || !res) {
