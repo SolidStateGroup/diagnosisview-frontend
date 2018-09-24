@@ -21,4 +21,5 @@ module.exports = Object.assign({}, require('./base/_action-constants'), {
   "ADMIN_LOGIN": "ADMIN_LOGIN",
   "UPDATE_CODE": "UPDATE_CODE",
   "UPDATE_LINK_DIFFICULTY": "UPDATE_LINK_DIFFICULTY",
+  "GET_CODE_CATEGORIES": "GET_CODE_CATEGORIES",
 });

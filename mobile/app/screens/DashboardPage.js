@@ -32,6 +32,7 @@ const DashboardPage = class extends Component {
 
 		AppActions.getAccount(this.props.retrySubscription);
 		AppActions.getCodes();
+		AppActions.getCodeCategories();
 	}
 
 	componentWillUnmount() {
