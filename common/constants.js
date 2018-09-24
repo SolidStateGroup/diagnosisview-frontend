@@ -16,7 +16,8 @@ var Constants = {
         LOGGED_IN: false,
         PRE_FILLED_REGISTER: false,
         ALL_FAVES_REMOVED_EXTERNALLY: false,
-        EXPIRY: false // Doesn't work unless subscribed is set to true
+        EXPIRY: false, // Doesn't work unless subscribed is set to true
+        SHOW_WELCOME: false
     }
 };
 
