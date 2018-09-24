@@ -92,6 +92,14 @@ const DashboardPage = class extends Component {
 		routeHelper.goAccount(this.props.navigator)
 	}
 
+	goHistory = () => {
+		routeHelper.goHistory(this.props.navigator)
+	}
+
+	goFavourites = () => {
+		routeHelper.goFavourites(this.props.navigator)
+	}
+
 	render() {
 		return (
 			<AccountProvider onLogin={this.onLogin}>
@@ -135,7 +143,7 @@ const DashboardPage = class extends Component {
 									<View style={[Styles.whitePanel, Styles.noPadding]}>
 										<ListItem>
 											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT SEARCHES</Text>
-											<Text style={Styles.textSmall}>More <ION name="ios-arrow-forward" /></Text>
+											<Text style={Styles.textSmall} onPress={this.goHistory}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
 										<HistoryProvider>
 											{({ history, isLoading }) => (
@@ -151,7 +159,7 @@ const DashboardPage = class extends Component {
 										</HistoryProvider>
 										<ListItem>
 											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT FAVOURITES</Text>
-											<Text style={Styles.textSmall}>More <ION name="ios-arrow-forward" /></Text>
+											<Text style={Styles.textSmall} onPress={this.goFavourites}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
 										<FavouritesProvider>
 											{({ favourites, isLoading }) => (
