@@ -51,7 +51,7 @@ const ExpandRow = class extends React.Component {
         if (this.state.isLoading) return <div className="centered-container"><Loader /></div>;
 
         const { isSaving, diagnosis } = this.state;
-        const { fullDescription, links, created, lastUpdate, sourceType, hideFromPatients, removedExternally, patientFriendlyName, externalStandards } = diagnosis;
+        const { fullDescription, links, created, lastUpdate, sourceType, hideFromPatients, removedExternally, patientFriendlyName, externalStandards, codeCategories } = diagnosis;
         return (
             <div className="pad10">
                 <div style={{ position: 'relative', top: 0, right: 0 }}>
@@ -82,6 +82,27 @@ const ExpandRow = class extends React.Component {
                     <label className="label-margin-horizontal">Removed externally?</label>
                     <Switch checked={removedExternally} />
                 </Row>
+                <label>Categories</label>
+                <ReactTable data={codeCategories} columns={[{
+                        id: 'friendlyDescription',
+                        accessor: row => row.category.friendlyDescription,
+                        Header: 'Name',
+                        Cell: row => this.renderReadOnly(codeCategories[row.index]['category'][row.column.id])
+                    }, {
+                        id: 'icd10Description',
+                        accessor: row => row.category.icd10Description,
+                        Header: 'Description',
+                        Cell: row => this.renderReadOnly(codeCategories[row.index]['category'][row.column.id])
+                    }]}
+                    defaultPageSize={5}
+                    getTdProps={() => ({
+                        style: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center'
+                        }
+                    })}
+                />
                 <label>External Standards</label>
                 <ReactTable data={externalStandards} columns={[{
                         accessor: 'codeString',
