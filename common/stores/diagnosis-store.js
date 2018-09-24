@@ -33,7 +33,6 @@ var controller = {
                 })
                 return priority;
             }, 'friendlyName');
-            console.log('results', results);
             return results;
         }
     },
