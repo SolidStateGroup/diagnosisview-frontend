@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+const data = require('../../common-mobile/stores/base/_data');
 
 const About = class extends Component {
 	displayName: 'About'
@@ -6,19 +7,18 @@ const About = class extends Component {
 	state = {};
 
 	sendFeedback = () => {
-		// TODO
-		var error = '';
-		this.setState({sending: true, error: ''});
-		setTimeout(() => {
-			if (error) {
-				this.setState({sending: false, error});
-				return;
-			}
+		this.setState({ sending: true, error: '' });
+		data.post(Project.api + 'user/feedback', {
+			body: this.state.feedback
+		}).then(() => {
 			this.animation.play();
 			setTimeout(() => {
 				this.props.navigator.dismissLightBox();
 			}, 800);
-		}, 1000);
+		}).catch(e => {
+			AjaxHandler.error(null, e);
+			this.setState({ sending: false, error: 'Sorry there was a problem sending your feedback. Check you\'re connected to the internet' });
+		})
 	}
 
 	render() {
@@ -49,27 +49,26 @@ const About = class extends Component {
 								multiline={true}
 								placeholder="Enter feedback here"
 							/>
+
+							<FormGroup>
+								{!this.state.sending ? (
+									<Row style={Styles.verticalCenter}>
+										<Button disabled={!this.state.feedback} style={{ alignSelf: 'stretch', marginHorizontal: 5 }} onPress={this.sendFeedback}>Send</Button>
+										<Button style={{ alignSelf: 'stretch', marginHorizontal: 5 }} onPress={() => this.props.navigator.dismissLightBox()}>Not right now</Button>
+									</Row>
+								) : null}
+								{this.state.error &&
+									<Text style={[Styles.textCenter, { color: pallette.brandDanger, marginTop: 10 }]}>{this.state.error ? this.state.error : ''}</Text>}
+								<View style={[Styles.roundedAnimationInner, { opacity: this.state.sending ? 1 : 0 }]}>
+									<Animation
+										ref={animation => {
+											this.animation = animation;
+										}}
+										loop={false}
+										style={{ width: 70, height: 70 }} source={require('../animations/success.json')} />
+								</View>
+							</FormGroup>
 						</View>
-
-
-						<FormGroup>
-							{!this.state.sending ? (
-								<Row style={Styles.verticalCenter}>
-									<Button disabled={!this.state.feedback} style={{ alignSelf: 'stretch', marginHorizontal: 5 }} onPress={this.sendFeedback}>Send</Button>
-									<Button style={{ alignSelf: 'stretch', marginHorizontal: 5 }} onPress={() => this.props.navigator.dismissLightBox()}>Not right now</Button>
-								</Row>
-							) : null}
-							{this.state.error &&
-								<Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{this.state.error ? this.state.error : ''}</Text>}
-							<View style={[Styles.roundedAnimationInner, {opacity: this.state.sending ? 1 : 0}]}>
-								<Animation
-									ref={animation => {
-										this.animation = animation;
-									}}
-									loop={false}
-									style={{ width: 70, height: 70 }} source={require('../animations/success.json')} />
-							</View>
-						</FormGroup>
 					</ScrollView>
 				</View>
 			</View>
