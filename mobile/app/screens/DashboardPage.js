@@ -42,7 +42,7 @@ const DashboardPage = class extends Component {
 		if (event.id == routeHelper.navEvents.SHOW) {
 			API.trackPage('Dashboard Screen');
 			AsyncStorage.getItem("welcomeShown", (err, res) => {
-				if (!err && !res && !Constants.simulate.SHOW_WELCOME) {
+				if (!err && (!res || !Constants.simulate.SHOW_WELCOME)) {
 					routeHelper.showWelcome(this.props.navigator);
 					AsyncStorage.setItem("welcomeShown", "true");
 				}
