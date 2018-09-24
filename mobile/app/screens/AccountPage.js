@@ -285,8 +285,8 @@ const AccountPage = class extends Component {
 			{this.renderLoginFields(false)}
 			<View style={[Styles.actionsContainer, Styles.stacked]}>
 				<Button onPress={this.login} disabled={this.loginInvalid()}>Login</Button>
-				<Text style={[Styles.textCenter, Styles.anchor]} onPress={this.forgotPassword}>Forgot password?</Text>
 			</View>
+			<Text style={[Styles.textCenter, Styles.anchor]} onPress={this.forgotPassword}>Forgot password?</Text>
 		</View>
 	)
 
