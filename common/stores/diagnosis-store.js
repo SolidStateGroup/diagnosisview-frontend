@@ -59,6 +59,7 @@ var controller = {
                 .then(res => {
                     var index = _.findIndex(store.model, diagnosis => diagnosis.code === res.code);
                     store.model[index] = res;
+                    AsyncStorage.setItem('codes', JSON.stringify(res));
                     store.saved();
                 })
                 .catch(e => AjaxHandler.error(DiagnosisStore, e));
@@ -71,8 +72,9 @@ var controller = {
             })
                 .then(res => {
                     var index = _.findIndex(store.model, diagnosis => diagnosis.code === code);
-                    const linkIndex = _.findIndex(store.model[index].links, link => link.id === res.id);
-                    store.model[index].links[linkIndex] = res;
+                    const linkIndex = _.findIndex(store.model[index].links, link => link.linkType.id === res.linkType.id);
+                    store.model[index].links[linkIndex].difficultyLevel = res.difficultyLevel;
+                    AsyncStorage.setItem('codes', JSON.stringify(res));
                     store.saved();
                 })
                 .catch(e => AjaxHandler.error(DiagnosisStore, e));

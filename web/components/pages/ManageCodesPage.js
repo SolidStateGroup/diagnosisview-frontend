@@ -13,7 +13,8 @@ const ExpandRow = class extends React.Component {
                 })
             })
     }
-    renderLinkDifficultyDropdown = (cellInfo, options, diagnosis, isSaving, disabled = false) => {
+    renderLinkDifficultyDropdown = (cellInfo, options, isSaving, disabled = false) => {
+        const { diagnosis } = this.state;
         const selectedOption = diagnosis.links[cellInfo.index][cellInfo.column.id];
         return (
             <select
@@ -23,6 +24,7 @@ const ExpandRow = class extends React.Component {
                 disabled={disabled || isSaving}
                 onChange={e => {
                     AppActions.updateLinkDifficulty(diagnosis.code, diagnosis.links[cellInfo.index].id, e.target.value);
+                    diagnosis.links[cellInfo.index].difficultyLevel = e.target.value;
                 }}
             >
                 <option value=""></option>
@@ -145,7 +147,7 @@ const ExpandRow = class extends React.Component {
                         accessor: 'difficultyLevel',
                         Header: 'Difficulty Level',
                         Cell: (cellInfo) => this.renderLinkDifficultyDropdown(cellInfo,
-                            [{value: 'GREEN', label: 'Green'}, {value: 'AMBER', label: 'Amber'}, {value: 'RED', label: 'Red'}], diagnosis, isSaving)
+                            [{value: 'GREEN', label: 'Green'}, {value: 'AMBER', label: 'Amber'}, {value: 'RED', label: 'Red'}], isSaving)
                     }, {
                         accessor: 'link',
                         Header: 'URL',
