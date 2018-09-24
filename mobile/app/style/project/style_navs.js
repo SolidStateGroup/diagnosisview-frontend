@@ -56,18 +56,18 @@ module.exports = {
     },
 
     menuItemText: {
-        fontSize: em(1.5),
-        color: styleVariables.textLight,
+        fontSize: em(1.25),
+        color: '#fff',
         backgroundColor: 'transparent'
     },
     menuItemIcon: {
-        width: 34,
-        height: 34,
-        fontSize: 34,
+        width: 24,
+        height: 24,
+        fontSize: 24,
         justifyContent: 'center',
         textAlign: 'center',
         lineHeight: 34,
-        color: pallette.primary,
+        color: pallette.white,
         backgroundColor: 'transparent'
     },
     menuItemImage: {
