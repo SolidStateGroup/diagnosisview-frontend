@@ -51,7 +51,7 @@ const ExpandRow = class extends React.Component {
         if (this.state.isLoading) return <div className="centered-container"><Loader /></div>;
 
         const { isSaving, diagnosis } = this.state;
-        const { fullDescription, links, created, lastUpdate, sourceType, hideFromPatients, removedExternally, patientFriendlyName } = diagnosis;
+        const { fullDescription, links, created, lastUpdate, sourceType, hideFromPatients, removedExternally, patientFriendlyName, externalStandards } = diagnosis;
         return (
             <div className="pad10">
                 <div style={{ position: 'relative', top: 0, right: 0 }}>
@@ -82,6 +82,32 @@ const ExpandRow = class extends React.Component {
                     <label className="label-margin-horizontal">Removed externally?</label>
                     <Switch checked={removedExternally} />
                 </Row>
+                <label>External Standards</label>
+                <ReactTable data={externalStandards} columns={[{
+                        accessor: 'codeString',
+                        Header: 'Code',
+                        Cell: row => this.renderReadOnly(externalStandards[row.index][row.column.id])
+                    }, {
+                        id: 'name',
+                        accessor: row => row.externalStandard.name,
+                        Header: 'Name',
+                        Cell: row => this.renderReadOnly(externalStandards[row.index]['externalStandard'][row.column.id])
+                    }, {
+                        id: 'description',
+                        accessor: row => row.externalStandard.description,
+                        Header: 'Description',
+                        Cell: row => this.renderReadOnly(externalStandards[row.index]['externalStandard'][row.column.id])
+                    }]}
+                    defaultPageSize={5}
+                    getTdProps={() => ({
+                        style: {
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center'
+                        }
+                    })}
+                />
+                <label>Links</label>
                 <ReactTable data={links} columns={[{
                         accessor: 'name',
                         Header: 'Name',
