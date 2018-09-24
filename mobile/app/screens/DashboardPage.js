@@ -103,7 +103,7 @@ const DashboardPage = class extends Component {
 								<View style={Styles.hero}></View>
 								<View style={Styles.padded}>
 									<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-										<Text style={[Styles.textSmall]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textSmall, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {!user ? (<Text onPress={this.onLoggedIn} style={[Styles.textSmall,Styles.bold, {padding:0, margin:0}]}>You are logged in</Text>) : null}</Text>
+										<Text style={[Styles.textSmall]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textSmall, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textSmall,Styles.bold, {padding:0, margin:0}]}>You are logged in</Text>) : null}</Text>
 									</View>
 									{!user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length)) ? (
 										<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
