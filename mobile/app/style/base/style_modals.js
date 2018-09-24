@@ -36,6 +36,7 @@ module.exports = {
 	lightbox: {
 		paddingTop: 40,
 		width: DeviceWidth - 40,
+		height: DeviceHeight - 60,
 		borderRadius: 5,
 		backgroundColor: 'white'
 	},
