@@ -135,6 +135,7 @@ const DashboardPage = class extends Component {
 									<View style={[Styles.whitePanel, Styles.noPadding]}>
 										<ListItem>
 											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT SEARCHES</Text>
+											<Text style={Styles.textSmall}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
 										<HistoryProvider>
 											{({ history, isLoading }) => (
@@ -150,6 +151,7 @@ const DashboardPage = class extends Component {
 										</HistoryProvider>
 										<ListItem>
 											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT FAVOURITES</Text>
+											<Text style={Styles.textSmall}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
 										<FavouritesProvider>
 											{({ favourites, isLoading }) => (
