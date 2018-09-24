@@ -159,6 +159,14 @@ module.exports = {
         navigator.switchToTab({tabIndex: 3});
     },
 
+    goHistory: function (navigator) {
+        navigator.switchToTab({tabIndex: 1});
+    },
+
+    goFavourites: function (navigator) {
+        navigator.switchToTab({tabIndex: 2});
+    },
+
     goLogin: function (navigator) {
         navigator.switchToTab({tabIndex: 3});
     },
