@@ -131,5 +131,10 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       linkId,
       difficulty
     });
+  },
+  getCodeCategories: function () {
+    Dispatcher.handleViewAction({
+      actionType: Actions.GET_CODE_CATEGORIES
+    });
   }
 });

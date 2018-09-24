@@ -11,6 +11,7 @@ Navigation.registerComponent('/history', () => require('./screens/HistoryPage'))
 Navigation.registerComponent('/favourites', () => require('./screens/FavouritesPage'));
 Navigation.registerComponent('/account', () => require('./screens/AccountPage'));
 Navigation.registerComponent('/search', () => require('./screens/SearchPage'));
+Navigation.registerComponent('/category', () => require('./screens/CategoryPage'));
 Navigation.registerComponent('/diagnosis', () => require('./screens/DiagnosisDetailPage'));
 
 // Other
