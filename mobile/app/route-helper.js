@@ -135,6 +135,20 @@ module.exports = {
         })
     },
 
+    showForgotPassword: (navigator) => {
+        navigator.showLightBox({
+            screen: "forgotPassword", // unique ID registered with Navigation.registerScreen
+            style: {
+                width: DeviceWidth,
+                height: DeviceHeight,
+                justifyContent: 'center',
+                tapBackgroundToDismiss: true, // dismisses LightBox on background taps (optional)
+                backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
+            },
+            adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+        })
+    },
+
     openContactModal: (navigator, title, onChange, multiple) => {
         navigator.showModal({
             screen: "/select-contact",
