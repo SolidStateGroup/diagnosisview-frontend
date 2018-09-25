@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+const data = require('../../common-mobile/stores/base/_data');
 
 const ForgotPasswordLightbox = class extends Component {
     displayName: 'ForgotPasswordLightbox'
@@ -12,17 +13,20 @@ const ForgotPasswordLightbox = class extends Component {
     }
 
     sendEmail = () => {
-        this.setState({isLoading: true, error: ''});
-        setTimeout(() => {
-            this.setState({isLoading: false, step: 2})
-        }, 1000);
+				this.setState({isLoading: true, error: ''});
+				data.post(Project.api + 'user/forgotten-password', {
+					username: this.state.email
+				})
+					.then(() => {
+						this.setState({isLoading: false, step: 2});
+					})
+					.catch(e => {
+						this.setState({isLoading: false, error: 'Sorry there was a problem, check you entered the correct email address or try again later'});
+					})
     }
 
     verifyCode = (code) => {
-        this.setState({isLoading: true, error: ''});
-        setTimeout(() => {
-            this.setState({isLoading: false, step: 3});
-        }, 1000);
+			this.setState({code, step: 3});
     }
 
     changePassword = () => {
@@ -41,11 +45,18 @@ const ForgotPasswordLightbox = class extends Component {
             return;
         }
 
-        // TODO
-        this.setState({isLoading: true, error: ''});
-        setTimeout(() => {
-            this.setState({isLoading: false, step: 4});
-        }, 1000);
+				this.setState({isLoading: true, error: ''});
+        data.post(Project.api + 'user/reset-password', {
+					newPassword: password,
+					resetCode: this.state.code,
+					username: this.state.email
+				})
+					.then(() => {
+						this.setState({isLoading: false, step: 4});
+					})
+					.catch(e => {
+						this.setState({isLoading: false, step: 2, error: 'Sorry there was a problem resetting your password, try again later'});
+					});
     }
 
     render() {
@@ -67,7 +78,10 @@ const ForgotPasswordLightbox = class extends Component {
                                                     onChangeText={(email) => this.setState({email})}
                                                     value={this.state.email}
                                                     placeholder={"Enter your email address"}
-                                                    ref={c => this.emailInput = c}
+																										ref={c => this.emailInput = c}
+																										autoCapitalize='none'
+																										keyboardType='email-address'
+																										autoCorrect={false}
                                                 />
                                                 <Row style={{marginTop: 10}}>
                                                     <Button style={[Styles.buttonCancel, Styles.buttonLeftModal]}
@@ -87,13 +101,14 @@ const ForgotPasswordLightbox = class extends Component {
                                             <View>
                                                 <Text style={{marginBottom:10, fontSize:18, fontWeight:'bold', textAlign:'center'}}>Enter reset code</Text>
                                                 <CodeInput
-                                                    ref={c => this.codeInput = c}
-                                                    space={5}
-                                                    inputPosition='center'
-                                                    activeColor={pallette.primary}
-                                                    inactiveColor='rgba(49, 180, 4, 1.3)'
-                                                    codeInputStyle={{fontWeight: '800', borderRadius:25, borderColor:pallette.primary, color:pallette.primary}}
-                                                    onFulfill={this.verifyCode}
+																									codeLength={6}
+																									ref={c => this.codeInput = c}
+																									space={5}
+																									inputPosition='center'
+																									activeColor={pallette.primary}
+																									inactiveColor='rgba(49, 180, 4, 1.3)'
+																									codeInputStyle={{fontWeight: '800', borderRadius:25, borderColor:pallette.primary, color:pallette.primary}}
+																									onFulfill={this.verifyCode}
                                                 />
                                             </View>
                                         )
