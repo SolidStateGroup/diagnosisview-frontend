@@ -14,6 +14,18 @@ module.exports = {
         color:'#5bc43b',
     },
 
+    borderHigh:{
+        borderColor:'#fb3823',
+    },
+
+    borderMedium:{
+        borderColor:'#fbe423',
+    },
+
+    borderLow:{
+        borderColor:'#5bc43b',
+    },
+
     listContainer: {
         flex: 1,
         backgroundColor: colour.listBackground
