@@ -58,8 +58,8 @@ module.exports = {
         paddingRight: 15,
         borderBottomColor: colour.dividerLight,
         backgroundColor: 'transparent',
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
     },
 
     listShort:{
