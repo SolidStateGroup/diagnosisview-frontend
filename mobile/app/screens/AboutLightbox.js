@@ -9,7 +9,7 @@ const About = class extends Component {
 	sendFeedback = () => {
 		this.setState({ sending: true, error: '' });
 		data.post(Project.api + 'user/feedback', {
-			body: AccountStore.getUser() ? `From: ${AccountStore.getUser().username}\n\n${this.state.feedback}` : this.state.feedback
+			body: this.state.feedback
 		}).then(() => {
 			this.animation.play();
 			setTimeout(() => {
