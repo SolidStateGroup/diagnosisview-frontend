@@ -8,7 +8,7 @@ const BrokenLink = class extends Component {
 	render() {
 		return (
 			<View style={Styles.lightboxOuter}>
-				<View style={Styles.lightbox}>
+				<View style={[Styles.lightbox, {height: '100%'}]}>
 					<View style={[{alignSelf: 'center'}]}>
 						<Text style={Styles.textCenter}>
 							This link has been removed / updated at source. It might be necessary to remove this link from your favourites and search for the diagnosis again.
