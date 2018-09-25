@@ -107,4 +107,12 @@ module.exports = {
         width: (DeviceWidth / 2) - 15,
         marginLeft: 10
     },
+
+    buttonLeftModal: {
+        width: ((DeviceWidth - 30)  / 2) - 32.5,
+    },
+    buttonRightModal: {
+        width: ((DeviceWidth - 30) / 2) - 32.5,
+        marginLeft: 10
+    },
 };
