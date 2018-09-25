@@ -157,7 +157,7 @@ const DashboardPage = class extends Component {
 										} else if (expiryDate.isSameOrBefore(moment())) {
 											return (
 												<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account has expired</Text>
+													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account has expired. Renew for unlimited history/favourites & professional resources on all devices.</Text>
 													<Button onPress={this.subscribe}>Renew now</Button>
 												</View>
 											);
