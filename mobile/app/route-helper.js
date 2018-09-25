@@ -181,6 +181,11 @@ module.exports = {
         navigator.switchToTab({tabIndex: 2});
     },
 
+    goDashboard: function (navigator) {
+        navigator.handleDeepLink({link: 'dashboard'});
+        navigator.switchToTab({tabIndex: 0});
+    },
+
     goLogin: function (navigator) {
         navigator.switchToTab({tabIndex: 3});
     },

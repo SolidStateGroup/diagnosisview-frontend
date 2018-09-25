@@ -13,7 +13,9 @@ const DashboardPage = class extends Component {
 
 	constructor(props, context) {
 		super(props, context);
-		this.state = {};
+		this.state = {
+			appState: AppState.currentState
+		};
 		ES6Component(this);
 		routeHelper.handleNavEvent(props.navigator, 'dashboard', this.onNavigatorEvent);
 	}
@@ -33,10 +35,23 @@ const DashboardPage = class extends Component {
 		AppActions.getAccount(this.props.retrySubscription);
 		AppActions.getCodes();
 		AppActions.getCodeCategories();
+
+		AppState.addEventListener('change', this.handleAppStateChange);
 	}
 
 	componentWillUnmount() {
 		RNIap.endConnection();
+
+		AppState.removeEventListener('change', this.handleAppStateChange);
+	}
+
+	handleAppStateChange = (nextState) => {
+		if (this.state.appState.match(/inactive|background/) && nextState === 'active') {
+			AppActions.getAccount(this.props.retrySubscription);
+			AppActions.getCodes();
+			AppActions.getCodeCategories();
+		}
+		this.setState({appState: nextState});
 	}
 
 	onNavigatorEvent = (event) => {
@@ -54,14 +69,24 @@ const DashboardPage = class extends Component {
 			} else if (event.id == 'search') {
 				routeHelper.goSearch(this.props.navigator);
 			}
-		} else if (event.type == 'DeepLink' && event.link == 'search') {
-			this.props.navigator.popToRoot();
-			this.props.navigator.push({
-				screen: '/search',
-				title: 'Search',
-				navigatorStyle: global.navbarStyle,
-				passProps: {}
-			})
+		} else if (event.type == 'DeepLink') {
+			switch (event.link) {
+				case 'search':
+					this.props.navigator.popToRoot();
+					this.props.navigator.push({
+						screen: '/search',
+						title: 'Search',
+						navigatorStyle: global.navbarStyle,
+						passProps: {}
+					});
+					break;
+				case 'dashboard':
+					this.props.navigator.popToRoot();
+					break;
+				default:
+					break;
+			}
+
 		}
 	};
 
