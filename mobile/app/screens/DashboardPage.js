@@ -141,7 +141,7 @@ const DashboardPage = class extends Component {
 									</View>
 									{!user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length)) ? (
 										<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-											<Text style={[Styles.textCenter,Styles.textSmall, Styles.paragraph]}>Support DiagnosisView and subscribe for unlimited history/favourites on all devices</Text>
+											<Text style={[Styles.textCenter,Styles.textSmall, Styles.paragraph]}>Subscribe for unlimited history/favourites & professional resources on all devices</Text>
 											<Button onPress={this.subscribe}>Subscribe now</Button>
 										</View>
 									) : null}

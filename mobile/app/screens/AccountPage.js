@@ -341,7 +341,7 @@ const AccountPage = class extends Component {
 								{!user || !user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.padded]}>
 										<Text style={[Styles.textMedium]}>
-										A user account costs only <Text style={[Styles.textSmall, Styles.semiBold]}>£3.99 / year</Text>, proceeds of which keep your info sources up and running, plus new trusted sources integrated where possible. An account will unlock access to unlimited search history and favourites across all of your devices, and provide access to paid resources in future.
+										A user account costs only <Text style={[Styles.textSmall, Styles.semiBold]}>£3.99 / year</Text>, proceeds of which keep your info sources up and running, plus new trusted sources integrated where possible. An account will unlock access to unlimited search history and favourites across all of your devices, as well as provide access to professional resources that are unavailable in the free version.
 										</Text>
 										{user && !user.activeSubscription ? <Button style={{marginTop: 10}} onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe') + ' now'}</Button> : null}
 									</View>
