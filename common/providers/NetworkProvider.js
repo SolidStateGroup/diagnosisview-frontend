@@ -8,6 +8,7 @@ const TheComponent = class extends Component {
 		super(props, context);
 		this.state = {
 			isConnected: NetworkStore.isConnected,
+			isDBDown: NetworkStore.isDBDown
 		};
 
 		ES6Component(this);
@@ -15,13 +16,16 @@ const TheComponent = class extends Component {
 
 	componentWillMount() {
 		this.listenTo(NetworkStore, 'change', () => {
-			this.setState({isConnected: NetworkStore.isConnected});
+			this.setState({
+				isConnected: NetworkStore.isConnected,
+				isDBDown: NetworkStore.isDBDown
+			});
 		})
 	}
 
 	render() {
-		const {isConnected} = this.state;
-		return this.props.children(isConnected);
+		const {isConnected, isDBDown} = this.state;
+		return this.props.children(isConnected, isDBDown);
 	}
 };
 
