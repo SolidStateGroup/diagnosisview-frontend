@@ -141,7 +141,7 @@ const DashboardPage = class extends Component {
 									</View>
 									{!user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length)) ? (
 										<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-											<Text style={[Styles.textCenter, Styles.paragraph]}>Support DiagnosisView and subscribe for unlimited history/favourites on all devices</Text>
+											<Text style={[Styles.textCenter,Styles.textSmall, Styles.paragraph]}>Support DiagnosisView and subscribe for unlimited history/favourites on all devices</Text>
 											<Button onPress={this.subscribe}>Subscribe now</Button>
 										</View>
 									) : null}
@@ -167,8 +167,8 @@ const DashboardPage = class extends Component {
 									})() : null}
 									<View style={[Styles.whitePanel, Styles.noPadding]}>
 										<ListItem>
-											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT SEARCHES</Text>
-											<Text style={Styles.textSmall} onPress={this.goHistory}>More <ION name="ios-arrow-forward" /></Text>
+											<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT SEARCHES</Text>
+											<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goHistory}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
 										<HistoryProvider>
 											{({ history, isLoading }) => (
@@ -183,8 +183,8 @@ const DashboardPage = class extends Component {
 											)}
 										</HistoryProvider>
 										<ListItem>
-											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT FAVOURITES</Text>
-											<Text style={Styles.textSmall} onPress={this.goFavourites}>More <ION name="ios-arrow-forward" /></Text>
+											<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT FAVOURITES</Text>
+											<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goFavourites}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
 										<FavouritesProvider>
 											{({ favourites, isLoading }) => (
