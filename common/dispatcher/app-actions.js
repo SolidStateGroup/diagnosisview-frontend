@@ -124,12 +124,12 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       diagnosis
     });
   },
-  updateLinkDifficulty: function (code, linkId, difficulty) {
+  updateLink: function (code, linkId, changes) {
     Dispatcher.handleViewAction({
-      actionType: Actions.UPDATE_LINK_DIFFICULTY,
+      actionType: Actions.UPDATE_LINK,
       code,
       linkId,
-      difficulty
+      changes
     });
   },
   getCodeCategories: function () {

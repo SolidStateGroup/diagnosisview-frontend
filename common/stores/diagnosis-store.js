@@ -64,16 +64,16 @@ var controller = {
                 })
                 .catch(e => AjaxHandler.error(DiagnosisStore, e));
         },
-        updateLinkDifficulty: function (code, linkId, difficulty) {
+        updateLink: function (code, linkId, changes) {
             store.saving();
             data.put(Project.api + 'admin/code/link', {
                 id: linkId,
-                difficultyLevel: difficulty
+                ...changes
             })
                 .then(res => {
                     var index = _.findIndex(store.model, diagnosis => diagnosis.code === code);
                     const linkIndex = _.findIndex(store.model[index].links, link => link.linkType.id === res.linkType.id);
-                    store.model[index].links[linkIndex].difficultyLevel = res.difficultyLevel;
+                    store.model[index].links[linkIndex] = res;
                     AsyncStorage.setItem('codes', JSON.stringify(res));
                     store.saved();
                 })
@@ -126,8 +126,8 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
         case Actions.UPDATE_CODE:
             controller.updateCode(action.diagnosis);
             break;
-        case Actions.UPDATE_LINK_DIFFICULTY:
-            controller.updateLinkDifficulty(action.code, action.linkId, action.difficulty);
+        case Actions.UPDATE_LINK:
+            controller.updateLink(action.code, action.linkId, action.changes);
             break;
         default:
             return;

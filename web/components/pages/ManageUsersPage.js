@@ -10,6 +10,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import JSONPretty from 'react-json-pretty';
 
+const theadProps = () => ({
+    style: {
+        fontWeight: '400'
+    }
+})
+
 const ExpandRow = class extends React.Component {
     onActiveSubscription = (checked) => {
         const {row, onChange} = this.props;
@@ -61,6 +67,7 @@ const ExpandRow = class extends React.Component {
                     }]}
                     defaultPageSize={2}
                     SubComponent={row => <JSONPretty json={row.row.response} themeClassName="custom-json-pretty"/>}
+                    getTheadProps={theadProps}
                 />
             </div>
         )
@@ -249,6 +256,7 @@ module.exports = class extends React.Component {
                             }}
                             SubComponent={row => <ExpandRow row={row} isSaving={isSaving} onChange={this.onExpandRowChange} changes={this.state.changes} />}
                             freezeWhenExpanded={true}
+                            getTheadProps={theadProps}
                         />
                     </Flex>
                 )}
