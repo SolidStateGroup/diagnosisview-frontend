@@ -191,7 +191,7 @@ const DashboardPage = class extends Component {
 												<View>
 													{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => (
 														<ListItem key={i} onPress={() => this.onFavourite(entry.link.link, entry.name)}>
-															<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={entry.link.difficultyLevel} style={[Styles.listIconNavMarginRight]} />
+															<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={entry.link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
 															<Column style={[Styles.noMargin, {flex: 1}]}>
 																<Text>{entry.name}</Text>
 																{Constants.linkIcons[entry.link.linkType.value] ?
