@@ -7,7 +7,7 @@ module.exports = {
     },
 
     iconMedium:{
-        color:'#fbe423',
+        color:'#ffc200',
     },
 
     iconLow:{
@@ -19,7 +19,7 @@ module.exports = {
     },
 
     borderMedium:{
-        borderColor:'#fbe423',
+        borderColor:'#ffc200',
     },
 
     borderLow:{
