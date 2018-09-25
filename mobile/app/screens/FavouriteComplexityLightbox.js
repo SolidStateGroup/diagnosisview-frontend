@@ -2,22 +2,22 @@ import React, {Component, PropTypes} from 'react';
 
 const FavouriteComplexity = (props) => {
 	const {difficultyLevel} = props;
-	var level, colour;
+	var colour, text;
 	switch (difficultyLevel && difficultyLevel.toLowerCase()) {
 		case 'green':
 		default:
-			level = 'Patient/Learner';
 			colour = 'Green';
+			text = 'for students or professionals new to the topic.';
 			break;
 
 		case 'amber':
-			level = 'Patient/Learner';
 			colour = 'Amber';
+			text = 'for practitioners and advanced students.';
 			break;
 
 		case 'red':
-			level = 'Patient/Learner';
 			colour = 'Red';
+			text = 'advanced info.';
 			break;
 	}
 	return (
@@ -26,7 +26,7 @@ const FavouriteComplexity = (props) => {
 				<View style={[Styles.horizontallyPadded, {alignSelf: 'center'}]}>
 					<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')}/>
 					<Text style={Styles.paragraph}>
-						{`DiagnosisView has classified this information source as '${colour}', representing a '${level}' level of difficulty`}
+						{`DiagnosisView has classified this information source as '${colour}', ${text}`}
 					</Text>
 				</View>
 
