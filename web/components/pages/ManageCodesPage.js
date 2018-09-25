@@ -2,6 +2,12 @@ import React from "react";
 import ReactTable from "react-table";
 import data from '../../../common/stores/base/_data';
 
+const theadProps = () => ({
+    style: {
+        fontWeight: '400'
+    }
+})
+
 const ExpandRow = class extends React.Component {
     state = { isLoading: true };
     componentDidMount() {
@@ -13,6 +19,14 @@ const ExpandRow = class extends React.Component {
                 })
             })
     }
+    toggleFreeLink = (row, on) => {
+        openConfirm(<h2>Confirm</h2>, <h3>{`Are you sure you want to ${on ? 'display this link' : 'hide this link from'} free users?`}</h3>,
+            () => {
+                AppActions.updateLink(this.state.diagnosis.code, row.original.id, {freeLink: on, difficultyLevel: row.original.difficultyLevel});
+                this.state.diagnosis.links[row.index].freeLink = on;
+                this.forceUpdate();
+            });
+    }
     renderLinkDifficultyDropdown = (cellInfo, options, isSaving, disabled = false) => {
         const { diagnosis } = this.state;
         const selectedOption = diagnosis.links[cellInfo.index][cellInfo.column.id];
@@ -23,8 +37,9 @@ const ExpandRow = class extends React.Component {
                 value={selectedOption}
                 disabled={disabled || isSaving}
                 onChange={e => {
-                    AppActions.updateLinkDifficulty(diagnosis.code, diagnosis.links[cellInfo.index].id, e.target.value);
+                    AppActions.updateLink(diagnosis.code, diagnosis.links[cellInfo.index].id, {difficultyLevel: e.target.value, freeLink: cellInfo.original.freeLink});
                     diagnosis.links[cellInfo.index].difficultyLevel = e.target.value;
+                    this.forceUpdate();
                 }}
             >
                 <option value=""></option>
@@ -96,7 +111,7 @@ const ExpandRow = class extends React.Component {
                         Header: 'Description',
                         Cell: row => this.renderReadOnly(codeCategories[row.index]['category'][row.column.id])
                     }]}
-                    defaultPageSize={5}
+                    defaultPageSize={codeCategories.length < 5 ? codeCategories.length : 5}
                     getTdProps={() => ({
                         style: {
                             display: 'flex',
@@ -104,6 +119,7 @@ const ExpandRow = class extends React.Component {
                             justifyContent: 'center'
                         }
                     })}
+                    getTheadProps={theadProps}
                 />
                 <label>External Standards</label>
                 <ReactTable data={externalStandards} columns={[{
@@ -121,7 +137,7 @@ const ExpandRow = class extends React.Component {
                         Header: 'Description',
                         Cell: row => this.renderReadOnly(externalStandards[row.index]['externalStandard'][row.column.id])
                     }]}
-                    defaultPageSize={5}
+                    defaultPageSize={externalStandards.length < 5 ? externalStandards.length : 5}
                     getTdProps={() => ({
                         style: {
                             display: 'flex',
@@ -129,6 +145,7 @@ const ExpandRow = class extends React.Component {
                             justifyContent: 'center'
                         }
                     })}
+                    getTheadProps={theadProps}
                 />
                 <label>Links</label>
                 <ReactTable data={links} columns={[{
@@ -149,13 +166,17 @@ const ExpandRow = class extends React.Component {
                         Cell: (cellInfo) => this.renderLinkDifficultyDropdown(cellInfo,
                             [{value: 'GREEN', label: 'Green'}, {value: 'AMBER', label: 'Amber'}, {value: 'RED', label: 'Red'}], isSaving)
                     }, {
+                        accessor: 'freeLink',
+                        Header: 'Displayed to free users?',
+                        Cell: row => <Switch checked={row.value} onChange={checked => this.toggleFreeLink(row, checked)} />
+                    }, {
                         accessor: 'link',
                         Header: 'URL',
                         Cell: row => (
                             <a href={row.value} target="_blank">{row.value}</a>
                         )
                     }]}
-                    defaultPageSize={5}
+                    defaultPageSize={links.length < 5 ? links.length : 5}
                     getTdProps={() => ({
                         style: {
                             display: 'flex',
@@ -163,6 +184,7 @@ const ExpandRow = class extends React.Component {
                             justifyContent: 'center'
                         }
                     })}
+                    getTheadProps={theadProps}
                 />
             </div>
         )
@@ -227,7 +249,9 @@ module.exports = class extends React.Component {
                                     });
                                   }
                                 };
-                             }} />
+                            }}
+                            getTheadProps={theadProps}
+                        />
                     </Flex>
                 )}
             </CodesProvider>
