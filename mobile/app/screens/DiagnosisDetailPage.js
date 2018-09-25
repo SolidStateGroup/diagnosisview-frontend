@@ -74,6 +74,9 @@ const DiagnosisDetailPage = class extends Component {
 							<FavouritesProvider>
 								{({favourites}) => {
 									return _.map(links, link => {
+										if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+											return null;
+										}
 										const isFavourite = _.find(favourites, f => f.code === this.props.code && f.link.id === link.id);
 										return (
 											<ListItem onPress={() => routeHelper.openWebModal(link.link, name)} key={link.id}>
