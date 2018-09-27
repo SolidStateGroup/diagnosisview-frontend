@@ -51,15 +51,14 @@ const getUser = new Promise(function (resolve) {
             }
             if (res && res != 'null') {
                 var user = JSON.parse(res);
-                user.subscribed = user.subscribed || user.activeSubscription || (user.paymentData && user.paymentData.length ? moment(JSON.parse(_.last(user.paymentData).response).expiryTimeMillis).isAfter(moment()) : false);
                 if (Constants.simulate.SUBSCRIBED) {
                     console.log("WARNING: SIMULATING SUBSCRIPTION")
-                    user.subscribed = true;
+                    user.activeSubscription = true;
                     if (Constants.simulate.EXPIRY) {
                         user.paymentData = user.paymentData || [];
-                        const expiryDate = moment().add(1, 'y').subtract(14, 'days').valueOf();
-                        user.paymentData.unshift(JSON.stringify({expiryTimeMillis: expiryDate, autoRenewing: false}));
-                        user.subscribed = expiryDate.isAfter(moment());
+                        res.expiryDate = moment().add(1, 'y').subtract(14, 'days').valueOf();
+                        user.paymentData.unshift(JSON.stringify({expiryTimeMillis: res.expiryDate, autoRenewing: false}));
+                        user.activeSubscription = res.expiryDate.isAfter(moment());
                     }
                 }
                 AccountStore.setUser(user)
@@ -97,6 +96,17 @@ const getCodes = new Promise(function (resolve) {
     } else {
         AsyncStorage.getItem('codes', (err, res) => {
             DiagnosisStore.model = res ? JSON.parse(res) : [];
+            resolve(res);
+        });
+    }
+});
+
+const getCodeCategories = new Promise(function (resolve) {
+    if (Constants.simulate.NEW_USER) {
+        resolve(null)
+    } else {
+        AsyncStorage.getItem('codeCategories', (err, res) => {
+            DiagnosisStore.categories = res ? JSON.parse(res) : [];
             resolve(res);
         });
     }
@@ -157,7 +167,8 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ic
         drawer: {
             left: {
                 screen: 'side-menu',
-                disableOpenGesture: false
+                disableOpenGesture: false,
+                fixedWidth: Platform.OS === 'android' ? PixelRatio.get() * (DeviceWidth * 0.75) : undefined
             }
         }
     });

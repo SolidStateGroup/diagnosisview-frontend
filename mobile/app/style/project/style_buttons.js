@@ -29,6 +29,10 @@ module.exports = {
         backgroundColor:pallette.twitter,
     },
 
+    buttonCancel:{
+        backgroundColor:'#B33321',
+    },
+
     hollowButton:{
         borderWidth:PixelRatio.get()/2,
         borderColor:'#fff',
