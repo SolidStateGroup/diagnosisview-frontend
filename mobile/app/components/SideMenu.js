@@ -59,6 +59,7 @@ const TheComponent = class extends Component {
             <AccountProvider>
                 {({user})=>(
                     <LinearGradient
+                        start={Platform.OS === 'android' ? {x: 0.95, y: 0} : {}} end={Platform.OS === 'android' ? {x: 1, y: 0} : {}}
                         style={[{flex: 1, backgroundColor: pallette.primary}, Styles.statusContent, Styles.menuShadow]}
                         colors={[pallette.fromGradient, pallette.toGradient]}>
                         <TouchableOpacity style={styles.closeButton}>
