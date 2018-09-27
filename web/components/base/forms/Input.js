@@ -59,7 +59,7 @@ const Input = class extends React.Component {
 	}
 
 	render() {
-		const {isValid, onSearchChange, mask, placeholderChar, disableHighlight, ...rest} = this.props;
+		const {isValid, onSearchChange, mask, placeholderChar, disableHighlight, containerStyle, ...rest} = this.props;
 
 		const className = cn({
 			'input-container': true,
@@ -73,7 +73,8 @@ const Input = class extends React.Component {
 
 		return (
 			<div
-				className={className}>
+				className={className}
+				style={containerStyle}>
 				{mask ? (
 						<MaskedInput
 							ref="input"

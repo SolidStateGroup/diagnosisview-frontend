@@ -80,18 +80,28 @@ const ExpandRow = class extends React.Component {
                     readOnly
                     value={fullDescription || ''} />
                 <Row>
-                    <label className="label-margin-right">Patient Friendly Name</label>
-                    <Input
-                        readOnly
-                        value={patientFriendlyName} />
-                    <label className="label-margin-horizontal">Created</label>
-                    <Input
-                        readOnly
-                        value={moment(created).local().format('DD/MM/YYYY HH:mm')} />
-                    <label className="label-margin-horizontal">Last Updated</label>
-                    <Input
-                        readOnly
-                        value={moment(lastUpdate).local().format('DD/MM/YYYY HH:mm')} />
+                    <Row>
+                        <label className="label-margin-right">Patient Friendly Name</label>
+                        <Input
+                            readOnly
+                            value={patientFriendlyName}
+                            className="label-margin-right"
+                            containerStyle={{width: patientFriendlyName.length * 8}} />
+                    </Row>
+                    <Row>
+                        <label className="label-margin-right">Created</label>
+                        <Input
+                            readOnly
+                            className="label-margin-right"
+                            value={moment(created).local().format('DD/MM/YYYY HH:mm')} />
+                    </Row>
+                    <Row>
+                        <label className="label-margin-right">Last Updated</label>
+                        <Input
+                            className="label-margin-right"
+                            readOnly
+                            value={moment(lastUpdate).local().format('DD/MM/YYYY HH:mm')} />
+                    </Row>
                 </Row>
                 <Row>
                     <label className="label-margin-right">Hide from patients?</label>
