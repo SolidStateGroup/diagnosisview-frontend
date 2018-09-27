@@ -61,8 +61,8 @@ const ForgotPasswordLightbox = class extends Component {
 
     render() {
         return (
-            <View style={Styles.lightboxOuter}>
-                <View style={[Styles.lightbox, {height: '100%', paddingVertical: 20}]}>
+            <View style={[Styles.lightboxOuter]}>
+                <View style={[Styles.lightbox, {paddingVertical: 20}]}>
                     {this.state.isLoading ? <Flex style={Styles.centeredContainer}><Loader/></Flex> : (
                         <View style={[Styles.horizontallyPadded]}>
                             <AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]}
@@ -160,7 +160,7 @@ const ForgotPasswordLightbox = class extends Component {
                                         )
                                 }
                             })()}
-                            {this.state.error && <Text style={[Styles.textMedium, Styles.textCenter,{color:pallette.error, marginTop:10}]}>{this.state.error}</Text>}
+                            {this.state.error ? <Text style={[Styles.textMedium, Styles.textCenter,{color:pallette.error, marginTop:10}]}>{this.state.error}</Text> : null}
                         </View>
                     )}
                 </View>

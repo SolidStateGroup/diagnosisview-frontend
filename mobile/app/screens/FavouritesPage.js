@@ -93,6 +93,9 @@ const FavouritesPage = class extends Component {
 									<FavouritesProvider>
 										{({favourites, isLoading})=>{
 											return _.map(_.reverse(_.sortBy(favourites, 'date')), (entry, i) => {
+												if (!AccountStore.isSubscribed() && entry.link.difficultyLevel != "GREEN" && !entry.link.freeLink) {
+													return null;
+												}
 												if (Constants.simulate.ALL_FAVES_REMOVED_EXTERNALLY) {
 													entry.link.removedExternally = true;
 												}

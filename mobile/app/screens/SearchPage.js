@@ -11,6 +11,14 @@ const SearchHeader = (props) => (
 	</ListItem>
 )
 
+const CategoriesHeader = (props) => (
+	<ListItem style={Styles.listShort}>
+		<View>
+			<Row><Text style={[Styles.listHeading,Styles.semiBold]}>SEARCH DIAGNOSIS BY CATEGORY: </Text></Row>
+		</View>
+	</ListItem>
+)
+
 const SearchPage = class extends Component {
 	static navigatorStyle = global.navbarStyle;
 
@@ -78,46 +86,42 @@ const SearchPage = class extends Component {
 					<View style={[Styles.padded]}>
 						<View>
 							<ION style={Styles.inputIcon} name="ios-search"/>
-							{!this.state.categorySearch ? (
-								<View>
-									<ION style={Styles.inputIcon} name="ios-search"/>
-									<TextInput placeholder={"Search diagnosis by name"}
-														onChangeText={(search)=>this.setState({search})} style={{textIndent:20}} height={40} textStyle={[Styles.inputIndent]}
-														autoCorrect={false}/>
-								</View>
-							) : null}
-							{!this.state.search && !this.state.categorySearch ? <Text>Or</Text> : null}
-							{!this.state.search ? (
-								<View>
-									<ION style={Styles.inputIcon} name="ios-search"/>
-									<TextInput placeholder={"Search diagnosis by category"}
-														onChangeText={(categorySearch)=>this.setState({categorySearch})} style={{textIndent:20}} height={40} textStyle={[Styles.inputIndent]}
-														autoCorrect={false}/>
-								</View>
-							) : null}
+							<View>
+								<ION style={Styles.inputIcon} name="ios-search"/>
+								<TextInput placeholder={"Search diagnosis by name"}
+													onChangeText={(search)=>this.setState({search})} style={{textIndent:20}} height={40} textStyle={[Styles.inputIndent]}
+													autoCorrect={false}/>
+							</View>
 							{this.state.search.length >= 3 ? (
 								<Row style={{margin:10}}>
 									<Text style={Styles.textSmall}>Select a diagnosis to read more.</Text>
 								</Row>
-							) : null}
+							) : (
+								<Row style={{margin:10}}>
+									<Text style={Styles.textSmall}>Or</Text>
+								</Row>
+							)}
 						</View>
 
 
 							<View style={[Styles.whitePanel, Styles.stacked]}>
-								{this.state.search.length >= 3 && <FlatList
+								{this.state.search.length >= 3 ? (
+									<FlatList
 										keyExtractor={(i)=>i.code}
 										data={DiagnosisStore.search(this.state.search)}
 										renderItem={this.renderRow}
 										ListHeaderComponent={<SearchHeader search={this.state.search} />}
 										ListEmptyComponent={<ListItem><Text>No results found</Text></ListItem>}
-								/>}
-								{this.state.categorySearch.length >= 3 && <FlatList
+									/>
+								) : (
+									<FlatList
 										keyExtractor={(i)=>i.id}
-										data={DiagnosisStore.categorySearch(this.state.categorySearch)}
+										data={DiagnosisStore.getCategories()}
 										renderItem={this.renderCategoryRow}
-										ListHeaderComponent={<SearchHeader search={this.state.categorySearch} />}
+										ListHeaderComponent={<CategoriesHeader />}
 										ListEmptyComponent={<ListItem><Text>No results found</Text></ListItem>}
-								/>}
+									/>
+								)}
 							</View>
 
 					</View>

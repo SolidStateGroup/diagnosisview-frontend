@@ -11,7 +11,8 @@ const DiagnosisDetailPage = class extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			isLoading: true
+			isLoading: true,
+			appState: AppState.currentState
 		};
 		ES6Component(this);
 		routeHelper.handleNavEvent(props.navigator, 'diagnosis-detail', this.onNavigatorEvent);
@@ -21,16 +22,33 @@ const DiagnosisDetailPage = class extends Component {
 		this.listenTo(AccountStore, 'change', () => this.forceUpdate());
 
 		this.setState({isLoading: true});
-			data.get(Project.api + 'code/' + this.props.code)
-				.then(res => {
-					console.log(res);
-					this.setState({
-						description: res.fullDescription,
-						links: res.links,
-						name: res.description,
-						isLoading: false
-					})
+		this.get();
+
+		AppState.addEventListener('change', this.handleAppStateChange);
+	}
+
+	componentWillUnmount() {
+		AppState.removeEventListener('change', this.handleAppStateChange);
+	}
+
+	handleAppStateChange = (nextState) => {
+		if (this.state.appState.match(/inactive|background/) && nextState === 'active') {
+			this.get();
+		}
+		this.setState({appState: nextState});
+	}
+
+	get = () => {
+		data.get(Project.api + 'code/' + this.props.code)
+			.then(res => {
+				console.log(res);
+				this.setState({
+					description: res.fullDescription,
+					links: res.links,
+					name: res.description,
+					isLoading: false
 				})
+			});
 	}
 
 	onNavigatorEvent = (event) => {
