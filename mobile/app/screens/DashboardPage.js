@@ -138,8 +138,8 @@ const DashboardPage = class extends Component {
 								<View style={Styles.padded}>
 									{!user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length)) ? (
 										<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-											<Text style={[Styles.textSmall, Styles.paragraph,Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textSmall, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textSmall,Styles.bold, {padding:0, margin:0}]}>You are logged in</Text>) : null}</Text>
-											<Text style={[Styles.textCenter,Styles.textSmall, Styles.paragraph]}>Subscribe for unlimited history/favourites & professional resources on all devices</Text>
+											<Text style={[Styles.textMedium, Styles.paragraph,Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textSmall, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textSmall,Styles.bold, {padding:0, margin:0}]}>You are logged in</Text>) : null}</Text>
+											<Text style={[Styles.textCenter,Styles.textMedium, Styles.paragraph]}>Subscribe for unlimited history/favourites & professional resources on all devices</Text>
 											<Button onPress={this.subscribe}>Subscribe now</Button>
 										</View>
 									) : null}
