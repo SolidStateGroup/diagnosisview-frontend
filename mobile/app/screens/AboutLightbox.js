@@ -11,7 +11,6 @@ const About = class extends Component {
 		data.post(Project.api + 'user/feedback', {
 			body: this.state.feedback
 		}).then(() => {
-			this.animation.play();
 			setTimeout(() => {
 				this.props.navigator.dismissLightBox();
 			}, 800);
@@ -49,27 +48,25 @@ const About = class extends Component {
 								multiline={true}
 								placeholder="Enter feedback here"
 							/>
-
-							<FormGroup>
-								{!this.state.sending ? (
-									<Row style={Styles.verticalCenter}>
-										<Button disabled={!this.state.feedback} style={{ alignSelf: 'stretch', marginHorizontal: 5 }} onPress={this.sendFeedback}>Send</Button>
-										<Button style={{ alignSelf: 'stretch', marginHorizontal: 5 }} onPress={() => this.props.navigator.dismissLightBox()}>Not right now</Button>
-									</Row>
-								) : null}
-								{this.state.error &&
-									<Text style={[Styles.textCenter, { color: pallette.brandDanger, marginTop: 10 }]}>{this.state.error ? this.state.error : ''}</Text>}
-								<View style={[Styles.roundedAnimationInner, { opacity: this.state.sending ? 1 : 0 }]}>
-									<Animation
-										ref={animation => {
-											this.animation = animation;
-										}}
-										loop={false}
-										style={{ width: 70, height: 70 }} source={require('../animations/success.json')} />
-								</View>
-							</FormGroup>
 						</View>
 					</KeyboardAwareScrollView>
+					<FormGroup>
+						{!this.state.sending ? (
+							<Row style={Styles.verticalCenter}>
+								<Button disabled={!this.state.feedback} style={{ alignSelf: 'stretch', marginHorizontal: 5 }} onPress={this.sendFeedback}>Send</Button>
+								<Button style={{ alignSelf: 'stretch', marginHorizontal: 5 }} onPress={() => this.props.navigator.dismissLightBox()}>Not right now</Button>
+							</Row>
+						) : (
+							<View style={Styles.roundedAnimationInner}>
+								<Animation
+									autoPlay={true}
+									loop={false}
+									style={{ width: 70, height: 70 }} source={require('../animations/success.json')} />
+							</View>
+						)}
+						{this.state.error ?
+							<Text style={[Styles.textCenter, { color: pallette.brandDanger, marginTop: 10 }]}>{this.state.error}</Text> : null}
+					</FormGroup>
 				</View>
 			</View>
 		);
