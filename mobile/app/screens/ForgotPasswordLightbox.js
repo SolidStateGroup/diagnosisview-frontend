@@ -160,7 +160,7 @@ const ForgotPasswordLightbox = class extends Component {
                                         )
                                 }
                             })()}
-                            {this.state.error && <Text style={[Styles.textMedium, Styles.textCenter,{color:pallette.error, marginTop:10}]}>{this.state.error}</Text>}
+                            {this.state.error ? <Text style={[Styles.textMedium, Styles.textCenter,{color:pallette.error, marginTop:10}]}>{this.state.error}</Text> : null}
                         </View>
                     )}
                 </View>
