@@ -23,7 +23,7 @@ const About = class extends Component {
 	render() {
 		return (
 			<View style={Styles.lightboxOuter}>
-				<View style={Styles.lightbox}>
+				<View style={[Styles.lightbox,{paddingTop:10}]}>
 					<KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true}>
 						{this.state.showForm ? this.renderForm() : this.renderAboutText()}
 					</KeyboardAwareScrollView>
@@ -34,7 +34,7 @@ const About = class extends Component {
 
 	renderForm = () => {
 		return (
-			<View style={Styles.horizontallyPadded}>
+			<View style={[Styles.padded,{paddingTop:0}]}>
 				<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')} />
 				<H3 style={[Styles.textCenter,{marginBottom:20, color:'#2e2e2e'}]}>Give us some feeback</H3>
 				<TextInput
@@ -67,7 +67,7 @@ const About = class extends Component {
 
 	renderAboutText =  () => {
 		return (
-			<View style={[Styles.horizontallyPadded, { alignSelf: 'center' }]}>
+			<View style={[Styles.padded, { alignSelf: 'center' }]}>
 				<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')} />
 				<Text style={[Styles.paragraph, Styles.textSmall]}>About DiagnosisView</Text>
 				<Text style={[Styles.paragraph, Styles.textSmall]}>Diagnosis View gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</Text>
