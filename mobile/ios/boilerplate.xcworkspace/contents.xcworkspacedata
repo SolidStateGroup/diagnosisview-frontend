@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/luke/Projects/diagnosisview-frontend/mobile/ios/DiagnosisView.xcodeproj">
+      location = "group:DiagnosisView.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">

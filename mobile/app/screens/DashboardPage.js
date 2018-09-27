@@ -13,7 +13,9 @@ const DashboardPage = class extends Component {
 
 	constructor(props, context) {
 		super(props, context);
-		this.state = {};
+		this.state = {
+			appState: AppState.currentState
+		};
 		ES6Component(this);
 		routeHelper.handleNavEvent(props.navigator, 'dashboard', this.onNavigatorEvent);
 	}
@@ -28,36 +30,35 @@ const DashboardPage = class extends Component {
 			.then(() => RNIap.getAvailablePurchases())
 			.then(purchases => {
 				console.log('available purchases', purchases);
-
-				if (Platform.OS !== 'android') return;
-
-				// Get the subscription if subscribed
-				const purchase = _.find(purchases, {productId: iapItemSkus[0]});
-				if (!purchase) return;
-
-				// Get users last payment
-				const user = AccountStore.getUser();
-				if (!user) return;
-
-				// Check whether user has cancelled their subscription
-				if (user.autoRenewing && !purchase.autoRenewing) {
-					AppActions.subscribe(purchase, true);
-				}
 			});
 
 		AppActions.getAccount(this.props.retrySubscription);
 		AppActions.getCodes();
+		AppActions.getCodeCategories();
+
+		AppState.addEventListener('change', this.handleAppStateChange);
 	}
 
 	componentWillUnmount() {
 		RNIap.endConnection();
+
+		AppState.removeEventListener('change', this.handleAppStateChange);
+	}
+
+	handleAppStateChange = (nextState) => {
+		if (this.state.appState.match(/inactive|background/) && nextState === 'active') {
+			AppActions.getAccount(this.props.retrySubscription);
+			AppActions.getCodes();
+			AppActions.getCodeCategories();
+		}
+		this.setState({appState: nextState});
 	}
 
 	onNavigatorEvent = (event) => {
 		if (event.id == routeHelper.navEvents.SHOW) {
 			API.trackPage('Dashboard Screen');
 			AsyncStorage.getItem("welcomeShown", (err, res) => {
-				if (!err && !res) {
+				if (!err && (!res || Constants.simulate.SHOW_WELCOME)) {
 					routeHelper.showWelcome(this.props.navigator);
 					AsyncStorage.setItem("welcomeShown", "true");
 				}
@@ -68,14 +69,24 @@ const DashboardPage = class extends Component {
 			} else if (event.id == 'search') {
 				routeHelper.goSearch(this.props.navigator);
 			}
-		} else if (event.type == 'DeepLink' && event.link == 'search') {
-			this.props.navigator.popToRoot();
-			this.props.navigator.push({
-				screen: '/search',
-				title: 'Search',
-				navigatorStyle: global.navbarStyle,
-				passProps: {}
-			})
+		} else if (event.type == 'DeepLink') {
+			switch (event.link) {
+				case 'search':
+					this.props.navigator.popToRoot();
+					this.props.navigator.push({
+						screen: '/search',
+						title: 'Search',
+						navigatorStyle: global.navbarStyle,
+						passProps: {}
+					});
+					break;
+				case 'dashboard':
+					this.props.navigator.popToRoot();
+					break;
+				default:
+					break;
+			}
+
 		}
 	};
 
@@ -98,6 +109,22 @@ const DashboardPage = class extends Component {
 		}
 	}
 
+	onSearch = () => {
+		routeHelper.goSearch(this.props.navigator)
+	}
+
+	onLoggedIn = () => {
+		routeHelper.goAccount(this.props.navigator)
+	}
+
+	goHistory = () => {
+		routeHelper.goHistory(this.props.navigator)
+	}
+
+	goFavourites = () => {
+		routeHelper.goFavourites(this.props.navigator)
+	}
+
 	render() {
 		return (
 			<AccountProvider onLogin={this.onLogin}>
@@ -109,33 +136,37 @@ const DashboardPage = class extends Component {
 							<ScrollView>
 								<View style={Styles.hero}></View>
 								<View style={Styles.padded}>
-									{!user || (!user.subscribed && (!user.paymentData || !user.paymentData.length)) ? (
+									{!user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length)) ? (
 										<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-											<Text style={[Styles.textCenter, Styles.paragraph]}>Support DiagnosisView and subscribe for unlimited history/favourites on all devices</Text>
+											<Text style={[Styles.textMedium, Styles.paragraph,Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textSmall, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textSmall,Styles.bold, {padding:0, margin:0}]}>You are logged in</Text>) : null}</Text>
+											<Text style={[Styles.textCenter,Styles.textMedium, Styles.paragraph]}>Subscribe for unlimited history/favourites & professional resources on all devices</Text>
 											<Button onPress={this.subscribe}>Subscribe now</Button>
 										</View>
 									) : null}
-									{paymentData ? (() => {
-										const expiryDate = moment(paymentData.expiryTimeMillis);
-										if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment()) && !paymentData.autoRenewing) {
+									{user && user.expiryDate && !user.autoRenewing ? (() => {
+										const expiryDate = moment(user.expiryDate);
+										if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment())) {
 											return (
 												<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account will expire on {expiryDate.format('DD-MM-YYYY')}</Text>
+													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account will expire {moment().isSame(expiryDate, 'd') ? 'today at ' + expiryDate.format('HH:mm') : 'on ' + expiryDate.format('DD-MM-YYYY')}</Text>
 													<Button onPress={this.subscribe}>Renew now</Button>
 												</View>
 											)
 										} else if (expiryDate.isSameOrBefore(moment())) {
 											return (
 												<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account has expired</Text>
+													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account has expired. Renew for unlimited history/favourites & professional resources on all devices.</Text>
 													<Button onPress={this.subscribe}>Renew now</Button>
 												</View>
 											);
+										} else {
+											return null;
 										}
 									})() : null}
 									<View style={[Styles.whitePanel, Styles.noPadding]}>
 										<ListItem>
-											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT SEARCHES</Text>
+											<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT SEARCHES</Text>
+											<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goHistory}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
 										<HistoryProvider>
 											{({ history, isLoading }) => (
@@ -150,24 +181,34 @@ const DashboardPage = class extends Component {
 											)}
 										</HistoryProvider>
 										<ListItem>
-											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT FAVOURITES</Text>
+											<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT FAVOURITES</Text>
+											<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goFavourites}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
 										<FavouritesProvider>
 											{({ favourites, isLoading }) => (
 												<View>
-													{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => (
-														<ListItem key={i} onPress={() => this.onFavourite(entry.link.link, entry.name)}>
-															<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={entry.link.difficultyLevel} style={[Styles.listIconNavMarginRight]} />
-															<Column style={[Styles.noMargin, {flex: 1}]}>
-																<Text>{entry.name}</Text>
-																{Constants.linkIcons[entry.link.linkType.value] ?
-																	<Image source={Constants.linkIcons[entry.link.linkType.value]} style={Styles.listItemImage} /> :
-																	<Text style={[Styles.textSmall]}>{entry.link.name}</Text>
-																}
-															</Column>
-															<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
-														</ListItem>
-													))}
+													{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
+														const { link } = entry;
+														if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+															return null;
+														}
+														return (
+															<ListItem key={i} onPress={() => this.onFavourite(link.link, entry.name)}>
+																<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
+																<Column style={[Styles.noMargin, {flex: 1}]}>
+																	<Text>{entry.name}</Text>
+																	{Constants.linkIcons[link.linkType.value] ? (
+																			<Row>
+																				<Image source={Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																				{link.linkType.value === 'CUSTOM' ? <Flex><Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text></Flex> : null}
+																			</Row>
+																		) : <Text>{link.name}</Text>
+																	}
+																</Column>
+																<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
+															</ListItem>
+														)
+													})}
 												</View>
 											)}
 										</FavouritesProvider>

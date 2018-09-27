@@ -117,5 +117,24 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       actionType: Actions.ADMIN_LOGIN,
       details
     });
+  },
+  updateCode: function (diagnosis) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.UPDATE_CODE,
+      diagnosis
+    });
+  },
+  updateLink: function (code, linkId, changes) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.UPDATE_LINK,
+      code,
+      linkId,
+      changes
+    });
+  },
+  getCodeCategories: function () {
+    Dispatcher.handleViewAction({
+      actionType: Actions.GET_CODE_CATEGORIES
+    });
   }
 });

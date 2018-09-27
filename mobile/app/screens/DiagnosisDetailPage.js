@@ -11,7 +11,8 @@ const DiagnosisDetailPage = class extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			isLoading: true
+			isLoading: true,
+			appState: AppState.currentState
 		};
 		ES6Component(this);
 		routeHelper.handleNavEvent(props.navigator, 'diagnosis-detail', this.onNavigatorEvent);
@@ -21,16 +22,34 @@ const DiagnosisDetailPage = class extends Component {
 		this.listenTo(AccountStore, 'change', () => this.forceUpdate());
 
 		this.setState({isLoading: true});
-			data.get(Project.api + 'code/' + this.props.code)
-				.then(res => {
-					console.log(res);
-					this.setState({
-						description: res.fullDescription,
-						links: res.links,
-						name: res.description,
-						isLoading: false
-					})
+		this.get();
+
+		AppState.addEventListener('change', this.handleAppStateChange);
+	}
+
+	componentWillUnmount() {
+		AppState.removeEventListener('change', this.handleAppStateChange);
+	}
+
+	handleAppStateChange = (nextState) => {
+		if (this.state.appState.match(/inactive|background/) && nextState === 'active') {
+			this.get();
+		}
+		this.setState({appState: nextState});
+	}
+
+	get = () => {
+		data.get(Project.api + 'code/' + this.props.code)
+			.then(res => {
+				console.log(res);
+				const links = _.sortBy(res.links, 'displayOrder');
+				this.setState({
+					description: res.fullDescription,
+					links,
+					name: res.description,
+					isLoading: false
 				})
+			});
 	}
 
 	onNavigatorEvent = (event) => {
@@ -74,19 +93,25 @@ const DiagnosisDetailPage = class extends Component {
 							<FavouritesProvider>
 								{({favourites}) => {
 									return _.map(links, link => {
+										if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+											return null;
+										}
 										const isFavourite = _.find(favourites, f => f.code === this.props.code && f.link.id === link.id);
 										return (
 											<ListItem onPress={() => routeHelper.openWebModal(link.link, name)} key={link.id}>
 												<Row>
-												<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} />
-													<Column>
-														{Constants.linkIcons[link.linkType.value] ?
-															<Image source={Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} /> :
-															<Text>{link.name}</Text>
+													<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} />
+													<Flex>
+														{Constants.linkIcons[link.linkType.value] ? (
+															<Column>
+																<Image source={Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																{link.linkType.value === 'CUSTOM' ? <Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text> : null}
+															</Column>
+														 ) : <Text>{link.name}</Text>
 														}
-													</Column>
+													</Flex>
+													<ION onPress={() => this.onFavourite(isFavourite, link)} name="ios-star" style={[Styles.listIconNav, isFavourite ? {color: '#ffd700'} : {}]}/>
 												</Row>
-												<ION onPress={() => this.onFavourite(isFavourite, link)} name="ios-star" style={[Styles.listIconNav, isFavourite ? {color: '#ffd700'} : {}]}/>
 											</ListItem>
 										);
 									})

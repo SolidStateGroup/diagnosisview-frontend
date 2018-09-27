@@ -34,11 +34,11 @@ var controller = {
 
                     res = controller.processUser(res);
 
-                    if (res.subscribed && !res.autoRenewing) {
-                        controller.scheduleExpiryNotifications();
+                    if (res.activeSubscription && !res.autoRenewing) {
+                        controller.scheduleExpiryNotifications(res.expiryDate);
                     }
 
-                    if (res.subscribed && (favouritesToSync.length || historyToSync.length)) {
+                    if (res.activeSubscription && (favouritesToSync.length || historyToSync.length)) {
                         controller.setToken(res && res.token);
                         return (favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res))
                             .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res))
@@ -123,7 +123,7 @@ var controller = {
                     return e.json().then(err => {
                         console.log('Failed to validate purchase', err);
                         if (err.status === 400) { // Failed validation
-                            store.model.subscribed = false;
+                            store.model.activeSubscription = false;
                             AsyncStorage.setItem('user', JSON.stringify(store.model));
                             store.saved();
                             return Promise.reject("Failed to validate purchase");
@@ -150,37 +150,47 @@ var controller = {
                     store.model = this.processUser(res);
                     AsyncStorage.setItem('user', JSON.stringify(store.model));
                     if (!res.autoRenewing) {
-                        controller.scheduleExpiryNotifications();
+                        controller.scheduleExpiryNotifications(res.expiryDate);
+                    } else {
+                        API.push.cancelAllNotifications();
                     }
                     store.saved();
                 });
         },
 
-        scheduleExpiryNotifications: () => {
-            API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${moment().add(1, 'y').format('DD/MM/YY')}. Please renew now`, null, moment().add(1, 'y').subtract(1, 'M').valueOf());
-            API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${moment().add(1, 'y').format('DD/MM/YY')}. Please renew now`, null, moment().add(1, 'y').subtract(1, 'w').valueOf());
-            API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', 'Your account expires tomorrow. Please renew now for continued access to unlimited history/favourites on all devices', null, moment().add(1, 'y').subtract(1, 'd').valueOf());
+        scheduleExpiryNotifications: (expiryDate) => {
+            const now = moment();
+            if (now.isBefore(moment(expiryDate).subtract(1, 'M'), 'd')) {
+                console.log('Scheduling expiry warning for 1 month before expiry');
+                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${expiryDate.format('DD/MM/YY')}. Please renew now`, null, expiryDate.subtract(1, 'M').valueOf());
+            }
+            if (now.isBefore(moment(expiryDate).subtract(1, 'w'), 'd')) {
+                console.log('Scheduling expiry warning for 1 week before expiry');
+                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${expiryDate.format('DD/MM/YY')}. Please renew now`, null, expiryDate.subtract(1, 'w').valueOf());
+            }
+            if (now.isBefore(moment(expiryDate).subtract(1, 'd'), 'd')) {
+                console.log('Scheduling expiry warning for 1 day before expiry');
+                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', 'Your account expires tomorrow. Please renew now for continued access to unlimited history/favourites on all devices', null, expiryDate.subtract(1, 'd').valueOf());
+            }
         },
 
         processUser: (res) => {
-            res.subscribed = res.subscribed || res.activeSubscription || (res.paymentData && res.paymentData.length ? moment(JSON.parse(_.last(res.paymentData).response).expiryTimeMillis).isAfter(moment()) : false);
-
             if (Constants.simulate.SUBSCRIBED) {
                 console.log("WARNING: SIMULATING SUBSCRIPTION")
-                res.subscribed = true;
+                res.activeSubscription = true;
                 if (Constants.simulate.EXPIRY) {
                     res.paymentData = res.paymentData || [];
-                    const expiryDate = moment().add(1, 'y').subtract(14, 'days').valueOf();
-                    res.paymentData.unshift(JSON.stringify({expiryTimeMillis: expiryDate, autoRenewing: false}));
-                    res.subscribed = expiryDate.isAfter(moment());
+                    res.expiryDate = moment().add(1, 'y').subtract(14, 'days').valueOf();
+                    res.paymentData.unshift(JSON.stringify({expiryTimeMillis: res.expiryDate, autoRenewing: false}));
+                    res.activeSubscription = res.expiryDate.isAfter(moment());
                 }
             }
 
-            if (res.subscribed && res.favourites && res.favourites.length) {
+            if (res.activeSubscription && res.favourites && res.favourites.length) {
                 AppActions.setSubscribedFavourites(res.favourites);
             }
 
-            if (res.subscribed && res.history && res.history.length) {
+            if (res.activeSubscription && res.history && res.history.length) {
                 AppActions.setSubscribedHistory(res.history);
             }
 
@@ -198,8 +208,13 @@ var controller = {
                     }
                     res = controller.processUser(res);
 
+                    if (store.model.autoRenewing && !res.autoRenewing && res.activeSubscription) {
+                        // Active subscription but cancelled (Android only), schedule expiry notifications
+                        controller.scheduleExpiryNotifications(res.expiryDate);
+                    }
+
                     if (retrySubscription) {
-                        res.subscribed = true;
+                        res.activeSubscription = true;
                     }
 
                     console.log(res);
@@ -236,7 +251,7 @@ var controller = {
             return store.model
         },
         isSubscribed: function () {
-            return store.model && store.model.subscribed;
+            return store.model && store.model.activeSubscription;
         },
         setUser: function(user) {
             controller.setUser(user);

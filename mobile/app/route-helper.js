@@ -135,6 +135,20 @@ module.exports = {
         })
     },
 
+    showForgotPassword: (navigator) => {
+        navigator.showLightBox({
+            screen: "forgotPassword", // unique ID registered with Navigation.registerScreen
+            style: {
+                width: DeviceWidth,
+                height: DeviceHeight,
+                justifyContent: 'center',
+                tapBackgroundToDismiss: true, // dismisses LightBox on background taps (optional)
+                backgroundBlur: "dark", // 'dark' / 'light' / 'xlight' / 'none' - the type of blur on the background
+            },
+            adjustSoftInput: "resize", // android only, adjust soft input, modes: 'nothing', 'pan', 'resize', 'unspecified' (optional, default 'unspecified')
+        })
+    },
+
     openContactModal: (navigator, title, onChange, multiple) => {
         navigator.showModal({
             screen: "/select-contact",
@@ -157,6 +171,19 @@ module.exports = {
 
     goAccount: function (navigator) {
         navigator.switchToTab({tabIndex: 3});
+    },
+
+    goHistory: function (navigator) {
+        navigator.switchToTab({tabIndex: 1});
+    },
+
+    goFavourites: function (navigator) {
+        navigator.switchToTab({tabIndex: 2});
+    },
+
+    goDashboard: function (navigator) {
+        navigator.handleDeepLink({link: 'dashboard'});
+        navigator.switchToTab({tabIndex: 0});
     },
 
     goLogin: function (navigator) {

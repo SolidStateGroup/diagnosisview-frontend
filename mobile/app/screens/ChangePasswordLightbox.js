@@ -32,7 +32,8 @@ const Welcome = class extends Component {
 		}
 
 		data.put(Project.api + 'user/', {username: AccountStore.getUser().username, oldPassword, password})
-			.then(() => {
+			.then(res => {
+				AppActions.setToken(res.token);
 				this.animation.play();
 				setTimeout(() => {
 					this.props.navigator.dismissLightBox();

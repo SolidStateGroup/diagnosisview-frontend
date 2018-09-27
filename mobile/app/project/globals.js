@@ -57,3 +57,6 @@ global.AutoHeightImage = AutoHeightImage;
 
 import { Dropdown } from 'react-native-material-dropdown';
 global.Dropdown = Dropdown;
+
+import CodeInput from 'react-native-confirmation-code-input';
+global.CodeInput = CodeInput;

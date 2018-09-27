@@ -18,5 +18,8 @@ module.exports = Object.assign({}, require('./base/_action-constants'), {
   "DELETE_USER": "DELETE_USER",
   "SET_TOKEN": "SET_TOKEN",
   "UPDATE_USER": "UPDATE_USER",
-  "ADMIN_LOGIN": "ADMIN_LOGIN"
+  "ADMIN_LOGIN": "ADMIN_LOGIN",
+  "UPDATE_CODE": "UPDATE_CODE",
+  "UPDATE_LINK": "UPDATE_LINK",
+  "GET_CODE_CATEGORIES": "GET_CODE_CATEGORIES",
 });

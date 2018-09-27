@@ -7,11 +7,35 @@ module.exports = {
     },
 
     iconMedium:{
-        color:'#fbe423',
+        color:'#ffc200',
     },
 
     iconLow:{
         color:'#5bc43b',
+    },
+
+    borderHigh:{
+        borderColor:'#fb3823',
+    },
+
+    borderMedium:{
+        borderColor:'#ffc200',
+    },
+
+    borderLow:{
+        borderColor:'#5bc43b',
+    },
+
+    backgroundHigh:{
+        backgroundColor:'#fb3823',
+    },
+
+    backgroundMedium:{
+        backgroundColor:'#fbe423',
+    },
+
+    backgroundLow:{
+        backgroundColor:'#5bc43b',
     },
 
     listContainer: {
@@ -34,8 +58,8 @@ module.exports = {
         paddingRight: 15,
         borderBottomColor: colour.dividerLight,
         backgroundColor: 'transparent',
-        paddingTop:15,
-        paddingBottom:15,
+        paddingTop:10,
+        paddingBottom:10,
     },
 
     listShort:{
