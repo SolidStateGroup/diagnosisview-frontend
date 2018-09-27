@@ -25,7 +25,7 @@ const About = class extends Component {
 		return (
 			<View style={Styles.lightboxOuter}>
 				<View style={Styles.lightbox}>
-					<ScrollView>
+					<KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true}>
 						<View style={[Styles.horizontallyPadded, { alignSelf: 'center' }]}>
 							<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')} />
 							<Text style={[Styles.paragraph, Styles.textSmall]}>About DiagnosisView</Text>
@@ -69,7 +69,7 @@ const About = class extends Component {
 								</View>
 							</FormGroup>
 						</View>
-					</ScrollView>
+					</KeyboardAwareScrollView>
 				</View>
 			</View>
 		);
