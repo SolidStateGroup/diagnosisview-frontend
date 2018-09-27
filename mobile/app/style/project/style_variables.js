@@ -27,7 +27,7 @@ window.pallette = {
     error: '#b94d4d',
 
     fromGradient:'#2b76db',
-    toGradient:'#3582dc',
+    toGradient:'#0000007f',
     anchor: '#7e8592'
 };
 
