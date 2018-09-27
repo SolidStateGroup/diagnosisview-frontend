@@ -59,7 +59,7 @@ const Welcome = class extends Component {
 					</View>
 
 				</View>
-				<View style={[Styles.lightbox, {height: '100%'}]}>
+				<View style={Styles.lightbox}>
 					<View style={[Styles.horizontallyPadded, { alignSelf: 'stretch' }]}>
 						<View style={Styles.stackedForm}>
 							<TextInput
