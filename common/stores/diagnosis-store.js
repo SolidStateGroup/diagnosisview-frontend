@@ -28,21 +28,7 @@ var controller = {
             term = term.toLowerCase();
             results = _.sortBy(_.filter(store.model, diagnosis => {
                 return !diagnosis.deleted && diagnosis.friendlyName.toLowerCase().indexOf(term) !== -1;
-            }), diagnosis => {
-                // Sort by highest priority display order (1) first
-                var priority;
-                _.each(diagnosis.links, l => {
-                    if (!priority) {
-                        priority = l.linkType.displayOrder;
-                        return;
-                    }
-
-                    if (l.linkType.displayOrder < priority) {
-                        priority = l.linkType.displayOrder;
-                    }
-                })
-                return priority;
-            }, 'friendlyName');
+            }), 'friendlyName');
             return results;
         },
         categorySearch: function (term) {
