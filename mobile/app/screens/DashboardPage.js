@@ -187,19 +187,24 @@ const DashboardPage = class extends Component {
 										<FavouritesProvider>
 											{({ favourites, isLoading }) => (
 												<View>
-													{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => (
-														<ListItem key={i} onPress={() => this.onFavourite(entry.link.link, entry.name)}>
-															<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={entry.link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
-															<Column style={[Styles.noMargin, {flex: 1}]}>
-																<Text>{entry.name}</Text>
-																{Constants.linkIcons[entry.link.linkType.value] ?
-																	<Image source={Constants.linkIcons[entry.link.linkType.value]} style={Styles.listItemImage} /> :
-																	<Text style={[Styles.textSmall]}>{entry.link.name}</Text>
-																}
-															</Column>
-															<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
-														</ListItem>
-													))}
+													{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
+														if (!AccountStore.isSubscribed() && entry.link.difficultyLevel != "GREEN" && !entry.link.freeLink) {
+															return null;
+														}
+														return (
+															<ListItem key={i} onPress={() => this.onFavourite(entry.link.link, entry.name)}>
+																<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={entry.link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
+																<Column style={[Styles.noMargin, {flex: 1}]}>
+																	<Text>{entry.name}</Text>
+																	{Constants.linkIcons[entry.link.linkType.value] ?
+																		<Image source={Constants.linkIcons[entry.link.linkType.value]} style={Styles.listItemImage} /> :
+																		<Text style={[Styles.textSmall]}>{entry.link.name}</Text>
+																	}
+																</Column>
+																<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
+															</ListItem>
+														)
+													})}
 												</View>
 											)}
 										</FavouritesProvider>
