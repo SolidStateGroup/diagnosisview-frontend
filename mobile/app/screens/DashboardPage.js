@@ -188,17 +188,21 @@ const DashboardPage = class extends Component {
 											{({ favourites, isLoading }) => (
 												<View>
 													{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
-														if (!AccountStore.isSubscribed() && entry.link.difficultyLevel != "GREEN" && !entry.link.freeLink) {
+														const { link } = entry;
+														if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
 															return null;
 														}
 														return (
-															<ListItem key={i} onPress={() => this.onFavourite(entry.link.link, entry.name)}>
-																<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={entry.link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
+															<ListItem key={i} onPress={() => this.onFavourite(link.link, entry.name)}>
+																<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
 																<Column style={[Styles.noMargin, {flex: 1}]}>
 																	<Text>{entry.name}</Text>
-																	{Constants.linkIcons[entry.link.linkType.value] ?
-																		<Image source={Constants.linkIcons[entry.link.linkType.value]} style={Styles.listItemImage} /> :
-																		<Text style={[Styles.textSmall]}>{entry.link.name}</Text>
+																	{Constants.linkIcons[link.linkType.value] ? (
+																			<Row>
+																				<Image source={Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																				{link.linkType.value === 'CUSTOM' ? <Flex><Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text></Flex> : null}
+																			</Row>
+																		) : <Text>{link.name}</Text>
 																	}
 																</Column>
 																<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />

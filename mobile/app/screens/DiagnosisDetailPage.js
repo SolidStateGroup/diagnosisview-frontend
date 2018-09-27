@@ -42,9 +42,10 @@ const DiagnosisDetailPage = class extends Component {
 		data.get(Project.api + 'code/' + this.props.code)
 			.then(res => {
 				console.log(res);
+				const links = _.sortBy(res.links, 'displayOrder');
 				this.setState({
 					description: res.fullDescription,
-					links: res.links,
+					links,
 					name: res.description,
 					isLoading: false
 				})
@@ -99,15 +100,18 @@ const DiagnosisDetailPage = class extends Component {
 										return (
 											<ListItem onPress={() => routeHelper.openWebModal(link.link, name)} key={link.id}>
 												<Row>
-												<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} />
-													<Column>
-														{Constants.linkIcons[link.linkType.value] ?
-															<Image source={Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} /> :
-															<Text>{link.name}</Text>
+													<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} />
+													<Flex>
+														{Constants.linkIcons[link.linkType.value] ? (
+															<Column>
+																<Image source={Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																{link.linkType.value === 'CUSTOM' ? <Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text> : null}
+															</Column>
+														 ) : <Text>{link.name}</Text>
 														}
-													</Column>
+													</Flex>
+													<ION onPress={() => this.onFavourite(isFavourite, link)} name="ios-star" style={[Styles.listIconNav, isFavourite ? {color: '#ffd700'} : {}]}/>
 												</Row>
-												<ION onPress={() => this.onFavourite(isFavourite, link)} name="ios-star" style={[Styles.listIconNav, isFavourite ? {color: '#ffd700'} : {}]}/>
 											</ListItem>
 										);
 									})

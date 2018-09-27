@@ -167,7 +167,8 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ic
         drawer: {
             left: {
                 screen: 'side-menu',
-                disableOpenGesture: false
+                disableOpenGesture: false,
+                fixedWidth: Platform.OS === 'android' ? PixelRatio.get() * (DeviceWidth * 0.75) : undefined
             }
         }
     });
