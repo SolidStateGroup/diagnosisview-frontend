@@ -29,11 +29,13 @@ var controller = {
                     link,
                     date: Date.now()
                 };
-                favourites.push(favourite);
-                if (favourites.length > 5) { // Only store last 5 on the device
-                    favourites.splice(0, 1);
+                if (favourite.link.difficultyLevel === 'GREEN' || favourite.link.freeLink) { // Only store simple & free links to device
+                    favourites.push(favourite);
+                    if (favourites.length > 5) { // Only store last 5 on the device
+                        favourites.splice(0, 1);
+                    }
+                    AsyncStorage.setItem('favourites', JSON.stringify(favourites));
                 }
-                AsyncStorage.setItem('favourites', JSON.stringify(favourites));
                 if (userIsSubscribed) {
                     data.put(Project.api + 'user/favourites', {linkId: link.id, code, type: link.linkType.value, dateAdded: favourite.date})
                         .then(res => {
@@ -106,7 +108,7 @@ var controller = {
             // Convert them to what we would normally store
             var favourites = [];
             _.each(subscribedFavourites, f => {
-                const link = f.linkId ? DiagnosisStore.getLinkById(f.linkId) : DiagnosisStore.getLink(f.code, f.type);
+                const link = f.linkId ? DiagnosisStore.getLinkById(f.code, f.linkId) : DiagnosisStore.getLink(f.code, f.type);
                 if (!link) return;
                 favourites.push({
                     code: f.code,
@@ -115,7 +117,7 @@ var controller = {
                     date: f.dateAdded
                 })
             });
-            AsyncStorage.setItem("favourites", JSON.stringify(_.take(_.reverse(_.sortBy(favourites, 'date')), 5)))
+            AsyncStorage.setItem("favourites", JSON.stringify(_.take(_.reverse(_.sortBy(_.filter(favourites, f => f.link.difficultyLevel === 'GREEN' || f.link.freeLink), 'date')), 5)))
             store.model = favourites;
             store.loaded();
         },
