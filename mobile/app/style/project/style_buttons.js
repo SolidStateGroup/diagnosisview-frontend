@@ -68,7 +68,7 @@ module.exports = {
 	},
 
     segmentedControl:{
-	    backgroundColor:'#fff',
+	    backgroundColor:pallette.primary,
         height:35,
     },
 
@@ -87,16 +87,16 @@ module.exports = {
     },
 
     segmentedControlActive:{
-        backgroundColor:pallette.primary,
+        backgroundColor:'#fff',
     },
 
     segmentedControlText:{
-        color: colour.btnDefault,
+        color: '#fff',
         fontSize:14,
         fontWeight:'100'
     },
 
     segmentedControlTextActive:{
-        color:'#fff',
+        color: pallette.primary,
     }
 };
