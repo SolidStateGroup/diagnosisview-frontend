@@ -330,7 +330,7 @@ const AccountPage = class extends Component {
 						<NetworkBar />
 						{isLoading || isSaving ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
 						<KeyboardAwareScrollView style={{backgroundColor:pallette.backgroundBase}} keyboardShouldPersistTaps="handled">
-
+								<View style={Styles.hero}></View>
 								<View style={[ Styles.stacked, Styles.padded]}>
 								{user && user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.padded]}>

@@ -200,7 +200,6 @@ var controller = {
         getAccount: function (retrySubscription) {
             if (!store.model) return;
 
-            store.loading();
             DiagnosisStore.refresh()
                 .then(() => data.get(Project.api + 'account'))
                 .then(res => {

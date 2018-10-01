@@ -23,18 +23,15 @@ const FavouriteComplexity = (props) => {
 	return (
 		<View style={Styles.lightboxOuter}>
 			<View style={Styles.lightbox}>
-				<View style={[Styles.horizontallyPadded, {alignSelf: 'center'}]}>
+				<View style={[Styles.padded, {alignSelf: 'center'}]}>
 					<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')}/>
 					<Text style={Styles.paragraph}>
 						{`DiagnosisView has classified this information source as '${colour}', ${text}`}
 					</Text>
-				</View>
-
-				<FormGroup>
 					<Button style={{alignSelf: 'center', width: 200}} onPress={() => props.navigator.dismissLightBox()}>
 						Ok
 					</Button>
-				</FormGroup>
+				</View>
 			</View>
 		</View>
 	);
