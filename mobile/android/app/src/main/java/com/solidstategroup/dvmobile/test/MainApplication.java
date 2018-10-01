@@ -47,6 +47,8 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 // react-native-linear-gradient
 import com.BV.LinearGradient.LinearGradientPackage;
 
+import com.entria.views.RNViewOverflowPackage;
+
 public class MainApplication extends NavigationApplication {
     @Override
     public boolean isDebug() {
@@ -73,7 +75,8 @@ public class MainApplication extends NavigationApplication {
                                new RNDeviceInfo(),
                                new RNBranchPackage(),
                                new RNIapPackage(),
-                               new LinearGradientPackage()
+                               new LinearGradientPackage(),
+                               new RNViewOverflowPackage()
                         );
     }
 

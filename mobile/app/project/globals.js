@@ -60,3 +60,6 @@ global.Dropdown = Dropdown;
 
 import CodeInput from 'react-native-confirmation-code-input';
 global.CodeInput = CodeInput;
+
+import ViewOverflow from 'react-native-view-overflow';
+global.ViewOverflow = ViewOverflow;

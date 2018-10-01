@@ -25,19 +25,20 @@ module.exports = {
         opacity: 0.5,
     },
 
+    // DO NOT CHANGE THESE. EVER.
 	lightboxOuter: {
 		backgroundColor: 'transparent',
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingBottom: 40,
-		paddingTop: 40,
+        paddingTop: 40,
+        height: DeviceHeight - 40
 	},
 
 	lightbox: {
-		paddingTop: 40,
-		width: DeviceWidth - 40,
+        width: DeviceWidth - 40,
 		borderRadius: 5,
-		backgroundColor: 'white'
+        backgroundColor: 'white'
 	},
 
     webView: {},

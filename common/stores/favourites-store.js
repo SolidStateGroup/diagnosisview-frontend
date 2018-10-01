@@ -35,7 +35,7 @@ var controller = {
                 }
                 AsyncStorage.setItem('favourites', JSON.stringify(favourites));
                 if (userIsSubscribed) {
-                    data.put(Project.api + 'user/favourites', {code, type: link.linkType.value, dateAdded: favourite.date})
+                    data.put(Project.api + 'user/favourites', {linkId: link.id, code, type: link.linkType.value, dateAdded: favourite.date})
                         .then(res => {
                             console.log(res);
                             store.model = store.model || [];
@@ -66,7 +66,7 @@ var controller = {
                 }
 
                 if (userIsSubscribed) {
-                    data.delete(Project.api + 'user/favourites', {code, type: link.linkType.value})
+                    data.delete(Project.api + 'user/favourites', {linkId: link.id, code, type: link.linkType.value})
                         .then(res => {
                             console.log(res);
                             index = _.findIndex(store.model, f => f.code === code && f.link.id === link.id);
@@ -106,7 +106,7 @@ var controller = {
             // Convert them to what we would normally store
             var favourites = [];
             _.each(subscribedFavourites, f => {
-                const link = DiagnosisStore.getLink(f.code, f.type);
+                const link = f.linkId ? DiagnosisStore.getLinkById(f.linkId) : DiagnosisStore.getLink(f.code, f.type);
                 if (!link) return;
                 favourites.push({
                     code: f.code,
