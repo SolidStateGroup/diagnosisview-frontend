@@ -46,13 +46,13 @@ module.exports = {
 	roundedAnimationContainer:{
 		backgroundColor: 'white',
 		alignSelf: 'center',
-		top: 0,
+		top: -40,
 		zIndex: 2,
 		position: 'absolute',
 		borderRadius: 40,
 		width: 80,
 		height: 80,
-		justifyContent: 'center'
+        justifyContent: 'center'
 	},
 
 	roundedAnimationInner:{

@@ -81,7 +81,7 @@ const FavouritesPage = class extends Component {
 								<View style={[Styles.whitePanel,Styles.noPadding]}>
 									<ListItem>
 										<ION name="ios-star" style={[Styles.listIconNav, Styles.listIconNavMarginRight, {opacity: 0}]} />
-										<ION name="ios-information-circle-outline" style={[Styles.listIconNav, Styles.iconLow, {opacity: 0}]}/>
+										<View style={{width: 30, height: 30}} />
 										<Column style={{flex: DIAGNOSIS_CELL_FLEX}}>
 											<Text style={[Styles.listHeading,Styles.semiBold]}>Diagnosis</Text>
 										</Column>
