@@ -33,8 +33,6 @@ const DashboardPage = class extends Component {
 			});
 
 		AppActions.getAccount(this.props.retrySubscription);
-		AppActions.getCodes();
-		AppActions.getCodeCategories();
 
 		AppState.addEventListener('change', this.handleAppStateChange);
 	}
@@ -48,8 +46,6 @@ const DashboardPage = class extends Component {
 	handleAppStateChange = (nextState) => {
 		if (this.state.appState.match(/inactive|background/) && nextState === 'active') {
 			AppActions.getAccount(this.props.retrySubscription);
-			AppActions.getCodes();
-			AppActions.getCodeCategories();
 		}
 		this.setState({appState: nextState});
 	}
@@ -130,19 +126,22 @@ const DashboardPage = class extends Component {
 			<AccountProvider onLogin={this.onLogin}>
 				{({ user, isLoading }) => {
 					const paymentData = user && user.paymentData && user.paymentData.length && JSON.parse(_.last(user.paymentData).response);
+					const neverSubscribed = !user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length));
 					return (
 						<Flex>
 							<NetworkBar />
 							<ScrollView>
 								<View style={Styles.hero}></View>
 								<View style={Styles.padded}>
-									{!user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length)) ? (
-										<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-											<Text style={[Styles.textMedium, Styles.paragraph,Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textSmall, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textSmall,Styles.bold, {padding:0, margin:0}]}>You are logged in</Text>) : null}</Text>
-											<Text style={[Styles.textCenter,Styles.textMedium, Styles.paragraph]}>Subscribe for unlimited history/favourites & professional resources on all devices</Text>
-											<Button onPress={this.subscribe}>Subscribe now</Button>
-										</View>
-									) : null}
+									<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
+										<Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {},Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.bold, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}</Text>) : null}</Text>
+										{neverSubscribed ? (
+											<View>
+												<Text style={[Styles.textCenter,Styles.textMedium, Styles.paragraph]}>Subscribe for unlimited history/favourites & professional resources on all devices</Text>
+												<Button onPress={this.subscribe}>Subscribe now</Button>
+											</View>
+										) : null}
+									</View>
 									{user && user.expiryDate && !user.autoRenewing ? (() => {
 										const expiryDate = moment(user.expiryDate);
 										if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment())) {
