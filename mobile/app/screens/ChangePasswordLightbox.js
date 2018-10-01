@@ -7,7 +7,7 @@ const Welcome = class extends Component {
 	state = {}
 
 	invalid = () => {
-		const {oldPassword, password, repeatPassword} = this.state;
+		const { oldPassword, password, repeatPassword } = this.state;
 		if (!oldPassword || !password || !repeatPassword) {
 			return true;
 		}
@@ -16,22 +16,22 @@ const Welcome = class extends Component {
 	}
 
 	updatePassword = () => {
-		const {oldPassword, password, repeatPassword} = this.state;
+		const { oldPassword, password, repeatPassword } = this.state;
 
 		if (password.length < 7) {
-			this.setState({error: 'Password must be at least 7 characters', password: '', repeatPassword: ''});
+			this.setState({ error: 'Password must be at least 7 characters', password: '', repeatPassword: '' });
 			this.passwordInput.focus();
 			return;
 
 		}
 
 		if (password !== repeatPassword) {
-			this.setState({error: 'Passwords do not match', password: '', repeatPassword: ''});
+			this.setState({ error: 'Passwords do not match', password: '', repeatPassword: '' });
 			this.passwordInput.focus();
 			return;
 		}
 
-		data.put(Project.api + 'user/', {username: AccountStore.getUser().username, oldPassword, password})
+		data.put(Project.api + 'user/', { username: AccountStore.getUser().username, oldPassword, password })
 			.then(res => {
 				AppActions.setToken(res.token);
 				this.animation.play();
@@ -47,20 +47,21 @@ const Welcome = class extends Component {
 
 	render() {
 		return (
-			<View style={Styles.lightboxOuter}>
-				<View style={Styles.roundedAnimationContainer}>
-					<View style={Styles.roundedAnimationInner}>
-						<Animation
-							ref={animation => {
-								this.animation = animation;
-							}}
-							loop={false}
-							style={{width: 70, height: 70}} source={require('../animations/success.json')}/>
-					</View>
-
-				</View>
-				<View style={Styles.lightbox}>
-					<View style={[Styles.horizontallyPadded, { alignSelf: 'stretch' }]}>
+			<View style={[Styles.lightboxOuter, {marginTop: 40}]}>
+				<ViewOverflow style={[Styles.lightbox]}>
+					<ViewOverflow style={{alignSelf: 'center', width: 80, height: 80}}>
+						<View style={Styles.roundedAnimationContainer}>
+							<View style={Styles.roundedAnimationInner}>
+								<Animation
+									ref={animation => {
+										this.animation = animation;
+									}}
+									loop={false}
+									style={{ width: 70, height: 70 }} source={require('../animations/success.json')} />
+							</View>
+						</View>
+					</ViewOverflow>
+					<View style={[Styles.padded, { marginTop: -40 }]}>
 						<View style={Styles.stackedForm}>
 							<TextInput
 								onChangeText={(oldPassword) => this.setState({ oldPassword })}
@@ -88,24 +89,23 @@ const Welcome = class extends Component {
 								ref={c => this.repeatPasswordInput = c}
 							/>
 						</View>
-					</View>
+						{this.state.error ?
+							<Text style={[Styles.textCenter, { color: pallette.brandDanger }]}>{this.state.error ? this.state.error : ''}</Text> :
+							null
+						}
 
-					{this.state.error ?
-						<Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{this.state.error ? this.state.error : ''}</Text> :
-						null
-					}
-
-					<FormGroup>
-						<Row style={{alignItems: 'stretch', justifyContent: 'space-around'}}>
-							<Button style={{ width: 100 }} onPress={() => this.props.navigator.dismissLightBox()}>
+						<Row style={{ marginTop: 10, alignSelf: 'center' }}>
+							<Button style={[Styles.buttonCancel, Styles.buttonLeftModal]}
+								onPress={() => this.props.navigator.dismissLightBox()}>
 								Cancel
 							</Button>
-							<Button style={{ width: 100 }} disabled={this.invalid()} onPress={this.updatePassword}>
-								OK
+								<Button style={[Styles.buttonRightModal]}
+									disabled={this.invalid()} onPress={this.updatePassword}>
+									OK
 							</Button>
 						</Row>
-					</FormGroup>
-				</View>
+					</View>
+				</ViewOverflow>
 			</View>
 		);
 	}

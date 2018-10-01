@@ -93,13 +93,13 @@ const SearchPage = class extends Component {
 													autoCorrect={false}/>
 							</View>
 							{this.state.search.length >= 3 ? (
-								<Row style={{margin:10}}>
-									<Text style={Styles.textSmall}>Select a diagnosis to read more.</Text>
-								</Row>
+								<Flex style={{margin:10}}>
+									<Text>Select a diagnosis to read more.</Text>
+								</Flex>
 							) : (
-								<Row style={{margin:10}}>
-									<Text style={Styles.textSmall}>Or</Text>
-								</Row>
+								<Flex style={{margin:10}}>
+									<Text style={[Styles.textCenter]}>OR</Text>
+								</Flex>
 							)}
 						</View>
 

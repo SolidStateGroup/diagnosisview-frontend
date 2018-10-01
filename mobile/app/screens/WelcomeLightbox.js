@@ -10,7 +10,7 @@ const Welcome = class extends Component {
 			<View style={Styles.lightboxOuter}>
 				<View style={Styles.lightbox}>
 					<ScrollView>
-						<View style={[Styles.horizontallyPadded, { alignSelf: 'center', alignItems:'flex-start'}]}>
+						<View style={[Styles.padded, { alignSelf: 'center', alignItems:'flex-start'}]}>
 							<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')}/>
 							<Text style={[Styles.paragraph, Styles.textMedium]}>DiagnosisView aims to give healthcare students and practitioners immediate access to selected reliable information on 1,000+ common diagnoses.</Text>
 							<Text style={[Styles.paragraph, Styles.textMedium]}>3 simple steps to get started:</Text>
