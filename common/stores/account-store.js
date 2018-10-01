@@ -201,7 +201,8 @@ var controller = {
             if (!store.model) return;
 
             store.loading();
-            data.get(Project.api + 'account')
+            DiagnosisStore.refresh()
+                .then(() => data.get(Project.api + 'account'))
                 .then(res => {
                     if (res.deleted) {
                         return controller.logout();

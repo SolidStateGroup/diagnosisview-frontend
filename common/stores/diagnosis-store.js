@@ -5,7 +5,7 @@ import AccountStore from './account-store';
 var controller = {
         getCodes: function () {
             store.loading();
-            data.get(Project.api + 'code')
+            return data.get(Project.api + 'code')
                 .then(res => {
                     store.model = res;
                     AsyncStorage.setItem('codes', JSON.stringify(res));
@@ -15,7 +15,7 @@ var controller = {
         },
         getCategories: function () {
             store.loading();
-            data.get(Project.api + 'category')
+            return data.get(Project.api + 'category')
                 .then(res => {
                     store.categories = res;
                     AsyncStorage.setItem('codeCategories', JSON.stringify(res));
@@ -96,7 +96,15 @@ var controller = {
 
             const diagnosis = _.find(store.model, {code});
             return diagnosis ? _.find(diagnosis.links, l => l.linkType.value === type) : null;
-        }
+        },
+        getLinkById: function (id) {
+            if (!store.model) return null;
+
+            return _.find(store.model, {id});
+        },
+        refresh: function () {
+            return Promise.all([controller.getCodes(), controller.getCategories()]);
+        },
     });
 
 store.dispatcherIndex = Dispatcher.register(store, function (payload) {
