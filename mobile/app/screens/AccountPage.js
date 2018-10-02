@@ -247,7 +247,7 @@ const AccountPage = class extends Component {
 		</View>
 	)
 
-	renderRegisterForm = () => (
+	renderRegisterForm = (error) => (
 		<View>
 			<View style={Styles.stackedForm}>
 				<TextInput
@@ -277,15 +277,23 @@ const AccountPage = class extends Component {
 			<View style={[Styles.actionsContainer, Styles.stacked]}>
 				<Button onPress={this.register} disabled={this.invalid()}>Register</Button>
 			</View>
+			{this.state.error ?
+				<Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{this.state.error}</Text> :
+				error ? <Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{error.message === 'No message available' ? 'Sorry something went wrong' : error.message}</Text> : null
+			}
 		</View>
 	);
 
-	renderLoginForm = () => (
+	renderLoginForm = (error) => (
 		<View>
 			{this.renderLoginFields(false)}
 			<View style={[Styles.actionsContainer, Styles.stacked]}>
 				<Button onPress={this.login} disabled={this.loginInvalid()}>Login</Button>
 			</View>
+			{this.state.error ?
+				<Text style={[Styles.paragraph, Styles.textCenter, {color: pallette.brandDanger}]}>{this.state.error}</Text> :
+				error ? <Text style={[Styles.paragraph, Styles.textCenter, {color: pallette.brandDanger}]}>{error.message === 'No message available' ? 'Sorry something went wrong' : error.message}</Text> : null
+			}
 			<Text style={[Styles.textCenter, Styles.anchor]} onPress={this.forgotPassword}>Forgot password?</Text>
 		</View>
 	)
@@ -364,11 +372,7 @@ const AccountPage = class extends Component {
 												Login
 											</Button>
 										</Row>
-										{!this.state.login ? this.renderRegisterForm() : this.renderLoginForm()}
-										{this.state.error ?
-											<Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{this.state.error}</Text> :
-											error ? <Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{error.message === 'No message available' ? 'Sorry something went wrong' : error.message}</Text> : null
-										}
+										{!this.state.login ? this.renderRegisterForm(error) : this.renderLoginForm(error)}
 									</FormGroup>
 
 								) : (
