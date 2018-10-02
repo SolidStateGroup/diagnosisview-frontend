@@ -20,7 +20,11 @@ const ForgotPasswordLightbox = class extends Component {
             .then(() => {
                 this.setState({ isLoading: false, step: 2 });
             })
-            .catch(e => {
+            .catch(e => e.json())
+            .then(error => {
+                this.setState({ isLoading: false, error: error.message === 'No message available' ? 'Sorry there was a problem, check you entered the correct email address or try again later' : error.message });
+            })
+            .catch(() => {
                 this.setState({ isLoading: false, error: 'Sorry there was a problem, check you entered the correct email address or try again later' });
             })
     }
@@ -50,13 +54,17 @@ const ForgotPasswordLightbox = class extends Component {
         this.setState({ isLoading: true, error: '' });
         data.post(Project.api + 'user/reset-password', {
             newPassword: password,
-            resetCode: this.state.code,
+            resetCode: code,
             username: this.state.email
         })
             .then(() => {
                 this.setState({ isLoading: false, step: 3 });
             })
-            .catch(e => {
+            .catch(e => e.json())
+            .then(error => {
+                this.setState({ isLoading: false, step: 2, error: error.message === 'No message available' ? 'Sorry there was a problem resetting your password, try again later' : error.message });
+            })
+            .catch(() => {
                 this.setState({ isLoading: false, step: 2, error: 'Sorry there was a problem resetting your password, try again later' });
             });
     }
@@ -135,7 +143,7 @@ const ForgotPasswordLightbox = class extends Component {
                                                 </View>
                                                 <Row style={{ justifyContent: 'center' }}>
                                                     <Button style={{ width: 150 }}
-                                                        disabled={!this.state.password || !this.state.repeatPassword}
+                                                        disabled={!this.state.code || !this.state.password || !this.state.repeatPassword}
                                                         onPress={this.changePassword}>
                                                         OK
                                                     </Button>

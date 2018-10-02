@@ -97,10 +97,11 @@ var controller = {
             const diagnosis = _.find(store.model, {code});
             return diagnosis ? _.find(diagnosis.links, l => l.linkType.value === type) : null;
         },
-        getLinkById: function (id) {
+        getLinkById: function (code, id) {
             if (!store.model) return null;
 
-            return _.find(store.model, {id});
+            const diagnosis = _.find(store.model, {code});
+            return diagnosis ? _.find(diagnosis.links, {id}) : null;
         },
         refresh: function () {
             return Promise.all([controller.getCodes(), controller.getCategories()]);
