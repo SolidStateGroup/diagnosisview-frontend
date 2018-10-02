@@ -9,7 +9,7 @@ const About = class extends Component {
 	sendFeedback = () => {
 		this.setState({ sending: true, error: '' });
 		data.post(Project.api + 'user/feedback', {
-			body: this.state.feedback
+			body: this.state.feedback.replace(/\n/g, '<br />')
 		}).then(() => {
 			setTimeout(() => {
 				this.props.navigator.dismissLightBox();
