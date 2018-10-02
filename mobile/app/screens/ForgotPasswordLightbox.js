@@ -20,13 +20,13 @@ const ForgotPasswordLightbox = class extends Component {
             .then(() => {
                 this.setState({ isLoading: false, step: 2 });
             })
-            .catch(e => e.json())
-            .then(error => {
-                this.setState({ isLoading: false, error: error.message === 'No message available' ? 'Sorry there was a problem, check you entered the correct email address or try again later' : error.message });
-            })
-            .catch(() => {
-                this.setState({ isLoading: false, error: 'Sorry there was a problem, check you entered the correct email address or try again later' });
-            })
+            .catch(e => {
+                e.json().then(error => {
+                    this.setState({ isLoading: false, step: 2, error: error.message });
+                }).catch(() => {
+                    this.setState({ isLoading: false, step: 2, error: 'Sorry there was a problem, check you entered the correct email address or try again later' });
+                })
+            });
     }
 
     changePassword = () => {
@@ -60,12 +60,12 @@ const ForgotPasswordLightbox = class extends Component {
             .then(() => {
                 this.setState({ isLoading: false, step: 3 });
             })
-            .catch(e => e.json())
-            .then(error => {
-                this.setState({ isLoading: false, step: 2, error: error.message === 'No message available' ? 'Sorry there was a problem resetting your password, try again later' : error.message });
-            })
-            .catch(() => {
-                this.setState({ isLoading: false, step: 2, error: 'Sorry there was a problem resetting your password, try again later' });
+            .catch(e => {
+                e.json().then(error => {
+                    this.setState({ isLoading: false, step: 2, error: error.message });
+                }).catch(() => {
+                    this.setState({ isLoading: false, step: 2, error: 'Sorry there was a problem resetting your password, try again later' });
+                })
             });
     }
 
