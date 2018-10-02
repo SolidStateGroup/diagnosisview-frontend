@@ -32,7 +32,7 @@ const DashboardPage = class extends Component {
 				console.log('available purchases', purchases);
 			});
 
-		AppActions.getAccount(this.props.retrySubscription);
+		this.refreshApp();
 
 		AppState.addEventListener('change', this.handleAppStateChange);
 	}
@@ -43,9 +43,18 @@ const DashboardPage = class extends Component {
 		AppState.removeEventListener('change', this.handleAppStateChange);
 	}
 
+	refreshApp = () => {
+		if (AccountStore.getUser()) {
+			AppActions.getAccount(this.props.retrySubscription);
+		} else {
+			AppActions.getCodes();
+			AppActions.getCodeCategories();
+		}
+	}
+
 	handleAppStateChange = (nextState) => {
 		if (this.state.appState.match(/inactive|background/) && nextState === 'active') {
-			AppActions.getAccount(this.props.retrySubscription);
+			this.refreshApp();
 		}
 		this.setState({appState: nextState});
 	}
