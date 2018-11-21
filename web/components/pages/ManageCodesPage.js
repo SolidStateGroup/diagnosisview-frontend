@@ -93,14 +93,14 @@ const ExpandRow = class extends React.Component {
                         <Input
                             readOnly
                             className="label-margin-right"
-                            value={moment(created).local().format('DD/MM/YYYY HH:mm')} />
+                            value={created ? moment(created).local().format('DD/MM/YYYY HH:mm') : '--/--/---- --:--'} />
                     </Row>
                     <Row>
                         <label className="label-margin-right">Last Updated</label>
                         <Input
                             className="label-margin-right"
                             readOnly
-                            value={moment(lastUpdate).local().format('DD/MM/YYYY HH:mm')} />
+                            value={lastUpdate ? moment(lastUpdate).local().format('DD/MM/YYYY HH:mm') : '--/--/---- --:--'} />
                     </Row>
                 </Row>
                 <Row>
@@ -165,11 +165,11 @@ const ExpandRow = class extends React.Component {
                     }, {
                         accessor: 'created',
                         Header: 'Created',
-                        Cell: row => this.renderReadOnly(moment(row.value).local().format('DD/MM/YYYY HH:mm'))
+                        Cell: row => this.renderReadOnly(row.value ? moment(row.value).local().format('DD/MM/YYYY HH:mm') : '--/--/---- --:--')
                     }, {
                         accessor: 'lastUpdate',
                         Header: 'Last Updated',
-                        Cell: row => this.renderReadOnly(moment(row.value).local().format('DD/MM/YYYY HH:mm'))
+                        Cell: row => this.renderReadOnly(row.value ? moment(row.value).local().format('DD/MM/YYYY HH:mm') : '--/--/---- --:--')
                     }, {
                         accessor: 'difficultyLevel',
                         Header: 'Difficulty Level',

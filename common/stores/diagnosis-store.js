@@ -82,7 +82,7 @@ var controller = {
         },
         filterByCategory: function (category) {
             return _.filter(store.model, diagnosis => {
-                return _.find(diagnosis.categories, c => c.number === category.number);
+                return !diagnosis.deleted && _.find(diagnosis.categories, c => c.number === category.number);
             })
         },
         getName: function (code) {
