@@ -40,7 +40,7 @@ const ExpandRow = class extends React.Component {
                 <label className="label-margin-right">Created</label>
                 <Input
                     readOnly
-                    value={moment(dateCreated).format('DD/MM/YYYY HH:mm')} />
+                    value={dateCreated ? moment(dateCreated).format('DD/MM/YYYY HH:mm') : '--/--/---- --:--'} />
                 <Row>
                     <label className="label-margin-right">Active Subscription</label>
                     <Switch
