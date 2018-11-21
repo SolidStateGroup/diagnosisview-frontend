@@ -35,10 +35,8 @@ const heartbeat = () => {
 
 module.exports = store;
 
-
-NetInfo.isConnected.fetch().then(handleIsConnected);
 NetInfo.isConnected.addEventListener(
-	'change',
+	'connectionChange',
 	handleIsConnected
 );
 
