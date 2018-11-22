@@ -29,13 +29,10 @@ var controller = {
                     link,
                     date: Date.now()
                 };
-                if (favourite.link.difficultyLevel === 'GREEN' || favourite.link.freeLink) { // Only store simple & free links to device
-                    favourites.push(favourite);
-                    if (favourites.length > 5) { // Only store last 5 on the device
-                        favourites.splice(0, 1);
-                    }
-                    AsyncStorage.setItem('favourites', JSON.stringify(favourites));
-                }
+
+                favourites.push(favourite);
+                AsyncStorage.setItem('favourites', JSON.stringify(favourites));
+
                 if (userIsSubscribed) {
                     data.put(Project.api + 'user/favourites', {linkId: link.id, code, type: link.linkType.value, dateAdded: favourite.date})
                         .then(res => {
@@ -74,9 +71,6 @@ var controller = {
                             index = _.findIndex(store.model, f => f.code === code && f.link.id === link.id);
                             if (index !== -1) {
                                 store.model.splice(index, 1);
-                            }
-                            if (store.model.length >= 5) {
-                                favourites = _.take(_.reverse(_.sortBy(store.model, 'date')), 5);
                             }
                             AsyncStorage.setItem('favourites', JSON.stringify(favourites));
                             store.saved();
@@ -117,7 +111,7 @@ var controller = {
                     date: f.dateAdded
                 })
             });
-            AsyncStorage.setItem("favourites", JSON.stringify(_.take(_.reverse(_.sortBy(_.filter(favourites, f => f.link.difficultyLevel === 'GREEN' || f.link.freeLink), 'date')), 5)))
+            AsyncStorage.setItem("favourites", JSON.stringify(favourites));
             store.model = favourites;
             store.loaded();
         },
@@ -130,7 +124,9 @@ var controller = {
                     return;
                 }
 
-                store.model = res ? JSON.parse(res) : [];
+                const favourites = res ? JSON.parse(res) : [];
+                store.model = _.take(_.reverse(_.sortBy(_.filter(favourites, f => f.link.difficultyLevel === 'GREEN' || f.link.freeLink), 'date')), 5);
+                AsyncStorage.setItem("favourites", JSON.stringify(store.model));
                 store.loaded();
             })
         }

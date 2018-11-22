@@ -213,6 +213,11 @@ var controller = {
                         controller.scheduleExpiryNotifications(res.expiryDate);
                     }
 
+                    if (store.model.activeSubscription && !res.activeSubscription) {
+                        // Active subscription has expired, removed paid links from favourites
+                        AppActions.setDeviceFavourites();
+                    }
+
                     if (retrySubscription) {
                         res.activeSubscription = true;
                     }
