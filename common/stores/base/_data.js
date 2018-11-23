@@ -14,7 +14,7 @@ module.exports = {
 			return Promise.resolve(response);
 		} else {
 			if (response.status == 401) {
-				AppActions.setUser(null);
+				AppActions.logout();
 			}
 			response.clone().text() // cloned so response body can be used downstream
 				.then((err) => {

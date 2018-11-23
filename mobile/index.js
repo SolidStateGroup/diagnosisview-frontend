@@ -74,7 +74,7 @@ const getFavourites = new Promise(function (resolve) {
     } else {
         AsyncStorage.getItem('favourites', (err, res) => {
             FavouritesStore.model = res ? JSON.parse(res) : [];
-            resolve(res);
+            resolve(FavouritesStore.model);
         });
     }
 })
@@ -85,7 +85,7 @@ const getHistory = new Promise(function (resolve) {
     } else {
         AsyncStorage.getItem('history', (err, res) => {
             HistoryStore.model = res ? JSON.parse(res) : [];
-            resolve(res);
+            resolve(HistoryStore.model);
         });
     }
 })
@@ -96,7 +96,7 @@ const getCodes = new Promise(function (resolve) {
     } else {
         AsyncStorage.getItem('codes', (err, res) => {
             DiagnosisStore.model = res ? JSON.parse(res) : [];
-            resolve(res);
+            resolve(DiagnosisStore.model);
         });
     }
 });
@@ -107,7 +107,7 @@ const getCodeCategories = new Promise(function (resolve) {
     } else {
         AsyncStorage.getItem('codeCategories', (err, res) => {
             DiagnosisStore.categories = res ? JSON.parse(res) : [];
-            resolve(res);
+            resolve(DiagnosisStore.categories);
         });
     }
 });
