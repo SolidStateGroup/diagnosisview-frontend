@@ -101,7 +101,7 @@ module.exports = class extends React.Component {
     }
 
     create = () => {
-        openModal(<h2>Create User</h2>, <CreateUserModal />)
+        openModal(<p>Create User</p>, <CreateUserModal />)
     }
 
     delete = (user) => {

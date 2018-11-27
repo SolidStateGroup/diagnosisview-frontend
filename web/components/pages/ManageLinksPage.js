@@ -1,6 +1,6 @@
 import React from "react";
 import ReactTable from "react-table";
-import CreateUserModal from '../modals/CreateUser';
+import CreateLinkModal from '../modals/CreateLink';
 import ChangePasswordModal from '../modals/ChangePassword';
 import ActivateSubscriptionModal from '../modals/ActivateSubscription';
 
@@ -88,28 +88,8 @@ module.exports = class extends React.Component {
         AppActions.getUsers();
     }
 
-    save = () => {
-        openConfirm(<h2>Confirm</h2>, <h3>Are you sure you want to save your changes?</h3>, () => AppActions.updateUsers(this.state.changes));
-    }
-
-    onSave = () => {
-        this.setState({changes: null});
-    }
-
-    reset = () => {
-        openConfirm(<h2>Confirm</h2>, <h3>Are you sure you want to lose all of your changes?</h3>, () => this.setState({changes: null}));
-    }
-
-    create = () => {
-        openModal(<h2>Create User</h2>, <CreateUserModal />)
-    }
-
-    delete = (user) => {
-        openConfirm(<h2>Confirm</h2>, <h3>Are you sure you want to delete <span style={{fontWeight: 'bold'}}>{user.username}</span>? (User is only soft deleted)</h3>, () => AppActions.deleteUser(user));
-    }
-
-    changePassword = (user) => {
-        openModal(<h2>Change Password</h2>, <ChangePasswordModal user={user} />)
+    addNew = () => {
+        openModal(<div><p className="mb-0">Add new link</p><p className="text-small text-muted mb-0">Add a new resource link that requires routing through a paid proxy</p><i className="far fa-times-circle modal-close"></i></div>, <CreateLinkModal />)
     }
 
     onExpandRowChange = (uid, newChanges) => {
@@ -191,11 +171,99 @@ module.exports = class extends React.Component {
             <UsersProvider onSave={this.onSave}>
                 {({isLoading, isSaving, users}) => (
                     <Flex className={'content'}>
-                        <Row>
-                            <h1 className="flex-1">URL Transformation</h1>
-                            <button className="btn btn--primary">Add new link</button>
-                        </Row>
-                        <div className="panel">
+                        <div className="flex-row mb-3">
+                            <div className="flex-1 flex-column">
+                                <h1 className="content__title">URL Transformation</h1>
+                            </div>
+                            <div className="flex-column">
+                                <button className="btn btn--primary" onClick={this.addNew}>
+                                    Add new link
+                                </button>
+                            </div>
+                        </div>
+                        <div className="panel mb-5">
+                            <div className="panel__head">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">INSTITUTION</label>
+                                    </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">ORIGINAL URL</label>
+                                    </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">TRANSFORMED URL</label>
+                                    </div>
+                                    <div className="ml-auto ">
+                                        <div className="flex-row invisible">
+                                            <button className="btn btn--icon btn--icon--blue">
+                                                <i className="far fa-edit"></i>
+                                            </button>
+                                            <button className="btn btn--icon btn--icon--red">
+                                                <i className="far fa-trash-alt"> </i>
+                                            </button>
+                                            <i className="fas fa-chevron-right float-right"> </i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="panel__row flex-row">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <select className="input input--outline">
+                                            <option>Institution 1</option>
+                                            <option>Institution 2</option>
+                                            <option>Institution 3</option>
+                                            <option>Institution 4</option>
+                                        </select>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline" value="http://www.testinglink.co.uk/journal/treatment" />
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline" value="http://www.testinglink.co.uk.ezproxy.co.uk/journal/treatment" />
+                                    </div>
+                                </div>
+                                <div className="ml-auto">
+                                    <div className="flex-row">
+                                        <button className="btn btn--icon btn--icon--blue">
+                                            <i className="far fa-edit"></i>
+                                        </button>
+                                        <button className="btn btn--icon btn--icon--red">
+                                            <i className="far fa-trash-alt"> </i>
+                                        </button>
+                                        <i className="fas fa-chevron-right float-right"> </i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="panel__row flex-row">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <select className="input input--outline">
+                                            <option>Institution 1</option>
+                                            <option>Institution 2</option>
+                                            <option>Institution 3</option>
+                                            <option>Institution 4</option>
+                                        </select>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline" value="http://www.testinglink.co.uk/journal/treatment" />
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline" value="http://www.testinglink.co.uk.ezproxy.co.uk/journal/treatment" />
+                                    </div>
+                                </div>
+                                <div className="ml-auto">
+                                    <div className="flex-row">
+                                        <button className="btn btn--icon btn--icon--blue">
+                                            <i className="far fa-edit"></i>
+                                        </button>
+                                        <button className="btn btn--icon btn--icon--red">
+                                            <i className="far fa-trash-alt"> </i>
+                                        </button>
+                                        <i className="fas fa-chevron-right float-right"> </i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </Flex>
                 )}
