@@ -230,23 +230,6 @@ module.exports = class extends React.Component {
                                 </button>
                             </div>
                         </div>
-                        <div className="panel panel--padded mb-5">
-                            <Row>
-                                <Flex>
-                                    <Row>
-                                        <div className="flex-column">
-                                            <input className="input input--outline" placeholder="Search diagnosis code" />
-                                        </div>
-                                        <div className="flex-column">
-                                            <input className="input input--outline" placeholder="Search diagnosis Name" />
-                                        </div>
-                                    </Row>
-                                </Flex>
-                                <div className="flex-column">
-                                    <i className="fa fa-search"> </i>
-                                </div>
-                            </Row>
-                        </div>
 
                         <div className="panel mb-5">
                             <div className="panel__head">
@@ -267,6 +250,27 @@ module.exports = class extends React.Component {
                                             </button>
                                             <i className="fas fa-chevron-right float-right"> </i>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="panel__row flex-row">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <input className="input input--outline" placeholder="Search diagnosis code" />
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline" placeholder="Search diagnosis Name" />
+                                    </div>
+                                </div>
+                                <div className="ml-auto">
+                                    <div className="flex-row invisible">
+                                        <button className="btn btn--icon btn--icon--blue">
+                                            <i className="far fa-edit"></i>
+                                        </button>
+                                        <button className="btn btn--icon btn--icon--red">
+                                            <i className="far fa-trash-alt"> </i>
+                                        </button>
+                                        <i className="fas fa-chevron-right float-right"> </i>
                                     </div>
                                 </div>
                             </div>
