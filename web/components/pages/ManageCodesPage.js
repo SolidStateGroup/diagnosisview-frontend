@@ -219,7 +219,101 @@ module.exports = class extends React.Component {
         return (
             <CodesProvider>
                 {({ isLoading, codes }) => (
-                    <Flex>
+                    <Flex className={'content'}>
+                        <div className="flex-row mb-3">
+                            <div className="flex-1 flex-column">
+                                <h1 className="content__title">Diagnosis</h1>
+                            </div>
+                            <div className="flex-column">
+                                <button className="btn btn--primary">
+                                    Add new diagnosis
+                                </button>
+                            </div>
+                        </div>
+                        <div className="panel panel--padded mb-5">
+                            <Row>
+                                <Flex>
+                                    <Row>
+                                        <div className="flex-column">
+                                            <input className="input input--outline" placeholder="Search diagnosis code" />
+                                        </div>
+                                        <div className="flex-column">
+                                            <input className="input input--outline" placeholder="Search diagnosis Name" />
+                                        </div>
+                                    </Row>
+                                </Flex>
+                                <div className="flex-column">
+                                    <i className="fa fa-search"> </i>
+                                </div>
+                            </Row>
+                        </div>
+
+                        <div className="panel mb-5">
+                            <div className="panel__head">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">Diagnosis Code</label>
+                                    </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">Diagnosis Name</label>
+                                    </div>
+                                    <div className="ml-auto ">
+                                        <div className="flex-row invisible">
+                                            <button className="btn btn--icon btn--icon--blue">
+                                                <i className="far fa-edit"></i>
+                                            </button>
+                                            <button className="btn btn--icon btn--icon--red">
+                                                <i className="far fa-trash-alt"> </i>
+                                            </button>
+                                            <i className="fas fa-chevron-right float-right"> </i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="panel__row flex-row">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <p className="panel__row__text mb-0">anal-cancer</p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="panel__row__text mb-0">Anal Cancer</p>
+                                    </div>
+                                </div>
+                                <div className="ml-auto">
+                                    <div className="flex-row">
+                                        <button className="btn btn--icon btn--icon--blue">
+                                            <i className="far fa-edit"></i>
+                                        </button>
+                                        <button className="btn btn--icon btn--icon--red">
+                                            <i className="far fa-trash-alt"> </i>
+                                        </button>
+                                        <i className="fas fa-chevron-right float-right"> </i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="panel__row flex-row">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <p className="panel__row__text mb-0">anal-cancer</p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="panel__row__text mb-0">Anal Cancer</p>
+                                    </div>
+                                </div>
+                                <div className="ml-auto">
+                                    <div className="flex-row">
+                                        <button className="btn btn--icon btn--icon--blue">
+                                            <i className="far fa-edit"></i>
+                                        </button>
+                                        <button className="btn btn--icon btn--icon--red">
+                                            <i className="far fa-trash-alt"> </i>
+                                        </button>
+                                        <i className="fas fa-chevron-right float-right"> </i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <ReactTable data={codes} columns={[{
                             accessor: 'code',
                             Header: 'Code',

@@ -39,3 +39,35 @@
 .link-style{
     text-decoration: underline;
 }
+
+.invisible{
+    opacity: 0;
+    pointer-events: none;
+}
+
+/*padding & margins*/
+.mb10:not(:last-of-type), .mb10:first-of-type { margin-bottom: 10px; }
+.mb20:not(:last-of-type), .mb20:first-of-type { margin-bottom: 20px; }
+.mb35:not(:last-of-type), .mb35:first-of-type { margin-bottom: 35px; }
+.mb40:not(:last-of-type), .mb40:first-of-type { margin-bottom: 40px; }
+.mb50:not(:last-of-type), .mb50:first-of-type { margin-bottom: 50px; }
+.mb75:not(:last-of-type), .mb75:first-of-type { margin-bottom: 75px; }
+.m0 { margin: 0 }
+.mt10 { margin-top: 10px; }
+.mt20 { margin-top: 20px; }
+.mt30 { margin-top: 30px; }
+.mt40 { margin-top: 40px; }
+.mt50 { margin-top: 50px; }
+.mt75 { margin-top: 75px; }
+.mr0 { margin-right: 0px; }
+.mr10 { margin-right: 10px; }
+.mr20 { margin-right: 20px; }
+.pl0 { padding-left:0; }
+.pr0 { padding-right: 0; }
+.pad10 { padding: 10px; }
+.pad20 { padding: 20px; }
+.pad30 { padding: 30px; }
+
+.fill-white {
+    fill: white;
+}
