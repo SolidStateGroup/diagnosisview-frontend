@@ -37,5 +37,20 @@ button{
                 }
             }
         }
+
+        &--hollow{
+            background:none;
+            border:1px solid $brand-primary;
+            box-shadow:none;
+            color:$brand-primary;
+            border-radius:4px;
+            font-size:$font-smaller;
+            padding:10px 20px;
+
+            &:hover{
+                background:none;
+                color:$brand-primary;
+            }
+        }
     }
 }
