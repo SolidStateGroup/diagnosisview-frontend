@@ -48,6 +48,10 @@ const TheComponent = class extends Component {
             to={
               `/admin/links`
             }><span className="d-flex flex-1">URL Transformation</span> <i className="fas fa-chevron-right float-right"> </i></Link>
+            <a
+            id="logout-link"
+            className="aside__link d-flex align-items-center"
+            onClick={this.logout}><span className="d-flex flex-1">Logout</span> <i className="fas fa-chevron-right float-right"> </i></a>
 
         </Flex>
       </Flex>
