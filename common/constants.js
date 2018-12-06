@@ -18,7 +18,13 @@ var Constants = {
         ALL_FAVES_REMOVED_EXTERNALLY: false,
         EXPIRY: false, // Doesn't work unless subscribed is set to true
         SHOW_WELCOME: false
-    }
+    },
+
+    institutions: [
+        { label: 'University of Edinburgh', value: 'UNIVERSITY_OF_EDINBURGH' },
+        { label: 'Other', value: 'OTHER' },
+        { label: 'None', value: 'NONE' }
+    ],
 };
 
 module.exports = Constants;
