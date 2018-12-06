@@ -145,7 +145,7 @@ module.exports = class extends React.Component {
                             )) : (
                                 <div className="panel__row flex-row">
                                     <div className="flex-1 flex-row">
-                                        <label className="">No link transforms have been created</label>
+                                        {isLoading ? <Loader /> : <label className="">No link transforms have been created</label>}
                                     </div>
                                 </div>
                             )}
