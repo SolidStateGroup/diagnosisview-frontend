@@ -136,5 +136,29 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
     Dispatcher.handleViewAction({
       actionType: Actions.GET_CODE_CATEGORIES
     });
-  }
+  },
+  getLinkTransforms: function () { //refresh the entire app
+    Dispatcher.handleViewAction({
+      actionType: Actions.GET_LINK_TRANSFORMS
+    });
+  },
+  addLinkTransform: function (type, criteria, link, transformation) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.ADD_LINK_TRANSFORM,
+      type, criteria, link, transformation,
+    });
+  },
+  removeLinkTransform: function (id) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.REMOVE_LINK_TRANSFORM,
+      id,
+    });
+  },
+  updateLinkTransform: function (id, transform) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.UPDATE_LINK_TRANSFORM,
+      id,
+      transform,
+    });
+  },
 });
