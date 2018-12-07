@@ -15,6 +15,9 @@ window.DiagnosisStore = require('../../common/stores/diagnosis-store');
 window.CodesProvider = require('../../common/providers/CodesProvider');
 window.UsersProvider = require('../../common/providers/UsersProvider');
 window.UsersStore = require('../../common/stores/users-store');
+window.LinkTransformProvider = require('../../common/providers/LinkTransformProvider');
+window.LinkTransformStore = require('../../common/stores/link-transform-store');
+
 window.RenderInfo = require('../../common/providers/RenderInfo');
 
 //Useful components
