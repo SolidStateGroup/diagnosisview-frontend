@@ -6,6 +6,7 @@ import HomePage from './components/pages/HomePage';
 import ManageCodesPage from './components/pages/ManageCodesPage';
 import ManageUsersPage from './components/pages/ManageUsersPage';
 import ManageLinksPage from './components/pages/ManageLinksPage';
+import DiagnosisDetailPage from './components/pages/DiagnosisDetailPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 
 
@@ -21,6 +22,7 @@ export default (
         <Route path="admin/codes" component={ManageCodesPage}/>
         <Route path="admin/users" component={ManageUsersPage}/>
         <Route path="admin/links" component={ManageLinksPage}/>
+        <Route path="admin/diagnosis" component={DiagnosisDetailPage}/>
         <Route path="login" component={HomePage}/>
         <Route path="signup" component={HomePage}/>
         <Route path="404" component={NotFoundPage}/>
