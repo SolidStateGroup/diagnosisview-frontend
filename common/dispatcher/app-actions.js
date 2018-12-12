@@ -161,4 +161,28 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       transform,
     });
   },
+  getLinkLogos: function () { //refresh the entire app
+    Dispatcher.handleViewAction({
+      actionType: Actions.GET_LINK_LOGOS
+    });
+  },
+  addLinkLogo: function (startsWith, image) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.ADD_LINK_LOGO,
+      startsWith, image,
+    });
+  },
+  removeLinkLogo: function (id) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.REMOVE_LINK_LOGO,
+      id,
+    });
+  },
+  updateLinkLogo: function (id, linkLogo) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.UPDATE_LINK_LOGO,
+      id,
+      linkLogo,
+    });
+  },
 });
