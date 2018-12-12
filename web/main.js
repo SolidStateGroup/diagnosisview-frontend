@@ -4,7 +4,7 @@ import './project/api';
 import './project/project-components';
 import './styles/styles.scss';
 import ToastMessages from './project/toast';
-import {Router, browserHistory} from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 import routes from './routes';
 window.Project = require('../common/project');
 window.Utils = require('../common/utils/utils');
@@ -23,13 +23,9 @@ AsyncStorage.getItem("user", (err,res)=>{
         AppActions.setUser(JSON.parse(res));
     }
 
-    setTimeout(()=>{
-        if (document.location.pathname != '/' && !res) {
-            browserHistory.push('/?redirect=' + encodeURIComponent(document.location.pathname));
-        }
-
+    setTimeout(() => {
         ReactDOM.render(
-            <Router history={browserHistory} routes={routes}/>,
+            <Router>{routes}</Router>,
             rootElement
         );
     },1)

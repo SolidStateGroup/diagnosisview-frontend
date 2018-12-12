@@ -9,9 +9,7 @@ window.moment = require('moment/min/moment.min');
 //Optimise lodash
 window._ = require('lodash');
 
-import Link from 'react-router';
-
-global.Link = Link;
+window.Link = require('react-router-dom').Link;
 
 window.React = require('react');
 window.ReactDOM = require('react-dom');
@@ -34,8 +32,6 @@ window.RequiredObject = React.PropTypes.object.isRequired;
 window.RequiredString = React.PropTypes.string.isRequired;
 window.RequiredNode = React.PropTypes.node.isRequired;
 window.RequiredElement = React.PropTypes.node.isRequired;
-
-window.Link = require('react-router').Link;
 
 //Analytics
 if (Project.ga) {

@@ -20,29 +20,32 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        if (AccountStore.getUser() && this.props.location.pathname == '/' || this.props.location.pathname == '/login' || this.props.location.pathname == '/demo' || this.props.location.pathname == '/signup') {
-            this.context.router.replace('/admin');
+        const { pathname } = this.context.router.history.location;
+        if (AccountStore.getUser() && pathname == '/' || pathname == '/login' || pathname == '/demo' || pathname == '/signup') {
+            this.context.router.history.replace('/admin');
         }
     }
 
     onLogin = () => {
         const user = AccountStore.getUser();
-        const { redirect } = this.props.location.query;
+        const { location } = this.context.router.history;
+        const redirect = location.query && location.query.redirect;
 
         //Redirect on login
-        if (this.props.location.pathname == '/' || this.props.location.pathname == '/login' || this.props.location.pathname == '/demo' || this.props.location.pathname == '/signup') {
-            this.context.router.replace(redirect ? redirect : '/admin');
+        if (location.pathname == '/' || location.pathname == '/login' || location.pathname == '/demo' || location.pathname == '/signup') {
+            this.context.router.history.replace(redirect ? redirect : '/admin');
         }
     };
 
     onLogout = () => {
         AsyncStorage.removeItem("user");
-        this.context.router.replace('/');
+        this.context.router.history.replace('/');
     };
 
     render() {
-        const redirect = this.props.location.query.redirect ? `?redirect=${this.props.location.query.redirect}` : "";
-        const pageHasAside = this.props.location.pathname.indexOf('admin') !== -1;
+        const { location } = this.context.router.history;
+        const redirect = location.query && location.query.redirect ? `?redirect=${location.query.redirect}` : "";
+        const pageHasAside = location.pathname.indexOf('admin') !== -1;
         return (
             <div>
                 <AccountProvider onNoUser={this.onNoUser} onLogout={this.onLogout} onLogin={this.onLogin}>
@@ -66,8 +69,3 @@ export default class App extends Component {
         );
     }
 }
-
-App.propTypes = {
-    location: RequiredObject,
-    history: RequiredObject,
-};
