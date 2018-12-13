@@ -6,6 +6,8 @@ const TheComponent = class extends Component {
     state = {
         name: '',
         link: '',
+        freeLink: false,
+        transformationsOnly: false,
     }
 
     close = (id) => {
@@ -18,7 +20,7 @@ const TheComponent = class extends Component {
     }
 
     isValid = () => {
-        const { name, link, difficultyLevel, displayLink, freeLink } = this.state;
+        const { name, link, difficultyLevel, freeLink } = this.state;
         if (!name || !link || !difficultyLevel) return false;
 
         if (!link.match(Utils.urlRegex)) return false;
@@ -27,7 +29,7 @@ const TheComponent = class extends Component {
     }
 
     render() {
-        const { name, link, difficultyLevel, displayLink, freeLink } = this.state;
+        const { name, link, difficultyLevel, freeLink, transformationsOnly } = this.state;
         return (
             <div className="modal-form-content">
                 <fieldset className="fieldset fieldset--border-bottom  pt-1 pb-4">
@@ -63,8 +65,10 @@ const TheComponent = class extends Component {
                     </div>
                 </fieldset>
                 <fieldset className="fieldset pt-1 pb-4">
-                    <label className="">Free link?</label>
+                    <label className="">Displayed to free users?</label>
                     <p className="text-small"><Switch checked={freeLink} onChange={checked => this.setState({freeLink: checked})}/></p>
+                    <label className="">URL transformations only?</label>
+                    <p className="text-small"><Switch checked={transformationsOnly} onChange={checked => this.setState({transformationsOnly: checked})}/></p>
                 </fieldset>
                 <div className="modal-footer text-center justify-content-center">
                     <button disabled={!this.isValid()} className="btn btn--primary" onClick={this.add}>

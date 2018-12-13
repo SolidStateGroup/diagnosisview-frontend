@@ -411,6 +411,9 @@ module.exports = hot(module)(class extends React.Component {
                                         <p className="text-small">DISPLAY TO FREE USERS?</p>
                                     </div>
                                     <div className="col p-0">
+                                        <p className="text-small">URL TRANSFORMATIONS ONLY?</p>
+                                    </div>
+                                    <div className="col p-0">
                                         <p className="text-small">URL</p>
                                     </div>
                                     <div className="ml-auto ">
@@ -424,7 +427,7 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            {_.map(links, ({id, name, created, lastUpdate, difficultyLevel, freeLink, link}) => (
+                            {_.map(links, ({id, name, created, lastUpdate, difficultyLevel, freeLink, link, transformationsOnly}) => (
                                 <div key={id} className="panel__row flex-row">
                                     <div className="col p-0">
                                         <p className="text-small">{name}</p>
@@ -455,6 +458,9 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                     <div className="col p-0">
                                         <p className="text-small"><Switch checked={freeLink} onChange={checked => this.toggleFreeLink(id, checked)}/></p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="text-small"><Switch checked={transformationsOnly} /></p>
                                     </div>
                                     <div className="col p-0">
                                         <a className="text-small" style={{wordBreak: 'break-all'}} href={link}>{link}</a>
