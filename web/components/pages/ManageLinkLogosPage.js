@@ -31,7 +31,7 @@ module.exports = hot(module)(class extends React.Component {
 
     cancelEdit = (id) => {
         const linkLogos = this.state.linkLogos;
-        $(`#imagePreview${id}`).attr('src', linkLogos[id].imageUrl);
+        $(`#imagePreview${id}`).attr('src', linkLogos[id].imageUrl.indexOf('/api/') !== -1 ? Project.api + linkLogos[id].imageUrl.substr(5) : linkLogos[id].imageUrl);
         delete linkLogos[id];
         this.setState({linkLogos});
     }
