@@ -101,7 +101,7 @@ module.exports = class extends React.Component {
     }
 
     create = () => {
-        openModal(<h2>Create User</h2>, <CreateUserModal />)
+        openModal(<p>Create User</p>, <CreateUserModal />)
     }
 
     delete = (user) => {
@@ -190,20 +190,162 @@ module.exports = class extends React.Component {
         return (
             <UsersProvider onSave={this.onSave}>
                 {({isLoading, isSaving, users}) => (
-                    <Flex>
-                        <Row>
-                            <Flex>
-                                <Button onClick={this.create}>Create User</Button>
-                            </Flex>
-                        </Row>
-                        <Row>
-                            <Flex>
-                                <Button onClick={this.save} disabled={!this.state.changes}>Save Changes</Button>
-                            </Flex>
-                            <Flex>
-                                <Button onClick={this.reset} disabled={!this.state.changes}>Reset Changes</Button>
-                            </Flex>
-                        </Row>
+                    <Flex className="content">
+                        <div className="flex-row pb-3 mb-3 border-bottom">
+                            <div className="flex-1 flex-column">
+                                <h1 className="content__title">Manage Users</h1>
+                            </div>
+                            <div className="flex-column">
+                                <button className="btn btn--primary" onClick={this.create}>
+                                    Create User
+                                </button>
+                            </div>
+                        </div>
+                        <div className="flex-row">
+                            <div className="ml-auto">
+                                <div className="flex-row mb-3">
+                                    <div className="flex-column">
+                                        <Button onClick={this.reset} disabled={!this.state.changes} className="btn btn--primary btn--hollow">Reset Changes</Button>
+                                    </div>
+                                    <div className="flex-column">
+                                        <Button onClick={this.save} disabled={!this.state.changes} className="btn btn--primary btn--hollow">Save Changes</Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="panel mb-5">
+                            <div className="panel__head">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">USERNAME</label>
+                                    </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">FIRST NAME</label>
+                                    </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">LAST NAME</label>
+                                    </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">OCCUPATION</label>
+                                    </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">INSTITUTION</label>
+                                    </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">ROLE</label>
+                                    </div>
+
+                                    <div className="ml-auto ">
+                                        <div className="flex-row invisible">
+                                            <button className="btn btn--icon btn--icon--blue">
+                                                <i className="far fa-edit"></i>
+                                            </button>
+                                            <button className="btn btn--icon btn--icon--red">
+                                                <i className="far fa-trash-alt"> </i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="panel__row flex-row">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" placeholder="Search Username"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" placeholder="Search First name"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" placeholder="Search Last name"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" placeholder="Search Occupation"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" placeholder="Search Institution"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" placeholder="Search Role"/>
+                                    </div>
+                                </div>
+                                <div className="ml-auto">
+                                    <div className="flex-row invisible">
+                                        <button className="btn btn--icon btn--icon--blue">
+                                            <i className="far fa-edit"></i>
+                                        </button>
+                                        <button className="btn btn--icon btn--icon--red">
+                                            <i className="far fa-trash-alt"> </i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="panel__row flex-row">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Andrewm"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Andrew"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Moffatt"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Creative Director"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="SSG"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Management"/>
+                                    </div>
+                                </div>
+                                <div className="ml-auto">
+                                    <div className="flex-row">
+                                        <button className="btn btn--icon btn--icon--blue">
+                                            <i className="fas fa-lock"></i>
+                                        </button>
+                                        <button className="btn btn--icon btn--icon--red">
+                                            <i className="far fa-trash-alt"> </i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="panel__row flex-row">
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Andrewm"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Andrew"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Moffatt"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Creative Director"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="SSG"/>
+                                    </div>
+                                    <div className="col p-0">
+                                        <input className="input input--outline input--mini" value="Management"/>
+                                    </div>
+                                </div>
+                                <div className="ml-auto">
+                                    <div className="flex-row">
+                                        <button className="btn btn--icon btn--icon--blue">
+                                            <i className="fas fa-lock"></i>
+                                        </button>
+                                        <button className="btn btn--icon btn--icon--red">
+                                            <i className="far fa-trash-alt"> </i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <ReactTable data={users} columns={[{
                                 accessor: 'username',
                                 Header: 'Username',

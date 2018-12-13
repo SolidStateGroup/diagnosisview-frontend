@@ -60,4 +60,12 @@ global.API = {
     warn() {
         console.info.apply(this,arguments)
     },
+    getBase64FromFile: function (file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
 };
