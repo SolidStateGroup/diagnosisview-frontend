@@ -8,7 +8,7 @@ var controller = {
                 .then(res => {
                     store.model = store.model || [];
                     store.model.push(res);
-                    store.savedId = savedId;
+                    store.savedId = res.id;
                     store.saved();
                 })
                 .catch(e => AjaxHandler.error(LinkTransformStore, e));
