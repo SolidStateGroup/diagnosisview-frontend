@@ -1,5 +1,6 @@
 import React from "react";
 import ReactTable from "react-table";
+
 import data from '../../../common/stores/base/_data';
 
 const theadProps = () => ({
@@ -201,7 +202,7 @@ const ExpandRow = class extends React.Component {
     }
 }
 
-module.exports = class extends React.Component {
+module.exports = hot(module)(class extends React.Component {
     static contextTypes = {
         router: React.PropTypes.object.isRequired
     };
@@ -211,8 +212,12 @@ module.exports = class extends React.Component {
         this.state = {};
     }
 
-    componentWillMount() {
+    componentDidMount() {
         AppActions.getCodes();
+    }
+
+    add = () => {
+        this.props.history.push('/admin/diagnosis', { addNew: true });
     }
 
     render = () => {
@@ -225,7 +230,7 @@ module.exports = class extends React.Component {
                                 <h1 className="content__title">Diagnosis</h1>
                             </div>
                             <div className="flex-column">
-                                <button className="btn btn--primary">
+                                <button className="btn btn--primary" onClick={this.add}>
                                     Add new diagnosis
                                 </button>
                             </div>
@@ -320,18 +325,58 @@ module.exports = class extends React.Component {
 
                         <ReactTable data={codes} columns={[{
                             accessor: 'code',
-                            Header: 'Code',
-                            style: {cursor: 'pointer'}
+                            Header: 'Diagnosis Code',
+                            style: {cursor: 'pointer'},
+                            Filter: ({filter, onChange}) => (
+                                <input
+                                    type='text'
+                                    placeholder="Search diagnosis code"
+                                    className="input input--outline"
+                                    style={{width: '100%'}}
+                                    value={filter ? filter.value : ''}
+                                    onChange={event => onChange(event.target.value)}
+                                />
+                            )
                         }, {
                             accessor: 'friendlyName',
-                            Header: 'Name',
-                            style: {cursor: 'pointer'}
+                            Header: 'Diagnosis Name',
+                            style: {cursor: 'pointer'},
+                            Filter: ({filter, onChange}) => (
+                                <input
+                                    type='text'
+                                    placeholder="Search diagnosis name"
+                                    className="input input--outline"
+                                    style={{width: '100%'}}
+                                    value={filter ? filter.value : ''}
+                                    onChange={event => onChange(event.target.value)}
+                                />
+                            ),
+                            Cell: row => (
+                                <div className="flex-1 flex-row">
+                                    <div className="col p-0">
+                                        {row.original.friendlyName}
+                                    </div>
+                                    <div className="ml-auto">
+                                        <div className="flex-row">
+                                        {row.original.code.indexOf('dv_') === 0 ? (
+                                            <React.Fragment>
+                                                <button className="btn btn--icon btn--icon--blue">
+                                                    <i className="far fa-edit"></i>
+                                                </button>
+                                                <button className="btn btn--icon btn--icon--red">
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            </React.Fragment>
+                                        ) : null}
+                                            <i className="fas fa-chevron-right float-right"> </i>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
                         }]}
                             loading={isLoading}
                             defaultPageSize={100}
                             filterable={true}
-                            SubComponent={row => <ExpandRow code={row.row.code} />}
-                            freezeWhenExpanded={true}
                             defaultFilterMethod={(filter, row, column) => {
                                 const id = filter.pivotId || filter.id
                                 return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) !== -1 : false
@@ -345,16 +390,7 @@ module.exports = class extends React.Component {
                             getTrProps={(state, rowInfo, col, instance) => {
                                 return {
                                   onClick: (e) => {
-                                    const { expanded } = state;
-                                    const path = rowInfo.nestingPath[0];
-                                    const diff = { [path]: expanded[path] ? false : true };
-
-                                    instance.setState({
-                                      expanded: {
-                                        ...expanded,
-                                        ...diff
-                                      }
-                                    });
+                                    this.props.history.push('/admin/diagnosis', {code: rowInfo.original.code});
                                   }
                                 };
                             }}
@@ -365,4 +401,4 @@ module.exports = class extends React.Component {
             </CodesProvider>
         );
     }
-};
+});

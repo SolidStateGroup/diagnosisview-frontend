@@ -50,7 +50,7 @@ export default class App extends Component {
             <div>
                 <AccountProvider onNoUser={this.onNoUser} onLogout={this.onLogout} onLogin={this.onLogin}>
                     {({ isLoading, user }) => (
-                        <div className={pageHasAside && "aside-body"}>
+                        <div className={pageHasAside ? "aside-body" : null}>
                             {/*<div className="header full-width">*/}
                                 {/*<ul className="list-inline list-unstyled float-right mb-0">*/}
                                     {/*<li>*/}
