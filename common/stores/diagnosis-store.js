@@ -23,6 +23,16 @@ var controller = {
                 })
                 .catch(e => AjaxHandler.error(DiagnosisStore, e));
         },
+        getExternalStandards: function () {
+            store.loading();
+            return data.get(Project.api + 'admin/code/external-standards')
+                .then(res => {
+                    store.externalStandards = res;
+                    AsyncStorage.setItem('externalStandards', JSON.stringify(res));
+                    store.loaded();
+                })
+                .catch(e => AjaxHandler.error(DiagnosisStore, e));
+        },
         search: function (term) {
             var results = [];
             term = term.toLowerCase();
@@ -64,7 +74,7 @@ var controller = {
                     store.saved();
                 })
                 .catch(e => AjaxHandler.error(DiagnosisStore, e));
-        }
+        },
     },
     store = Object.assign({}, BaseStore, {
         id: 'diagnosis',
@@ -73,6 +83,9 @@ var controller = {
         },
         getCategories: function () {
             return store.categories;
+        },
+        getExternalStandards: function () {
+            return store.externalStandards;
         },
         search: function(term) {
             return controller.search(term);
@@ -123,6 +136,9 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
             break;
         case Actions.UPDATE_LINK:
             controller.updateLink(action.code, action.linkId, action.changes);
+            break;
+        case Actions.GET_EXTERNAL_STANDARDS:
+            controller.getExternalStandards();
             break;
         default:
             return;

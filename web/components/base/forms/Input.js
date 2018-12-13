@@ -94,8 +94,6 @@ const Input = class extends React.Component {
 							onBlur={this.onBlur}
 							className={inputClassName}/>
 					)}
-				{!disableHighlight ? <hr/> : null}
-				{!disableHighlight ? <hr className="highlight"/> : null}
 			</div>
 		);
 	}

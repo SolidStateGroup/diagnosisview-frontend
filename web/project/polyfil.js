@@ -1,6 +1,12 @@
+import React from 'react';
+import propTypes from 'prop-types';
+React.PropTypes = propTypes;
+window.propTypes = propTypes;
+
 import Promise from 'promise-polyfill';
 import 'whatwg-fetch';
 import {AsyncStorage, AppState, NetInfo, Clipboard} from 'polyfill-react-native';
+import { hot } from 'react-hot-loader';
 
 window.AppState = AppState;
 window.NetInfo = NetInfo;
@@ -8,6 +14,7 @@ window.Clipboard = Clipboard;
 window.AsyncStorage = AsyncStorage;
 import Switch from 'rc-switch';
 window.Switch = Switch;
+window.hot = hot;
 
 // To add to window
 if (!window.Promise) {

@@ -21,7 +21,7 @@ const TheComponent = class extends Component {
     return (
       <Flex className={"aside " + (this.props.className || "")}>
         <div className="brand-container text-center">
-          <Row style={{color: '#fff', marginTop: 10}}>
+          <Row style={{color: '#fff', marginTop: 15}}>
             <img height={34} src={"/images/brand-medium.png"} />
           </Row>
         </div>
@@ -29,20 +29,33 @@ const TheComponent = class extends Component {
         <Flex className="links">
           <Link
             id="manage-codes-link"
-            activeClassName={"active"}
+            className="aside__link d-flex align-items-center"
             to={`/admin/codes`
-            }><span className={"dot green"} />Manage Codes</Link>
+            }><span className="d-flex flex-1">Manage Codes</span> <i className="fas fa-chevron-right float-right"> </i>
+          </Link>
           <Link
             id="manage-users-link"
-            activeClassName={"active"}
+            className="aside__link d-flex align-items-center"
             to={
               `/admin/users`
-            }><span className={"dot red"} />Manage Users</Link>
-          <a
+            }><span className="d-flex flex-1">Manage Users</span> <i className="fas fa-chevron-right float-right"> </i></Link>
+            <Link
+            id="manage-link-transforms-link"
+            className="aside__link d-flex align-items-center"
+            to={
+              `/admin/link-transforms`
+            }><span className="d-flex flex-1">URL Transformation</span> <i className="fas fa-chevron-right float-right"> </i></Link>
+            <Link
+            id="manage-link-logos-link"
+            className="aside__link d-flex align-items-center"
+            to={
+              `/admin/link-logos`
+            }><span className="d-flex flex-1">Manage Link Logos</span> <i className="fas fa-chevron-right float-right"> </i></Link>
+            <a
             id="logout-link"
-            onClick={this.logout}
-            href='#'
-          ><span className={"dot purple"} />Logout</a>
+            className="aside__link d-flex align-items-center"
+            onClick={this.logout}><span className="d-flex flex-1">Logout</span> <i className="fas fa-chevron-right float-right"> </i></a>
+
         </Flex>
       </Flex>
     );
