@@ -39,14 +39,14 @@ const TheComponent = class extends Component {
                 <fieldset className="fieldset pt-1 pb-4">
                     <label className="fieldset__label text-small text-muted">Link</label>
                     <div>
-                        <input className="input input--outline" value={link} onChange={e => this.setState({link: Utils.safeParseEventValue(e)})} />
+                        <input className="input input--outline full-width" value={link} onChange={e => this.setState({link: Utils.safeParseEventValue(e)})} />
                     </div>
                 </fieldset>
                 <fieldset className="fieldset pt-1 pb-4">
                     <label className="fieldset__label text-small text-muted">Difficulty Level</label>
                     <div>
                         <select
-                            className="form-control input--fit-cell"
+                            className="form-control full-width"
                             value={difficultyLevel}
                             onChange={(e) => this.setState({difficultyLevel: e.target.value})}
                         >
