@@ -113,6 +113,7 @@ module.exports = hot(module)(class extends React.Component {
                                 };
                             }}
                             getTheadProps={theadProps}
+                            showPaginationTop
                         />
                     </Flex>
                 )}

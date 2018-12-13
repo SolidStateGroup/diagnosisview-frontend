@@ -347,6 +347,7 @@ module.exports = hot(module)(class extends React.Component {
                             SubComponent={row => <ExpandRow row={row} isSaving={isSaving} onChange={this.onExpandRowChange} changes={this.state.changes} />}
                             freezeWhenExpanded={true}
                             getTheadProps={theadProps}
+                            showPaginationTop
                         />
                     </Flex>
                 )}
