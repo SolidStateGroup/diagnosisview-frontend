@@ -1,7 +1,7 @@
 import React from "react";
 import CreateLinkTransformModal from '../modals/CreateLinkTransform';
 
-module.exports = class extends React.Component {
+module.exports = hot(module)(class extends React.Component {
     static contextTypes = {
         router: React.PropTypes.object.isRequired
     };
@@ -155,4 +155,4 @@ module.exports = class extends React.Component {
             </LinkTransformProvider>
         );
     }
-};
+});

@@ -63,7 +63,7 @@ const TheComponent = class extends Component {
                                 </div>
                             ) : null}
                         </fieldset>
-                        <div className="modal-footer text-center justify-content-center">
+                        <div className="modal-footer text-center justify-content-center flex-column">
                             {isSaving ? <Loader /> : (
                                 <button disabled={!this.canSave() || isSaving} className="btn btn--primary" onClick={this.save}>
                                     Save logo
