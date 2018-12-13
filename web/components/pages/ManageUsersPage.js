@@ -16,7 +16,7 @@ const theadProps = () => ({
     }
 })
 
-const ExpandRow = class extends React.Component {
+const ExpandRow = hot(module)(class extends React.Component {
     onActiveSubscription = (checked) => {
         const {row, onChange} = this.props;
         if (!checked) {
@@ -72,9 +72,9 @@ const ExpandRow = class extends React.Component {
             </div>
         )
     }
-}
+});
 
-module.exports = class extends React.Component {
+module.exports = hot(module)(class extends React.Component {
     static contextTypes = {
         router: React.PropTypes.object.isRequired
     };
@@ -155,9 +155,9 @@ module.exports = class extends React.Component {
     renderEditable = (cellInfo, users, isSaving) => {
         const uid = users[cellInfo.index].id;
         return (
-            <Input
-                className="form-control table-input"
-                contentEditable={!isSaving}
+            <input
+                className="form-control input input--outline input-mini"
+                readOnly={isSaving}
                 onChange={e => {
                     if (e.target.value === users[cellInfo.index][cellInfo.column.id]) {
                         return;
@@ -170,19 +170,35 @@ module.exports = class extends React.Component {
                 value={this.state.changes && this.state.changes[uid] && this.state.changes[uid][cellInfo.column.id]
                         ? this.state.changes[uid][cellInfo.column.id] : users[cellInfo.index][cellInfo.column.id]
                 }
-                disableHighlight={true}
             />
         )
     }
 
-    renderReadOnly = (cellInfo, users) => {
-        return (
-            <Input
-                className="form-control table-input"
+    renderReadOnly = (cellInfo, users, lastCell) => {
+        const input = (
+            <input
+                className="input input--outline input-mini"
                 value={users[cellInfo.index][cellInfo.column.id]}
-                disableHighlight={true}
                 readOnly
+                style={{width: '100%'}}
             />
+        );
+        return !lastCell ? input : (
+            <div className="flex-row">
+                <div className="flex-1 flex-row">
+                    {input}
+                </div>
+                <div className="ml-auto">
+                    <div className="flex-row">
+                        <button className="btn btn--icon btn--icon--blue" onClick={() => this.changePassword(cellInfo.original)}>
+                            <i className="fas fa-lock"></i>
+                        </button>
+                        <button className="btn btn--icon btn--icon--red" onClick={() => this.delete(cellInfo.original)}>
+                            <i className="far fa-trash-alt"> </i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         )
     }
 
@@ -214,180 +230,112 @@ module.exports = class extends React.Component {
                             </div>
                         </div>
 
-                        <div className="panel mb-5">
-                            <div className="panel__head">
-                                <div className="flex-1 flex-row">
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">USERNAME</label>
-                                    </div>
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">FIRST NAME</label>
-                                    </div>
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">LAST NAME</label>
-                                    </div>
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">OCCUPATION</label>
-                                    </div>
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">INSTITUTION</label>
-                                    </div>
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">ROLE</label>
-                                    </div>
-
-                                    <div className="ml-auto ">
-                                        <div className="flex-row invisible">
-                                            <button className="btn btn--icon btn--icon--blue">
-                                                <i className="far fa-edit"></i>
-                                            </button>
-                                            <button className="btn btn--icon btn--icon--red">
-                                                <i className="far fa-trash-alt"> </i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="panel__row flex-row">
-                                <div className="flex-1 flex-row">
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" placeholder="Search Username"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" placeholder="Search First name"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" placeholder="Search Last name"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" placeholder="Search Occupation"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" placeholder="Search Institution"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" placeholder="Search Role"/>
-                                    </div>
-                                </div>
-                                <div className="ml-auto">
-                                    <div className="flex-row invisible">
-                                        <button className="btn btn--icon btn--icon--blue">
-                                            <i className="far fa-edit"></i>
-                                        </button>
-                                        <button className="btn btn--icon btn--icon--red">
-                                            <i className="far fa-trash-alt"> </i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="panel__row flex-row">
-                                <div className="flex-1 flex-row">
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Andrewm"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Andrew"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Moffatt"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Creative Director"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="SSG"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Management"/>
-                                    </div>
-                                </div>
-                                <div className="ml-auto">
-                                    <div className="flex-row">
-                                        <button className="btn btn--icon btn--icon--blue">
-                                            <i className="fas fa-lock"></i>
-                                        </button>
-                                        <button className="btn btn--icon btn--icon--red">
-                                            <i className="far fa-trash-alt"> </i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="panel__row flex-row">
-                                <div className="flex-1 flex-row">
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Andrewm"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Andrew"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Moffatt"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Creative Director"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="SSG"/>
-                                    </div>
-                                    <div className="col p-0">
-                                        <input className="input input--outline input--mini" value="Management"/>
-                                    </div>
-                                </div>
-                                <div className="ml-auto">
-                                    <div className="flex-row">
-                                        <button className="btn btn--icon btn--icon--blue">
-                                            <i className="fas fa-lock"></i>
-                                        </button>
-                                        <button className="btn btn--icon btn--icon--red">
-                                            <i className="far fa-trash-alt"> </i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <ReactTable data={users} columns={[{
                                 accessor: 'username',
                                 Header: 'Username',
                                 style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderReadOnly(cellInfo, users)
+                                Cell: (cellInfo) => this.renderReadOnly(cellInfo, users),
+                                Filter: ({filter, onChange}) => (
+                                    <input
+                                        type='text'
+                                        placeholder="Search username"
+                                        className="input input--outline"
+                                        style={{width: '100%'}}
+                                        value={filter ? filter.value : ''}
+                                        onChange={event => onChange(event.target.value)}
+                                    />
+                                ),
                             }, {
                                 accessor: 'firstName',
                                 Header: 'First Name',
                                 style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderEditable(cellInfo, users, isSaving)
+                                Cell: (cellInfo) => this.renderEditable(cellInfo, users, isSaving),
+                                Filter: ({filter, onChange}) => (
+                                    <input
+                                        type='text'
+                                        placeholder="Search first name"
+                                        className="input input--outline"
+                                        style={{width: '100%'}}
+                                        value={filter ? filter.value : ''}
+                                        onChange={event => onChange(event.target.value)}
+                                    />
+                                ),
                             }, {
                                 accessor: 'lastName',
                                 Header: 'Last Name',
                                 style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderEditable(cellInfo, users, isSaving)
+                                Cell: (cellInfo) => this.renderEditable(cellInfo, users, isSaving),
+                                Filter: ({filter, onChange}) => (
+                                    <input
+                                        type='text'
+                                        placeholder="Search last name"
+                                        className="input input--outline"
+                                        style={{width: '100%'}}
+                                        value={filter ? filter.value : ''}
+                                        onChange={event => onChange(event.target.value)}
+                                    />
+                                ),
                             }, {
                                 accessor: 'occupation',
                                 Header: 'Occupation',
                                 style: {cursor: 'pointer'},
                                 Cell: (cellInfo) => this.renderEditableDropdown(cellInfo,
-                                    ['Healthcare Practitioner', 'Healthcare Student', 'Patient', 'Other'], users, isSaving)
+                                    ['Healthcare Practitioner', 'Healthcare Student', 'Patient', 'Other'], users, isSaving),
+                                Filter: ({filter, onChange}) => (
+                                    <input
+                                        type='text'
+                                        placeholder="Search occupation"
+                                        className="input input--outline"
+                                        style={{width: '100%'}}
+                                        value={filter ? filter.value : ''}
+                                        onChange={event => onChange(event.target.value)}
+                                    />
+                                ),
                             }, {
                                 accessor: 'institution',
                                 Header: 'Institution',
                                 style: {cursor: 'pointer'},
                                 Cell: (cellInfo) => this.renderEditableDropdown(cellInfo,
-                                    ['University of Edinburgh', 'Other', 'None'], users, isSaving)
+                                    ['University of Edinburgh', 'Other', 'None'], users, isSaving),
+                                Filter: ({filter, onChange}) => (
+                                    <input
+                                        type='text'
+                                        placeholder="Search institution"
+                                        className="input input--outline"
+                                        style={{width: '100%'}}
+                                        value={filter ? filter.value : ''}
+                                        onChange={event => onChange(event.target.value)}
+                                    />
+                                ),
                             }, {
                                 accessor: 'roleType',
                                 Header: 'Role',
                                 style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderReadOnly(cellInfo, users)
-                            }, {
-                                style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => <Button onClick={() => this.changePassword(cellInfo.original)}><span className="icon ion-ios-unlock" /></Button>,
-                                filterable: false,
-                                width: 46
-                            }, {
-                                style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => <Button onClick={() => this.delete(cellInfo.original)}><span className="icon ion-md-trash" /></Button>,
-                                filterable: false,
-                                width: 46
+                                Cell: (cellInfo) => this.renderReadOnly(cellInfo, users, true),
+                                Filter: ({filter, onChange}) => (
+                                    <div className="flex-row">
+                                        <div className="flex-1 flex-row">
+                                            <input
+                                                type='text'
+                                                placeholder="Search role"
+                                                className="input input--outline"
+                                                style={{width: '100%'}}
+                                                value={filter ? filter.value : ''}
+                                                onChange={event => onChange(event.target.value)}
+                                            />
+                                        </div>
+                                        <div className="ml-auto">
+                                            <div className="flex-row invisible">
+                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.changePassword(cellInfo.original)}>
+                                                    <i className="fas fa-lock"></i>
+                                                </button>
+                                                <button className="btn btn--icon btn--icon--red" onClick={() => this.delete(cellInfo.original)}>
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ),
                             }]}
                             loading={isLoading}
                             defaultPageSize={50}
@@ -405,4 +353,4 @@ module.exports = class extends React.Component {
             </UsersProvider>
         );
     }
-};
+});
