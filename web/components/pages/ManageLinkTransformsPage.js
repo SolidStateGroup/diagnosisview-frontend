@@ -96,7 +96,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="flex-1 flex-row">
                                         <div className="col p-0">
                                             <select
-                                                className="input input--outline"
+                                                className="input input--outline input--fit-cell"
                                                 value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].criteria : transform.criteria}
                                                 disabled={!this.state.linkTransforms[transform.id] || isSaving}
                                                 onChange={(e) => this.editField(transform.id, 'criteria', e)}
@@ -108,7 +108,7 @@ module.exports = hot(module)(class extends React.Component {
                                         </div>
                                         <div className="col p-0">
                                             <input
-                                                className="input input--outline"
+                                                className="input input--outline input--fit-cell"
                                                 value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].link : transform.link}
                                                 readOnly={!this.state.linkTransforms[transform.id]}
                                                 disabled={isSaving} onChange={(e) => this.editField(transform.id, 'link', e)}
@@ -116,7 +116,7 @@ module.exports = hot(module)(class extends React.Component {
                                         </div>
                                         <div className="col p-0">
                                             <input
-                                                className="input input--outline"
+                                                className="input input--outline input--fit-cell"
                                                 value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].transformation : transform.transformation}
                                                 readOnly={!this.state.linkTransforms[transform.id]}
                                                 disabled={isSaving} onChange={(e) => this.editField(transform.id, 'transformation', e)}

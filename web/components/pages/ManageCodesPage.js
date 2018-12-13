@@ -49,8 +49,7 @@ module.exports = hot(module)(class extends React.Component {
                                 <input
                                     type='text'
                                     placeholder="Search diagnosis code"
-                                    className="input input--outline"
-                                    style={{width: '100%'}}
+                                    className="input input--outline full-width"
                                     value={filter ? filter.value : ''}
                                     onChange={event => onChange(event.target.value)}
                                 />
@@ -63,8 +62,7 @@ module.exports = hot(module)(class extends React.Component {
                                 <input
                                     type='text'
                                     placeholder="Search diagnosis name"
-                                    className="input input--outline"
-                                    style={{width: '100%'}}
+                                    className="input input--outline full-width"
                                     value={filter ? filter.value : ''}
                                     onChange={event => onChange(event.target.value)}
                                 />

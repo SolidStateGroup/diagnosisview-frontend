@@ -111,7 +111,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="flex-1 flex-row">
                                         <div className="col p-0">
                                             <input
-                                                className="input input--outline"
+                                                className="input input--outline input--fit-cell"
                                                 value={this.state.linkLogos[logo.id] ? this.state.linkLogos[logo.id].startsWith : logo.startsWith}
                                                 readOnly={!this.state.linkLogos[logo.id]}
                                                 disabled={isSaving} onChange={(e) => this.editField(logo.id, 'startsWith', e)}

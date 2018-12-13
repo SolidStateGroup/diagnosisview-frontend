@@ -46,8 +46,7 @@ const TheComponent = class extends Component {
                     <label className="fieldset__label text-small text-muted">Difficulty Level</label>
                     <div>
                         <select
-                            className="form-control"
-                            style={{width: '90%'}}
+                            className="form-control input--fit-cell"
                             value={difficultyLevel}
                             onChange={(e) => this.setState({difficultyLevel: e.target.value})}
                         >

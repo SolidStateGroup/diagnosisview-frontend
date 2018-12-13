@@ -177,10 +177,9 @@ module.exports = hot(module)(class extends React.Component {
     renderReadOnly = (cellInfo, users, lastCell) => {
         const input = (
             <input
-                className="input input--outline input-mini"
+                className="input input--outline input-mini full-width"
                 value={users[cellInfo.index][cellInfo.column.id]}
                 readOnly
-                style={{width: '100%'}}
             />
         );
         return !lastCell ? input : (
@@ -239,8 +238,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <input
                                         type='text'
                                         placeholder="Search username"
-                                        className="input input--outline"
-                                        style={{width: '100%'}}
+                                        className="input input--outline full-width"
                                         value={filter ? filter.value : ''}
                                         onChange={event => onChange(event.target.value)}
                                     />
@@ -254,8 +252,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <input
                                         type='text'
                                         placeholder="Search first name"
-                                        className="input input--outline"
-                                        style={{width: '100%'}}
+                                        className="input input--outline full-width"
                                         value={filter ? filter.value : ''}
                                         onChange={event => onChange(event.target.value)}
                                     />
@@ -269,8 +266,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <input
                                         type='text'
                                         placeholder="Search last name"
-                                        className="input input--outline"
-                                        style={{width: '100%'}}
+                                        className="input input--outline full-width"
                                         value={filter ? filter.value : ''}
                                         onChange={event => onChange(event.target.value)}
                                     />
@@ -285,8 +281,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <input
                                         type='text'
                                         placeholder="Search occupation"
-                                        className="input input--outline"
-                                        style={{width: '100%'}}
+                                        className="input input--outline full-width"
                                         value={filter ? filter.value : ''}
                                         onChange={event => onChange(event.target.value)}
                                     />
@@ -301,8 +296,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <input
                                         type='text'
                                         placeholder="Search institution"
-                                        className="input input--outline"
-                                        style={{width: '100%'}}
+                                        className="input input--outline full-width"
                                         value={filter ? filter.value : ''}
                                         onChange={event => onChange(event.target.value)}
                                     />
@@ -318,8 +312,7 @@ module.exports = hot(module)(class extends React.Component {
                                             <input
                                                 type='text'
                                                 placeholder="Search role"
-                                                className="input input--outline"
-                                                style={{width: '100%'}}
+                                                className="input input--outline full-width"
                                                 value={filter ? filter.value : ''}
                                                 onChange={event => onChange(event.target.value)}
                                             />
