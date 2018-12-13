@@ -36,7 +36,7 @@ const ExpandRow = hot(module)(class extends React.Component {
         const activeSubscription = (changes && changes[id] && _.has(changes[id], 'activeSubscription')) ? changes[id].activeSubscription : this.props.row.original.activeSubscription;
         const expiryDate = (changes && changes[id] && _.has(changes[id], 'expiryDate')) ? changes[id].expiryDate : this.props.row.original.expiryDate;
         return (
-            <div>
+            <div className="px-3 pb-3">
                 <label className="label-margin-right">Created</label>
                 <Input
                     readOnly
