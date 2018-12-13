@@ -1,5 +1,5 @@
 import React from "react";
-import CreateLogoModal from '../modals/CreateLogo';
+import CreateLinkLogoModal from '../modals/CreateLinkLogo';
 
 module.exports = hot(module)(class extends React.Component {
     static contextTypes = {
@@ -19,7 +19,7 @@ module.exports = hot(module)(class extends React.Component {
                 <p className="text-small text-muted mb-0">Add a new logo for a partial or full URL match</p>
                 <i className="far fa-times-circle modal-close clickable" onClick={() => closeModal()}></i>
             </div>,
-            <CreateLogoModal />
+            <CreateLinkLogoModal />
         );
     }
 

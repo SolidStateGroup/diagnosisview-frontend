@@ -1,5 +1,5 @@
 import React from "react";
-import CreateLinkModal from '../modals/CreateLink';
+import CreateLinkTransformModal from '../modals/CreateLinkTransform';
 
 module.exports = class extends React.Component {
     static contextTypes = {
@@ -19,7 +19,7 @@ module.exports = class extends React.Component {
                 <p className="text-small text-muted mb-0">Add a new resource link that requires routing through a paid proxy</p>
                 <i className="far fa-times-circle modal-close clickable" onClick={() => closeModal()}></i>
             </div>,
-            <CreateLinkModal />
+            <CreateLinkTransformModal />
         );
     }
 

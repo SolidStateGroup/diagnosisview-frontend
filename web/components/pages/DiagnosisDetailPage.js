@@ -1,198 +1,275 @@
 import React from "react";
-import ReactTable from "react-table";
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import JSONPretty from 'react-json-pretty';
+import data from '../../../common/stores/base/_data';
 
-const theadProps = () => ({
-    style: {
-        fontWeight: '400'
-    }
-})
+import AddCodeCategoryModal from '../modals/AddCodeCategory';
+import AddLinkModal from '../modals/AddLink';
+import AddExternalStandardModal from '../modals/AddExternalStandard';
 
-const ExpandRow = class extends React.Component {
-
-    render() {
-        const { id, dateCreated, paymentData } = this.props.row.original;
-        const { isSaving, onChange, changes } = this.props;
-        const activeSubscription = (changes && changes[id] && _.has(changes[id], 'activeSubscription')) ? changes[id].activeSubscription : this.props.row.original.activeSubscription;
-        const expiryDate = (changes && changes[id] && _.has(changes[id], 'expiryDate')) ? changes[id].expiryDate : this.props.row.original.expiryDate;
-        return (
-            <div>
-                <label className="label-margin-right">Created</label>
-                <Input
-                    readOnly
-                    value={dateCreated ? moment(dateCreated).format('DD/MM/YYYY HH:mm') : '--/--/---- --:--'} />
-                <Row>
-                    <label className="label-margin-right">Active Subscription</label>
-                    <Switch
-                        checked={activeSubscription}
-                        onChange={this.onActiveSubscription}
-                        disabled={isSaving} />
-                    {activeSubscription && expiryDate ? (
-                        <Row>
-                            <label className="label-margin-horizontal">Expiry Date</label>
-                            <DatePicker
-                                className="react-datepicker-input-small"
-                                selected={moment(expiryDate)}
-                                onChange={date => onChange(id, {expiryDate: moment(date).valueOf()})}
-                                showTimeSelect={true}
-                                dateFormat="LLL"
-                                minDate={moment()} />
-                        </Row>
-                    ) : null}
-                </Row>
-                <ReactTable data={paymentData} columns={[{
-                    accessor: 'response',
-                    Header: 'Payment Data',
-                    style: {cursor: 'pointer'},
-                }]}
-                            defaultPageSize={2}
-                            SubComponent={row => <JSONPretty json={row.row.response} themeClassName="custom-json-pretty"/>}
-                            getTheadProps={theadProps}
-                />
-            </div>
-        )
-    }
-}
-
-module.exports = class extends React.Component {
+module.exports = hot(module)(class extends React.Component {
     static contextTypes = {
         router: React.PropTypes.object.isRequired
     };
 
-    constructor(props, context) {
-        super(props, context);
-        this.state = {};
+    state = {}
+
+    componentDidMount() {
+        const code = _.get(this.props.location, 'state.code');
+        if (code) {
+            // Load full diagnosis
+            this.setState({ isLoading: true });
+            data.get(Project.api + 'code/' + code)
+                .then(res => {
+                    this.setState({
+                        original: res,
+                        isLoading: false
+                    })
+                });
+        } else {
+            // Must be a new diagnosis
+            this.setState({ diagnosis: {} });
+        }
     }
 
-    componentWillMount() {
-        AppActions.getUsers();
+    toggleFreeLink = (id, on) => {
+        const diagnosis = this.state.diagnosis;
+        if (diagnosis) {
+            _.find(diagnosis.links, {id}).freeLink = on;
+            this.setState({diagnosis});
+        } else {
+            openConfirm(<h2>Confirm</h2>, <h3>{`Are you sure you want to ${on ? 'display this link' : 'hide this link from'} free users?`}</h3>,
+                () => {
+                    this.setState({isSaving: true});
+                    data.put(Project.api + 'admin/code/link', {
+                        id,
+                        freeLink: on,
+                        difficultyLevel: _.find(this.state.original.links, {id}).difficultyLevel,
+                    })
+                        .then(res => {
+                            const original = this.state.original;
+                            const index = _.findIndex(original.links, {id});
+                            original.links[index] = res;
+                            this.setState({original, isSaving: false});
+                        })
+                        .catch(e => {
+                            this.setState({isSaving: false});
+                            toast('Sorry something went wrong');
+                        });
+                });
+        }
     }
 
-    addNew = () => {
-        openModal(<div><p className="mb-0">Add new link</p><p className="text-small text-muted mb-0">Add a new resource link that requires routing through a paid proxy</p><i className="far fa-times-circle modal-close"></i></div>, <CreateLinkModal />)
+    onDifficultyLevelChange = (id, e) => {
+        const diagnosis = this.state.diagnosis;
+        const value = e.target.value;
+        if (diagnosis) {
+            _.find(diagnosis.links, {id}).difficultyLevel = value;
+            this.setState({diagnosis});
+        } else {
+            openConfirm(<h2>Confirm</h2>, <h3>{`Are you sure you want to change the difficulty on this link to ${_.find(Constants.difficultyLevels, {value}).label}?`}</h3>,
+                () => {
+                    this.setState({isSaving: true});
+                    data.put(Project.api + 'admin/code/link', {
+                        id,
+                        freeLink: _.find(this.state.original.links, {id}).freeLink,
+                        difficultyLevel: value,
+                    })
+                        .then(res => {
+                            const original = this.state.original;
+                            const index = _.findIndex(original.links, {id});
+                            original.links[index] = res;
+                            this.setState({original, isSaving: false});
+                        })
+                        .catch(e => {
+                            this.setState({isSaving: false});
+                            toast('Sorry something went wrong');
+                        });
+                });
+        }
     }
 
-    onExpandRowChange = (uid, newChanges) => {
-        var changes = this.state.changes || {};
-        changes[uid] = changes[uid] || {};
-        _.each(newChanges, (value, key) => {
-            changes[uid][key] = value;
+    onSwitchChange = (on, field) => {
+        const diagnosis = this.state.diagnosis;
+        diagnosis[field] = on;
+        this.setState({diagnosis});
+    }
+
+    onEditField = (path, e) => {
+        const diagnosis = this.state.diagnosis;
+        _.set(diagnosis, path, Utils.safeParseEventValue(e));
+        this.setState({diagnosis});
+    }
+
+    getNextAvailableId = (collection, key) => {
+        // Just return the highest id + 1
+        return _.max(_.map(collection, item => item[key])) + 1 || 1;
+    }
+
+    addCategory = () => {
+        openModal(<h2>Add Category</h2>, <AddCodeCategoryModal
+            onOK={category => {
+                const diagnosis = this.state.diagnosis;
+                diagnosis.codeCategories = diagnosis.codeCategories || [];
+                const id = this.getNextAvailableId(diagnosis.codeCategories, 'id');
+                diagnosis.codeCategories.push({category, id});
+                this.setState({diagnosis});
+            }}
+            existing={_.map(this.state.diagnosis.codeCategories, ({category}) => category.number)}
+        />)
+    }
+
+    removeCategory = (number) => {
+        const diagnosis = this.state.diagnosis;
+        diagnosis.codeCategories.splice(_.findIndex(diagnosis.codeCategories, ({category}) => category.number === number), 1);
+        this.setState({diagnosis});
+    }
+
+    addExternalStandard = () => {
+        openModal(<h2>Add External Standard</h2>, <AddExternalStandardModal
+            onOK={externalStandard => {
+                const diagnosis = this.state.diagnosis;
+                diagnosis.externalStandards = diagnosis.externalStandards || [];
+                const id = this.getNextAvailableId(diagnosis.links, 'id');
+                diagnosis.externalStandards.push({...externalStandard, id});
+                this.setState({diagnosis});
+            }}
+            existing={_.map(this.state.diagnosis.externalStandards, externalStandard => externalStandard.codeString)}
+        />);
+    }
+
+    removeExternalStandard = (codeString) => {
+        const diagnosis = this.state.diagnosis;
+        diagnosis.externalStandards.splice(_.findIndex(diagnosis.externalStandards, {codeString}), 1);
+        this.setState({diagnosis});
+    }
+
+    addLink = () => {
+        openModal(<h2>Add Link</h2>, <AddLinkModal
+            onAdd={link => {
+                const diagnosis = this.state.diagnosis;
+                diagnosis.links = diagnosis.links || [];
+                const id = this.getNextAvailableId(diagnosis.links, 'id');
+                diagnosis.links.push({...link, id});
+                this.setState({diagnosis});
+            }}
+        />);
+    }
+
+    removeLink = (id) => {
+        const diagnosis = this.state.diagnosis;
+        diagnosis.links.splice(_.findIndex(diagnosis.links, (link) => link.id === id), 1);
+        this.setState({diagnosis});
+    }
+
+    save = () => {
+        const addNew = _.get(this.props.location, 'state.addNew');
+        this.setState({isSaving: true});
+        console.log('SAVING', this.state.diagnosis);
+        const action = addNew ? data.post(`${Project.api}admin/code`, this.state.diagnosis) : data.put(`${Project.api}admin/code`, this.state.diagnosis);
+        action.then(res => {
+            this.setState({ diagnosis: null, original: res, isSaving: false });
+            if (addNew) {
+                this.props.history.replace('/admin/diagnosis', { addNew: false });
+            }
         });
-        console.log(changes);
-        this.setState({changes});
-    }
-
-    renderEditableDropdown = (cellInfo, options, users, isSaving, disabled = false) => {
-        const uid = users[cellInfo.index].id;
-        const selectedOption = this.state.changes && this.state.changes[uid] && this.state.changes[uid][cellInfo.column.id]
-            ? this.state.changes[uid][cellInfo.column.id] : users[cellInfo.index][cellInfo.column.id];
-        return (
-            <select
-                className="form-control"
-                style={{padding: 0}}
-                value={selectedOption}
-                disabled={disabled || isSaving}
-                onChange={e => {
-                    var changes = this.state.changes || {};
-                    changes[uid] = changes[uid] || {};
-                    changes[uid][cellInfo.column.id] = e.target.value;
-                    this.setState({changes});
-                }}
-            >
-                <option value=""></option>
-                {_.map(options, (option, i) => {
-                    const isObj = typeof option === 'object';
-                    const label = isObj ? option.label || option.value : option;
-                    const value = isObj ? option.value : option;
-                    return (
-                        <option key={i} value={value}>{label}</option>
-                    )
-                })}
-            </select>
-        )
-    }
-
-    renderEditable = (cellInfo, users, isSaving) => {
-        const uid = users[cellInfo.index].id;
-        return (
-            <Input
-                className="form-control table-input"
-                contentEditable={!isSaving}
-                onChange={e => {
-                    if (e.target.value === users[cellInfo.index][cellInfo.column.id]) {
-                        return;
-                    }
-                    var changes = this.state.changes || {};
-                    changes[uid] = changes[uid] || {};
-                    changes[uid][cellInfo.column.id] = e.target.value;
-                    this.setState({changes});
-                }}
-                value={this.state.changes && this.state.changes[uid] && this.state.changes[uid][cellInfo.column.id]
-                    ? this.state.changes[uid][cellInfo.column.id] : users[cellInfo.index][cellInfo.column.id]
-                }
-                disableHighlight={true}
-            />
-        )
-    }
-
-    renderReadOnly = (cellInfo, users) => {
-        return (
-            <Input
-                className="form-control table-input"
-                value={users[cellInfo.index][cellInfo.column.id]}
-                disableHighlight={true}
-                readOnly
-            />
-        )
     }
 
     render = () => {
+        const { diagnosis, original } = this.state;
+        if (!diagnosis && !original) return <Loader />
+        const {
+            code, patientFriendlyName, created, lastUpdate, hideFromPatients, removedExternally, description,
+            codeCategories, externalStandards, links,
+        } = diagnosis || original;
+        console.log(diagnosis);
         return (
-            <UsersProvider onSave={this.onSave}>
-                {({isLoading, isSaving, users}) => (
+            <CodesProvider>
+                {({ isLoading, codes, isSaving }) => (
                     <Flex className={'content'}>
                         <div className="flex-row mb-3">
                             <div className="flex-1 flex-column">
-                                <h1 className="content__title">Anal Cancer</h1>
-                            </div>
-                            <div className="flex-column">
-                                <img src="/images/nhs-choices.png" alt="NHS Choices"/>
+                                {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : null}
                             </div>
                             <div className="flex-1 flex-column">
-                                <button className="btn btn--primary" onClick={this.addNew}>
-                                    Edit Diagnosis
-                                </button>
+                                {!diagnosis && code.indexOf('dv_') === 0 ? (
+                                    <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.diagnosis)})}>
+                                        Edit Diagnosis
+                                    </button>
+                                ) : diagnosis ? (
+                                    <button className="btn btn--primary" onClick={this.save}>
+                                        Save
+                                    </button>
+                                ) : null}
                             </div>
                         </div>
                         <div className="panel mb-5">
                             <div className="panel__head">
                                 <div className="flex-1 flex-row">
                                     <div className="col p-0">
-                                        <label className="panel__head__title">Diagnosis</label>
-                                        <p className="text-small">Anal cancer (anal-cancer)</p>
+                                        <label className="panel__head__title">CODE</label>
+                                        {!diagnosis ? <p className="text-small">{code}</p> : (
+                                            <p className="mb-0">
+                                                <input
+                                                    className="input input--outline"
+                                                    value={code}
+                                                    placeholder="Diagnosis code"
+                                                    onChange={(e) => this.onEditField('code', e)}
+                                                />
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">NAME</label>
+                                        {!diagnosis ? <p className="text-small">{patientFriendlyName} ({code})</p> : (
+                                            <p className="mb-0">
+                                                <input
+                                                    className="input input--outline"
+                                                    value={patientFriendlyName}
+                                                    placeholder="Diagnosis name"
+                                                    onChange={(e) => this.onEditField('patientFriendlyName', e)}
+                                                />
+                                            </p>
+                                        )}
                                     </div>
                                     <div className="col p-0">
                                         <label className="panel__head__title">CREATED</label>
-                                        <p className="text-small">12/12/2012</p>
+                                        {!diagnosis ? <p className="text-small">{moment(created).format('DD/MM/YYYY')}</p> : (
+                                            <p className="mb-0">
+                                                <input
+                                                    className="input input--outline"
+                                                    value={created}
+                                                    placeholder="--/--/----"
+                                                    readOnly
+                                                />
+                                            </p>
+                                        )}
                                     </div>
                                     <div className="col p-0">
                                         <label className="panel__head__title">UPDATED</label>
-                                        <p className="text-small">12/12/2012</p>
+                                        {!diagnosis ? <p className="text-small">{moment(lastUpdate).format('DD/MM/YYYY')}</p> : (
+                                            <p className="mb-0">
+                                                <input
+                                                    className="input input--outline"
+                                                    value={lastUpdate}
+                                                    placeholder="--/--/----"
+                                                    readOnly
+                                                />
+                                            </p>
+                                        )}
                                     </div>
                                     <div className="col p-0">
-                                        <label className="panel__head__title">HIDE FROM PATIENT?</label>
+                                        <label className="panel__head__title">HIDE FROM PATIENTS?</label>
                                         <p className="mb-0">
-                                            <Switch checked={true} onChange={null}/>
+                                            <Switch checked={hideFromPatients} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'hideFromPatients')} />
                                         </p>
                                     </div>
                                     <div className="col p-0">
                                         <label className="panel__head__title">REMOVED EXTERNALLY?</label>
                                         <p className="mb-0">
-                                            <Switch checked={true} onChange={null}/>
+                                            <Switch checked={removedExternally} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'removedExternally')}/>
                                         </p>
                                     </div>
                                 </div>
@@ -200,7 +277,16 @@ module.exports = class extends React.Component {
                             <div className="panel__row flex-row">
                                 <div className="col p-0">
                                     <label className="panel__head__title">DESCRIPTION</label>
-                                    <p className="text-small">Read about the symptoms of anal cancer, how its's diagnosed and treated.  Plus what causes the condition.</p>
+                                    {!diagnosis ? <p className="text-small">{description}</p> : (
+                                        <p className="mb-0">
+                                            <textarea
+                                                className="input input--outline"
+                                                value={description}
+                                                placeholder="--/--/----"
+                                                onChange={(e) => this.onEditField('description', e)}
+                                            />
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -215,16 +301,41 @@ module.exports = class extends React.Component {
                                     <div className="col p-0">
                                         <label className="panel__head__title">DESCRIPTION</label>
                                     </div>
+                                    <div className="ml-auto ">
+                                        <div className="flex-row invisible">
+                                            {diagnosis ? (
+                                                <button className="btn btn--icon btn--icon--red">
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            ) : null}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="panel__row flex-row">
-                                <div className="col p-0">
-                                    <p className="text-small">Cancer</p>
+                            {_.map(codeCategories, ({category}) => (
+                                <div key={category.number} className="panel__row flex-row">
+                                    <div className="col p-0">
+                                        <p className="text-small">{category.friendlyDescription}</p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="text-small">{category.icd10Description}</p>
+                                    </div>
+                                    <div className="ml-auto ">
+                                        <div className="flex-row">
+                                            {diagnosis ? (
+                                                <button className="btn btn--icon btn--icon--red" onClick={() => this.removeCategory(category.number)}>
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            ) : null}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="col p-0">
-                                    <p className="text-small">Neoplasms (C00-D49)</p>
+                            ))}
+                            {diagnosis ? (
+                                <div className="justify-content text-center">
+                                    <button className="btn btn--hollow my-3" onClick={this.addCategory}><i className="fas fa-plus-circle" /> Add</button>
                                 </div>
-                            </div>
+                            ) : null}
                         </div>
 
                         <h5>External Standards</h5>
@@ -240,19 +351,44 @@ module.exports = class extends React.Component {
                                     <div className="col p-0">
                                         <label className="panel__head__title">DESCRIPTION</label>
                                     </div>
+                                    <div className="ml-auto ">
+                                        <div className="flex-row invisible">
+                                            {diagnosis ? (
+                                                <button className="btn btn--icon btn--icon--red">
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            ) : null}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="panel__row flex-row">
-                                <div className="col p-0">
-                                    <p className="text-small">C21</p>
+                            {_.map(externalStandards, ({id, codeString, externalStandard}) => (
+                                <div key={id} className="panel__row flex-row">
+                                    <div className="col p-0">
+                                        <p className="text-small">{codeString}</p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="text-small">{externalStandard.name}</p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="text-small">{externalStandard.description}</p>
+                                    </div>
+                                    <div className="ml-auto ">
+                                        <div className="flex-row">
+                                            {diagnosis ? (
+                                                <button className="btn btn--icon btn--icon--red" onClick={() => this.removeExternalStandard(codeString)}>
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            ) : null}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="col p-0">
-                                    <p className="text-small">ICD-10</p>
+                            ))}
+                            {diagnosis ? (
+                                <div className="justify-content text-center">
+                                    <button className="btn btn--hollow my-3" onClick={this.addExternalStandard}><i className="fas fa-plus-circle" /> Add</button>
                                 </div>
-                                <div className="col p-0">
-                                    <p className="text-small">ICD-10</p>
-                                </div>
-                            </div>
+                            ) : null}
                         </div>
 
                         <h5>Links</h5>
@@ -277,32 +413,73 @@ module.exports = class extends React.Component {
                                     <div className="col p-0">
                                         <p className="text-small">URL</p>
                                     </div>
+                                    <div className="ml-auto ">
+                                        <div className="flex-row invisible">
+                                            {diagnosis ? (
+                                                <button className="btn btn--icon btn--icon--red">
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            ) : null}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="panel__row flex-row">
-                                <div className="col p-0">
-                                    <p className="text-small">Medline Plus (USA)</p>
+                            {_.map(links, ({id, name, created, lastUpdate, difficultyLevel, freeLink, link}) => (
+                                <div key={id} className="panel__row flex-row">
+                                    <div className="col p-0">
+                                        <p className="text-small">{name}</p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="text-small">{moment(created).format('DD/MM/YYYY')}</p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="text-small">{moment(lastUpdate).format('DD/MM/YYYY')}</p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <select
+                                            className="form-control"
+                                            style={{width: '90%'}}
+                                            value={difficultyLevel}
+                                            disabled={isSaving}
+                                            onChange={(e) => this.onDifficultyLevelChange(id, e)}
+                                        >
+                                            <option value=""></option>
+                                            {_.map(Constants.difficultyLevels, (option, i) => {
+                                                const isObj = typeof option === 'object';
+                                                const label = isObj ? option.label || option.value : option;
+                                                const value = isObj ? option.value : option;
+                                                return (
+                                                    <option key={i} value={value}>{label}</option>
+                                                )
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="text-small"><Switch checked={freeLink} onChange={checked => this.toggleFreeLink(id, checked)}/></p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <a className="text-small" style={{wordBreak: 'break-all'}} href={link}>{link}</a>
+                                    </div>
+                                    <div className="ml-auto ">
+                                        <div className="flex-row">
+                                            {diagnosis ? (
+                                                <button className="btn btn--icon btn--icon--red" onClick={() => this.removeLink(id)}>
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            ) : null}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="col p-0">
-                                    <p className="text-small">12/12/2012</p>
+                            ))}
+                            {diagnosis ? (
+                                <div className="justify-content text-center">
+                                    <button className="btn btn--hollow my-3" onClick={this.addLink}><i className="fas fa-plus-circle" /> Add</button>
                                 </div>
-                                <div className="col p-0">
-                                    <p className="text-small">12/12/2012</p>
-                                </div>
-                                <div className="col p-0">
-                                    <p className="text-small">Green</p>
-                                </div>
-                                <div className="col p-0">
-                                    <p className="text-small"><Switch checked={true} onChange={null}/></p>
-                                </div>
-                                <div className="col p-0">
-                                    <p className="text-small">http://www.test.com/article/something</p>
-                                </div>
-                            </div>
+                            ) : null}
                         </div>
                     </Flex>
                 )}
-            </UsersProvider>
+            </CodesProvider>
         );
     }
-};
+});
