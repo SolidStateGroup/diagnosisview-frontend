@@ -102,7 +102,6 @@ module.exports = hot(module)(class extends React.Component {
                                             <button className="btn btn--icon btn--icon--red">
                                                 <i className="far fa-trash-alt"> </i>
                                             </button>
-                                            <i className="fas fa-chevron-right float-right"> </i>
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +149,6 @@ module.exports = hot(module)(class extends React.Component {
                                             <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(logo.id)} disabled={isSaving}>
                                                 <i className="far fa-trash-alt"> </i>
                                             </button>
-                                            <i className="fas fa-chevron-right float-right"> </i>
                                         </div>
                                     </div>
                                 </div>
