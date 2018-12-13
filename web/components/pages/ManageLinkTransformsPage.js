@@ -29,6 +29,11 @@ module.exports = hot(module)(class extends React.Component {
         this.setState({linkTransforms});
     }
 
+    cancelEdit = (id) => {
+        delete this.state.linkTransforms[id];
+        this.forceUpdate();
+    }
+
     remove = (id) => {
         openConfirm(<h2>Confirm</h2>, <p>Are you sure you want to delete this link transformation?</p>, () => AppActions.removeLinkTransform(id));
     }
@@ -107,16 +112,16 @@ module.exports = hot(module)(class extends React.Component {
                                             </select>
                                         </div>
                                         <div className="col p-0">
-                                            <input
-                                                className="input input--outline input--fit-cell"
+                                            <textarea
+                                                className="input input--outline input--fit-cell full-height"
                                                 value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].link : transform.link}
                                                 readOnly={!this.state.linkTransforms[transform.id]}
                                                 disabled={isSaving} onChange={(e) => this.editField(transform.id, 'link', e)}
                                             />
                                         </div>
                                         <div className="col p-0">
-                                            <input
-                                                className="input input--outline input--fit-cell"
+                                            <textarea
+                                                className="input input--outline input--fit-cell full-height"
                                                 value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].transformation : transform.transformation}
                                                 readOnly={!this.state.linkTransforms[transform.id]}
                                                 disabled={isSaving} onChange={(e) => this.editField(transform.id, 'transformation', e)}
@@ -130,9 +135,14 @@ module.exports = hot(module)(class extends React.Component {
                                                     <i className="far fa-edit"></i>
                                                 </button>
                                             ) : (
-                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(transform.id)} disabled={isSaving}>
-                                                    <i className="far fa-save"></i>
-                                                </button>
+                                                <React.Fragment>
+                                                    <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(transform.id)} disabled={isSaving}>
+                                                        <i className="far fa-save"></i>
+                                                    </button>
+                                                    <button className="btn btn--icon btn--icon--blue" onClick={() => this.cancelEdit(transform.id)} disabled={isSaving}>
+                                                        <i className="fas fa-times"></i>
+                                                    </button>
+                                                </React.Fragment>
                                             )}
                                             <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(transform.id)} disabled={isSaving}>
                                                 <i className="far fa-trash-alt"> </i>
