@@ -152,7 +152,7 @@ module.exports = hot(module)(class extends React.Component {
                 const diagnosis = this.state.diagnosis;
                 diagnosis.links = diagnosis.links || [];
                 const id = this.getNextAvailableId(diagnosis.links, 'id');
-                diagnosis.links.push({...link, id});
+                diagnosis.links.push({...link, id, displayOrder: id});
                 this.setState({diagnosis});
             }}
         />);
@@ -162,6 +162,27 @@ module.exports = hot(module)(class extends React.Component {
         const diagnosis = this.state.diagnosis;
         diagnosis.links.splice(_.findIndex(diagnosis.links, (link) => link.id === id), 1);
         this.setState({diagnosis});
+    }
+
+    changeDisplayOrder = (id, up) => {
+        const { diagnosis } = this.state;
+        const linkToMove = _.find(diagnosis.links, {id});
+        let linkToReplace;
+        for (let i = 0; i < diagnosis.links.length; i++) {
+            const link = diagnosis.links[i];
+            if (link.id === id) continue;
+            if (up ?
+                    (link.displayOrder < linkToMove.displayOrder && (!linkToReplace || linkToReplace.displayOrder < link.displayOrder)) :
+                    (link.displayOrder > linkToMove.displayOrder && (!linkToReplace || linkToReplace.displayOrder > link.displayOrder))) {
+                linkToReplace = link;
+            }
+        }
+        if (linkToReplace) {
+            const displayOrder = linkToMove.displayOrder;
+            linkToMove.displayOrder = linkToReplace.displayOrder;
+            linkToReplace.displayOrder = displayOrder;
+            this.setState({diagnosis});
+        }
     }
 
     save = () => {
@@ -184,7 +205,6 @@ module.exports = hot(module)(class extends React.Component {
             code, patientFriendlyName, created, lastUpdate, hideFromPatients, removedExternally, description,
             codeCategories, externalStandards, links,
         } = diagnosis || original;
-        console.log(diagnosis);
         return (
             <CodesProvider>
                 {({ isLoading, codes, isSaving }) => (
@@ -411,7 +431,7 @@ module.exports = hot(module)(class extends React.Component {
                                         <p className="text-small">DISPLAY TO FREE USERS?</p>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small">URL TRANSFORMATIONS ONLY?</p>
+                                        <p className="text-small">URL TRANSFORMS ONLY?</p>
                                     </div>
                                     <div className="col p-0">
                                         <p className="text-small">URL</p>
@@ -419,15 +439,25 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="ml-auto ">
                                         <div className="flex-row invisible">
                                             {diagnosis ? (
-                                                <button className="btn btn--icon btn--icon--red">
-                                                    <i className="far fa-trash-alt"> </i>
-                                                </button>
+                                                <React.Fragment>
+                                                    <div className="flex-1 flex-column">
+                                                        <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
+                                                            <i className="fas fa-chevron-up text-small"> </i>
+                                                        </button>
+                                                        <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
+                                                            <i className="fas fa-chevron-down text-small"> </i>
+                                                        </button>
+                                                    </div>
+                                                    <button className="btn btn--icon btn--icon--red">
+                                                        <i className="far fa-trash-alt"> </i>
+                                                    </button>
+                                                </React.Fragment>
                                             ) : null}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {_.map(links, ({id, name, created, lastUpdate, difficultyLevel, freeLink, link, transformationsOnly}) => (
+                            {_.map(_.sortBy(links, "displayOrder"), ({id, name, created, lastUpdate, difficultyLevel, freeLink, link, transformationsOnly}, index) => (
                                 <div key={id} className="panel__row flex-row">
                                     <div className="col p-0">
                                         <p className="text-small">{name}</p>
@@ -468,9 +498,23 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="ml-auto ">
                                         <div className="flex-row">
                                             {diagnosis ? (
-                                                <button className="btn btn--icon btn--icon--red" onClick={() => this.removeLink(id)}>
-                                                    <i className="far fa-trash-alt"> </i>
-                                                </button>
+                                                <React.Fragment>
+                                                    <div className="flex-1 flex-column">
+                                                        {index !== 0 ? (
+                                                            <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, true)}>
+                                                                <i className="fas fa-chevron-up text-small"> </i>
+                                                            </button>
+                                                        ) : null}
+                                                        {index !== links.length - 1 ? (
+                                                            <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, false)}>
+                                                                <i className="fas fa-chevron-down text-small"> </i>
+                                                            </button>
+                                                        ) : null}
+                                                    </div>
+                                                    <button className="btn btn--icon btn--icon--red" onClick={() => this.removeLink(id)}>
+                                                        <i className="far fa-trash-alt"> </i>
+                                                    </button>
+                                                </React.Fragment>
                                             ) : null}
                                         </div>
                                     </div>
