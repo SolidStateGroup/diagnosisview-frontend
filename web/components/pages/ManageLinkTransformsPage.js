@@ -102,6 +102,7 @@ module.exports = hot(module)(class extends React.Component {
                                         <div className="col p-0">
                                             <select
                                                 className="input input--outline input--fit-cell"
+                                                style={{padding: 0}}
                                                 value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].criteria : transform.criteria}
                                                 disabled={!this.state.linkTransforms[transform.id] || isSaving}
                                                 onChange={(e) => this.editField(transform.id, 'criteria', e)}

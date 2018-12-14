@@ -49,6 +49,7 @@ const TheComponent = class extends Component {
                     <div>
                         <select
                             className="form-control full-width"
+                            style={{padding: 0}}
                             value={difficultyLevel}
                             onChange={(e) => this.setState({difficultyLevel: e.target.value})}
                         >

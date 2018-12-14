@@ -37,7 +37,11 @@ const TheComponent = class extends Component {
                         <fieldset className="fieldset fieldset--border-bottom  pt-1 pb-4">
                             <label className="fieldset__label text-small text-muted">External Standard</label>
                             <div>
-                                <select className="fieldset__input input input--outline" onChange={e => this.setState({externalStandard: Utils.safeParseEventValue(e)})}>
+                                <select
+                                    className="fieldset__input input input--outline"
+                                    style={{padding: 0}}
+                                    onChange={e => this.setState({externalStandard: Utils.safeParseEventValue(e)})}
+                                >
                                     <option value=""></option>
                                     {_.map(externalStandards, (externalStandard) => (
                                         <option key={externalStandard.id} value={externalStandard.id}>{externalStandard.name}</option>

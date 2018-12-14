@@ -492,6 +492,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="col p-0">
                                         <select
                                             className="form-control input--fit-cell"
+                                            style={{padding: 0}}
                                             value={difficultyLevel}
                                             disabled={isSaving}
                                             onChange={(e) => this.onDifficultyLevelChange(id, e)}
