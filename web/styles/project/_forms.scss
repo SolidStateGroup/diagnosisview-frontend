@@ -21,6 +21,10 @@
     &--fit-cell {
         width: 95%
     }
+
+    &::placeholder {
+        color: #3f3f3f;
+    }
 }
 
 .fieldset{
