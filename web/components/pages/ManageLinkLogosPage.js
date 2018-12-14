@@ -41,8 +41,7 @@ module.exports = hot(module)(class extends React.Component {
     }
 
     save = (id) => {
-        const { startsWith, image } = this.state.linkLogos[id];
-        AppActions.updateLinkLogo(id, { startsWith, image });
+        AppActions.updateLinkLogo(id, this.state.linkLogos[id]);
     }
 
     onSave = (id) => {
@@ -94,15 +93,8 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="col p-0">
                                         <label className="panel__head__title">LOGO</label>
                                     </div>
-                                    <div className="ml-auto ">
-                                        <div className="flex-row invisible">
-                                            <button className="btn btn--icon btn--icon--blue">
-                                                <i className="far fa-edit"></i>
-                                            </button>
-                                            <button className="btn btn--icon btn--icon--red">
-                                                <i className="far fa-trash-alt"> </i>
-                                            </button>
-                                        </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">OVERRIDE LINK COMPLEXITY?</label>
                                     </div>
                                 </div>
                             </div>
@@ -129,26 +121,47 @@ module.exports = hot(module)(class extends React.Component {
                                                 />
                                             ) : null}
                                         </div>
-                                    </div>
-                                    <div className="ml-auto">
-                                        <div className="flex-row">
-                                            {!this.state.linkLogos[logo.id] ? (
-                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.edit(logo)} disabled={isSaving}>
-                                                    <i className="far fa-edit"></i>
-                                                </button>
-                                            ) : (
-                                                <React.Fragment>
-                                                    <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(logo.id)} disabled={isSaving}>
-                                                        <i className="far fa-save"></i>
-                                                    </button>
-                                                    <button className="btn btn--icon btn--icon--blue" onClick={() => this.cancelEdit(logo.id)} disabled={isSaving}>
-                                                        <i className="fas fa-times"></i>
-                                                    </button>
-                                                </React.Fragment>
-                                            )}
-                                            <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(logo.id)} disabled={isSaving}>
-                                                <i className="far fa-trash-alt"> </i>
-                                            </button>
+                                        <div className="col p-0">
+                                            <div className="flex-row">
+                                                <select
+                                                    className="form-control flex-1"
+                                                    style={{padding: 0}}
+                                                    value={this.state.linkLogos[logo.id] ? this.state.linkLogos[logo.id].overrideDifficultyLevel : logo.overrideDifficultyLevel}
+                                                    disabled={!this.state.linkLogos[logo.id]}
+                                                    onChange={(e) => this.editField(logo.id, 'overrideDifficultyLevel', e)}
+                                                >
+                                                    <option value="">Do not override</option>
+                                                    {_.map(Constants.difficultyLevels, (option, i) => {
+                                                        const isObj = typeof option === 'object';
+                                                        const label = isObj ? option.label || option.value : option;
+                                                        const value = isObj ? option.value : option;
+                                                        return (
+                                                            <option key={i} value={value}>{label}</option>
+                                                        )
+                                                    })}
+                                                </select>
+                                                <div className="ml-auto">
+                                                    <div className="flex-row">
+                                                        {!this.state.linkLogos[logo.id] ? (
+                                                            <button className="btn btn--icon btn--icon--blue" onClick={() => this.edit(logo)} disabled={isSaving}>
+                                                                <i className="far fa-edit"></i>
+                                                            </button>
+                                                        ) : (
+                                                            <React.Fragment>
+                                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(logo.id)} disabled={isSaving}>
+                                                                    <i className="far fa-save"></i>
+                                                                </button>
+                                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.cancelEdit(logo.id)} disabled={isSaving}>
+                                                                    <i className="fas fa-times"></i>
+                                                                </button>
+                                                            </React.Fragment>
+                                                        )}
+                                                        <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(logo.id)} disabled={isSaving}>
+                                                            <i className="far fa-trash-alt"> </i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

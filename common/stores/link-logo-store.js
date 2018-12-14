@@ -2,12 +2,12 @@ var BaseStore = require('./base/_store');
 var data = require('./base/_data');
 
 var controller = {
-        add: function (startsWith, image) {
+        add: function (startsWith, image, overrideDifficultyLevel) {
             store.saving();
             API.getBase64FromFile(image)
                 .then(base64 => {
                     base64 = base64.substr(base64.indexOf('base64') + 7);
-                    return data.post(`${Project.api}logo/rules`, { image: base64, imageFormat: image.type, startsWith })
+                    return data.post(`${Project.api}logo/rules`, { image: base64, imageFormat: image.type, startsWith, overrideDifficultyLevel })
                         .then(res => {
                             store.model = store.model || [];
                             store.model.push(res);
@@ -37,10 +37,10 @@ var controller = {
         },
         update: function (id, linkLogo) {
             store.saving();
-            API.getBase64FromFile(linkLogo.image)
+            (linkLogo.image ? API.getBase64FromFile(linkLogo.image) : Promise.resolve())
                 .then(base64 => {
-                    base64 = base64.substr(base64.indexOf('base64') + 7);
-                    return data.put(`${Project.api}logo/rules/${id}`, { ...linkLogo, image: base64, imageFormat: linkLogo.image.type })
+                    if (base64) base64 = base64.substr(base64.indexOf('base64') + 7);
+                    return data.put(`${Project.api}logo/rules/${id}`, Object.assign({}, { ...linkLogo }, base64 ? { image: base64, imageFormat: linkLogo.image.type } : {}))
                         .then(res => {
                             const index = _.findIndex(store.model, {id});
                             store.model[index] = res;
@@ -63,7 +63,7 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
 
     switch (action.actionType) {
         case Actions.ADD_LINK_LOGO:
-            controller.add(action.startsWith, action.image);
+            controller.add(action.startsWith, action.image, action.overrideDifficultyLevel);
             break;
         case Actions.GET_LINK_LOGOS:
             controller.get();

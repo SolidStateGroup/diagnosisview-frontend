@@ -15,8 +15,8 @@ const TheComponent = class extends Component {
 
     save = () => {
         this.setState({ isSaving: true });
-        const { startsWith, image } = this.state;
-        AppActions.addLinkLogo(startsWith, image);
+        const { startsWith, image, overrideDifficultyLevel } = this.state;
+        AppActions.addLinkLogo(startsWith, image, overrideDifficultyLevel);
     }
 
     canSave = () => {
@@ -37,7 +37,7 @@ const TheComponent = class extends Component {
     }
 
     render() {
-        const { startsWith, image } = this.state;
+        const { startsWith, image, overrideDifficultyLevel } = this.state;
         return (
             <LinkLogoProvider onSave={this.close} onError={() => this.setState({isSaving: false})}>
 				{({ isSaving, error }) => (
@@ -68,6 +68,27 @@ const TheComponent = class extends Component {
                                     <img id="imagePreview" width="254" height="57" />
                                 </div>
                             ) : null}
+                        </fieldset>
+                        <fieldset className="fieldset pt-1 pb-4">
+                            <label className="fieldset__label text-small text-muted">Override link complexity?</label>
+                            <div>
+                                <select
+                                    className="form-control"
+                                    style={{padding: 0}}
+                                    value={overrideDifficultyLevel}
+                                    onChange={(e) => this.setState({overrideDifficultyLevel: e.target.value})}
+                                >
+                                    <option value="">Do not override</option>
+                                    {_.map(Constants.difficultyLevels, (option, i) => {
+                                        const isObj = typeof option === 'object';
+                                        const label = isObj ? option.label || option.value : option;
+                                        const value = isObj ? option.value : option;
+                                        return (
+                                            <option key={i} value={value}>{label}</option>
+                                        )
+                                    })}
+                                </select>
+                            </div>
                         </fieldset>
                         <div className="modal-footer text-center justify-content-center flex-column">
                             {isSaving ? <Loader /> : (
