@@ -250,7 +250,7 @@ module.exports = hot(module)(class extends React.Component {
                         </div>
                         <div className="panel mb-5">
                             <div className="panel__head">
-                                <div className="flex-1 flex-row">
+                                <div className="flex-1 flex-row align-items-start">
                                     <div className="col p-0">
                                         <label className="panel__head__title">CODE</label>
                                         {!diagnosis ? <p className="text-small">{code}</p> : (
@@ -337,7 +337,7 @@ module.exports = hot(module)(class extends React.Component {
                         <h5>Categories</h5>
                         <div className="panel mb-5">
                             <div className="panel__head">
-                                <div className="flex-1 flex-row">
+                                <div className="flex-1 flex-row align-items-start">
                                     <div className="col p-0">
                                         <label className="panel__head__title">NAME</label>
                                     </div>
@@ -384,7 +384,7 @@ module.exports = hot(module)(class extends React.Component {
                         <h5>External Standards</h5>
                         <div className="panel mb-5">
                             <div className="panel__head">
-                                <div className="flex-1 flex-row">
+                                <div className="flex-1 flex-row align-items-start">
                                     <div className="col p-0">
                                         <label className="panel__head__title">CODE</label>
                                     </div>
@@ -439,25 +439,25 @@ module.exports = hot(module)(class extends React.Component {
                             <div className="panel__head">
                                 <div className="flex-1 flex-row">
                                     <div className="col p-0">
-                                        <p className="text-small">NAME</p>
+                                        <label className="panel__head__title">NAME</label>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small">CREATED</p>
+                                        <label className="panel__head__title">CREATED</label>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small">LAST UPDATED</p>
+                                        <label className="panel__head__title">LAST UPDATED</label>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small">DIFFICULTY LEVEL</p>
+                                        <label className="panel__head__title">DIFFICULTY LEVEL</label>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small">DISPLAY TO FREE USERS?</p>
+                                        <label className="panel__head__title">DISPLAY TO FREE USERS?</label>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small">URL TRANSFORMS ONLY?</p>
+                                        <label className="panel__head__title">URL TRANSFORMS ONLY?</label>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small">URL</p>
+                                        <label className="panel__head__title">URL</label>
                                     </div>
                                     <div className="ml-auto ">
                                         <div className="flex-row invisible">
