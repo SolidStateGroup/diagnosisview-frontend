@@ -59,7 +59,7 @@ const TheComponent = class extends Component {
                                 <input className="input input--outline" value={transformation} onChange={e => this.setState({transformation: Utils.safeParseEventValue(e)})} />
                             </div>
                         </fieldset>
-                        <div className="modal-footer text-center justify-content-center">
+                        <div className="modal-footer text-center justify-content-center flex-column">
                             <button disabled={!this.canSave() || isSaving} className="btn btn--primary" onClick={this.save}>
                                 Save link
                             </button>

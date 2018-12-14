@@ -152,7 +152,7 @@ module.exports = hot(module)(class extends React.Component {
                 const diagnosis = this.state.diagnosis;
                 diagnosis.links = diagnosis.links || [];
                 const id = this.getNextAvailableId(diagnosis.links, 'id');
-                diagnosis.links.push({...link, id});
+                diagnosis.links.push({...link, id, displayOrder: id});
                 this.setState({diagnosis});
             }}
         />);
@@ -162,6 +162,50 @@ module.exports = hot(module)(class extends React.Component {
         const diagnosis = this.state.diagnosis;
         diagnosis.links.splice(_.findIndex(diagnosis.links, (link) => link.id === id), 1);
         this.setState({diagnosis});
+    }
+
+    changeDisplayOrder = (id, up) => {
+        const diagnosis = this.state.diagnosis || this.state.original;
+        const linkToMove = _.find(diagnosis.links, {id});
+        let linkToReplace;
+        for (let i = 0; i < diagnosis.links.length; i++) {
+            const link = diagnosis.links[i];
+            if (link.id === id) continue;
+            if (up ?
+                    (link.displayOrder < linkToMove.displayOrder && (!linkToReplace || linkToReplace.displayOrder < link.displayOrder)) :
+                    (link.displayOrder > linkToMove.displayOrder && (!linkToReplace || linkToReplace.displayOrder > link.displayOrder))) {
+                linkToReplace = link;
+            }
+        }
+        if (linkToReplace) {
+            if (this.state.diagnosis) {
+                const displayOrder = linkToMove.displayOrder;
+                linkToMove.displayOrder = linkToReplace.displayOrder;
+                linkToReplace.displayOrder = displayOrder;
+                this.setState({diagnosis});
+            } else {
+                this.setState({isSaving: true});
+                Promise.all([
+                    data.put(Project.api + 'admin/code/link', {
+                        id,
+                        displayOrder: linkToReplace.displayOrder
+                    }),
+                    data.put(Project.api + 'admin/code/link', {
+                        id : linkToReplace.id,
+                        displayOrder: linkToMove.displayOrder
+                    }),
+                ])
+                    .then(([res, res2]) => {
+                        linkToMove.displayOrder = res.displayOrder;
+                        linkToReplace.displayOrder = res2.displayOrder;
+                        this.setState({original: diagnosis, isSaving: false});
+                    })
+                    .catch(e => {
+                        this.setState({isSaving: false});
+                        toast('Sorry something went wrong');
+                    });
+            }
+        }
     }
 
     save = () => {
@@ -184,7 +228,6 @@ module.exports = hot(module)(class extends React.Component {
             code, patientFriendlyName, created, lastUpdate, hideFromPatients, removedExternally, description,
             codeCategories, externalStandards, links,
         } = diagnosis || original;
-        console.log(diagnosis);
         return (
             <CodesProvider>
                 {({ isLoading, codes, isSaving }) => (
@@ -411,10 +454,21 @@ module.exports = hot(module)(class extends React.Component {
                                         <p className="text-small">DISPLAY TO FREE USERS?</p>
                                     </div>
                                     <div className="col p-0">
+                                        <p className="text-small">URL TRANSFORMS ONLY?</p>
+                                    </div>
+                                    <div className="col p-0">
                                         <p className="text-small">URL</p>
                                     </div>
                                     <div className="ml-auto ">
                                         <div className="flex-row invisible">
+                                            <div className="flex-1 flex-column">
+                                                <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
+                                                    <i className="fas fa-chevron-up text-small"> </i>
+                                                </button>
+                                                <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
+                                                    <i className="fas fa-chevron-down text-small"> </i>
+                                                </button>
+                                            </div>
                                             {diagnosis ? (
                                                 <button className="btn btn--icon btn--icon--red">
                                                     <i className="far fa-trash-alt"> </i>
@@ -424,7 +478,7 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            {_.map(links, ({id, name, created, lastUpdate, difficultyLevel, freeLink, link}) => (
+                            {_.map(_.sortBy(links, "displayOrder"), ({id, name, created, lastUpdate, difficultyLevel, freeLink, link, transformationsOnly}, index) => (
                                 <div key={id} className="panel__row flex-row">
                                     <div className="col p-0">
                                         <p className="text-small">{name}</p>
@@ -437,8 +491,7 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                     <div className="col p-0">
                                         <select
-                                            className="form-control"
-                                            style={{width: '90%'}}
+                                            className="form-control input--fit-cell"
                                             value={difficultyLevel}
                                             disabled={isSaving}
                                             onChange={(e) => this.onDifficultyLevelChange(id, e)}
@@ -458,10 +511,25 @@ module.exports = hot(module)(class extends React.Component {
                                         <p className="text-small"><Switch checked={freeLink} onChange={checked => this.toggleFreeLink(id, checked)}/></p>
                                     </div>
                                     <div className="col p-0">
+                                        <p className="text-small"><Switch checked={transformationsOnly} /></p>
+                                    </div>
+                                    <div className="col p-0">
                                         <a className="text-small" style={{wordBreak: 'break-all'}} href={link}>{link}</a>
                                     </div>
                                     <div className="ml-auto ">
                                         <div className="flex-row">
+                                            <div className="flex-1 flex-column">
+                                                {index !== 0 ? (
+                                                    <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, true)}>
+                                                        <i className="fas fa-chevron-up text-small"> </i>
+                                                    </button>
+                                                ) : null}
+                                                {index !== links.length - 1 ? (
+                                                    <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, false)}>
+                                                        <i className="fas fa-chevron-down text-small"> </i>
+                                                    </button>
+                                                ) : null}
+                                            </div>
                                             {diagnosis ? (
                                                 <button className="btn btn--icon btn--icon--red" onClick={() => this.removeLink(id)}>
                                                     <i className="far fa-trash-alt"> </i>
