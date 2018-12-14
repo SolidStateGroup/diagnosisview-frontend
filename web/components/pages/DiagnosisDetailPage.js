@@ -165,7 +165,7 @@ module.exports = hot(module)(class extends React.Component {
     }
 
     changeDisplayOrder = (id, up) => {
-        const { diagnosis } = this.state;
+        const diagnosis = this.state.diagnosis || this.state.original;
         const linkToMove = _.find(diagnosis.links, {id});
         let linkToReplace;
         for (let i = 0; i < diagnosis.links.length; i++) {
@@ -178,10 +178,33 @@ module.exports = hot(module)(class extends React.Component {
             }
         }
         if (linkToReplace) {
-            const displayOrder = linkToMove.displayOrder;
-            linkToMove.displayOrder = linkToReplace.displayOrder;
-            linkToReplace.displayOrder = displayOrder;
-            this.setState({diagnosis});
+            if (this.state.diagnosis) {
+                const displayOrder = linkToMove.displayOrder;
+                linkToMove.displayOrder = linkToReplace.displayOrder;
+                linkToReplace.displayOrder = displayOrder;
+                this.setState({diagnosis});
+            } else {
+                this.setState({isSaving: true});
+                Promise.all([
+                    data.put(Project.api + 'admin/code/link', {
+                        id,
+                        displayOrder: linkToReplace.displayOrder
+                    }),
+                    data.put(Project.api + 'admin/code/link', {
+                        id : linkToReplace.id,
+                        displayOrder: linkToMove.displayOrder
+                    }),
+                ])
+                    .then(([res, res2]) => {
+                        linkToMove.displayOrder = res.displayOrder;
+                        linkToReplace.displayOrder = res2.displayOrder;
+                        this.setState({original: diagnosis, isSaving: false});
+                    })
+                    .catch(e => {
+                        this.setState({isSaving: false});
+                        toast('Sorry something went wrong');
+                    });
+            }
         }
     }
 
@@ -438,20 +461,18 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                     <div className="ml-auto ">
                                         <div className="flex-row invisible">
+                                            <div className="flex-1 flex-column">
+                                                <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
+                                                    <i className="fas fa-chevron-up text-small"> </i>
+                                                </button>
+                                                <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
+                                                    <i className="fas fa-chevron-down text-small"> </i>
+                                                </button>
+                                            </div>
                                             {diagnosis ? (
-                                                <React.Fragment>
-                                                    <div className="flex-1 flex-column">
-                                                        <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
-                                                            <i className="fas fa-chevron-up text-small"> </i>
-                                                        </button>
-                                                        <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
-                                                            <i className="fas fa-chevron-down text-small"> </i>
-                                                        </button>
-                                                    </div>
-                                                    <button className="btn btn--icon btn--icon--red">
-                                                        <i className="far fa-trash-alt"> </i>
-                                                    </button>
-                                                </React.Fragment>
+                                                <button className="btn btn--icon btn--icon--red">
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
                                             ) : null}
                                         </div>
                                     </div>
@@ -497,24 +518,22 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                     <div className="ml-auto ">
                                         <div className="flex-row">
-                                            {diagnosis ? (
-                                                <React.Fragment>
-                                                    <div className="flex-1 flex-column">
-                                                        {index !== 0 ? (
-                                                            <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, true)}>
-                                                                <i className="fas fa-chevron-up text-small"> </i>
-                                                            </button>
-                                                        ) : null}
-                                                        {index !== links.length - 1 ? (
-                                                            <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, false)}>
-                                                                <i className="fas fa-chevron-down text-small"> </i>
-                                                            </button>
-                                                        ) : null}
-                                                    </div>
-                                                    <button className="btn btn--icon btn--icon--red" onClick={() => this.removeLink(id)}>
-                                                        <i className="far fa-trash-alt"> </i>
+                                            <div className="flex-1 flex-column">
+                                                {index !== 0 ? (
+                                                    <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, true)}>
+                                                        <i className="fas fa-chevron-up text-small"> </i>
                                                     </button>
-                                                </React.Fragment>
+                                                ) : null}
+                                                {index !== links.length - 1 ? (
+                                                    <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, false)}>
+                                                        <i className="fas fa-chevron-down text-small"> </i>
+                                                    </button>
+                                                ) : null}
+                                            </div>
+                                            {diagnosis ? (
+                                                <button className="btn btn--icon btn--icon--red" onClick={() => this.removeLink(id)}>
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
                                             ) : null}
                                         </div>
                                     </div>
