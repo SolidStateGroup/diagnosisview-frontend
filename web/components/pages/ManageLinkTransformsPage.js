@@ -1,7 +1,7 @@
 import React from "react";
 import CreateLinkTransformModal from '../modals/CreateLinkTransform';
 
-module.exports = class extends React.Component {
+module.exports = hot(module)(class extends React.Component {
     static contextTypes = {
         router: React.PropTypes.object.isRequired
     };
@@ -27,6 +27,11 @@ module.exports = class extends React.Component {
         const linkTransforms = this.state.linkTransforms;
         linkTransforms[transform.id] = _.cloneDeep(transform);
         this.setState({linkTransforms});
+    }
+
+    cancelEdit = (id) => {
+        delete this.state.linkTransforms[id];
+        this.forceUpdate();
     }
 
     remove = (id) => {
@@ -87,7 +92,6 @@ module.exports = class extends React.Component {
                                             <button className="btn btn--icon btn--icon--red">
                                                 <i className="far fa-trash-alt"> </i>
                                             </button>
-                                            <i className="fas fa-chevron-right float-right"> </i>
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +101,7 @@ module.exports = class extends React.Component {
                                     <div className="flex-1 flex-row">
                                         <div className="col p-0">
                                             <select
-                                                className="input input--outline"
+                                                className="input input--outline input--fit-cell"
                                                 value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].criteria : transform.criteria}
                                                 disabled={!this.state.linkTransforms[transform.id] || isSaving}
                                                 onChange={(e) => this.editField(transform.id, 'criteria', e)}
@@ -108,16 +112,16 @@ module.exports = class extends React.Component {
                                             </select>
                                         </div>
                                         <div className="col p-0">
-                                            <input
-                                                className="input input--outline"
+                                            <textarea
+                                                className="input input--outline input--fit-cell full-height"
                                                 value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].link : transform.link}
                                                 readOnly={!this.state.linkTransforms[transform.id]}
                                                 disabled={isSaving} onChange={(e) => this.editField(transform.id, 'link', e)}
                                             />
                                         </div>
                                         <div className="col p-0">
-                                            <input
-                                                className="input input--outline"
+                                            <textarea
+                                                className="input input--outline input--fit-cell full-height"
                                                 value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].transformation : transform.transformation}
                                                 readOnly={!this.state.linkTransforms[transform.id]}
                                                 disabled={isSaving} onChange={(e) => this.editField(transform.id, 'transformation', e)}
@@ -131,14 +135,18 @@ module.exports = class extends React.Component {
                                                     <i className="far fa-edit"></i>
                                                 </button>
                                             ) : (
-                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(transform.id)} disabled={isSaving}>
-                                                    <i className="far fa-save"></i>
-                                                </button>
+                                                <React.Fragment>
+                                                    <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(transform.id)} disabled={isSaving}>
+                                                        <i className="far fa-save"></i>
+                                                    </button>
+                                                    <button className="btn btn--icon btn--icon--blue" onClick={() => this.cancelEdit(transform.id)} disabled={isSaving}>
+                                                        <i className="fas fa-times"></i>
+                                                    </button>
+                                                </React.Fragment>
                                             )}
                                             <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(transform.id)} disabled={isSaving}>
                                                 <i className="far fa-trash-alt"> </i>
                                             </button>
-                                            <i className="fas fa-chevron-right float-right"> </i>
                                         </div>
                                     </div>
                                 </div>
@@ -155,4 +163,4 @@ module.exports = class extends React.Component {
             </LinkTransformProvider>
         );
     }
-};
+});

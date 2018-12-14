@@ -6,6 +6,7 @@ var controller = {
             store.saving();
             API.getBase64FromFile(image)
                 .then(base64 => {
+                    base64 = base64.substr(base64.indexOf('base64') + 7);
                     return data.post(`${Project.api}logo/rules`, { image: base64, imageFormat: image.type, startsWith })
                         .then(res => {
                             store.model = store.model || [];
@@ -38,6 +39,7 @@ var controller = {
             store.saving();
             API.getBase64FromFile(linkLogo.image)
                 .then(base64 => {
+                    base64 = base64.substr(base64.indexOf('base64') + 7);
                     return data.put(`${Project.api}logo/rules/${id}`, { ...linkLogo, image: base64, imageFormat: linkLogo.image.type })
                         .then(res => {
                             const index = _.findIndex(store.model, {id});

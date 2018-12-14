@@ -31,7 +31,7 @@ module.exports = hot(module)(class extends React.Component {
 
     cancelEdit = (id) => {
         const linkLogos = this.state.linkLogos;
-        $(`#imagePreview${id}`).attr('src', linkLogos[id].imageUrl);
+        $(`#imagePreview${id}`).attr('src', linkLogos[id].imageUrl.indexOf('/api/') !== -1 ? Project.api + linkLogos[id].imageUrl.substr(5) : linkLogos[id].imageUrl);
         delete linkLogos[id];
         this.setState({linkLogos});
     }
@@ -102,7 +102,6 @@ module.exports = hot(module)(class extends React.Component {
                                             <button className="btn btn--icon btn--icon--red">
                                                 <i className="far fa-trash-alt"> </i>
                                             </button>
-                                            <i className="fas fa-chevron-right float-right"> </i>
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +111,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="flex-1 flex-row">
                                         <div className="col p-0">
                                             <input
-                                                className="input input--outline"
+                                                className="input input--outline input--fit-cell"
                                                 value={this.state.linkLogos[logo.id] ? this.state.linkLogos[logo.id].startsWith : logo.startsWith}
                                                 readOnly={!this.state.linkLogos[logo.id]}
                                                 disabled={isSaving} onChange={(e) => this.editField(logo.id, 'startsWith', e)}
@@ -150,7 +149,6 @@ module.exports = hot(module)(class extends React.Component {
                                             <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(logo.id)} disabled={isSaving}>
                                                 <i className="far fa-trash-alt"> </i>
                                             </button>
-                                            <i className="fas fa-chevron-right float-right"> </i>
                                         </div>
                                     </div>
                                 </div>
