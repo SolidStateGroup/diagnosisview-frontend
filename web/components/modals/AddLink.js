@@ -35,25 +35,35 @@ const TheComponent = class extends Component {
                 <fieldset className="fieldset fieldset--border-bottom  pt-1 pb-4">
                     <label className="fieldset__label text-small text-muted">Name</label>
                     <div>
-                        <input className="input input--outline" value={name} onChange={e => this.setState({name: Utils.safeParseEventValue(e)})} />
+                        <input
+                            className="input input--outline"
+                            value={name}
+                            onChange={e => this.setState({name: Utils.safeParseEventValue(e)})}
+                            placeholder="Enter link name"
+                        />
                     </div>
                 </fieldset>
                 <fieldset className="fieldset pt-1 pb-4">
                     <label className="fieldset__label text-small text-muted">Link</label>
                     <div>
-                        <input className="input input--outline full-width" value={link} onChange={e => this.setState({link: Utils.safeParseEventValue(e)})} />
+                        <input
+                            className="input input--outline full-width"
+                            value={link}
+                            onChange={e => this.setState({link: Utils.safeParseEventValue(e)})}
+                            placeholder="Enter link URL"
+                        />
                     </div>
                 </fieldset>
                 <fieldset className="fieldset pt-1 pb-4">
                     <label className="fieldset__label text-small text-muted">Difficulty Level</label>
                     <div>
                         <select
-                            className="form-control full-width"
+                            className="form-control"
                             style={{padding: 0}}
                             value={difficultyLevel}
                             onChange={(e) => this.setState({difficultyLevel: e.target.value})}
                         >
-                            <option value=""></option>
+                            <option value="">Select difficulty level..</option>
                             {_.map(Constants.difficultyLevels, (option, i) => {
                                 const isObj = typeof option === 'object';
                                 const label = isObj ? option.label || option.value : option;

@@ -31,7 +31,7 @@ const TheComponent = class extends Component {
                                     style={{padding: 0}}
                                     onChange={e => this.setState({category: Utils.safeParseEventValue(e)})}
                                 >
-                                    <option value=""></option>
+                                    <option value="">Select a category..</option>
                                     {_.map(_.filter(categories, category => this.props.existing.indexOf(category.number) === -1), (category) => (
                                         <option key={category.number} value={category.number}>{category.friendlyDescription}</option>
                                     ))}

@@ -223,7 +223,7 @@ module.exports = hot(module)(class extends React.Component {
 
     render = () => {
         const { diagnosis, original } = this.state;
-        if (!diagnosis && !original) return <Loader />
+        if (!diagnosis && !original) return <Flex className="centered-container"><Loader /></Flex>
         const {
             code, patientFriendlyName, created, lastUpdate, hideFromPatients, removedExternally, description,
             codeCategories, externalStandards, links,
