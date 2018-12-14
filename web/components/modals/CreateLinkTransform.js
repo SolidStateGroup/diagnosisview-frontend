@@ -39,7 +39,11 @@ const TheComponent = class extends Component {
                         <fieldset className="fieldset fieldset--border-bottom  pt-1 pb-4">
                             <label className="fieldset__label text-small text-muted">INSTITUTION</label>
                             <div>
-                                <select className="fieldset__input input input--outline" onChange={e => this.setState({institution: Utils.safeParseEventValue(e)})}>
+                                <select
+                                    className="fieldset__input input input--outline"
+                                    style={{padding: 0}}
+                                    onChange={e => this.setState({institution: Utils.safeParseEventValue(e)})}
+                                >
                                     <option value=""></option>
                                     {_.map(Constants.institutions, institution => (
                                         <option key={institution.value} value={institution.value}>{institution.label}</option>

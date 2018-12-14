@@ -26,7 +26,11 @@ const TheComponent = class extends Component {
                     <div className="modal-form-content">
                         <fieldset className="fieldset fieldset--border-bottom  pt-1 pb-4">
                             <div>
-                                <select className="fieldset__input input input--outline" onChange={e => this.setState({category: Utils.safeParseEventValue(e)})}>
+                                <select
+                                    className="fieldset__input input input--outline"
+                                    style={{padding: 0}}
+                                    onChange={e => this.setState({category: Utils.safeParseEventValue(e)})}
+                                >
                                     <option value=""></option>
                                     {_.map(_.filter(categories, category => this.props.existing.indexOf(category.number) === -1), (category) => (
                                         <option key={category.number} value={category.number}>{category.friendlyDescription}</option>
