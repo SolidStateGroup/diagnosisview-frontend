@@ -44,7 +44,7 @@ const TheComponent = class extends Component {
                                     style={{padding: 0}}
                                     onChange={e => this.setState({institution: Utils.safeParseEventValue(e)})}
                                 >
-                                    <option value=""></option>
+                                    <option value="">Select an institution..</option>
                                     {_.map(Constants.institutions, institution => (
                                         <option key={institution.value} value={institution.value}>{institution.label}</option>
                                     ))}
@@ -54,13 +54,23 @@ const TheComponent = class extends Component {
                         <fieldset className="fieldset pt-1 pb-4">
                             <label className="fieldset__label text-small text-muted">Original URL</label>
                             <div>
-                                <input className="input input--outline" value={link} onChange={e => this.setState({link: Utils.safeParseEventValue(e)})} />
+                                <textarea
+                                    className="input input--outline full-width"
+                                    value={link}
+                                    onChange={e => this.setState({link: Utils.safeParseEventValue(e)})}
+                                    placeholder="Enter the original URL"
+                                />
                             </div>
                         </fieldset>
                         <fieldset className="fieldset pt-1 pb-4">
                             <label className="fieldset__label text-small text-muted">Transformed URL</label>
                             <div>
-                                <input className="input input--outline" value={transformation} onChange={e => this.setState({transformation: Utils.safeParseEventValue(e)})} />
+                                <textarea
+                                    className="input input--outline full-width"
+                                    value={transformation}
+                                    onChange={e => this.setState({transformation: Utils.safeParseEventValue(e)})}
+                                    placeholder="Enter the transformed URL"
+                                />
                             </div>
                         </fieldset>
                         <div className="modal-footer text-center justify-content-center flex-column">

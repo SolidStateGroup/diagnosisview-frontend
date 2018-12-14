@@ -46,14 +46,20 @@ const TheComponent = class extends Component {
                         <fieldset className="fieldset pt-1 pb-4">
                             <label className="fieldset__label text-small text-muted">Starts With</label>
                             <div>
-                                <input className="input input--outline" value={startsWith} onChange={e => this.setState({startsWith: Utils.safeParseEventValue(e)})} />
+                                <input
+                                    className="input input--outline"
+                                    value={startsWith}
+                                    onChange={e => this.setState({startsWith: Utils.safeParseEventValue(e)})}
+                                    placeholder="Enter the original URL"
+                                />
                             </div>
                         </fieldset>
                         <fieldset className="fieldset pt-1 pb-4">
                             <label className="fieldset__label text-small text-muted">Logo (recommended size 254 x 57)</label>
                             <div className="flex-column">
                                 <input
-                                    type="file" onChange={e => this.setState({image: e.target.files[0]})}
+                                    type="file"
+                                    onChange={e => this.setState({image: e.target.files[0]})}
                                     accept="image/*"
                                 />
                             </div>
