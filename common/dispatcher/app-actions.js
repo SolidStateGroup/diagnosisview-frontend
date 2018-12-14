@@ -166,10 +166,10 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       actionType: Actions.GET_LINK_LOGOS
     });
   },
-  addLinkLogo: function (startsWith, image) {
+  addLinkLogo: function (startsWith, image, overrideDifficultyLevel) {
     Dispatcher.handleViewAction({
       actionType: Actions.ADD_LINK_LOGO,
-      startsWith, image,
+      startsWith, image, overrideDifficultyLevel
     });
   },
   removeLinkLogo: function (id) {
