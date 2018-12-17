@@ -437,7 +437,7 @@ module.exports = hot(module)(class extends React.Component {
                         <h5>Links</h5>
                         <div className="panel mb-5">
                             <div className="panel__head">
-                                <div className="flex-1 flex-row">
+                                <div className="flex-1 flex-row align-items-start">
                                     <div className="col p-0">
                                         <label className="panel__head__title">NAME</label>
                                     </div>
