@@ -19,7 +19,7 @@ var controller = {
         },
         get: function () {
             store.loading();
-            data.get(`${Project.api}logo/rules`)
+            return data.get(`${Project.api}logo/rules`)
                 .then(res => {
                     store.model = res;
                     store.loaded();
@@ -55,6 +55,9 @@ var controller = {
         id: 'linkLogo',
         getLogos: function () {
             return store.model;
+        },
+        refresh: function () {
+            return controller.get();
         },
     });
 

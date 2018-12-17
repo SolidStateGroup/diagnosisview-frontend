@@ -49,6 +49,7 @@ const DashboardPage = class extends Component {
 		} else {
 			AppActions.getCodes();
 			AppActions.getCodeCategories();
+			AppActions.getLinkLogos();
 		}
 	}
 
@@ -192,34 +193,39 @@ const DashboardPage = class extends Component {
 											<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT FAVOURITES</Text>
 											<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goFavourites}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
-										<FavouritesProvider>
-											{({ favourites, isLoading }) => (
-												<View>
-													{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
-														const { link } = entry;
-														if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
-															return null;
-														}
-														return (
-															<ListItem key={i} onPress={() => this.onFavourite(link.link, entry.name)}>
-																<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
-																<Column style={[Styles.noMargin, {flex: 1}]}>
-																	<Text>{entry.name}</Text>
-																	{Constants.linkIcons[link.linkType.value] ? (
-																			<Row>
-																				<Image source={Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
-																				{link.linkType.value === 'CUSTOM' ? <Flex><Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text></Flex> : null}
-																			</Row>
-																		) : <Text>{link.name}</Text>
-																	}
-																</Column>
-																<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
-															</ListItem>
-														)
-													})}
-												</View>
+										<LinkLogoProvider>
+											{({ linkLogos, isLoading }) => (
+												<FavouritesProvider>
+													{({ favourites, isLoading }) => (
+														<View>
+															{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
+																const { link } = entry;
+																const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
+																if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+																	return null;
+																}
+																return (
+																	<ListItem key={i} onPress={() => this.onFavourite(link.link, entry.name)}>
+																		<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
+																		<Column style={[Styles.noMargin, {flex: 1}]}>
+																			<Text>{entry.name}</Text>
+																			{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
+																					<Row>
+																						<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																						{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Flex><Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text></Flex> : null}
+																					</Row>
+																				) : <Text>{link.name}</Text>
+																			}
+																		</Column>
+																		<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
+																	</ListItem>
+																)
+															})}
+														</View>
+													)}
+												</FavouritesProvider>
 											)}
-										</FavouritesProvider>
+										</LinkLogoProvider>
 									</View>
 								</View>
 							</ScrollView>
