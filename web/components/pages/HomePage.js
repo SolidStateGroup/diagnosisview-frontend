@@ -32,14 +32,14 @@ module.exports = class extends React.Component {
                                     <div className="col-md-6 align-items-center justify-content-center flex text-left full-height">
                                         <img src={require('../../images/brand.png')} width="35%" />
                                         <FormGroup className="text-center padded">
-                                            <h5 className="text-dark my-4">DiagnosisView aims to give healthcare students and practitioners immediate access to selected reliable information on 1,000+ common diagnoses.</h5>
+                                            <h5 className="text-dark my-4">Diagnosis View gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h5>
                                             <ul className="list-unstyled text-dark">
                                                 <li className="text-small">Info on your own mobile or tablet</li>
                                                 <li className="text-small">Advanced patient info is the starting point (free)</li>
-                                                <li className="text-small">Moving on to practitioner-level and expert-level professional resources (most free)</li>
+                                                <li className="text-small">Moving on to practitioner-level and expert-level professional resources</li>
                                             </ul>
-                                            <p>With an optional account you can save unlimited favourites and history across devices.</p>
-                                            <p>DiagnosisView development was commissioned by the <a href="https://www.ed.ac.uk" target="_blank">University of Edinburgh</a> with the support of the <a href="https://www.patientview.org" target="_blank">PatientView</a> electronic health records system.</p>
+                                            <p>With an optional account you can access professional resources, as well as sync favourites and history across devices.</p>
+                                            <p>DiagnosisView was developed by <a href="https://www.ed.ac.uk" target="_blank">The University of Edinburgh</a> with the support of the <a href="https://www.patientview.org" target="_blank">www.patientView.org</a> electronic health records system.</p>
                                         </FormGroup>
                                         <div>
                                             <Column className="centered-container" style={{alignItems: 'stretch', justifyContent: 'center'}}>
