@@ -1,5 +1,10 @@
 button{
     &.btn{
+        &:hover, &:focus{
+            outline:none;
+            box-shadow:none;
+        }
+
         &--primary{
             background:$brand-primary;
             box-shadow:0 0 8px rgba(0,0,0,0.4);

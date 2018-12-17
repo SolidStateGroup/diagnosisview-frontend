@@ -232,6 +232,9 @@ module.exports = hot(module)(class extends React.Component {
             <CodesProvider>
                 {({ isLoading, codes, isSaving }) => (
                     <Flex className={'content'}>
+                        <div className="flex-row mb-2">
+                            <button type="button" className="btn btn--icon btn--icon--blue pl-1" onClick={this.context.router.history.goBack}><i class="fas fa-chevron-left"></i> Back</button>
+                        </div>
                         <div className="flex-row mb-3">
                             <div className="flex-1 flex-column">
                                 {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : null}
@@ -334,7 +337,7 @@ module.exports = hot(module)(class extends React.Component {
                             </div>
                         </div>
 
-                        <h5>Categories</h5>
+                        <h5 className="panel__title">Categories</h5>
                         <div className="panel mb-5">
                             <div className="panel__head">
                                 <div className="flex-1 flex-row align-items-start">
@@ -381,7 +384,7 @@ module.exports = hot(module)(class extends React.Component {
                             ) : null}
                         </div>
 
-                        <h5>External Standards</h5>
+                        <h5 className="panel__title">External Standards</h5>
                         <div className="panel mb-5">
                             <div className="panel__head">
                                 <div className="flex-1 flex-row align-items-start">
@@ -434,7 +437,7 @@ module.exports = hot(module)(class extends React.Component {
                             ) : null}
                         </div>
 
-                        <h5>Links</h5>
+                        <h5 className="panel__title">Links</h5>
                         <div className="panel mb-5">
                             <div className="panel__head">
                                 <div className="flex-1 flex-row align-items-start">
