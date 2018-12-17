@@ -237,20 +237,19 @@ module.exports = hot(module)(class extends React.Component {
                         </div>
                         <div className="flex-row mb-3">
                             <div className="flex-1 flex-column">
-                                {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : null}
+                                {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : <h1 className="content__title">Add Diagnosis</h1>}
                             </div>
-                            <div className="flex-1 flex-column">
-                                {!diagnosis && code.indexOf('dv_') === 0 ? (
-                                    <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.diagnosis)})}>
-                                        Edit Diagnosis
-                                    </button>
-                                ) : diagnosis ? (
-                                    <button className="btn btn--primary" onClick={this.save}>
-                                        Save
-                                    </button>
-                                ) : null}
-                            </div>
+                            {!diagnosis && code.indexOf('dv_') === 0 ? (
+                                <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.diagnosis)})}>
+                                    Edit Diagnosis
+                                </button>
+                            ) : diagnosis ? (
+                                <button className="btn btn--primary" onClick={this.save}>
+                                    Save
+                                </button>
+                            ) : null}
                         </div>
+
                         <div className="panel mb-5">
                             <div className="panel__head">
                                 <div className="flex-1 flex-row align-items-start">
