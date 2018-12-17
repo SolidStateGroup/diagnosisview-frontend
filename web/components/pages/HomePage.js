@@ -23,7 +23,7 @@ module.exports = class extends React.Component {
 
     render = () => {
         return (
-            <div className="app-container">
+            <div className="app-container full-height">
                 <AccountProvider>
                     {({error}) => (
                         <Flex className="hero">
