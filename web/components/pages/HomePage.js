@@ -72,12 +72,12 @@ module.exports = class extends React.Component {
                                                 <div className="iphoneandroid noshrink">
                                                     <div className="iphoneandroid-android">
                                                         <div className="mask mask__noimage">
-                                                            <img alt="" className="mask-img"/>
+                                                            <img src="/images/search-android.jpg" alt="" className="mask-img img-fluid"/>
                                                         </div>
                                                     </div>
                                                     <div className="iphoneandroid-iphone">
                                                         <div className="mask mask__noimage">
-                                                            <img alt="" className="mask-img"/>
+                                                            <img src="/images/dashboard.jpg" alt="" className="mask-img img-fluid"/>
                                                         </div>
                                                     </div>
                                                 </div>
