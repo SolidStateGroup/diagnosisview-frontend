@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Aside from './Aside';
+import Nav from './Nav';
 
 export default class App extends Component {
 
@@ -50,18 +51,11 @@ export default class App extends Component {
             <div>
                 <AccountProvider onNoUser={this.onNoUser} onLogout={this.onLogout} onLogin={this.onLogin}>
                     {({ isLoading, user }) => (
-                        <div className={pageHasAside ? "aside-body" : null}>
-                            {/*<div className="header full-width">*/}
-                                {/*<ul className="list-inline list-unstyled float-right mb-0">*/}
-                                    {/*<li>*/}
-                                        {/*<a id="logout-link" className="header__link" onClick={this.logout} href='#'>Logout</a>*/}
-                                    {/*</li>*/}
-                                {/*</ul>*/}
-                            {/*</div>*/}
-                            <Row>
-                                {pageHasAside ? <Aside /> : null}
+                        <div>
+                            <div>
+                                {pageHasAside ? <Nav /> : null}
                                 {this.props.children}
-                            </Row>
+                            </div>
                         </div>
                     )}
                 </AccountProvider>

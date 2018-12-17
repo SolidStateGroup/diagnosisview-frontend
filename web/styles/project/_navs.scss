@@ -8,3 +8,18 @@
         padding:0 20px;
     }
 }
+
+.nav__links{
+    height:100%;
+
+    &__link{
+        padding-left:15px;
+        padding-right:15px;
+        color:#212529;
+
+        &--icon{
+            padding-top: 5px;
+            padding-left: 10px;
+        }
+    }
+}
