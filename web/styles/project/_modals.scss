@@ -1,0 +1,23 @@
+.modal{
+    .modal-content{
+        border-radius: 16px;
+    }
+    .modal-header{
+        background-color:#f5f5f5;
+        color:#404040;
+        padding:20px 30px;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+
+        .modal-close{
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+        }
+    }
+
+    .modal-dialog {
+        max-width:700px;
+    }
+}
