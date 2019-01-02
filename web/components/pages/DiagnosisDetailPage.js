@@ -240,7 +240,7 @@ module.exports = hot(module)(class extends React.Component {
                                 {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : <h1 className="content__title">Add Diagnosis</h1>}
                             </div>
                             {!diagnosis && code.indexOf('dv_') === 0 ? (
-                                <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.diagnosis)})}>
+                                <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.original)})}>
                                     Edit Diagnosis
                                 </button>
                             ) : diagnosis ? (
