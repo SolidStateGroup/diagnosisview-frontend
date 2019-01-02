@@ -8,10 +8,14 @@ const TheComponent = class extends Component {
 		this.state = {};
 	}
 
-	close = (id) => {
+	saved = (id) => {
 		closeModal();
 		this.props.onSave && this.props.onSave(id);
 		toast('User created successfully');
+	}
+
+	close = () => {
+		closeModal();
 	}
 
 	componentDidMount = () => {
@@ -32,7 +36,7 @@ const TheComponent = class extends Component {
 	render() {
 		const { username, password, repeatPassword } = this.state;
 		return (
-			<UsersProvider onSave={this.close}>
+			<UsersProvider onSave={this.saved}>
 				{({ isLoading, isSaving, users, error }, { createUser }) => (
 					<form id="create-user-modal" onSubmit={(e) => {
 						e.preventDefault();
@@ -90,7 +94,7 @@ const TheComponent = class extends Component {
 								disabled={isSaving}
 								onChange={e => this.setState({ occupation: Utils.safeParseEventValue(e) })}
 							>
-								<option value=""></option>
+								<option value="">Select an occupation..</option>
 								{_.map(['Healthcare Practitioner', 'Healthcare Student', 'Patient', 'Other'], (option, i) => {
 									const isObj = typeof option === 'object';
 									const label = isObj ? option.label || option.value : option;
@@ -109,7 +113,7 @@ const TheComponent = class extends Component {
 								disabled={isSaving}
 								onChange={e => this.setState({ institution: Utils.safeParseEventValue(e) })}
 							>
-								<option value=""></option>
+								<option value="">Select an institution..</option>
 								{_.map(['University of Edinburgh', 'Other', 'None'], (option, i) => {
 									const isObj = typeof option === 'object';
 									const label = isObj ? option.label || option.value : option;
@@ -121,10 +125,13 @@ const TheComponent = class extends Component {
 							</select>
 						</FormGroup>
 						{error && error.message && <div className="text-danger">{error.message}</div>}
-						<div className="pull-right">
-							<Button id="create-user-btn" disabled={isSaving || !this.isValid()}>
+						<div className="modal-footer text-center justify-content-center">
+							<button type="submit" className="btn btn--primary" disabled={isSaving || !this.isValid()}>
 								{isSaving ? 'Creating' : 'Create User'}
-							</Button>
+							</button>
+							<button type="button" className="btn btn--primary" disabled={isSaving} onClick={this.close}>
+								Cancel
+							</button>
 						</div>
 					</form>
 				)}

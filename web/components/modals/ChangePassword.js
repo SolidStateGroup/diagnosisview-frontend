@@ -74,7 +74,7 @@ const TheComponent = class extends Component {
 							disabled={isSaving} />
 						{error && <div className="text-danger">{typeof error === 'object' ? error.message : error}</div>}
 						{this.state.error && <div className="text-danger">{this.state.error}</div>}
-						<div className="pull-right">
+						<div className="modal-footer text-center justify-content-center">
 							<Button id="cancel-change-password-btn" disabled={isSaving} onClick={() => closeModal()} style={{marginRight: 5}}>
 								Cancel
 							</Button>

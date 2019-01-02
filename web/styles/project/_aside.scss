@@ -1,0 +1,34 @@
+.aside{
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+
+    .brand-container{
+        img{
+            height:30px;
+        }
+    }
+    .links{
+        .aside{
+            &__link{
+                height:70px;
+                line-height:70px;
+                border-bottom:#E2E0E0 1px solid;
+                padding:20px;
+
+                &:hover, &:focus{
+                    background-color:#E2E0E0;
+                    color:#585858;
+                }
+
+                &--active{
+                    background-color:$brand-primary;
+                    color:#fff;
+                    border-bottom:none;
+                    &:hover, &:focus{
+                        background-color:$brand-primary;
+                        color:#fff;
+                    }
+                }
+            }
+        }
+    }
+}
