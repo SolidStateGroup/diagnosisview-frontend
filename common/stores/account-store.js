@@ -201,6 +201,7 @@ var controller = {
             if (!store.model) return;
 
             DiagnosisStore.refresh()
+                .then(LinkLogoStore.refresh)
                 .then(() => data.get(Project.api + 'account'))
                 .then(res => {
                     if (res.deleted) {
