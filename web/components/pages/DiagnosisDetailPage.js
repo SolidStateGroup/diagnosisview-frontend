@@ -132,7 +132,7 @@ module.exports = hot(module)(class extends React.Component {
             onOK={externalStandard => {
                 const diagnosis = this.state.diagnosis;
                 diagnosis.externalStandards = diagnosis.externalStandards || [];
-                const id = this.getNextAvailableId(diagnosis.links, 'id');
+                const id = this.getNextAvailableId(diagnosis.externalStandards, 'id');
                 diagnosis.externalStandards.push({...externalStandard, id});
                 this.setState({diagnosis});
             }}
