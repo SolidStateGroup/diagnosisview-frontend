@@ -18,14 +18,14 @@ module.exports = class extends React.Component {
         AppActions.adminLogin({
             username: this.state.email,
             password: this.state.password
-        })
+        });
     }
 
     render = () => {
         return (
             <div className="app-container full-height">
-                <AccountProvider>
-                    {({error}) => (
+                <AccountProvider onError={() => this.setState({password: ''})}>
+                    {({error, isLoading}, {clearError}) => (
                         <Flex className="hero">
                             <div className="full-width">
                                 <div className="flex-row">
@@ -46,6 +46,7 @@ module.exports = class extends React.Component {
                                                 <form onSubmit={(e) => {
                                                     e.preventDefault();
                                                     if (this.state.email && this.state.password) {
+                                                        clearError();
                                                         this.login(this.props.id, this.state.name);
                                                     }
                                                 }}>
@@ -60,7 +61,7 @@ module.exports = class extends React.Component {
                                                                 onChange={(e) => this.setState({ password: Utils.safeParseEventValue(e) })}
                                                                 inputProps={{ className: "full-width" }} />
 
-                                                    <Button disabled={!this.state.email || !this.state.password} onClick={this.login} className={'btn btn--primary'}>Login</Button>
+                                                    <Button disabled={isLoading || !this.state.email || !this.state.password} onClick={this.login} className={'btn btn--primary'}>{isLoading ? 'Logging in..' : 'Login'}</Button>
                                                     {error && error.message && <div className="text-danger">{error.message}</div>}
                                                 </form>
                                             </Column>
