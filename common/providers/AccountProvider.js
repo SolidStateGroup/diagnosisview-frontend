@@ -48,7 +48,8 @@ const TheComponent = class extends Component {
 				isLoading: AccountStore.isLoading,
 				isSaving: AccountStore.isSaving,
 				error: AccountStore.error
-			})
+			});
+			this.props.onError && this.props.onError(AccountStore.error);
 		});
 	}
 

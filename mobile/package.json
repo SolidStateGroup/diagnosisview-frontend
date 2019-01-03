@@ -9,6 +9,7 @@
     "andClean": "cd ./android & sh ./gradlew clean && react-native run android",
     "androidDeploy": "cd ./android && sh ./gradlew assembleRelease && ./gradlew installRelease && cd ../",
     "andInstall": "cd ./android && sh ./gradlew installRelease && cd ../",
+    "apk": "cd ./android && ./gradlew assembleRelease && open ./app/build/outputs/apk/release && cd ../",
     "ios": "npm run watch & react-native run-ios",
     "test": "detox",
     "keystoreDevelop": "keytool -exportcert -alias androiddebugkey -keystore ~/.android/debug.keystore | openssl sha1 -binary | openssl base64",
