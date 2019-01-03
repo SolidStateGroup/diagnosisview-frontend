@@ -113,8 +113,7 @@ module.exports = hot(module)(class extends React.Component {
             onOK={category => {
                 const diagnosis = this.state.diagnosis;
                 diagnosis.codeCategories = diagnosis.codeCategories || [];
-                const id = this.getNextAvailableId(diagnosis.codeCategories, 'id');
-                diagnosis.codeCategories.push({category, id});
+                diagnosis.codeCategories.push({category});
                 this.setState({diagnosis});
             }}
             existing={_.map(this.state.diagnosis.codeCategories, ({category}) => category.number)}
@@ -132,8 +131,7 @@ module.exports = hot(module)(class extends React.Component {
             onOK={externalStandard => {
                 const diagnosis = this.state.diagnosis;
                 diagnosis.externalStandards = diagnosis.externalStandards || [];
-                const id = this.getNextAvailableId(diagnosis.externalStandards, 'id');
-                diagnosis.externalStandards.push({...externalStandard, id});
+                diagnosis.externalStandards.push({...externalStandard});
                 this.setState({diagnosis});
             }}
             existing={_.map(this.state.diagnosis.externalStandards, externalStandard => externalStandard.codeString)}
@@ -407,8 +405,8 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            {_.map(externalStandards, ({id, codeString, externalStandard}) => (
-                                <div key={id} className="panel__row flex-row">
+                            {_.map(externalStandards, ({codeString, externalStandard}) => (
+                                <div key={codeString} className="panel__row flex-row">
                                     <div className="col p-0">
                                         <p className="text-small">{codeString}</p>
                                     </div>
