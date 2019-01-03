@@ -34,10 +34,10 @@ module.exports = hot(module)(class extends React.Component {
         }
     }
 
-    toggleFreeLink = (id, on) => {
+    toggleFreeLink = (id, on, displayOrder) => {
         const diagnosis = this.state.diagnosis;
         if (diagnosis) {
-            _.find(diagnosis.links, {id}).freeLink = on;
+            _.find(diagnosis.links, {displayOrder}).freeLink = on;
             this.setState({diagnosis});
         } else {
             openConfirm(<h2>Confirm</h2>, <h3>{`Are you sure you want to ${on ? 'display this link' : 'hide this link from'} free users?`}</h3>,
@@ -47,6 +47,33 @@ module.exports = hot(module)(class extends React.Component {
                         id,
                         freeLink: on,
                         difficultyLevel: _.find(this.state.original.links, {id}).difficultyLevel,
+                    })
+                        .then(res => {
+                            const original = this.state.original;
+                            const index = _.findIndex(original.links, {id});
+                            original.links[index] = res;
+                            this.setState({original, isSaving: false});
+                        })
+                        .catch(e => {
+                            this.setState({isSaving: false});
+                            toast('Sorry something went wrong');
+                        });
+                });
+        }
+    }
+
+    toggleTransformationsOnly = (id, on, displayOrder) => {
+        const diagnosis = this.state.diagnosis;
+        if (diagnosis) {
+            _.find(diagnosis.links, {displayOrder}).transformationsOnly = on;
+            this.setState({diagnosis});
+        } else {
+            openConfirm(<h2>Confirm</h2>, <h3>{`Are you sure you want to ${on ? 'only display this link on matching URL transform rules?' : 'display this link without having to match URL transform rules?'}`}</h3>,
+                () => {
+                    this.setState({isSaving: true});
+                    data.put(Project.api + 'admin/code/link', {
+                        id,
+                        transformationsOnly: on,
                     })
                         .then(res => {
                             const original = this.state.original;
@@ -509,10 +536,10 @@ module.exports = hot(module)(class extends React.Component {
                                         </select>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small"><Switch checked={freeLink} onChange={checked => this.toggleFreeLink(id, checked)}/></p>
+                                        <p className="text-small"><Switch checked={freeLink} onChange={checked => this.toggleFreeLink(id, checked, displayOrder)}/></p>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small"><Switch checked={transformationsOnly} /></p>
+                                        <p className="text-small"><Switch checked={transformationsOnly} onChange={checked => this.toggleTransformationsOnly(id, checked, displayOrder)} /></p>
                                     </div>
                                     <div className="col p-0">
                                         <a className="text-small" style={{wordBreak: 'break-all'}} href={link}>{link}</a>
