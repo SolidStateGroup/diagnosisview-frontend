@@ -151,8 +151,8 @@ module.exports = hot(module)(class extends React.Component {
             onAdd={link => {
                 const diagnosis = this.state.diagnosis;
                 diagnosis.links = diagnosis.links || [];
-                const id = this.getNextAvailableId(diagnosis.links, 'id');
-                diagnosis.links.push({...link, id, displayOrder: id});
+                const displayOrder = this.getNextAvailableId(diagnosis.links, 'displayOrder');
+                diagnosis.links.push({...link, displayOrder});
                 this.setState({diagnosis});
             }}
         />);
@@ -240,7 +240,7 @@ module.exports = hot(module)(class extends React.Component {
                                 {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : <h1 className="content__title">Add Diagnosis</h1>}
                             </div>
                             {!diagnosis && code.indexOf('dv_') === 0 ? (
-                                <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.diagnosis)})}>
+                                <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.original)})}>
                                     Edit Diagnosis
                                 </button>
                             ) : diagnosis ? (
@@ -480,8 +480,8 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            {_.map(_.sortBy(links, "displayOrder"), ({id, name, created, lastUpdate, difficultyLevel, freeLink, link, transformationsOnly}, index) => (
-                                <div key={id} className="panel__row flex-row">
+                            {_.map(_.sortBy(links, "displayOrder"), ({id, name, created, lastUpdate, difficultyLevel, freeLink, link, transformationsOnly, displayOrder}, index) => (
+                                <div key={displayOrder} className="panel__row flex-row">
                                     <div className="col p-0">
                                         <p className="text-small">{name}</p>
                                     </div>
