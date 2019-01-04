@@ -130,7 +130,7 @@ module.exports = hot(module)(class extends React.Component {
                                                     disabled={!this.state.linkLogos[logo.id]}
                                                     onChange={(e) => this.editField(logo.id, 'overrideDifficultyLevel', e)}
                                                 >
-                                                    <option value="">Do not override</option>
+                                                    <option value="DO_NOT_OVERRIDE">Do not override</option>
                                                     {_.map(Constants.difficultyLevels, (option, i) => {
                                                         const isObj = typeof option === 'object';
                                                         const label = isObj ? option.label || option.value : option;
