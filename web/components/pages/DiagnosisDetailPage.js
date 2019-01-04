@@ -242,9 +242,7 @@ module.exports = hot(module)(class extends React.Component {
         const action = addNew ? data.post(`${Project.api}admin/code`, diagnosis) : data.put(`${Project.api}admin/code`, diagnosis);
         action.then(res => {
             this.setState({ diagnosis: null, original: res, isSaving: false });
-            if (addNew) {
-                this.props.history.replace('/admin/diagnosis', { addNew: false });
-            }
+            this.props.history.replace('/admin/diagnosis', { code: res.code });
         });
     }
 
