@@ -236,8 +236,10 @@ module.exports = hot(module)(class extends React.Component {
     save = () => {
         const addNew = _.get(this.props.location, 'state.addNew');
         this.setState({isSaving: true});
-        console.log('SAVING', this.state.diagnosis);
-        const action = addNew ? data.post(`${Project.api}admin/code`, this.state.diagnosis) : data.put(`${Project.api}admin/code`, this.state.diagnosis);
+        const diagnosis = this.state.diagnosis;
+        diagnosis.description = diagnosis.patientFriendlyName;
+        // console.log('SAVING', diagnosis);
+        const action = addNew ? data.post(`${Project.api}admin/code`, diagnosis) : data.put(`${Project.api}admin/code`, diagnosis);
         action.then(res => {
             this.setState({ diagnosis: null, original: res, isSaving: false });
             if (addNew) {
@@ -250,7 +252,7 @@ module.exports = hot(module)(class extends React.Component {
         const { diagnosis, original } = this.state;
         if (!diagnosis && !original) return <Flex className="centered-container"><Loader /></Flex>
         const {
-            code, patientFriendlyName, created, lastUpdate, hideFromPatients, removedExternally, description,
+            code, patientFriendlyName, created, lastUpdate, hideFromPatients, removedExternally, fullDescription,
             codeCategories, externalStandards, links,
         } = diagnosis || original;
         return (
@@ -293,7 +295,7 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                     <div className="col p-0">
                                         <label className="panel__head__title">NAME</label>
-                                        {!diagnosis ? <p className="text-small">{patientFriendlyName} ({code})</p> : (
+                                        {!diagnosis ? <p className="text-small">{patientFriendlyName}</p> : (
                                             <p className="mb-0">
                                                 <input
                                                     className="input input--outline"
@@ -347,13 +349,13 @@ module.exports = hot(module)(class extends React.Component {
                             <div className="panel__row flex-row">
                                 <div className="col p-0">
                                     <label className="panel__head__title">DESCRIPTION</label>
-                                    {!diagnosis ? <p className="text-small">{description}</p> : (
+                                    {!diagnosis ? <p className="text-small">{fullDescription}</p> : (
                                         <p className="mb-0">
                                             <textarea
                                                 className="input input--outline"
-                                                value={description}
+                                                value={fullDescription}
                                                 placeholder="--/--/----"
-                                                onChange={(e) => this.onEditField('description', e)}
+                                                onChange={(e) => this.onEditField('fullDescription', e)}
                                             />
                                         </p>
                                     )}
