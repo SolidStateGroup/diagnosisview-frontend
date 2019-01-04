@@ -15,7 +15,7 @@ module.exports = hot(module)(class extends React.Component {
     addNew = () => {
         openModal(
             <div>
-                <p className="mb-0">Add new link</p>
+                <p className="mb-0">Add new rule</p>
                 <p className="text-small text-muted mb-0">Add a new resource link that requires routing through a paid proxy</p>
                 <i className="far fa-times-circle modal-close clickable" onClick={() => closeModal()}></i>
             </div>,
