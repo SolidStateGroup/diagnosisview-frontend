@@ -75,7 +75,7 @@ const TheComponent = class extends Component {
                         </fieldset>
                         <div className="modal-footer text-center justify-content-center flex-column">
                             <button disabled={!this.canSave() || isSaving} className="btn btn--primary" onClick={this.save}>
-                                Save link
+                                Save rule
                             </button>
                             {error ? <label className="fieldset__label text-small text-muted">Error adding link transform</label> : null}
                         </div>

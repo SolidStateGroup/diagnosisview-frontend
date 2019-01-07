@@ -78,7 +78,7 @@ const TheComponent = class extends Component {
                                     value={overrideDifficultyLevel}
                                     onChange={(e) => this.setState({overrideDifficultyLevel: e.target.value})}
                                 >
-                                    <option value="">Do not override</option>
+                                    <option value="DO_NOT_OVERRIDE">Do not override</option>
                                     {_.map(Constants.difficultyLevels, (option, i) => {
                                         const isObj = typeof option === 'object';
                                         const label = isObj ? option.label || option.value : option;
