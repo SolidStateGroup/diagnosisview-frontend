@@ -96,7 +96,9 @@ const DiagnosisDetailPage = class extends Component {
 										{({favourites}) => {
 											return _.map(links, link => {
 												const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
-												if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+												if (!link.displayLink) {
+													return null;
+												} else if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
 													return null;
 												}
 												const isFavourite = _.find(favourites, f => f.code === this.props.code && f.link.id === link.id);
