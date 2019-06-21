@@ -41,7 +41,8 @@ global.LinearGradient = LinearGradient;
 import * as RNIap from 'react-native-iap';
 global.RNIap = RNIap;
 
-global.DeviceInfo = require('react-native-device-info');
+import DeviceInfo from 'react-native-device-info';
+global.DeviceInfo = DeviceInfo;
 global.iapItemSkus = ['annual_account'];
 
 global.moment = require('moment');
