@@ -19,7 +19,7 @@ import android.support.annotation.Nullable;
 
 //REACT_NATIVE_BRANCH
 import io.branch.rnbranch.RNBranchPackage;
-import io.branch.referral.Branch;
+import io.branch.rnbranch.RNBranchModule;
 
 //REACT_NATIVE_CRASHLYTICS
 import com.smixx.fabric.FabricPackage;
@@ -72,7 +72,7 @@ public class MainApplication extends NavigationApplication {
                                new FabricPackage(),
                                new LottiePackage(),
                                new VectorIconsPackage(),
-                               new RNDeviceInfo(),
+                               new RNDeviceInfo(true),
                                new RNBranchPackage(),
                                new RNIapPackage(),
                                new LinearGradientPackage(),
@@ -87,7 +87,7 @@ public class MainApplication extends NavigationApplication {
  @Override
   public void onCreate() {
         super.onCreate();
-        Branch.getAutoInstance(this);
+        RNBranchModule.getAutoInstance(this);
   }
 
 }
