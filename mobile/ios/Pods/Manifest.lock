@@ -1,7 +1,4 @@
 PODS:
-  - Branch (0.25.0):
-    - Branch/Core (= 0.25.0)
-  - Branch/Core (0.25.0)
   - Crashlytics (3.10.2):
     - Fabric (~> 1.7.7)
   - Fabric (1.7.7)
@@ -71,7 +68,6 @@ PODS:
   - Protobuf (3.8.0)
 
 DEPENDENCIES:
-  - Branch
   - Crashlytics (~> 3.10.2)
   - Fabric (~> 1.7.7)
   - Firebase/Core (~> 6.2.0)
@@ -79,7 +75,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - Branch
     - Crashlytics
     - Fabric
     - Firebase
@@ -94,7 +89,6 @@ SPEC REPOS:
     - Protobuf
 
 SPEC CHECKSUMS:
-  Branch: 127d29ab0a8866025eece1cf9e950ddb6f7d4070
   Crashlytics: 0360624eea1c978a743feddb2fb1ef8b37fb7a0d
   Fabric: bda89e242bce1b7b8ab264248cf3407774ce0095
   Firebase: 5965bac23e7fcb5fa6d926ed429c9ecef8a2014e
@@ -108,6 +102,6 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 3f617b9a6e73605565086864c9bc26b2bf2dd5a3
 
-PODFILE CHECKSUM: 0bb93f5679871741af766e04f33be02d1cabfe5c
+PODFILE CHECKSUM: ab9a0bce16f9982286ac029dc799416db5ca942d
 
 COCOAPODS: 1.7.2
