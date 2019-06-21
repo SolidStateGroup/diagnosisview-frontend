@@ -72,7 +72,7 @@ public class MainApplication extends NavigationApplication {
                                new FabricPackage(),
                                new LottiePackage(),
                                new VectorIconsPackage(),
-                               new RNDeviceInfo(),
+                               new RNDeviceInfo(true),
                                new RNBranchPackage(),
                                new RNIapPackage(),
                                new LinearGradientPackage(),
