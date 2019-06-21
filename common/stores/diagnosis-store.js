@@ -75,6 +75,21 @@ var controller = {
                 })
                 .catch(e => AjaxHandler.error(DiagnosisStore, e));
         },
+        deleteCode: function (code) {
+            store.saving();
+            data.delete(`${Project.api}code`, {
+                code,
+            })
+                .then(() => {
+                    const index = _.findIndex(store.model, diagnosis => diagnosis.code === code);
+                    if (index !== -1) {
+                        store.model.splice(index, 1);
+                        AsyncStorage.setItem('codes', JSON.stringify(res));
+                    }
+                    store.saved();
+                })
+                .catch(e => AjaxHandler.error(DiagnosisStore, e));
+        },
     },
     store = Object.assign({}, BaseStore, {
         id: 'diagnosis',
@@ -139,6 +154,9 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
             break;
         case Actions.GET_EXTERNAL_STANDARDS:
             controller.getExternalStandards();
+            break;
+        case Actions.DELETE_CODE:
+            controller.deleteCode(action.code);
             break;
         default:
             return;
