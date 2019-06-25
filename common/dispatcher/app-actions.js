@@ -190,4 +190,10 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       actionType: Actions.GET_EXTERNAL_STANDARDS
     });
   },
+  deleteCode: function (code) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.DELETE_CODE,
+      code,
+    });
+  },
 });
