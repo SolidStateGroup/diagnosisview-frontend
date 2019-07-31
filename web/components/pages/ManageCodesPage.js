@@ -25,6 +25,16 @@ module.exports = hot(module)(class extends React.Component {
         this.props.history.push('/admin/diagnosis', { addNew: true });
     }
 
+    edit = (e, code) => {
+        e.stopPropagation();
+        this.props.history.push('/admin/diagnosis', {code, edit: true});
+    }
+
+    delete = (e, code) => {
+        e.stopPropagation();
+        openConfirm(<h2>Confirm</h2>, <h3>Are you sure you want to delete this diagnosis?</h3>, () => AppActions.deleteCode(code));
+    }
+
     render = () => {
         return (
             <CodesProvider>
@@ -76,10 +86,10 @@ module.exports = hot(module)(class extends React.Component {
                                         <div className="flex-row">
                                         {row.original.code.indexOf('dv_') === 0 ? (
                                             <React.Fragment>
-                                                <button className="btn btn--icon btn--icon--blue">
+                                                <button className="btn btn--icon btn--icon--blue" onClick={(e) => this.edit(e, row.original.code)}>
                                                     <i className="far fa-edit"></i>
                                                 </button>
-                                                <button className="btn btn--icon btn--icon--red">
+                                                <button className="btn btn--icon btn--icon--red" onClick={(e) => this.delete(e, row.original.code)}>
                                                     <i className="far fa-trash-alt"> </i>
                                                 </button>
                                             </React.Fragment>
