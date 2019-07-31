@@ -19,13 +19,15 @@ module.exports = hot(module)(class extends React.Component {
     componentDidMount() {
         const code = _.get(this.props.location, 'state.code');
         if (code) {
+            const edit = _.get(this.props.location, 'state.edit');
             // Load full diagnosis
             this.setState({ isLoading: true });
             data.get(Project.api + 'code/' + code)
                 .then(res => {
                     this.setState({
                         original: res,
-                        isLoading: false
+                        isLoading: false,
+                        diagnosis: edit ? _.cloneDeep(res) : undefined,
                     })
                 });
         } else {
