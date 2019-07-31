@@ -1,4 +1,4 @@
-package com.solidstategroup.dvmobile.test;
+package com.solidstategroup.dvmobile.test2;
 
 import com.reactnativenavigation.controllers.SplashActivity;
 import io.branch.rnbranch.*; // <-- add this
