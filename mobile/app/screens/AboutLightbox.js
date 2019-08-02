@@ -85,6 +85,12 @@ const About = class extends Component {
 					<Text style={[Styles.paragraph, Styles.textSmall]}>DiagnosisView was developed by the University of Edinburgh with the support of the https://www.patientview.org electronic health records system.</Text>
 				</Hyperlink>
 				<Text style={[Styles.paragraph, Styles.textSmall]}>Please send us your suggestions and feedback.</Text>
+				<Hyperlink
+					linkStyle={{ color: '#2980b9', textDecorationLine: 'underline' }}
+					linkText={url => url === 'https://blogs.ed.ac.uk/diagnosisview' ? 'blogs.ed.ac.uk/diagnosisview' : url}
+					linkDefault={true}>
+					<Text style={[Styles.paragraph, Styles.textSmall]}>See https://blogs.ed.ac.uk/diagnosisview for latest news and a more detailed guide for users, and about joining as an institution.</Text>
+				</Hyperlink>
 				<Row style={[Styles.verticalCenter,{padding:0}]}>
 					<Button style={{ alignSelf: 'stretch',marginHorizontal: 5, backgroundColor:'#f3f3f3'}} textStyle={{color:'#2e2e2e'}} onPress={() => this.props.navigator.dismissLightBox()}>Close</Button>
 					<Button style={{ alignSelf: 'stretch',marginHorizontal: 5}} onPress={() => this.setState({showForm:true})}>Give feedback</Button>

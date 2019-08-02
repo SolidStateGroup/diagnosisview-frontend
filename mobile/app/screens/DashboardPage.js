@@ -131,6 +131,10 @@ const DashboardPage = class extends Component {
 		routeHelper.goFavourites(this.props.navigator)
 	}
 
+	goToDiagnosis = (code, name) => {
+		routeHelper.goDiagnosisDetail(this.props.navigator, code, name);
+	}
+
 	render() {
 		return (
 			<AccountProvider onLogin={this.onLogin}>
@@ -147,7 +151,12 @@ const DashboardPage = class extends Component {
 										<Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {},Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.bold, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}</Text>) : null}</Text>
 										{neverSubscribed ? (
 											<View>
-												<Text style={[Styles.textCenter,Styles.textMedium, Styles.paragraph]}>Subscribe for unlimited history/favourites & professional resources on all devices</Text>
+												<Text style={[Styles.textCenter,Styles.textMedium, Styles.paragraph]}>{`Subscribe to see additional professional resources on all topics (demos here to `}
+													<Text onPress={() => this.goToDiagnosis('acne', 'Acne')} style={[Styles.textMedium, Styles.bold]}>Acne, </Text>
+													<Text onPress={() => this.goToDiagnosis('cystic-fibrosis', 'Cystic fibrosis')} style={[Styles.textMedium, Styles.bold]}>Cystic fibrosis, </Text>
+													<Text onPress={() => this.goToDiagnosis('heart-failure', 'Heart failure')} style={[Styles.textMedium, Styles.bold]}>Heart failure</Text>
+													{`). A subscription also gives unlimited history/favourites synchronised between devices.`}
+												</Text>
 												<Button onPress={this.subscribe}>Subscribe now</Button>
 											</View>
 										) : null}

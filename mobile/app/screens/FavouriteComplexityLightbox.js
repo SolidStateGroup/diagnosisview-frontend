@@ -7,7 +7,7 @@ const FavouriteComplexity = (props) => {
 		case 'green':
 		default:
 			colour = 'Green';
-			text = 'for students or professionals new to the topic.';
+			text = 'suitable for students or professionals new to the topic.';
 			break;
 
 		case 'amber':
@@ -26,7 +26,7 @@ const FavouriteComplexity = (props) => {
 				<View style={[Styles.padded, {alignSelf: 'center'}]}>
 					<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')}/>
 					<Text style={Styles.paragraph}>
-						{`DiagnosisView has classified this information source as '${colour}', ${text}`}
+						{`Level = '${colour}', ${text}`}
 					</Text>
 					<Button style={{alignSelf: 'center', width: 200}} onPress={() => props.navigator.dismissLightBox()}>
 						Ok
