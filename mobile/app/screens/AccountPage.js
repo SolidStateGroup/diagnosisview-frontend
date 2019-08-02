@@ -348,8 +348,14 @@ const AccountPage = class extends Component {
 								) : null}
 								{!user || !user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.padded]}>
-										<Text style={[Styles.textMedium]}>
-										A user account costs only <Text style={[Styles.textSmall, Styles.semiBold]}>£3.99 / year</Text>, proceeds of which keep your info sources up and running, plus new trusted sources integrated where possible. An account will unlock access to unlimited search history and favourites across all of your devices, as well as provide access to professional resources that are unavailable in the free version.
+										<Text style={[Styles.textMedium, Styles.paragraph]}>
+											A user account unlocks access to professional resources that are unavailable in the free version, and helps us to cover maintenance and improvement costs.
+										</Text>
+										<Text style={[Styles.textMedium, Styles.paragraph]}>
+											Some paywalled resources are mapped as amber or red links. If you are associated with an institution that has registered with us, direct links may be provided so that you only have to log in once.
+										</Text>
+										<Text style={[Styles.textMedium, Styles.paragraph]}>
+											Account holders can also have unlimited history and save unlimited favourites, and these are kept synchronised between devices.
 										</Text>
 										{user && !user.activeSubscription ? <Button style={{marginTop: 10}} onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe') + ' now'}</Button> : null}
 									</View>
