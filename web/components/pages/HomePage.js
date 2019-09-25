@@ -34,9 +34,9 @@ module.exports = class extends React.Component {
                                         <FormGroup className="text-center padded">
                                             <h5 className="text-dark my-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h5>
                                             <ul className="list-unstyled text-dark">
-                                                <li className="text-small">Info on your own mobile or tablet</li>
-                                                <li className="text-small">Advanced patient info is the starting point (free)</li>
-                                                <li className="text-small">Moving on to practitioner-level and expert-level professional resources</li>
+                                                <li>Info on your own mobile or tablet</li>
+                                                <li>Advanced patient info is the starting point (free)</li>
+                                                <li>Moving on to practitioner-level and expert-level professional resources</li>
                                             </ul>
                                             <p>With an optional account you can access professional resources, as well as sync favourites and history across devices.</p>
                                             <p>DiagnosisView was developed by <a href="https://www.ed.ac.uk" target="_blank">The University of Edinburgh</a> with the support of the <a href="https://www.patientview.org" target="_blank">www.patientview.org</a> electronic health records system.</p>
