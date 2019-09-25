@@ -187,6 +187,10 @@ const AccountPage = class extends Component {
 		});
 	}
 
+	forgotPassword = () => {
+		routeHelper.showForgotPassword(this.props.navigator);
+	}
+
 	renderDropdowns = () => (
 		<View>
 			<View style={Styles.stackedForm}>
@@ -243,7 +247,7 @@ const AccountPage = class extends Component {
 		</View>
 	)
 
-	renderRegisterForm = () => (
+	renderRegisterForm = (error) => (
 		<View>
 			<View style={Styles.stackedForm}>
 				<TextInput
@@ -273,15 +277,24 @@ const AccountPage = class extends Component {
 			<View style={[Styles.actionsContainer, Styles.stacked]}>
 				<Button onPress={this.register} disabled={this.invalid()}>Register</Button>
 			</View>
+			{this.state.error ?
+				<Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{this.state.error}</Text> :
+				error ? <Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{error.message === 'No message available' ? 'Sorry something went wrong' : error.message}</Text> : null
+			}
 		</View>
 	);
 
-	renderLoginForm = () => (
+	renderLoginForm = (error) => (
 		<View>
 			{this.renderLoginFields(false)}
 			<View style={[Styles.actionsContainer, Styles.stacked]}>
 				<Button onPress={this.login} disabled={this.loginInvalid()}>Login</Button>
 			</View>
+			{this.state.error ?
+				<Text style={[Styles.paragraph, Styles.textCenter, {color: pallette.brandDanger}]}>{this.state.error}</Text> :
+				error ? <Text style={[Styles.paragraph, Styles.textCenter, {color: pallette.brandDanger}]}>{error.message === 'No message available' ? 'Sorry something went wrong' : error.message}</Text> : null
+			}
+			<Text style={[Styles.textCenter, Styles.anchor]} onPress={this.forgotPassword}>Forgot password?</Text>
 		</View>
 	)
 
@@ -325,7 +338,7 @@ const AccountPage = class extends Component {
 						<NetworkBar />
 						{isLoading || isSaving ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
 						<KeyboardAwareScrollView style={{backgroundColor:pallette.backgroundBase}} keyboardShouldPersistTaps="handled">
-
+								<View style={Styles.hero}></View>
 								<View style={[ Styles.stacked, Styles.padded]}>
 								{user && user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.padded]}>
@@ -335,8 +348,14 @@ const AccountPage = class extends Component {
 								) : null}
 								{!user || !user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.padded]}>
-										<Text style={[Styles.textMedium]}>
-										A user account costs only <Text style={[Styles.textSmall, Styles.semiBold]}>£3.99 / year</Text>, proceeds of which keep your info sources up and running, plus new trusted sources integrated where possible. An account will unlock access to unlimited search history and favourites across all of your devices, and provide access to paid resources in future.
+										<Text style={[Styles.textMedium, Styles.paragraph]}>
+											A user account unlocks access to professional resources that are unavailable in the free version, and helps us to cover maintenance and improvement costs.
+										</Text>
+										<Text style={[Styles.textMedium, Styles.paragraph]}>
+											Some paywalled resources are mapped as amber or red links. If you are associated with an institution that has registered with us, direct links may be provided so that you only have to log in once.
+										</Text>
+										<Text style={[Styles.textMedium, Styles.paragraph]}>
+											Account holders can also have unlimited history and save unlimited favourites, and these are kept synchronised between devices.
 										</Text>
 										{user && !user.activeSubscription ? <Button style={{marginTop: 10}} onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe') + ' now'}</Button> : null}
 									</View>
@@ -359,11 +378,7 @@ const AccountPage = class extends Component {
 												Login
 											</Button>
 										</Row>
-										{!this.state.login ? this.renderRegisterForm() : this.renderLoginForm()}
-										{this.state.error ?
-											<Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{this.state.error}</Text> :
-											error ? <Text style={[Styles.textCenter, {color: pallette.brandDanger}]}>{error.message === 'No message available' ? 'Sorry something went wrong' : error.message}</Text> : null
-										}
+										{!this.state.login ? this.renderRegisterForm(error) : this.renderLoginForm(error)}
 									</FormGroup>
 
 								) : (

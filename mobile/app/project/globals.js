@@ -41,7 +41,8 @@ global.LinearGradient = LinearGradient;
 import * as RNIap from 'react-native-iap';
 global.RNIap = RNIap;
 
-global.DeviceInfo = require('react-native-device-info');
+import DeviceInfo from 'react-native-device-info';
+global.DeviceInfo = DeviceInfo;
 global.iapItemSkus = ['annual_account'];
 
 global.moment = require('moment');
@@ -57,3 +58,9 @@ global.AutoHeightImage = AutoHeightImage;
 
 import { Dropdown } from 'react-native-material-dropdown';
 global.Dropdown = Dropdown;
+
+import CodeInput from 'react-native-confirmation-code-input';
+global.CodeInput = CodeInput;
+
+import ViewOverflow from 'react-native-view-overflow';
+global.ViewOverflow = ViewOverflow;

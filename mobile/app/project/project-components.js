@@ -9,3 +9,7 @@ global.FavouritesProvider = require('../../common-mobile/providers/FavouritesPro
 global.HistoryStore = require('../../common-mobile/stores/history-store');
 global.HistoryProvider = require('../../common-mobile/providers/HistoryProvider');
 global.DiagnosisStore = require('../../common-mobile/stores/diagnosis-store');
+global.LinkLogoStore = require('../../common-mobile/stores/link-logo-store');
+global.LinkLogoProvider = require('../../common-mobile/providers/LinkLogoProvider');
+global.LinkTransformStore = require('../../common-mobile/stores/link-transform-store');
+global.LinkTransformProvider = require('../../common-mobile/providers/LinkTransformProvider');

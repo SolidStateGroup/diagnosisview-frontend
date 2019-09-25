@@ -59,7 +59,7 @@ const Input = class extends React.Component {
 	}
 
 	render() {
-		const {isValid, onSearchChange, mask, placeholderChar, disableHighlight, ...rest} = this.props;
+		const {isValid, onSearchChange, mask, placeholderChar, disableHighlight, containerStyle, inputClassName, ...rest} = this.props;
 
 		const className = cn({
 			'input-container': true,
@@ -67,13 +67,14 @@ const Input = class extends React.Component {
 			'invalid': this.state.shouldValidate && !isValid
 		}, this.props.className);
 
-		const inputClassName = cn({
+		const innerClassName = cn({
 			input: true
 		}, this.props.inputClassName);
 
 		return (
 			<div
-				className={className}>
+				className={className}
+				style={containerStyle}>
 				{mask ? (
 						<MaskedInput
 							ref="input"
@@ -83,7 +84,7 @@ const Input = class extends React.Component {
 							onKeyDown={this.onKeyDown}
 							onFocus={this.onFocus}
 							onBlur={this.onBlur}
-							className={inputClassName}
+							className={innerClassName}
 							placeholderChar={placeholderChar}/>
 					) : (
 						<input
@@ -91,10 +92,8 @@ const Input = class extends React.Component {
 							{...rest} onFocus={this.onFocus}
 							onKeyDown={this.onKeyDown}
 							onBlur={this.onBlur}
-							className={inputClassName}/>
+							className={innerClassName}/>
 					)}
-				{!disableHighlight ? <hr/> : null}
-				{!disableHighlight ? <hr className="highlight"/> : null}
 			</div>
 		);
 	}

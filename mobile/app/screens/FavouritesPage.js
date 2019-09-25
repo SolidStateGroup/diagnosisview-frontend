@@ -81,7 +81,7 @@ const FavouritesPage = class extends Component {
 								<View style={[Styles.whitePanel,Styles.noPadding]}>
 									<ListItem>
 										<ION name="ios-star" style={[Styles.listIconNav, Styles.listIconNavMarginRight, {opacity: 0}]} />
-										<ION name="ios-information-circle-outline" style={[Styles.listIconNav, Styles.iconLow, {opacity: 0}]}/>
+										<View style={{width: 30, height: 30}} />
 										<Column style={{flex: DIAGNOSIS_CELL_FLEX}}>
 											<Text style={[Styles.listHeading,Styles.semiBold]}>Diagnosis</Text>
 										</Column>
@@ -90,34 +90,46 @@ const FavouritesPage = class extends Component {
 										</Column>
 										<ION name="ios-arrow-forward" style={[Styles.listIconNav, {opacity: 0}]}/>
 									</ListItem>
-									<FavouritesProvider>
-										{({favourites, isLoading})=>{
-											return _.map(_.reverse(_.sortBy(favourites, 'date')), (entry, i) => {
-												if (Constants.simulate.ALL_FAVES_REMOVED_EXTERNALLY) {
-													entry.link.removedExternally = true;
-												}
-												const removedExternally = entry.link.removedExternally;
-												return (
-													<ListItem key={i} onPress={() => this.onFavourite(entry.link.link, entry.name)}>
-														<ION onPress={() => this.removeFavourite(entry.code, entry.link)} name="ios-star" style={[Styles.listIconNav, Styles.listIconNavMarginRight, {color: '#ffd700'}]} />
-														<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={entry.link.difficultyLevel} />
-														<Column style={{flex: DIAGNOSIS_CELL_FLEX}}>
-															<Text style={[Styles.textSmall]}>{entry.name}</Text>
-															{Constants.linkIcons[entry.link.linkType.value] ?
-																<Image source={Constants.linkIcons[entry.link.linkType.value]} style={Styles.listItemImage} /> :
-																<Text style={[Styles.textSmall]}>{entry.link.name}</Text>
-															}
-														</Column>
-														<Column style={{flex: DATE_ADDED_FLEX}}>
-															<Text style={[Styles.textSmall]}>{moment(entry.date).format('DD MMM YYYY')}</Text>
-															<Text style={[Styles.textSmall]}>{moment(entry.date).format('HH:mm')}</Text>
-														</Column>
-														{removedExternally ? <ION onPress={this.brokenLink} name="ios-alert" style={[Styles.listIconNav,Styles.listIconNavError]}/> : <ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>}
-													</ListItem>
-												)
-											});
-										}}
-									</FavouritesProvider>
+									<LinkLogoProvider>
+										{({ linkLogos, isLoading }) => (
+											<FavouritesProvider>
+												{({favourites, isLoading})=>{
+													return _.map(_.reverse(_.sortBy(favourites, 'date')), (entry, i) => {
+														const { link } = entry;
+														const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
+														if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+															return null;
+														}
+														if (Constants.simulate.ALL_FAVES_REMOVED_EXTERNALLY) {
+															link.removedExternally = true;
+														}
+														const removedExternally = link.removedExternally;
+														return (
+															<ListItem key={i} onPress={() => this.onFavourite(link.link, entry.name)}>
+																<ION onPress={() => this.removeFavourite(entry.code, link)} name="ios-star" style={[Styles.listIconNav, Styles.listIconNavMarginRight, {color: '#ffd700'}]} />
+																<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} />
+																<Column style={{flex: DIAGNOSIS_CELL_FLEX}}>
+																	<Text style={[Styles.textSmall]}>{entry.name}</Text>
+																	{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
+																		<Column style={[Styles.noMargin, {flex: 1}]}>
+																			<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																			{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Flex><Text style={Styles.textSmall} numberOfLines={1} ellipsisMode="tail">{link.name}</Text></Flex> : null}
+																		</Column>
+																	) : <Text style={[Styles.textSmall]}>{link.name}</Text>
+																	}
+																</Column>
+																<Column style={{flex: DATE_ADDED_FLEX}}>
+																	<Text style={[Styles.textSmall]}>{moment(entry.date).format('DD MMM YYYY')}</Text>
+																	<Text style={[Styles.textSmall]}>{moment(entry.date).format('HH:mm')}</Text>
+																</Column>
+																{removedExternally ? <ION onPress={this.brokenLink} name="ios-alert" style={[Styles.listIconNav,Styles.listIconNavError]}/> : <ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>}
+															</ListItem>
+														)
+													});
+												}}
+											</FavouritesProvider>
+										)}
+									</LinkLogoProvider>
 								</View>
 							</View>
 						</ScrollView>

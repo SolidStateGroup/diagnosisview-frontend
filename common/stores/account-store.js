@@ -162,15 +162,15 @@ var controller = {
             const now = moment();
             if (now.isBefore(moment(expiryDate).subtract(1, 'M'), 'd')) {
                 console.log('Scheduling expiry warning for 1 month before expiry');
-                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${expiryDate.format('DD/MM/YY')}. Please renew now`, null, expiryDate.subtract(1, 'M').valueOf());
+                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${moment(expiryDate).format('DD/MM/YY')}. Please renew now`, null, moment(expiryDate).subtract(1, 'M').valueOf());
             }
             if (now.isBefore(moment(expiryDate).subtract(1, 'w'), 'd')) {
                 console.log('Scheduling expiry warning for 1 week before expiry');
-                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${expiryDate.format('DD/MM/YY')}. Please renew now`, null, expiryDate.subtract(1, 'w').valueOf());
+                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${moment(expiryDate).format('DD/MM/YY')}. Please renew now`, null, moment(expiryDate).subtract(1, 'w').valueOf());
             }
             if (now.isBefore(moment(expiryDate).subtract(1, 'd'), 'd')) {
                 console.log('Scheduling expiry warning for 1 day before expiry');
-                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', 'Your account expires tomorrow. Please renew now for continued access to unlimited history/favourites on all devices', null, expiryDate.subtract(1, 'd').valueOf());
+                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', 'Your account expires tomorrow. Please renew now for continued access to unlimited history/favourites on all devices', null, moment(expiryDate).subtract(1, 'd').valueOf());
             }
         },
 
@@ -200,8 +200,9 @@ var controller = {
         getAccount: function (retrySubscription) {
             if (!store.model) return;
 
-            store.loading();
-            data.get(Project.api + 'account')
+            DiagnosisStore.refresh()
+                .then(LinkLogoStore.refresh)
+                .then(() => data.get(Project.api + 'account'))
                 .then(res => {
                     if (res.deleted) {
                         return controller.logout();
@@ -211,6 +212,11 @@ var controller = {
                     if (store.model.autoRenewing && !res.autoRenewing && res.activeSubscription) {
                         // Active subscription but cancelled (Android only), schedule expiry notifications
                         controller.scheduleExpiryNotifications(res.expiryDate);
+                    }
+
+                    if (store.model.activeSubscription && !res.activeSubscription) {
+                        // Active subscription has expired, removed paid links from favourites
+                        AppActions.setDeviceFavourites();
                     }
 
                     if (retrySubscription) {

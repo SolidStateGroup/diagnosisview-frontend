@@ -13,7 +13,9 @@ const DashboardPage = class extends Component {
 
 	constructor(props, context) {
 		super(props, context);
-		this.state = {};
+		this.state = {
+			appState: AppState.currentState
+		};
 		ES6Component(this);
 		routeHelper.handleNavEvent(props.navigator, 'dashboard', this.onNavigatorEvent);
 	}
@@ -30,12 +32,32 @@ const DashboardPage = class extends Component {
 				console.log('available purchases', purchases);
 			});
 
-		AppActions.getAccount(this.props.retrySubscription);
-		AppActions.getCodes();
+		this.refreshApp();
+
+		AppState.addEventListener('change', this.handleAppStateChange);
 	}
 
 	componentWillUnmount() {
 		RNIap.endConnection();
+
+		AppState.removeEventListener('change', this.handleAppStateChange);
+	}
+
+	refreshApp = () => {
+		if (AccountStore.getUser()) {
+			AppActions.getAccount(this.props.retrySubscription);
+		} else {
+			AppActions.getCodes();
+			AppActions.getCodeCategories();
+			AppActions.getLinkLogos();
+		}
+	}
+
+	handleAppStateChange = (nextState) => {
+		if (this.state.appState.match(/inactive|background/) && nextState === 'active') {
+			this.refreshApp();
+		}
+		this.setState({appState: nextState});
 	}
 
 	onNavigatorEvent = (event) => {
@@ -53,14 +75,24 @@ const DashboardPage = class extends Component {
 			} else if (event.id == 'search') {
 				routeHelper.goSearch(this.props.navigator);
 			}
-		} else if (event.type == 'DeepLink' && event.link == 'search') {
-			this.props.navigator.popToRoot();
-			this.props.navigator.push({
-				screen: '/search',
-				title: 'Search',
-				navigatorStyle: global.navbarStyle,
-				passProps: {}
-			})
+		} else if (event.type == 'DeepLink') {
+			switch (event.link) {
+				case 'search':
+					this.props.navigator.popToRoot();
+					this.props.navigator.push({
+						screen: '/search',
+						title: 'Search',
+						navigatorStyle: global.navbarStyle,
+						passProps: {}
+					});
+					break;
+				case 'dashboard':
+					this.props.navigator.popToRoot();
+					break;
+				default:
+					break;
+			}
+
 		}
 	};
 
@@ -83,23 +115,56 @@ const DashboardPage = class extends Component {
 		}
 	}
 
+	onSearch = () => {
+		routeHelper.goSearch(this.props.navigator)
+	}
+
+	onLoggedIn = () => {
+		routeHelper.goAccount(this.props.navigator)
+	}
+
+	goHistory = () => {
+		routeHelper.goHistory(this.props.navigator)
+	}
+
+	goFavourites = () => {
+		routeHelper.goFavourites(this.props.navigator)
+	}
+
+	goToDiagnosis = (code, name) => {
+		routeHelper.goDiagnosisDetail(this.props.navigator, code, name);
+	}
+
+	renderSubscribeParagraph = () => (
+		<Text style={[Styles.textCenter,Styles.textMedium, Styles.paragraph]}>{`Subscribe to see additional professional resources on all topics (demos here to `}
+			<Text onPress={() => this.goToDiagnosis('acne', 'Acne')} style={[Styles.textMedium, Styles.bold]}>Acne, </Text>
+			<Text onPress={() => this.goToDiagnosis('cystic-fibrosis', 'Cystic fibrosis')} style={[Styles.textMedium, Styles.bold]}>Cystic fibrosis, </Text>
+			<Text onPress={() => this.goToDiagnosis('heart-failure', 'Heart failure')} style={[Styles.textMedium, Styles.bold]}>Heart failure</Text>
+			{`). A subscription also gives unlimited history/favourites synchronised between devices.`}
+		</Text>
+	)
+
 	render() {
 		return (
 			<AccountProvider onLogin={this.onLogin}>
 				{({ user, isLoading }) => {
 					const paymentData = user && user.paymentData && user.paymentData.length && JSON.parse(_.last(user.paymentData).response);
+					const neverSubscribed = !user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length));
 					return (
 						<Flex>
 							<NetworkBar />
 							<ScrollView>
 								<View style={Styles.hero}></View>
 								<View style={Styles.padded}>
-									{!user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length)) ? (
-										<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-											<Text style={[Styles.textCenter, Styles.paragraph]}>Support DiagnosisView and subscribe for unlimited history/favourites on all devices</Text>
-											<Button onPress={this.subscribe}>Subscribe now</Button>
-										</View>
-									) : null}
+									<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
+										<Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {},Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.bold, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}</Text>) : null}</Text>
+										{neverSubscribed ? (
+											<View>
+												{this.renderSubscribeParagraph()}
+												<Button onPress={this.subscribe}>Subscribe now</Button>
+											</View>
+										) : null}
+									</View>
 									{user && user.expiryDate && !user.autoRenewing ? (() => {
 										const expiryDate = moment(user.expiryDate);
 										if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment())) {
@@ -112,7 +177,7 @@ const DashboardPage = class extends Component {
 										} else if (expiryDate.isSameOrBefore(moment())) {
 											return (
 												<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-													<Text style={[Styles.textCenter, Styles.paragraph]}>Your account has expired</Text>
+													<Text style={[Styles.textCenter, Styles.textMedium, Styles.paragraph]}>Your account has expired. {this.renderSubscribeParagraph()}</Text>
 													<Button onPress={this.subscribe}>Renew now</Button>
 												</View>
 											);
@@ -122,7 +187,8 @@ const DashboardPage = class extends Component {
 									})() : null}
 									<View style={[Styles.whitePanel, Styles.noPadding]}>
 										<ListItem>
-											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT SEARCHES</Text>
+											<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT SEARCHES</Text>
+											<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goHistory}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
 										<HistoryProvider>
 											{({ history, isLoading }) => (
@@ -137,27 +203,42 @@ const DashboardPage = class extends Component {
 											)}
 										</HistoryProvider>
 										<ListItem>
-											<Text style={[Styles.listHeading, Styles.semiBold]}>RECENT FAVOURITES</Text>
+											<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT FAVOURITES</Text>
+											<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goFavourites}>More <ION name="ios-arrow-forward" /></Text>
 										</ListItem>
-										<FavouritesProvider>
-											{({ favourites, isLoading }) => (
-												<View>
-													{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => (
-														<ListItem key={i} onPress={() => this.onFavourite(entry.link.link, entry.name)}>
-															<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={entry.link.difficultyLevel} style={[Styles.listIconNavMarginRight]} />
-															<Column style={[Styles.noMargin, {flex: 1}]}>
-																<Text>{entry.name}</Text>
-																{Constants.linkIcons[entry.link.linkType.value] ?
-																	<Image source={Constants.linkIcons[entry.link.linkType.value]} style={Styles.listItemImage} /> :
-																	<Text style={[Styles.textSmall]}>{entry.link.name}</Text>
+										<LinkLogoProvider>
+											{({ linkLogos, isLoading }) => (
+												<FavouritesProvider>
+													{({ favourites, isLoading }) => (
+														<View>
+															{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
+																const { link } = entry;
+																const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
+																if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+																	return null;
 																}
-															</Column>
-															<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
-														</ListItem>
-													))}
-												</View>
+																return (
+																	<ListItem key={i} onPress={() => this.onFavourite(link.link, entry.name)}>
+																		<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
+																		<Column style={[Styles.noMargin, {flex: 1}]}>
+																			<Text>{entry.name}</Text>
+																			{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
+																					<Row>
+																						<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																						{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Flex><Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text></Flex> : null}
+																					</Row>
+																				) : <Text>{link.name}</Text>
+																			}
+																		</Column>
+																		<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
+																	</ListItem>
+																)
+															})}
+														</View>
+													)}
+												</FavouritesProvider>
 											)}
-										</FavouritesProvider>
+										</LinkLogoProvider>
 									</View>
 								</View>
 							</ScrollView>

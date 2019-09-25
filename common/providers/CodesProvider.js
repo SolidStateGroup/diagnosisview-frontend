@@ -8,7 +8,9 @@ const TheComponent = class extends Component {
 		super(props, context);
 		this.state = {
 			isLoading: DiagnosisStore.isLoading,
-			codes: DiagnosisStore.getCodes()
+			codes: DiagnosisStore.getCodes(),
+			categories: DiagnosisStore.getCategories(),
+			externalStandards: DiagnosisStore.getExternalStandards(),
 		};
 	}
 
@@ -19,6 +21,8 @@ const TheComponent = class extends Component {
 				isLoading: DiagnosisStore.isLoading,
 				isSaving: DiagnosisStore.isSaving,
 				codes: DiagnosisStore.getCodes(),
+				categories: DiagnosisStore.getCategories(),
+				externalStandards: DiagnosisStore.getExternalStandards(),
 				error: DiagnosisStore.error,
 			});
 		});
@@ -33,12 +37,14 @@ const TheComponent = class extends Component {
 	}
 
 	render() {
-		var {isLoading, isSaving, codes, error} = this.state
+		var {isLoading, isSaving, codes, categories, externalStandards, error} = this.state
 		return (
 			this.props.children({
 				isLoading,
 				isSaving,
 				codes,
+				categories,
+				externalStandards,
 				error
 			}, {
 
