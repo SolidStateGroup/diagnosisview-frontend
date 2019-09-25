@@ -1,0 +1,61 @@
+button{
+    &.btn{
+        &:hover, &:focus{
+            outline:none;
+            box-shadow:none;
+        }
+
+        &--primary{
+            background:$brand-primary;
+            box-shadow:0 0 8px rgba(0,0,0,0.4);
+            border-radius:4px;
+            font-size:$font-smaller;
+            padding:10px 20px;
+
+            &:hover{
+                background:$brand-primary;
+            }
+        }
+
+        &--icon{
+            background:none;
+            box-shadow: none;
+            border:none;
+
+            &--blue{
+                color:$brand-primary;
+                background:none;
+
+                &:hover{
+                    color:$brand-primary;
+                    background:none;
+                }
+            }
+
+            &--red{
+                color:#D0021B;
+                background:none;
+
+                &:hover{
+                    color:#D0021B;
+                    background:none;
+                }
+            }
+        }
+
+        &--hollow{
+            background:none;
+            border:1px solid $brand-primary;
+            box-shadow:none;
+            color:$brand-primary;
+            border-radius:4px;
+            font-size:$font-smaller;
+            padding:10px 20px;
+
+            &:hover{
+                background:none;
+                color:$brand-primary;
+            }
+        }
+    }
+}

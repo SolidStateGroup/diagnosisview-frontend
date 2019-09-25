@@ -8,18 +8,16 @@ const BrokenLink = class extends Component {
 	render() {
 		return (
 			<View style={Styles.lightboxOuter}>
-				<View style={Styles.lightbox}>
-					<View style={[{alignSelf: 'center'}]}>
-						<Text style={Styles.textCenter}>
+				<View style={[Styles.lightbox]}>
+					<View style={[Styles.padded, {alignSelf: 'center'}]}>
+						<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')}/>
+						<Text style={Styles.paragraph}>
 							This link has been removed / updated at source. It might be necessary to remove this link from your favourites and search for the diagnosis again.
 						</Text>
-					</View>
-
-					<FormGroup>
 						<Button style={{alignSelf: 'center', width: 200}} onPress={() => this.props.navigator.dismissLightBox()}>
 							Ok
 						</Button>
-					</FormGroup>
+					</View>
 				</View>
 			</View>
 		);

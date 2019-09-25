@@ -1,8 +1,9 @@
 @import "variables";
 @import "3rdParty/index";
 @import "components/index";
-@import "project/index";
 @import "flexbox/index";
+@import "project/index";
+
 
 .faint {
   color: $text-muted;
@@ -61,7 +62,10 @@ h1, h2, h3 {
 }
 
 label {
-  font-weight: 400;
+  font-weight: bold;
+  height: 40px;
+  line-height: 40px;
+  padding-top: 5px;
 }
 
 input:disabled {
@@ -90,10 +94,6 @@ input:disabled {
 
 hr {
   color: #f1f1f1;
-}
-
-.form-group {
-  margin-bottom: $input-padding-y /2;
 }
 
 .header-icon {
