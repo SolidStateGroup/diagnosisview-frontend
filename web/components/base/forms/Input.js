@@ -59,7 +59,7 @@ const Input = class extends React.Component {
 	}
 
 	render() {
-		const {isValid, onSearchChange, mask, placeholderChar, disableHighlight, containerStyle, ...rest} = this.props;
+		const {isValid, onSearchChange, mask, placeholderChar, disableHighlight, containerStyle, inputClassName, ...rest} = this.props;
 
 		const className = cn({
 			'input-container': true,
@@ -67,7 +67,7 @@ const Input = class extends React.Component {
 			'invalid': this.state.shouldValidate && !isValid
 		}, this.props.className);
 
-		const inputClassName = cn({
+		const innerClassName = cn({
 			input: true
 		}, this.props.inputClassName);
 
@@ -84,7 +84,7 @@ const Input = class extends React.Component {
 							onKeyDown={this.onKeyDown}
 							onFocus={this.onFocus}
 							onBlur={this.onBlur}
-							className={inputClassName}
+							className={innerClassName}
 							placeholderChar={placeholderChar}/>
 					) : (
 						<input
@@ -92,7 +92,7 @@ const Input = class extends React.Component {
 							{...rest} onFocus={this.onFocus}
 							onKeyDown={this.onKeyDown}
 							onBlur={this.onBlur}
-							className={inputClassName}/>
+							className={innerClassName}/>
 					)}
 			</div>
 		);
