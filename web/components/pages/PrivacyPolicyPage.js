@@ -46,9 +46,9 @@ module.exports = class extends React.Component {
 <p>Links to privacy policy of third party service providers used by the app</p>
 
 <ul>
-<li>Apple.com</li>
-<li>Google Play Services</li>
-<li>Firebase Analytics</li>
+<li><a href="https://www.apple.com/legal/privacy/en-ww/" target="_blank">Apple.com</a></li>
+<li><a href="https://www.google.com/policies/privacy/" target="_blank">Google Play Services</a></li>
+<li><a href="https://firebase.google.com/policies/analytics" target="_blank">Firebase Analytics</a></li>
 </ul>
 
 <h3>Log Data</h3>
