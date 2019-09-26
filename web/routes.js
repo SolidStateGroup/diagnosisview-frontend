@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import App from './components/App'; //App Wrapper
 import HomePage from './components/pages/HomePage';
+import PrivacyPolicyPage from './components/pages/PrivacyPolicyPage';
 import ManageCodesPage from './components/pages/ManageCodesPage';
 import ManageUsersPage from './components/pages/ManageUsersPage';
 import ManageLinkTransformsPage from './components/pages/ManageLinkTransformsPage';
@@ -22,6 +23,7 @@ export default (
             <Route path="/admin" component={ManageCodesPage}/>
             <Route path="/login" exact component={HomePage}/>
             <Route path="/signup" exact component={HomePage}/>
+            <Route path="/privacy-policy" exact component={PrivacyPolicyPage}/>
             <Route component={NotFoundPage}/>
         </Switch>
     </App>
