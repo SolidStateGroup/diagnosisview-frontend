@@ -66,7 +66,6 @@ module.exports = class extends React.Component {
                                                 </form>
                                             </Column>
                                         </div>
-                                        <Link className="privacy-policy-link" to='/privacy-policy'>Privacy Policy</Link>
                                     </div>
                                     <div className="col-md-6 hero--blue flex align-items-center justify-content-center full-height">
                                         <div className="centered-container">
@@ -102,6 +101,7 @@ module.exports = class extends React.Component {
                                     </div>
                                 </div>
                             </div>
+                            <Link className="privacy-policy-link" to='/privacy-policy'>Privacy Policy</Link>
                         </Flex>
                     )}
                 </AccountProvider>
