@@ -31,11 +31,11 @@ module.exports = class extends React.Component {
                                 <img className="margin-bottom" src={require('../../images/brand.png')} width="35%" />
                                 <Link to='/' style={{float: 'right'}}>Back to Home</Link>
                                 <h1>Privacy Policy</h1>
-<p>University of Edinburgh built the DiagnosisView app as a Freemium app. This SERVICE is provided by University of Edinburgh at no cost and is intended for use as is.</p>
+<p>University of Edinburgh built the DiagnosisView app as a Freemium app. This SERVICE is intended for use as is.</p>
 
-<p>This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.</p>
+<p>This page is used to inform visitors regarding our policies with the collection, use, and disclosure of personal information if you decide to use our Service.</p>
 
-<p>If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy.</p>
+<p>If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The personal information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy.</p>
 
 <h3>Information Collection and Use</h3>
 
@@ -53,7 +53,7 @@ module.exports = class extends React.Component {
 
 <h3>Log Data</h3>
 
-<p>We want to inform you that whenever you use our Service, in a case of an error in the app we collect data and information (through third party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics.</p>
+<p>We want to inform you that whenever you use our Service, in case of an error in the app we collect data and information (through third party products) from your device called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics.</p>
 
 <h3>Cookies</h3>
 
@@ -63,7 +63,7 @@ module.exports = class extends React.Component {
 
 <h3>Service Providers</h3>
 
-<p>We may employ third-party companies and individuals due to the following reasons:</p>
+<p>We may employ third-party companies and individuals for the following reasons:</p>
 
 <ul>
 <li>To facilitate our Service</li>
@@ -72,7 +72,7 @@ module.exports = class extends React.Component {
 <li>To assist us in analyzing how our Service is used.</li>
 </ul>
 
-<p>We want to inform users of this Service that these third parties have access to your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose.</p>
+<p>These third parties have access to your personal information so that they can perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose.</p>
 
 <h3>Security</h3>
 
@@ -80,19 +80,19 @@ module.exports = class extends React.Component {
 
 <h3>Links to Other Sites</h3>
 
-<p>This Service may contain links to other sites. If you click on a third-party link, you will be directed to that site. Note that these external sites are not operated by us. Therefore, we strongly advise you to review the Privacy Policy of these websites. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</p>
+<p>This Service contains multiple links to other websites. If you click on these links, you will be directed to that site. These external sites are not operated by us. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</p>
 
 <h3>Children’s Privacy</h3>
 
-<p>These Services do not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.</p>
+<p>These Services do not address anyone under the age of 17. We do not knowingly collect personally identifiable information from children under 17. In the case we discover that a child under 17 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.</p>
 
 <h3>Changes to This Privacy Policy</h3>
 
-<p>We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.</p>
+<p>We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify registered users of any changes by posting the new Privacy Policy on this page. Changes are effective immediately after they are posted on this page.</p>
 
 <h3>Contact Us</h3>
 
-<p>If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at Old College, South Bridge, Edinburgh EH8 9YL. The University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336.</p>
+<p>If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at Edinburgh Medical School, University of Edinburgh, Old College, South Bridge, Edinburgh, EH8 9YL. The University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336.</p>
                             </div>
                         </Flex>
                     )}
