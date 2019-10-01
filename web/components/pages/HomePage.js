@@ -30,8 +30,8 @@ module.exports = class extends React.Component {
                             <div className="full-width">
                                 <div className="flex-row">
                                     <div className="col-md-6 align-items-center flex text-left full-height">
-                                        <img src={require('../../images/brand.png')} width="35%" />
-                                        <FormGroup className="text-center padded">
+                                        <img src={require('../../images/brand.png')} width="400px" />
+                                        <FormGroup className="text-center padded" style={{paddingTop: 0}}>
                                             <h5 className="text-dark my-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h5>
                                             <ul className="list-unstyled text-dark">
                                                 <li>Info on your own mobile or tablet</li>
