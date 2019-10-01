@@ -29,9 +29,9 @@ module.exports = class extends React.Component {
                         <Flex className="hero">
                             <div className="full-width">
                                 <div className="flex-row">
-                                    <div className="col-md-6 align-items-center justify-content-center flex text-left full-height">
-                                        <img src={require('../../images/brand.png')} width="35%" />
-                                        <FormGroup className="text-center padded">
+                                    <div className="col-md-6 align-items-center flex text-left full-height">
+                                        <img src={require('../../images/brand.png')} width="400px" />
+                                        <FormGroup className="text-center padded" style={{paddingTop: 0}}>
                                             <h5 className="text-dark my-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h5>
                                             <ul className="list-unstyled text-dark">
                                                 <li>Info on your own mobile or tablet</li>
@@ -39,8 +39,14 @@ module.exports = class extends React.Component {
                                                 <li>Moving on to practitioner-level and expert-level professional resources</li>
                                             </ul>
                                             <p>With an optional account you can access professional resources, as well as sync favourites and history across devices.</p>
+                                            <img src="../../images/uoe-icon.jpeg" width="15%" />
                                             <p>DiagnosisView was developed by <a href="https://www.ed.ac.uk" target="_blank">The University of Edinburgh</a> with the support of the <a href="https://www.patientview.org" target="_blank">www.patientview.org</a> electronic health records system.</p>
+                                            <a href="https://blogs.ed.ac.uk/diagnosisview/" target="_blank">DiagnosisView help pages and news updates are available here.</a>
                                         </FormGroup>
+                                        <div className="text-center">
+                                            <h5 className="text-dark">ADMIN LOGIN</h5>
+                                            <p>DiagnosisView is only available as an app for mobile devices. Web app may be added one day!</p>
+                                        </div>
                                         <div>
                                             <Column className="centered-container" style={{alignItems: 'stretch', justifyContent: 'center'}}>
                                                 <form onSubmit={(e) => {
