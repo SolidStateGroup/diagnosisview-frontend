@@ -13,6 +13,10 @@ module.exports = {
         marginBottom:styleVariables.marginBaseVertical
     },
 
+    stackedFormInv:{
+        marginTop:styleVariables.marginBaseVertical / 2,
+    },
+
     stackedForm:{
         marginBottom:styleVariables.marginBaseVertical / 2
     }
