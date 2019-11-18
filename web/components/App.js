@@ -22,8 +22,11 @@ export default class App extends Component {
 
     componentDidMount() {
         const { pathname } = this.context.router.history.location;
-        if (AccountStore.getUser() && pathname == '/' || pathname == '/login' || pathname == '/demo' || pathname == '/signup') {
+        const user = AccountStore.getUser();
+        if (user && (pathname == '/' || pathname == '/login' || pathname == '/demo' || pathname == '/signup')) {
             this.context.router.history.replace('/admin');
+        } else if (!user && pathname.indexOf('/admin') !== -1) {
+            this.context.router.history.replace('/');
         }
     }
 
