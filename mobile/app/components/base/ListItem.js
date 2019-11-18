@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import * as Animatable from 'react-native-animatable';
 
 const TheComponent = class extends Component {
-	displayName: 'TheComponent'
+	static displayName = 'ListItem';
 
 	constructor(props, context) {
 		super(props)
@@ -24,6 +24,25 @@ const TheComponent = class extends Component {
 		const animationProps = Object.assign(this.props.animationProps, {
 			delay: this.props.delay + 10 + ((Number(this.props.index || 0)) * 20),
 		})
+		if(this.props.noAnim) {
+			return <View style={this.props.style || Styles.listItem}>
+				{
+					Platform.OS == "android" ? (
+						<TouchableNativeFeedback
+							onPress={this.props.disabled ? null : this.props.onPress}
+							background={TouchableNativeFeedback.SelectableBackgroundBorderless()}>
+							{content}
+						</TouchableNativeFeedback>
+					) : (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={this.props.disabled ? null : this.props.onPress}>
+							{content}
+						</TouchableOpacity>
+					)
+				}
+			</View>;
+		}
 		return (
 			this.props.onPress ? (
 				<Animatable.View
@@ -62,7 +81,9 @@ TheComponent.defaultProps = {
 		animation: 'basicListEntrance',
 		duration: 250,
 		easing: 'ease-out-quart',
+		useNativeDriver: true,
 	},
+	noAnim: false,
 	underlayColor: colour.inputBackground,
 }
 module.exports = TheComponent;
