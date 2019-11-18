@@ -245,6 +245,9 @@ module.exports = hot(module)(class extends React.Component {
         action.then(res => {
             this.setState({ diagnosis: null, original: res, isSaving: false });
             this.props.history.replace('/admin/diagnosis', { code: res.code });
+            alert('Diagnosis Saved!')
+        }, error => {
+            error.json().then(err => alert(`Save Error - ${err.error}`));
         });
     }
 
@@ -276,6 +279,7 @@ module.exports = hot(module)(class extends React.Component {
                                 </button>
                             ) : null}
                         </div>
+
 
                         <div className="panel mb-5">
                             <div className="panel__head">
