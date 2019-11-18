@@ -164,6 +164,9 @@ const DashboardPage = class extends Component {
 												<Button onPress={this.subscribe}>Subscribe now</Button>
 											</View>
 										) : null}
+										<View style={[Styles.stackedFormInv]}>
+											<Button onPress={this.onSearch}>Search now</Button>
+										</View>
 									</View>
 									{user && user.expiryDate && !user.autoRenewing ? (() => {
 										const expiryDate = moment(user.expiryDate);
@@ -174,7 +177,7 @@ const DashboardPage = class extends Component {
 													<Button onPress={this.subscribe}>Renew now</Button>
 												</View>
 											)
-										} else if (expiryDate.isSameOrBefore(moment())) {
+										} else if (expiryDate.isSameOrBefore(moment()) && !user.activeSubscription) {
 											return (
 												<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
 													<Text style={[Styles.textCenter, Styles.textMedium, Styles.paragraph]}>Your account has expired. {this.renderSubscribeParagraph()}</Text>

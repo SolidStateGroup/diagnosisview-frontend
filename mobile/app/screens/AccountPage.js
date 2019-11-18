@@ -342,6 +342,7 @@ const AccountPage = class extends Component {
 								<View style={[ Styles.stacked, Styles.padded]}>
 								{user && user.activeSubscription ? (
 									<View style={[Styles.whitePanel, Styles.padded]}>
+										<Text style={[Styles.textCenter, Styles.stacked, Styles.semiBold]}>{user.emailAddress}</Text>
 										<Text style={[Styles.textCenter, Styles.stacked]}>Your account is active.</Text>
 										<Text style={[Styles.textCenter, { color: '#2980b9', textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
 									</View>
@@ -365,15 +366,15 @@ const AccountPage = class extends Component {
 										<Row style={{alignItems:'center', marginBottom:10, justifyContent:'center'}}>
 											<Button
 												onPress={this.showRegisterForm}
-												style={!this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlLeft] : Styles.segmentedControl}
-												textStyle={!this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
+												style={this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlLeft] : Styles.segmentedControl}
+												textStyle={this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
 											>
 												Register
 											</Button>
 											<Button
 												onPress={this.showLoginForm}
-												style={this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlRight, {alignSelf: 'auto'}] : [Styles.segmentedControl,{alignSelf: 'auto'}]}
-												textStyle={this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
+												style={!this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlRight, {alignSelf: 'auto'}] : [Styles.segmentedControl,{alignSelf: 'auto'}]}
+												textStyle={!this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
 											>
 												Login
 											</Button>
