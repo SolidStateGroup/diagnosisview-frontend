@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -230,6 +230,36 @@ module.exports = hot(module)(class extends React.Component {
                     .catch(e => {
                         this.setState({isSaving: false});
                         toast('Sorry something went wrong');
+                    });
+            }
+        }
+    }
+
+    changeDisplayOrderMany = (from, to) => {
+        const dir = from > to ? -1: 1;
+
+        const diagnosis = this.state.diagnosis || this.state.original;
+        let linksToReplace = _.filter(diagnosis.links, d => dir * d.displayOrder >= dir * from && dir * d.displayOrder <= dir * to);
+        
+        if (linksToReplace) {
+            if (this.state.diagnosis) {
+                linksToReplace.forEach(d => d.displayOrder = d.displayOrder === from ? to : d.displayOrder - dir);
+                this.setState({diagnosis});
+            } else {
+                this.setState({isSaving: true});
+                Promise.all(linksToReplace.map(d => data.put(Project.api + 'admin/code/link', {
+                        id: d.id,
+                        displayOrder: d.displayOrder === from ? to : d.displayOrder - dir,
+                    })))
+                    .then((resArr) => {
+                        resArr.forEach(r => _.find(diagnosis.links, d => d.id === r.id).displayOrder = r.displayOrder);
+                        this.setState({original: diagnosis, isSaving: false});
+                    })
+                    .catch(e => {
+                        this.setState({isSaving: false});
+                        toast('Sorry something went wrong');
+
+                        console.error('ERROR: ', e)
                     });
             }
         }
@@ -492,6 +522,9 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="col p-0">
                                         <label className="panel__head__title">URL</label>
                                     </div>
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">POSITION</label>
+                                    </div>
                                     <div className="ml-auto ">
                                         <div className="flex-row invisible">
                                             <div className="flex-1 flex-column">
@@ -550,6 +583,9 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="col p-0">
                                         <a className="text-small" style={{wordBreak: 'break-all'}} href={link}>{link}</a>
                                     </div>
+                                    <div className="col p-0">
+                                        <DisplayOrderBox initialValue={displayOrder} onSubmit={val => this.changeDisplayOrderMany(displayOrder, val)}/>
+                                    </div>
                                     <div className="ml-auto ">
                                         <div className="flex-row">
                                             <div className="flex-1 flex-column">
@@ -585,3 +621,38 @@ module.exports = hot(module)(class extends React.Component {
         );
     }
 });
+
+const DisplayOrderBox = class extends React.Component {
+    static getDerivedStateFromProps(props, state){
+        if(!state || props.initialValue !== state.initialValue) {
+            return {
+                initialValue: props.initialValue,
+                value: props.initialValue,
+            }
+        }
+        return null;
+    }
+
+    state = {};
+
+    render(){
+        const {value, initialValue} = this.state;
+        const {onSubmit} = this.props;
+        return <div className="container row">           
+            <input type='number' className="input input--outline col" value={value} onChange={val => this.setState({value: Utils.safeParseEventValue(val)})}/>
+            {initialValue != value && <React.Fragment>
+                <button className="btn btn--icon btn--icon--blue p-2" onClick={() => onSubmit(value)}><i className="fas fa-check" /></button>
+                <button className="btn btn--icon btn--icon--blue p-2" onClick={() => this.setState({value: initialValue})}><i className="fas fa-times" /></button>
+            </React.Fragment>}
+        </div>;
+    } 
+}
+/*
+const DisplayOrderBox = ({initialValue, onSubmit}) => {
+    const [value, setValue] = useState(initialValue);
+    useEffect(() => setValue(initialValue), [initialValue]);
+    return <div>
+        <input type='number' value={value} onChange={val => setValue(val)}/>
+        {initialValue != value && <button onClick={() => onSubmit(val)}>Set</button>}
+    </div>;
+};*/
