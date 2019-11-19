@@ -57,6 +57,12 @@ module.exports = {
         fontWeight: 'bold'
     },
 
+    hyperlink: {
+        //textDecorationLine: 'underline',
+        fontWeight: '600',
+        //fontStyle: 'italic',
+        color: '#0066ff',//pallette.anchor,
+    },
     // Headings
     // -------------------------
 
