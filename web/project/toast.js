@@ -17,7 +17,7 @@ const Message = class extends React.Component {
     return (
       <div className={className}>
         <a onClick={this.props.remove} className="pull-xs-right">
-          <ion className="icon ion-md-close"/>
+          <span className="icon ion-md-close"/>
         </a>
         {this.props.children}
       </div>
