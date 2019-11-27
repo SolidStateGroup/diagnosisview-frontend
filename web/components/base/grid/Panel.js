@@ -14,7 +14,7 @@ const Panel = class extends React.Component {
                     <Row space={true}>
                         <Row className={"flex-1"}>
                             {this.props.icon && (
-                                <span className={"panel-icon"}><ion className={`icon ${this.props.icon}`}/></span>
+                                <span className={"panel-icon"}><span className={`icon ${this.props.icon}`}/></span>
                             )}
                             {this.props.title}
                         </Row>
