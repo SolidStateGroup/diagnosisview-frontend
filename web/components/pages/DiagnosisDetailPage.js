@@ -235,50 +235,114 @@ module.exports = hot(module)(class extends React.Component {
         }
     }
 
-    changeDisplayOrderMany = (from, to) => {
+    changeDisplayOrderMany = (from, to, id, difficultyLevel) => {
         const dir = from > to ? -1: 1;
+        const diagnosis = this.state.diagnosis || this.state.original;     
+             
+        if (to == 10 || to == 20 || to == 30 || to < 1 || to > 29) {        
+            const error = " Invalid order number, must be Green: 1-9, Amber: 11-19, Red: 21-29."
+            toast(error);
+            console.warn('ERROR: ', error)
+            return
+           } 
+       if (this.checkLinkLevelError(difficultyLevel,to)) return
+             
+       if (!_.isEmpty(_.filter(diagnosis.links, d => d.displayOrder == to))) {             
+        const error = " Invalid order number, must be unique"
+        toast(error);
+        console.warn('ERROR: ', error)
+        return
 
-        const diagnosis = this.state.diagnosis || this.state.original;
-        let linksToReplace = _.filter(diagnosis.links, d => dir * d.displayOrder >= dir * from && dir * d.displayOrder <= dir * to);
+       }                
+           // const difficultyLevelToChangeTo =  to <= 9 ? "GREEN" : to <= 19 ? "AMBER" :"RED"
+   
+            let linksToReplace = _.filter(diagnosis.links, d => d.id === id);
         
-        if (linksToReplace) {
-            if (this.state.diagnosis) {
-                linksToReplace.forEach(d => d.displayOrder = d.displayOrder === from ? to : d.displayOrder - dir);
-                this.setState({diagnosis});
-            } else {
-                this.setState({isSaving: true});
-                Promise.all(linksToReplace.map(d => data.put(Project.api + 'admin/code/link', {
-                        id: d.id,
-                        displayOrder: d.displayOrder === from ? to : d.displayOrder - dir,
-                    })))
-                    .then((resArr) => {
-                        resArr.forEach(r => _.find(diagnosis.links, d => d.id === r.id).displayOrder = r.displayOrder);
-                        this.setState({original: diagnosis, isSaving: false});
-                    })
-                    .catch(e => {
-                        this.setState({isSaving: false});
-                        toast('Sorry something went wrong');
+            console.log('ltr', linksToReplace)
+            
+            if (linksToReplace) {
+                if (this.state.diagnosis) {
+                    console.log("dia true")
+                    linksToReplace.forEach(d => d.displayOrder = d.displayOrder === from ? to : d.displayOrder - dir);
+                    this.setState({diagnosis});
+                } else {
+                    console.log("dia false")
+                    this.setState({isSaving: true});
+                    Promise.all(linksToReplace.map(d => data.put(Project.api + 'admin/code/link', {
+                            id: d.id,
+                            displayOrder: d.displayOrder === from ? to : d.displayOrder - dir,
+                            difficultyLevel: difficultyLevel
+                        })))
+                        .then((resArr) => {
+                            resArr.forEach(r => _.find(diagnosis.links, d => d.id === r.id).displayOrder = r.displayOrder);
+                            this.setState({original: diagnosis, isSaving: false});
+                        })
+                        .catch(e => {
+                            this.setState({isSaving: false});
+                            toast('Sorry something went wrong');
 
-                        console.error('ERROR: ', e)
-                    });
+                            console.error('ERROR: ', e)
+                        });
+                }
             }
-        }
     }
 
-    save = () => {
+    checkLinkLevelError = (difficultyLevel,displayOrder) => {
+        switch (difficultyLevel) {
+            case "GREEN":                
+                if(displayOrder <= 0 || displayOrder >= 10) {
+                    const error = " Invalid order number, must be Green: 1-9."
+                    toast(error);
+                    console.warn('ERROR: ', error)
+                    return true
+                }
+            break;
+            case "AMBER":
+                if(displayOrder <= 10 || displayOrder >= 20) {
+                    const error = " Invalid order number, must be Amber: 11-19."
+                    toast(error);
+                    console.warn('ERROR: ', error)
+                    return true
+                }
+            break;
+            case "RED":
+                if(displayOrder <= 20 || displayOrder >= 30){
+                    const error = " Invalid order number, must be Red: 21-29."
+                    toast(error);
+                    console.warn('ERROR: ', error)
+                    return true
+                }
+            break;
+            const error = " No difficulty level set to perform validation on"
+            toast(error);
+            console.error('ERROR: ', error)            
+            return true
+            default:
+                break;
+        }
+        return false
+    }
+    validateLinks = (links) => {
+        if(_.isEmpty(links)) return true       
+        return (!links.some(link => this.checkLinkLevelError(link.difficultyLevel,link.displayOrder)))
+    }
+    save = () => {                
         const addNew = _.get(this.props.location, 'state.addNew');
         this.setState({isSaving: true});
         const diagnosis = this.state.diagnosis;
-        diagnosis.description = diagnosis.patientFriendlyName;
-        // console.log('SAVING', diagnosis);
+        
+        if(this.validateLinks(diagnosis.links)){
+            diagnosis.description = diagnosis.patientFriendlyName;
+            // console.log('SAVING', diagnosis);
         const action = addNew ? data.post(`${Project.api}admin/code`, diagnosis) : data.put(`${Project.api}admin/code`, diagnosis);
         action.then(res => {
             this.setState({ diagnosis: null, original: res, isSaving: false });
             this.props.history.replace('/admin/diagnosis', { code: res.code });
             alert('Diagnosis Saved!')
-        }, error => {
-            error.json().then(err => alert(`Save Error - ${err.error}`));
+        }, error => {                   
+            error.json().then(err => alert(`Save Error - ${err.message}`));
         });
+    }
     }
 
     render = () => {
@@ -510,9 +574,7 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="col p-0">
                                         <label className="panel__head__title">LAST UPDATED</label>
                                     </div>
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">DIFFICULTY LEVEL</label>
-                                    </div>
+                                    
                                     <div className="col p-0">
                                         <label className="panel__head__title">DISPLAY TO FREE USERS?</label>
                                     </div>
@@ -523,10 +585,15 @@ module.exports = hot(module)(class extends React.Component {
                                         <label className="panel__head__title">URL</label>
                                     </div>
                                     <div className="col p-0">
+                                        <label className="panel__head__title">DIFFICULTY LEVEL</label>
+                                    </div>
+                                    <div className="col p-0">
                                         <label className="panel__head__title">POSITION</label>
                                     </div>
+
                                     <div className="ml-auto ">
                                         <div className="flex-row invisible">
+                                            {/*
                                             <div className="flex-1 flex-column">
                                                 <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
                                                     <i className="fas fa-chevron-up text-small"> </i>
@@ -535,6 +602,7 @@ module.exports = hot(module)(class extends React.Component {
                                                     <i className="fas fa-chevron-down text-small"> </i>
                                                 </button>
                                             </div>
+                                            */}
                                             {diagnosis ? (
                                                 <button className="btn btn--icon btn--icon--red">
                                                     <i className="far fa-trash-alt"> </i>
@@ -554,6 +622,15 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                     <div className="col p-0">
                                         <p className="text-small">{moment(lastUpdate).format('DD/MM/YYYY')}</p>
+                                    </div>                                   
+                                    <div className="col p-0">
+                                        <p className="text-small"><Switch checked={freeLink} onChange={checked => this.toggleFreeLink(id, checked, displayOrder)}/></p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <p className="text-small"><Switch checked={transformationsOnly} onChange={checked => this.toggleTransformationsOnly(id, checked, displayOrder)} /></p>
+                                    </div>
+                                    <div className="col p-0">
+                                        <a className="text-small" style={{wordBreak: 'break-all'}} href={link}>{link}</a>
                                     </div>
                                     <div className="col p-0">
                                         <select
@@ -563,7 +640,7 @@ module.exports = hot(module)(class extends React.Component {
                                             disabled={isSaving}
                                             onChange={(e) => this.onDifficultyLevelChange(id, e)}
                                         >
-                                            <option value=""></option>
+                                            
                                             {_.map(Constants.difficultyLevels, (option, i) => {
                                                 const isObj = typeof option === 'object';
                                                 const label = isObj ? option.label || option.value : option;
@@ -575,17 +652,11 @@ module.exports = hot(module)(class extends React.Component {
                                         </select>
                                     </div>
                                     <div className="col p-0">
-                                        <p className="text-small"><Switch checked={freeLink} onChange={checked => this.toggleFreeLink(id, checked, displayOrder)}/></p>
+                                        <DisplayOrderBox initialValue={displayOrder} onSubmit={val => this.changeDisplayOrderMany(displayOrder, val, id, difficultyLevel)}/>
                                     </div>
-                                    <div className="col p-0">
-                                        <p className="text-small"><Switch checked={transformationsOnly} onChange={checked => this.toggleTransformationsOnly(id, checked, displayOrder)} /></p>
-                                    </div>
-                                    <div className="col p-0">
-                                        <a className="text-small" style={{wordBreak: 'break-all'}} href={link}>{link}</a>
-                                    </div>
-                                    <div className="col p-0">
-                                        <DisplayOrderBox initialValue={displayOrder} onSubmit={val => this.changeDisplayOrderMany(displayOrder, val)}/>
-                                    </div>
+                                    
+                                    {
+                                    /*
                                     <div className="ml-auto ">
                                         <div className="flex-row">
                                             <div className="flex-1 flex-column">
@@ -607,6 +678,7 @@ module.exports = hot(module)(class extends React.Component {
                                             ) : null}
                                         </div>
                                     </div>
+                                */ }
                                 </div>
                             ))}
                             {diagnosis ? (
@@ -638,7 +710,7 @@ const DisplayOrderBox = class extends React.Component {
     render(){
         const {value, initialValue} = this.state;
         const {onSubmit} = this.props;
-        return <div className="container row">           
+        return <div className="container col">           
             <input type='number' className="input input--outline col" value={value} onChange={val => this.setState({value: Utils.safeParseEventValue(val)})}/>
             {initialValue != value && <React.Fragment>
                 <button className="btn btn--icon btn--icon--blue p-2" onClick={() => onSubmit(value)}><i className="fas fa-check" /></button>
