@@ -592,17 +592,7 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
 
                                     <div className="ml-auto ">
-                                        <div className="flex-row invisible">
-                                            {/*
-                                            <div className="flex-1 flex-column">
-                                                <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
-                                                    <i className="fas fa-chevron-up text-small"> </i>
-                                                </button>
-                                                <button className="btn btn--icon btn--icon--blue" style={{padding: 0}}>
-                                                    <i className="fas fa-chevron-down text-small"> </i>
-                                                </button>
-                                            </div>
-                                            */}
+                                        <div className="flex-row invisible">                                            
                                             {diagnosis ? (
                                                 <button className="btn btn--icon btn--icon--red">
                                                     <i className="far fa-trash-alt"> </i>
@@ -631,46 +621,11 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                     <div className="col p-0">
                                         <a className="text-small" style={{wordBreak: 'break-all'}} href={link}>{link}</a>
-                                    </div>
-                                    <div className="col p-0">
-                                        <select
-                                            className="form-control input--fit-cell"
-                                            style={{padding: 0}}
-                                            value={difficultyLevel}
-                                            disabled={isSaving}
-                                            onChange={(e) => this.onDifficultyLevelChange(id, e)}
-                                        >
-                                            
-                                            {_.map(Constants.difficultyLevels, (option, i) => {
-                                                const isObj = typeof option === 'object';
-                                                const label = isObj ? option.label || option.value : option;
-                                                const value = isObj ? option.value : option;
-                                                return (
-                                                    <option key={i} value={value}>{label}</option>
-                                                )
-                                            })}
-                                        </select>
-                                    </div>
-                                    <div className="col p-0">
-                                        <DisplayOrderBox initialValue={displayOrder} onSubmit={val => this.changeDisplayOrderMany(displayOrder, val, id, difficultyLevel)}/>
-                                    </div>
-                                    
-                                    {
-                                    /*
+                                    </div>                                
+                                    <DisplayOrderBox id={id} dropdownInitialValue={difficultyLevel} isSaving={isSaving} initialValue={displayOrder} onSubmit={(val, diffLevel) => this.changeDisplayOrderMany(displayOrder, val, id, diffLevel)}/>
+                                                                                                                                            
                                     <div className="ml-auto ">
-                                        <div className="flex-row">
-                                            <div className="flex-1 flex-column">
-                                                {index !== 0 ? (
-                                                    <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, true)}>
-                                                        <i className="fas fa-chevron-up text-small"> </i>
-                                                    </button>
-                                                ) : null}
-                                                {index !== links.length - 1 ? (
-                                                    <button className="btn btn--icon btn--icon--blue" style={{padding: 0}} onClick={() => this.changeDisplayOrder(id, false)}>
-                                                        <i className="fas fa-chevron-down text-small"> </i>
-                                                    </button>
-                                                ) : null}
-                                            </div>
+                                        <div className="flex-row">                                           
                                             {diagnosis ? (
                                                 <button className="btn btn--icon btn--icon--red" onClick={() => this.removeLink(id)}>
                                                     <i className="far fa-trash-alt"> </i>
@@ -678,7 +633,7 @@ module.exports = hot(module)(class extends React.Component {
                                             ) : null}
                                         </div>
                                     </div>
-                                */ }
+                             
                                 </div>
                             ))}
                             {diagnosis ? (
@@ -696,10 +651,13 @@ module.exports = hot(module)(class extends React.Component {
 
 const DisplayOrderBox = class extends React.Component {
     static getDerivedStateFromProps(props, state){
-        if(!state || props.initialValue !== state.initialValue) {
+        if(!state || props.initialValue !== state.initialValue || props.dropdownInitialValue !== state.dropdownInitialValue) {
             return {
                 initialValue: props.initialValue,
                 value: props.initialValue,
+                dropdownValue:props.dropdownInitialValue,
+                dropdownInitialValue:props.dropdownInitialValue
+
             }
         }
         return null;
@@ -708,15 +666,44 @@ const DisplayOrderBox = class extends React.Component {
     state = {};
 
     render(){
-        const {value, initialValue} = this.state;
-        const {onSubmit} = this.props;
-        return <div className="container col">           
+        const {value, initialValue, dropdownValue, dropdownInitialValue} = this.state;
+        const {onSubmit, isSaving ,id} = this.props;        
+        const onSubmit2 = (value,dropdownValue) => {
+            console.log(value,dropdownValue)
+        }
+      
+        return( 
+            <React.Fragment>
+            <div className="col p-0">
+            <select
+                className="form-control input--fit-cell"
+                style={{padding: 0}}
+                value={dropdownValue}
+                disabled={isSaving}
+                onChange={(e) => this.setState({dropdownValue: e.target.value})}
+                
+            >                
+                {_.map(Constants.difficultyLevels, (option, i) => {
+                    const isObj = typeof option === 'object';
+                    const label = isObj ? option.label || option.value : option;
+                    const value = isObj ? option.value : option;
+                    return (
+                        <option key={i} value={value}>{label}</option>
+                    )
+                })}
+            </select>
+        </div>
+        <div className="col p-0">
+        <div className="container col"> 
             <input type='number' className="input input--outline col" value={value} onChange={val => this.setState({value: Utils.safeParseEventValue(val)})}/>
-            {initialValue != value && <React.Fragment>
-                <button className="btn btn--icon btn--icon--blue p-2" onClick={() => onSubmit(value)}><i className="fas fa-check" /></button>
-                <button className="btn btn--icon btn--icon--blue p-2" onClick={() => this.setState({value: initialValue})}><i className="fas fa-times" /></button>
+            {(initialValue != value || dropdownValue != dropdownInitialValue) && <React.Fragment>
+                <button className="btn btn--icon btn--icon--blue p-2" onClick={() => onSubmit(value, dropdownValue)}><i className="fas fa-check" /></button>
+                <button className="btn btn--icon btn--icon--blue p-2" onClick={() => this.setState({value: initialValue,dropdownValue:dropdownInitialValue})}><i className="fas fa-times" /></button>
             </React.Fragment>}
-        </div>;
+        </div>
+        </div>
+        </React.Fragment>
+        )
     } 
 }
 /*
