@@ -144,8 +144,7 @@ module.exports = hot(module)(class extends React.Component {
         }
     
         for (let index = LEVEL_RANGES[level].low; index <= LEVEL_RANGES[level].high; index++) {                  
-           if(_.find(collection, d => d.displayOrder == index)){
-                console.log("found", index)
+           if(_.find(collection, d => d.displayOrder == index)){              
            }else{
                return index
            }
@@ -193,9 +192,7 @@ module.exports = hot(module)(class extends React.Component {
         openModal(<h2>Add Link</h2>, <AddLinkModal
             onAdd={link => {
                 const diagnosis = this.state.diagnosis;
-                diagnosis.links = diagnosis.links || [];
-                console.log("lg here",link)
-                
+                diagnosis.links = diagnosis.links || [];                            
                 const displayOrder = this.getNextAvailableIdByLevel(diagnosis.links,link.difficultyLevel);
                 diagnosis.links.push({...link, displayOrder});
                 this.setState({diagnosis});
