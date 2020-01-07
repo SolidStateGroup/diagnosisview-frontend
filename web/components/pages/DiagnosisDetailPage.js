@@ -279,7 +279,7 @@ module.exports = hot(module)(class extends React.Component {
                     let link = _.find(linksToReplace, d => d.id === id)
                     link.difficultyLevel = difficultyLevel                    
                     this.setState({diagnosis});
-                } else {                    )
+                } else {                    
                     this.setState({isSaving: true});
                     Promise.all(linksToReplace.map(d => data.put(Project.api + 'admin/code/link', {
                             id: d.id,
