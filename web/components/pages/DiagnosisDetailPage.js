@@ -7,7 +7,9 @@ import data from '../../../common/stores/base/_data';
 
 import AddCodeCategoryModal from '../modals/AddCodeCategory';
 import AddLinkModal from '../modals/AddLink';
+import AddSynonym from '../modals/AddSynonym';
 import AddExternalStandardModal from '../modals/AddExternalStandard';
+
 
 module.exports = hot(module)(class extends React.Component {
     static contextTypes = {
@@ -206,6 +208,25 @@ module.exports = hot(module)(class extends React.Component {
         this.setState({diagnosis});
     }
 
+    addSynonym = () => {
+        openModal(<h2>Add Synonym</h2>, <AddSynonym
+            onAdd={synonym => {                
+                const diagnosis = this.state.diagnosis;
+                diagnosis.synonyms = diagnosis.synonyms || [];                                            
+                diagnosis.synonyms.push(synonym);                
+                this.setState({diagnosis});
+            }}
+        />);
+    }
+    removeSynonymByName = (name) => {
+        const diagnosis = this.state.diagnosis;
+        diagnosis.synonyms.splice(_.findIndex(diagnosis.synonyms, name));
+        this.setState({diagnosis});
+        //  const SynonymsTest = this.state.SynonymsTest;
+        //  SynonymsTest.splice(_.findIndex(SynonymsTest, name));
+        //  this.setState({SynonymsTest});
+    }
+
     changeDisplayOrder = (id, up) => {
         const diagnosis = this.state.diagnosis || this.state.original;
         const linkToMove = _.find(diagnosis.links, {id});
@@ -367,8 +388,9 @@ module.exports = hot(module)(class extends React.Component {
         if (!diagnosis && !original) return <Flex className="centered-container"><Loader /></Flex>
         const {
             code, patientFriendlyName, created, lastUpdate, hideFromPatients, removedExternally, fullDescription,
-            codeCategories, externalStandards, links,
+            codeCategories, externalStandards, links,synonyms
         } = diagnosis || original;
+        
         return (
             <CodesProvider>
                 {({ isLoading, codes, isSaving }) => (
@@ -656,6 +678,48 @@ module.exports = hot(module)(class extends React.Component {
                             {diagnosis ? (
                                 <div className="justify-content text-center">
                                     <button className="btn btn--hollow my-3" onClick={this.addLink}><i className="fas fa-plus-circle" /> Add</button>
+                                </div>
+                            ) : null}
+                        </div>
+
+                        <h5 className="panel__title">Synonyms</h5>
+                        <div className="panel mb-5">
+                            <div className="panel__head">
+                                <div className="flex-1 flex-row align-items-start">
+                                    <div className="col p-0">
+                                        <label className="panel__head__title">NAME</label>
+                                    </div>                                   
+                                    <div className="ml-auto ">
+                                        <div className="flex-row invisible">                                            
+                                            {diagnosis ? (
+                                                <button className="btn btn--icon btn--icon--red">
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            ) : null}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {_.map(_.sortBy(synonyms, "name"), ({name}, index) => (
+                                <div key={name} className="panel__row flex-row">
+                                    <div className="col p-0">
+                                        <p className="text-small">{name}</p>
+                                    </div>                                                                                                                                                
+                                    <div className="ml-auto ">
+                                        <div className="flex-row">                                           
+                                            {diagnosis ? (
+                                                <button className="btn btn--icon btn--icon--red" onClick={() => this.removeSynonymByName(name)}>
+                                                    <i className="far fa-trash-alt"> </i>
+                                                </button>
+                                            ) : null}
+                                        </div>
+                                    </div>
+                             
+                                </div>
+                            ))}
+                            {diagnosis ? (
+                                <div className="justify-content text-center">
+                                    <button className="btn btn--hollow my-3" onClick={this.addSynonym}><i className="fas fa-plus-circle" /> Add</button>
                                 </div>
                             ) : null}
                         </div>
