@@ -271,21 +271,15 @@ module.exports = hot(module)(class extends React.Component {
        }                
            // const difficultyLevelToChangeTo =  to <= 9 ? "GREEN" : to <= 19 ? "AMBER" :"RED"
    
-            let linksToReplace = _.filter(diagnosis.links, d => d.id === id);
-        
-            console.log('ltr', linksToReplace)
+            let linksToReplace = _.filter(diagnosis.links, d => d.id === id);                
             
             if (linksToReplace) {
-                if (this.state.diagnosis) {
-                    console.log("dia true")
-                  //  linksToReplace.forEach(d => d.displayOrder = d.displayOrder === from ? to : d.displayOrder - dir);
+                if (this.state.diagnosis) {                                      
                     linksToReplace.forEach(d => d.displayOrder = d.displayOrder === from ? to : d.displayOrder - dir);
                     let link = _.find(linksToReplace, d => d.id === id)
-                    link.difficultyLevel = difficultyLevel
-                    console.log("ltrUpdated", linksToReplace)
+                    link.difficultyLevel = difficultyLevel                    
                     this.setState({diagnosis});
-                } else {
-                    console.log("dia false")
+                } else {                    )
                     this.setState({isSaving: true});
                     Promise.all(linksToReplace.map(d => data.put(Project.api + 'admin/code/link', {
                             id: d.id,
@@ -353,8 +347,7 @@ module.exports = hot(module)(class extends React.Component {
     save = () => {                
         const addNew = _.get(this.props.location, 'state.addNew');
         this.setState({isSaving: true});
-        const diagnosis = this.state.diagnosis;
-        console.log("sending dia", diagnosis)
+        const diagnosis = this.state.diagnosis;        
         if(this.validateLinks(diagnosis.links)){
             diagnosis.description = diagnosis.patientFriendlyName;
            
@@ -692,9 +685,6 @@ const DisplayOrderBox = class extends React.Component {
     render(){
         const {value, initialValue, dropdownValue, dropdownInitialValue} = this.state;
         const {onSubmit, isSaving ,id} = this.props;        
-        const onSubmit2 = (value,dropdownValue) => {
-            console.log(value,dropdownValue)
-        }
       
         return( 
             <React.Fragment>
