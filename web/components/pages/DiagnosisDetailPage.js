@@ -136,6 +136,22 @@ module.exports = hot(module)(class extends React.Component {
         // Just return the highest id + 1
         return _.max(_.map(collection, item => item[key])) + 1 || 1;
     }
+    getNextAvailableIdByLevel = (collection,level) => {    
+        const LEVEL_RANGES={
+            "GREEN" : {low:1, high:9},
+            "AMBER" : {low:11, high:19},
+            "RED" : {low:21, high:29},
+        }
+    
+        for (let index = LEVEL_RANGES[level].low; index <= LEVEL_RANGES[level].high; index++) {                  
+           if(_.find(collection, d => d.displayOrder == index)){
+                console.log("found", index)
+           }else{
+               return index
+           }
+        }        
+        return getNextAvailableId(collection, "displayOrder")
+    }
 
     addCategory = () => {
         openModal(<h2>Add Category</h2>, <AddCodeCategoryModal
@@ -178,7 +194,9 @@ module.exports = hot(module)(class extends React.Component {
             onAdd={link => {
                 const diagnosis = this.state.diagnosis;
                 diagnosis.links = diagnosis.links || [];
-                const displayOrder = this.getNextAvailableId(diagnosis.links, 'displayOrder');
+                console.log("lg here",link)
+                
+                const displayOrder = this.getNextAvailableIdByLevel(diagnosis.links,link.difficultyLevel);
                 diagnosis.links.push({...link, displayOrder});
                 this.setState({diagnosis});
             }}
@@ -342,7 +360,7 @@ module.exports = hot(module)(class extends React.Component {
         console.log("sending dia", diagnosis)
         if(this.validateLinks(diagnosis.links)){
             diagnosis.description = diagnosis.patientFriendlyName;
-            // console.log('SAVING', diagnosis);
+           
         const action = addNew ? data.post(`${Project.api}admin/code`, diagnosis) : data.put(`${Project.api}admin/code`, diagnosis);
         action.then(res => {
             this.setState({ diagnosis: null, original: res, isSaving: false });
@@ -690,7 +708,6 @@ const DisplayOrderBox = class extends React.Component {
                 value={dropdownValue}
                 disabled={isSaving}
                 onChange={(e) => this.setState({dropdownValue: e.target.value})}
-                
             >                
                 {_.map(Constants.difficultyLevels, (option, i) => {
                     const isObj = typeof option === 'object';
