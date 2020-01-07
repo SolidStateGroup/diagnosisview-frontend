@@ -247,7 +247,7 @@ module.exports = hot(module)(class extends React.Component {
            } 
        if (this.checkLinkLevelError(difficultyLevel,to)) return
              
-       if (!_.isEmpty(_.filter(diagnosis.links, d => d.displayOrder == to))) {             
+       if (!_.isEmpty(_.filter(diagnosis.links, d => (d.displayOrder == to && d.id != id)))) {             
         const error = " Invalid order number, must be unique"
         toast(error);
         console.warn('ERROR: ', error)
@@ -263,7 +263,11 @@ module.exports = hot(module)(class extends React.Component {
             if (linksToReplace) {
                 if (this.state.diagnosis) {
                     console.log("dia true")
+                  //  linksToReplace.forEach(d => d.displayOrder = d.displayOrder === from ? to : d.displayOrder - dir);
                     linksToReplace.forEach(d => d.displayOrder = d.displayOrder === from ? to : d.displayOrder - dir);
+                    let link = _.find(linksToReplace, d => d.id === id)
+                    link.difficultyLevel = difficultyLevel
+                    console.log("ltrUpdated", linksToReplace)
                     this.setState({diagnosis});
                 } else {
                     console.log("dia false")
@@ -273,8 +277,13 @@ module.exports = hot(module)(class extends React.Component {
                             displayOrder: d.displayOrder === from ? to : d.displayOrder - dir,
                             difficultyLevel: difficultyLevel
                         })))
-                        .then((resArr) => {
-                            resArr.forEach(r => _.find(diagnosis.links, d => d.id === r.id).displayOrder = r.displayOrder);
+                        .then((resArr) => {                           
+                            resArr.forEach((r) => {
+                                let link = _.find(diagnosis.links, d => d.id === r.id)
+                                link.displayOrder = r.displayOrder
+                                link.difficultyLevel = r.difficultyLevel
+                            });
+
                             this.setState({original: diagnosis, isSaving: false});
                         })
                         .catch(e => {
@@ -330,7 +339,7 @@ module.exports = hot(module)(class extends React.Component {
         const addNew = _.get(this.props.location, 'state.addNew');
         this.setState({isSaving: true});
         const diagnosis = this.state.diagnosis;
-        
+        console.log("sending dia", diagnosis)
         if(this.validateLinks(diagnosis.links)){
             diagnosis.description = diagnosis.patientFriendlyName;
             // console.log('SAVING', diagnosis);
