@@ -14,7 +14,9 @@ module.exports = hot(module)(class extends React.Component {
         router: React.PropTypes.object.isRequired
     };
 
-    state = {}
+    state = {
+        edit:false
+    }
 
     componentDidMount() {
         const code = _.get(this.props.location, 'state.code');
@@ -25,6 +27,7 @@ module.exports = hot(module)(class extends React.Component {
             data.get(Project.api + 'code/' + code)
                 .then(res => {
                     this.setState({
+                        edit:true,
                         original: res,
                         isLoading: false,
                         diagnosis: edit ? _.cloneDeep(res) : undefined,
@@ -32,11 +35,11 @@ module.exports = hot(module)(class extends React.Component {
                 });
         } else {
             // Must be a new diagnosis
-            this.setState({ diagnosis: {} });
+            this.setState({ edit:false, diagnosis: {} });
         }
     }
 
-    toggleFreeLink = (id, on, displayOrder) => {
+    toggleFreeLink = (id, on, displayOrder) => {        
         const diagnosis = this.state.diagnosis;
         if (diagnosis) {
             _.find(diagnosis.links, {displayOrder}).freeLink = on;
@@ -48,6 +51,7 @@ module.exports = hot(module)(class extends React.Component {
                     data.put(Project.api + 'admin/code/link', {
                         id,
                         freeLink: on,
+                        displayOrder:displayOrder,
                         difficultyLevel: _.find(this.state.original.links, {id}).difficultyLevel,
                     })
                         .then(res => {
@@ -57,8 +61,8 @@ module.exports = hot(module)(class extends React.Component {
                             this.setState({original, isSaving: false});
                         })
                         .catch(e => {
-                            this.setState({isSaving: false});
-                            toast('Sorry something went wrong');
+                            this.setState({isSaving: false});                            
+                            e.json().then(err => alert(`Save Error - ${err.message}`));                                                        
                         });
                 });
         }
@@ -363,7 +367,7 @@ module.exports = hot(module)(class extends React.Component {
     }
 
     render = () => {
-        const { diagnosis, original } = this.state;
+        const { diagnosis, original, edit } = this.state;
         if (!diagnosis && !original) return <Flex className="centered-container"><Loader /></Flex>
         const {
             code, patientFriendlyName, created, lastUpdate, hideFromPatients, removedExternally, fullDescription,
@@ -378,10 +382,10 @@ module.exports = hot(module)(class extends React.Component {
                         </div>
                         <div className="flex-row mb-3">
                             <div className="flex-1 flex-column">
-                                {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : <h1 className="content__title">Add Diagnosis</h1>}
+                                {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : edit ?<h1 className="content__title">Edit Diagnosis</h1> : <h1 className="content__title">Add Diagnosis</h1>}
                             </div>
                             {!diagnosis && code.indexOf('dv_') === 0 ? (
-                                <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.original)})}>
+                                <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.original), edit:true})}>
                                     Edit Diagnosis
                                 </button>
                             ) : diagnosis ? (
