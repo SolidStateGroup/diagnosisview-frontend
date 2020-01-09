@@ -218,13 +218,10 @@ module.exports = hot(module)(class extends React.Component {
             }}
         />);
     }
-    removeSynonymByName = (name) => {
-        const diagnosis = this.state.diagnosis;
-        diagnosis.synonyms.splice(_.findIndex(diagnosis.synonyms, name));
-        this.setState({diagnosis});
-        //  const SynonymsTest = this.state.SynonymsTest;
-        //  SynonymsTest.splice(_.findIndex(SynonymsTest, name));
-        //  this.setState({SynonymsTest});
+    removeSynonymByName = (name) => {        
+        const diagnosis = this.state.diagnosis;                
+        diagnosis.synonyms.splice(_.findIndex(diagnosis.synonyms, ['name', name]), 1);        
+        this.setState({diagnosis}); 
     }
 
     changeDisplayOrder = (id, up) => {
