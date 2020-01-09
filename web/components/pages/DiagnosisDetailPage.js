@@ -36,7 +36,7 @@ module.exports = hot(module)(class extends React.Component {
         }
     }
 
-    toggleFreeLink = (id, on, displayOrder) => {
+    toggleFreeLink = (id, on, displayOrder) => {        
         const diagnosis = this.state.diagnosis;
         if (diagnosis) {
             _.find(diagnosis.links, {displayOrder}).freeLink = on;
@@ -48,6 +48,7 @@ module.exports = hot(module)(class extends React.Component {
                     data.put(Project.api + 'admin/code/link', {
                         id,
                         freeLink: on,
+                        displayOrder:displayOrder,
                         difficultyLevel: _.find(this.state.original.links, {id}).difficultyLevel,
                     })
                         .then(res => {
@@ -57,8 +58,8 @@ module.exports = hot(module)(class extends React.Component {
                             this.setState({original, isSaving: false});
                         })
                         .catch(e => {
-                            this.setState({isSaving: false});
-                            toast('Sorry something went wrong');
+                            this.setState({isSaving: false});                            
+                            e.json().then(err => alert(`Save Error - ${err.message}`));                                                        
                         });
                 });
         }
