@@ -59,7 +59,7 @@ const NativeModal = class extends React.Component {
 					onNavigationStateChange={this.onNavigationStateChange}
 					ref="webview"
 					style={{flex: 1}}
-					source={{uri: this.props.uri}}
+					source={{uri: this.props.uri && this.props.uri.replace('http:', 'https:')}}
 					scalesPageToFit={true}
 				/>
 			</Flex>
