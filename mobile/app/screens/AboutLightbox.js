@@ -73,7 +73,7 @@ const About = class extends Component {
 			<View style={[Styles.padded, { alignSelf: 'center' }]}>
 				<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')} />
 				<Text style={[Styles.paragraph, Styles.textSmall]}>About DiagnosisView</Text>
-				<Text style={[Styles.paragraph, Styles.textSmall]}>Diagnosis View gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</Text>
+				<Text style={[Styles.paragraph, Styles.textSmall]}>DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</Text>
 				<Text style={[Styles.paragraph, Styles.textSmall]}>• Info on your own mobile or tablet</Text>
 				<Text style={[Styles.paragraph, Styles.textSmall]}>• Advanced patient info is the starting point (free)</Text>
 				<Text style={[Styles.paragraph, Styles.textSmall]}>• Moving on to practitioner-level and expert-level professional resources</Text>

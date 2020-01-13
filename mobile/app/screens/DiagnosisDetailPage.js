@@ -81,52 +81,53 @@ const DiagnosisDetailPage = class extends Component {
 		const { isLoading, description, links, name } = this.state;
 		return (
 			<Flex style={Styles.body}>
-				<NetworkBar />
-				<View style={Styles.padded}>
-					<View style={[Styles.stacked,{paddingLeft:10, paddingRight:10}]}>
-						<H2>{this.props.name}</H2>
-						{isLoading ? <Loader /> : <Text style={[Styles.paragraphStrong]}>{description}</Text>}
+				<ScrollView>
+					<NetworkBar />
+					<View style={Styles.padded}>
+						<View style={[Styles.stacked,{paddingLeft:10, paddingRight:10}]}>
+							<H2>{this.props.name}</H2>
+							{isLoading ? <Loader /> : <Text style={[Styles.paragraphStrong]}>{description}</Text>}
+						</View>
+						<Text style={[Styles.subHeading,{paddingLeft:10, paddingRight:10}]}>Learn More...</Text>
+						<View style={Styles.whitePanel}>
+							{isLoading ? <Loader /> : (
+									<LinkLogoProvider>
+										{({ linkLogos, isLoading }) => (
+											<FavouritesProvider>
+												{({favourites}) => _.map(links, link => {
+													const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
+													if (!link.displayLink) {
+														return null;
+													} else if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+														return null;
+													}
+													const isFavourite = _.find(favourites, f => f.code === this.props.code && f.link.id === link.id);
+													return (
+														<ListItem onPress={() => routeHelper.openWebModal(link.link, name)} key={link.id}>
+															<Row>
+																<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} />
+																<Flex>
+																	{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
+																		<Column>
+																			<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																			{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text> : null}
+																		</Column>
+																	) : <Text>{link.name}</Text>
+																	}
+																</Flex>
+																<ION onPress={() => this.onFavourite(isFavourite, link)} name="ios-star" style={[Styles.listIconNav, isFavourite ? {color: '#ffd700'} : {}]}/>
+															</Row>
+														</ListItem>
+													);
+												})
+											}
+										</FavouritesProvider>
+									)}
+								</LinkLogoProvider>
+							)}
+						</View>
 					</View>
-					<Text style={[Styles.subHeading,{paddingLeft:10, paddingRight:10}]}>Learn More...</Text>
-					<View style={Styles.whitePanel}>
-						{isLoading ? <Loader /> : (
-							<LinkLogoProvider>
-								{({ linkLogos, isLoading }) => (
-									<FavouritesProvider>
-										{({favourites}) => {
-											return _.map(links, link => {
-												const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
-												if (!link.displayLink) {
-													return null;
-												} else if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
-													return null;
-												}
-												const isFavourite = _.find(favourites, f => f.code === this.props.code && f.link.id === link.id);
-												return (
-													<ListItem onPress={() => routeHelper.openWebModal(link.link, name)} key={link.id}>
-														<Row>
-															<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} />
-															<Flex>
-																{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
-																	<Column>
-																		<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
-																		{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text> : null}
-																	</Column>
-																) : <Text>{link.name}</Text>
-																}
-															</Flex>
-															<ION onPress={() => this.onFavourite(isFavourite, link)} name="ios-star" style={[Styles.listIconNav, isFavourite ? {color: '#ffd700'} : {}]}/>
-														</Row>
-													</ListItem>
-												);
-											})
-										}}
-									</FavouritesProvider>
-								)}
-							</LinkLogoProvider>
-						)}
-					</View>
-				</View>
+			</ScrollView>
       </Flex>
 		)
 	}
