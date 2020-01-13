@@ -2,6 +2,7 @@
  * Created by kylejohnson on 28/01/2017.
  */
 import React, { Component, PropTypes } from "react";
+import data from '../../common-mobile/stores/base/_data';
 
 const SearchHeader = props => (
   <ListItem style={Styles.listShort}>
@@ -48,7 +49,9 @@ const SearchPage = class extends Component {
     super(props, context);
     this.state = {
       search: "",
-      categorySearch: ""
+      categorySearch: "",
+      fuzzySearchResults: [],
+      searchResults: [],
     };
     ES6Component(this);
     routeHelper.handleNavEvent(
@@ -88,6 +91,28 @@ const SearchPage = class extends Component {
     });
   };
 
+  search = (terms) => {
+    let searchResults = [];
+    let fuzzySearchResults = this.state.fuzzySearchResults;
+    if (terms.length >= 3) {
+      searchResults = DiagnosisStore.search(terms);
+      this.fuzzySearch(terms, searchResults);
+    } else {
+      fuzzySearchResults = [];
+    }
+    this.setState({search: terms, searchResults, fuzzySearchResults});
+  }
+
+  fuzzySearch = _.throttle((terms, searchResults) => {
+    data.get(`${Project.api}code/synonyms/${terms}`)
+      .then(res => {
+        this.setState({fuzzySearchResults: _.differenceBy(res, searchResults, 'code')});
+      })
+      .catch(e => {
+        // todo anything?
+      })
+  }, 500);
+
   renderCategoryRow = ({ item }) => {
     return (
       <ListItem onPress={() => this.onCategorySearchResult(item)}>
@@ -107,6 +132,7 @@ const SearchPage = class extends Component {
   };
 
   render() {
+    const { searchResults, fuzzySearchResults } = this.state;
     return (
       <Flex>
         <NetworkBar />
@@ -120,7 +146,7 @@ const SearchPage = class extends Component {
                 <ION style={Styles.inputIcon} name="ios-search" />
                 <TextInput
                   placeholder={"Search diagnosis by name"}
-                  onChangeText={search => this.setState({ search })}
+                  onChangeText={this.search}
                   style={{ textIndent: 20 }}
                   height={40}
                   textStyle={[Styles.inputIndent]}
@@ -142,7 +168,7 @@ const SearchPage = class extends Component {
               {this.state.search.length >= 3 ? (
                 <FlatList
                   keyExtractor={i => i.code}
-                  data={DiagnosisStore.search(this.state.search)}
+                  data={searchResults}
                   renderItem={this.renderRow}
                   ListHeaderComponent={
                     <SearchHeader search={this.state.search} />
@@ -167,21 +193,20 @@ const SearchPage = class extends Component {
                 />
               )}
             </View>
-            <Flex style={{ margin: 10, marginTop: 0 }}>
-              <Text>Did you mean?</Text>
-            </Flex>
-            <View style={[Styles.whitePanel, Styles.stacked]}>
-              <FlatList
-                keyExtractor={i => i.code}
-                data={DiagnosisStore.search("acn")}
-                renderItem={this.renderRow}
-                ListEmptyComponent={
-                  <ListItem>
-                    <Text>No results found</Text>
-                  </ListItem>
-                }
-              />
-            </View>
+            {this.state.search.length >= 3 && !!fuzzySearchResults.length && (
+              <>
+                <Flex style={{ margin: 10, marginTop: 0 }}>
+                  <Text>Did you mean?</Text>
+                </Flex>
+                <View style={[Styles.whitePanel, Styles.stacked]}>
+                  <FlatList
+                    keyExtractor={i => i.code}
+                    data={fuzzySearchResults}
+                    renderItem={this.renderRow}
+                  />
+                </View>
+              </>
+            )}
           </View>
         </ScrollView>
       </Flex>
