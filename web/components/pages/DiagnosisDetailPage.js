@@ -47,16 +47,17 @@ module.exports = hot(module)(class extends React.Component {
         } else {
             openConfirm(<h2>Confirm</h2>, <h3>{`Are you sure you want to ${on ? 'display this link' : 'hide this link from'} free users?`}</h3>,
                 () => {
+                    const original = this.state.original;
+                    const index = _.findIndex(original.links, {id});
                     this.setState({isSaving: true});
                     data.put(Project.api + 'admin/code/link', {
                         id,
                         freeLink: on,
+                        transformationsOnly: original.links[index].transformationsOnly,
                         displayOrder:displayOrder,
                         difficultyLevel: _.find(this.state.original.links, {id}).difficultyLevel,
                     })
                         .then(res => {
-                            const original = this.state.original;
-                            const index = _.findIndex(original.links, {id});
                             original.links[index] = res;
                             this.setState({original, isSaving: false});
                         })
@@ -76,14 +77,15 @@ module.exports = hot(module)(class extends React.Component {
         } else {
             openConfirm(<h2>Confirm</h2>, <h3>{`Are you sure you want to ${on ? 'only display this link on matching URL transform rules?' : 'display this link without having to match URL transform rules?'}`}</h3>,
                 () => {
+                    const original = this.state.original;
+                    const index = _.findIndex(original.links, {id});
                     this.setState({isSaving: true});
                     data.put(Project.api + 'admin/code/link', {
                         id,
                         transformationsOnly: on,
+                        freeLink: original.links[index].freeLink,
                     })
                         .then(res => {
-                            const original = this.state.original;
-                            const index = _.findIndex(original.links, {id});
                             original.links[index] = res;
                             this.setState({original, isSaving: false});
                         })
