@@ -218,16 +218,43 @@ module.exports = hot(module)(class extends React.Component {
         openModal(<h2>Add Synonym</h2>, <AddSynonym
             onAdd={synonym => {                
                 const diagnosis = this.state.diagnosis;
-                diagnosis.synonyms = diagnosis.synonyms || [];                                            
-                diagnosis.synonyms.push(synonym);                
-                this.setState({diagnosis});
+                if (diagnosis) {
+                    diagnosis.synonyms = diagnosis.synonyms || [];                                            
+                    diagnosis.synonyms.push(synonym);                
+                    this.setState({diagnosis});
+                } else {
+                    const synonyms = this.state.original.synonyms || [];
+                    synonyms.push(synonym);
+                    this.updateSynonyms(synonyms);
+                }
             }}
         />);
     }
     removeSynonymByName = (name) => {        
-        const diagnosis = this.state.diagnosis;                
-        diagnosis.synonyms.splice(_.findIndex(diagnosis.synonyms, ['name', name]), 1);        
-        this.setState({diagnosis}); 
+        const diagnosis = this.state.diagnosis;
+        if (diagnosis) {                
+            diagnosis.synonyms.splice(_.findIndex(diagnosis.synonyms, ['name', name]), 1);        
+            this.setState({diagnosis}); 
+        } else {
+            const synonyms = this.state.original.synonyms || [];
+            synonyms.splice(_.findIndex(original.synonyms, ['name', name]), 1);
+            this.updateSynonyms(synonyms);   
+        }
+    }
+
+    updateSynonyms = (synonyms) => {
+        this.setState({isSaving: true});
+        data.put(Project.api + 'admin/code/synonyms', {
+                id: this.state.original.id,
+                synonyms,
+            })
+            .then(res => {
+                this.setState({ isSaving: false, original: res });
+            })
+            .catch(e => {
+                this.setState({isSaving: false});                            
+                e.json().then(err => (err.message ? toast(`${err.message}`) : toast('Sorry something went wrong!')));                                                        
+            });
     }
 
     changeDisplayOrder = (id, up) => {
@@ -710,21 +737,16 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>                                                                                                                                                
                                     <div className="ml-auto ">
                                         <div className="flex-row">                                           
-                                            {diagnosis ? (
-                                                <button className="btn btn--icon btn--icon--red" onClick={() => this.removeSynonymByName(name)}>
-                                                    <i className="far fa-trash-alt"> </i>
-                                                </button>
-                                            ) : null}
+                                            <button className="btn btn--icon btn--icon--red" onClick={() => this.removeSynonymByName(name)}>
+                                                <i className="far fa-trash-alt"> </i>
+                                            </button>
                                         </div>
                                     </div>
-                             
                                 </div>
                             ))}
-                            {diagnosis ? (
-                                <div className="justify-content text-center">
-                                    <button className="btn btn--hollow my-3" onClick={this.addSynonym}><i className="fas fa-plus-circle" /> Add</button>
-                                </div>
-                            ) : null}
+                            <div className="justify-content text-center">
+                                <button className="btn btn--hollow my-3" onClick={this.addSynonym}><i className="fas fa-plus-circle" /> Add</button>
+                            </div>
                         </div>
                     </Flex>
                 )}

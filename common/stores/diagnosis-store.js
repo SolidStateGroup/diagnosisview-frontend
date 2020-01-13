@@ -3,9 +3,9 @@ var data = require('./base/_data');
 import AccountStore from './account-store';
 
 var controller = {
-        getCodes: function () {
+        getCodes: function (isAdmin) {
             store.loading();
-            return data.get(Project.api + 'code')
+            return data.get(Project.api + (isAdmin ? 'admin/codes' : 'code'))
                 .then(res => {
                     store.model = res;
                     AsyncStorage.setItem('codes', JSON.stringify(res));
@@ -141,7 +141,7 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
 
     switch (action.actionType) {
         case Actions.GET_CODES:
-            controller.getCodes();
+            controller.getCodes(action.isAdmin);
             break;
         case Actions.GET_CODE_CATEGORIES:
             controller.getCategories();
