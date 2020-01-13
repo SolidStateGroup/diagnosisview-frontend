@@ -18,7 +18,7 @@ module.exports = hot(module)(class extends React.Component {
     }
 
     componentDidMount() {
-        AppActions.getCodes();
+        AppActions.getCodes(true);
     }
 
     add = () => {

@@ -33,8 +33,9 @@ const FormGroup = class extends Component {
 
 				<div>
 					<div>
-						<Input ref="input" {...props.inputProps} isValid={props.isValid} disabled={props.disabled}
-							   className={'input input--outline'}
+						<Input ref="input" {...inputProps} isValid={props.isValid} disabled={props.disabled}
+							   className={`input input--outline`}
+							   inputClassName={inputProps.className}
 							   value={props.value}
 							   onChange={props.onChange} type={props.type || 'text'} id={id}
 							   placeholder={props.placeholder}/>

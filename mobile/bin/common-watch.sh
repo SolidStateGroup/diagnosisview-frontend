@@ -3,7 +3,7 @@
 LINE=$(ps aux | grep -w "common-watch.sh" | grep -v grep | wc -l)
 echo $LINE
 
-if [ "$LINE" -le "2" ]
+if [ "$LINE" -le "3" ]
 then
   npm install -g wml
   watchman watch ../../common

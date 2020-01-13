@@ -137,9 +137,9 @@ const DashboardPage = class extends Component {
 
 	renderSubscribeParagraph = () => (
 		<Text style={[Styles.textCenter,Styles.textMedium, Styles.paragraph]}>{`Subscribe to see additional professional resources on all topics (demos here to `}
-			<Text onPress={() => this.goToDiagnosis('acne', 'Acne')} style={[Styles.textMedium, Styles.bold]}>Acne, </Text>
-			<Text onPress={() => this.goToDiagnosis('cystic-fibrosis', 'Cystic fibrosis')} style={[Styles.textMedium, Styles.bold]}>Cystic fibrosis, </Text>
-			<Text onPress={() => this.goToDiagnosis('heart-failure', 'Heart failure')} style={[Styles.textMedium, Styles.bold]}>Heart failure</Text>
+			<Text onPress={() => this.goToDiagnosis('acne', 'Acne')} style={[Styles.textMedium, Styles.hyperlink]}>Acne, </Text>
+			<Text onPress={() => this.goToDiagnosis('cystic-fibrosis', 'Cystic fibrosis')} style={[Styles.textMedium, Styles.hyperlink]}>Cystic fibrosis, </Text>
+			<Text onPress={() => this.goToDiagnosis('heart-failure', 'Heart failure')} style={[Styles.textMedium, Styles.hyperlink]}>Heart failure</Text>
 			{`). A subscription also gives unlimited history/favourites synchronised between devices.`}
 		</Text>
 	)
@@ -157,13 +157,16 @@ const DashboardPage = class extends Component {
 								<View style={Styles.hero}></View>
 								<View style={Styles.padded}>
 									<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-										<Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {},Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.bold]}>Search now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.bold, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}</Text>) : null}</Text>
+										<Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {},Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.hyperlink]}>Search Now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}</Text>) : null}</Text>
 										{neverSubscribed ? (
 											<View>
 												{this.renderSubscribeParagraph()}
 												<Button onPress={this.subscribe}>Subscribe now</Button>
 											</View>
 										) : null}
+										{/* <View style={[Styles.stackedFormInv]}>
+											<Button onPress={this.onSearch}>Search now</Button>
+										</View> */}
 									</View>
 									{user && user.expiryDate && !user.autoRenewing ? (() => {
 										const expiryDate = moment(user.expiryDate);
@@ -174,7 +177,7 @@ const DashboardPage = class extends Component {
 													<Button onPress={this.subscribe}>Renew now</Button>
 												</View>
 											)
-										} else if (expiryDate.isSameOrBefore(moment())) {
+										} else if (expiryDate.isSameOrBefore(moment()) && !user.activeSubscription) {
 											return (
 												<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
 													<Text style={[Styles.textCenter, Styles.textMedium, Styles.paragraph]}>Your account has expired. {this.renderSubscribeParagraph()}</Text>

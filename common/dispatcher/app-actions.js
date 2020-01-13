@@ -19,9 +19,10 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       link
     });
   },
-  getCodes: function () {
+  getCodes: function (isAdmin) {
     Dispatcher.handleViewAction({
-      actionType: Actions.GET_CODES
+      actionType: Actions.GET_CODES,
+      isAdmin,
     });
   },
   getHistory: function () { //refresh the entire app
