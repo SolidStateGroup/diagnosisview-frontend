@@ -237,7 +237,7 @@ module.exports = hot(module)(class extends React.Component {
             this.setState({diagnosis}); 
         } else {
             const synonyms = this.state.original.synonyms || [];
-            synonyms.splice(_.findIndex(original.synonyms, ['name', name]), 1);
+            synonyms.splice(_.findIndex(this.state.original.synonyms, ['name', name]), 1);
             this.updateSynonyms(synonyms);   
         }
     }
