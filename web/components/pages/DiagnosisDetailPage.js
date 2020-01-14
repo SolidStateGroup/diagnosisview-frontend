@@ -502,13 +502,13 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="col p-0">
                                         <label className="panel__head__title">HIDE FROM PATIENTS?</label>
                                         <p className="mb-0">
-                                            <Switch checked={hideFromPatients} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'hideFromPatients')} />
+                                            <Switch checked={hideFromPatients} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'hideFromPatients')} className={hideFromPatients ? 'rc-switch-disabled-red' : ''} />
                                         </p>
                                     </div>
                                     <div className="col p-0">
                                         <label className="panel__head__title">REMOVED EXTERNALLY?</label>
                                         <p className="mb-0">
-                                            <Switch checked={removedExternally} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'removedExternally')}/>
+                                            <Switch checked={removedExternally} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'removedExternally')} className={removedExternally ? 'rc-switch-disabled-red' : ''} />
                                         </p>
                                     </div>
                                 </div>
