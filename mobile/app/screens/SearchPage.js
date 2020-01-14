@@ -104,12 +104,13 @@ const SearchPage = class extends Component {
   }
 
   fuzzySearch = _.throttle((terms, searchResults) => {
+    this.setState({fuzzySearchLoading: true});
     data.get(`${Project.api}code/synonyms/${terms}`)
       .then(res => {
-        this.setState({fuzzySearchResults: _.differenceBy(res, searchResults, 'code')});
+        this.setState({fuzzySearchResults: _.differenceBy(res, searchResults, 'code'), fuzzySearchLoading: false});
       })
-      .catch(e => {
-        // todo anything?
+      .catch(() => {
+        this.setState({fuzzySearchLoading: false, fuzzySearchResults: []});
       })
   }, 500);
 
@@ -132,7 +133,7 @@ const SearchPage = class extends Component {
   };
 
   render() {
-    const { searchResults, fuzzySearchResults } = this.state;
+    const { searchResults, fuzzySearchResults, fuzzySearchLoading } = this.state;
     return (
       <Flex>
         <NetworkBar />
@@ -193,18 +194,30 @@ const SearchPage = class extends Component {
                 />
               )}
             </View>
-            {this.state.search.length >= 3 && !!fuzzySearchResults.length && (
+            {this.state.search.length >= 3 && (
               <>
-                <Flex style={{ margin: 10, marginTop: 0 }}>
-                  <Text>Did you mean?</Text>
-                </Flex>
-                <View style={[Styles.whitePanel, Styles.stacked]}>
-                  <FlatList
-                    keyExtractor={i => i.code}
-                    data={fuzzySearchResults}
-                    renderItem={this.renderRow}
-                  />
-                </View>
+                {fuzzySearchLoading ? (
+                  <Flex style={{ margin: 10, marginTop: 0 }}>
+                    <Text>Loading similar matches...</Text>
+                  </Flex>
+                ) : !!fuzzySearchResults.length ? (
+                  <>
+                    <Flex style={{ margin: 10, marginTop: 0 }}>
+                      <Text>Did you mean?</Text>
+                    </Flex>
+                    <View style={[Styles.whitePanel, Styles.stacked]}>
+                      <FlatList
+                        keyExtractor={i => i.code}
+                        data={fuzzySearchResults}
+                        renderItem={this.renderRow}
+                      />
+                    </View>
+                  </>
+                ) : (
+                  <Flex style={{ margin: 10, marginTop: 0 }}>
+                      <Text>No similar matches found.</Text>
+                    </Flex>
+                )}
               </>
             )}
           </View>
