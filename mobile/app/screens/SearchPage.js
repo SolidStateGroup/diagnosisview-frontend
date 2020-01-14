@@ -94,17 +94,18 @@ const SearchPage = class extends Component {
   search = (terms) => {
     let searchResults = [];
     let fuzzySearchResults = this.state.fuzzySearchResults;
+    let fuzzySearchLoading = false;
     if (terms.length >= 3) {
       searchResults = DiagnosisStore.search(terms);
+      fuzzySearchLoading = true;
       this.fuzzySearch(terms, searchResults);
     } else {
       fuzzySearchResults = [];
     }
-    this.setState({search: terms, searchResults, fuzzySearchResults});
+    this.setState({search: terms, searchResults, fuzzySearchResults, fuzzySearchLoading});
   }
 
-  fuzzySearch = _.throttle((terms, searchResults) => {
-    this.setState({fuzzySearchLoading: true});
+  fuzzySearch = _.debounce((terms, searchResults) => {
     data.get(`${Project.api}code/synonyms/${terms}`)
       .then(res => {
         this.setState({fuzzySearchResults: _.differenceBy(res, searchResults, 'code'), fuzzySearchLoading: false});
@@ -213,11 +214,11 @@ const SearchPage = class extends Component {
                       />
                     </View>
                   </>
-                ) : (
+                ) : !searchResults.length ? (
                   <Flex style={{ margin: 10, marginTop: 0 }}>
                       <Text>No similar matches found.</Text>
                     </Flex>
-                )}
+                ) : null}
               </>
             )}
           </View>
