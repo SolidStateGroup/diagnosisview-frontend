@@ -214,11 +214,11 @@ const SearchPage = class extends Component {
                       />
                     </View>
                   </>
-                ) : (
+                ) : !searchResults.length ? (
                   <Flex style={{ margin: 10, marginTop: 0 }}>
                       <Text>No similar matches found.</Text>
                     </Flex>
-                )}
+                ) : null}
               </>
             )}
           </View>
