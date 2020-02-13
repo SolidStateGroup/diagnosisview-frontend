@@ -432,13 +432,13 @@ module.exports = hot(module)(class extends React.Component {
                             <div className="flex-1 flex-column">
                                 {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : edit ?<h1 className="content__title">Edit Diagnosis</h1> : <h1 className="content__title">Add Diagnosis</h1>}
                             </div>
-                            {!diagnosis && code.indexOf('dv_') === 0 ? (
+                            {!diagnosis ? (
                                 <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.original), edit:true})}>
                                     Edit Diagnosis
                                 </button>
                             ) : diagnosis ? (
-                                <button className="btn btn--primary" onClick={this.save}>
-                                    Save
+                                <button className="btn btn--primary" onClick={this.save} disabled={isSaving}>
+                                    {isSaving ? 'Saving..' : 'Save'}
                                 </button>
                             ) : null}
                         </div>
