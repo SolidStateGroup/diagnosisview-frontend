@@ -84,7 +84,6 @@ module.exports = hot(module)(class extends React.Component {
                                     </div>
                                     <div className="ml-auto">
                                         <div className="flex-row">
-                                        {row.original.code.indexOf('dv_') === 0 ? (
                                             <React.Fragment>
                                                 <button className="btn btn--icon btn--icon--blue" onClick={(e) => this.edit(e, row.original.code)}>
                                                     <i className="far fa-edit"></i>
@@ -93,7 +92,6 @@ module.exports = hot(module)(class extends React.Component {
                                                     <i className="far fa-trash-alt"> </i>
                                                 </button>
                                             </React.Fragment>
-                                        ) : null}
                                             <i className="fas fa-chevron-right float-right"> </i>
                                         </div>
                                     </div>
