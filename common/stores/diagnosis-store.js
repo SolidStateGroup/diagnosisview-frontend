@@ -77,7 +77,7 @@ var controller = {
         },
         deleteCode: function (code) {
             store.saving();
-            data.delete(`${Project.api}code`, {
+            data.delete(`${Project.api}admin/code`, {
                 code,
             })
                 .then(() => {
