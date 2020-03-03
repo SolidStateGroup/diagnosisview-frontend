@@ -26,7 +26,7 @@ module.exports = hot(module)(class extends React.Component {
             const edit = _.get(this.props.location, 'state.edit');
             // Load full diagnosis
             this.setState({ isLoading: true });
-            data.get(Project.api + 'code/' + code)
+            data.get(Project.api + 'admin/code/' + code)
                 .then(res => {
                     this.setState({
                         edit:true,
