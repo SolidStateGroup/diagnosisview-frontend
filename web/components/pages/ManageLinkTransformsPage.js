@@ -59,109 +59,116 @@ module.exports = hot(module)(class extends React.Component {
 
     render = () => {
         return (
-            <LinkTransformProvider onSave={this.onSave}>
-                {({isLoading, linkTransforms, isSaving}) => (
-                    <Flex className={'content'}>
-                        <div className="flex-row mb-3">
-                            <div className="flex-1 flex-column">
-                                <h1 className="content__title">URL Transformation</h1>
-                            </div>
-                            <div className="flex-column">
-                                <button className="btn btn--primary" onClick={this.addNew}>
-                                    Add new link
-                                </button>
-                            </div>
-                        </div>
-                        <div className="panel mb-5">
-                            <div className="panel__head">
-                                <div className="flex-1 flex-row">
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">INSTITUTION</label>
-                                    </div>
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">ORIGINAL URL</label>
-                                    </div>
-                                    <div className="col p-0">
-                                        <label className="panel__head__title">TRANSFORMED URL</label>
-                                    </div>
-                                    <div className="ml-auto ">
-                                        <div className="flex-row invisible">
-                                            <button className="btn btn--icon btn--icon--blue">
-                                                <i className="far fa-edit"></i>
-                                            </button>
-                                            <button className="btn btn--icon btn--icon--red">
-                                                <i className="far fa-trash-alt"> </i>
+            <SettingsProvider>
+				{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
+                    if (settingsIsLoading || !settings) return <Flex className="centered-container"><Loader /></Flex>;
+                    return (
+                        <LinkTransformProvider onSave={this.onSave}>
+                            {({isLoading, linkTransforms, isSaving}) => (
+                                <Flex className={'content'}>
+                                    <div className="flex-row mb-3">
+                                        <div className="flex-1 flex-column">
+                                            <h1 className="content__title">URL Transformation</h1>
+                                        </div>
+                                        <div className="flex-column">
+                                            <button className="btn btn--primary" onClick={this.addNew}>
+                                                Add new link
                                             </button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            {linkTransforms && linkTransforms.length ? _.map(linkTransforms, transform => (
-                                <div key={transform.id} className="panel__row flex-row">
-                                    <div className="flex-1 flex-row">
-                                        <div className="col p-0">
-                                            <select
-                                                className="input input--outline input--fit-cell"
-                                                style={{padding: 0}}
-                                                value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].criteria : transform.criteria}
-                                                disabled={!this.state.linkTransforms[transform.id] || isSaving}
-                                                onChange={(e) => this.editField(transform.id, 'criteria', e)}
-                                            >
-                                            {_.map(Constants.institutions, institution => (
-                                                <option key={institution.value} value={institution.value}>{institution.label}</option>
-                                            ))}
-                                            </select>
+                                    <div className="panel mb-5">
+                                        <div className="panel__head">
+                                            <div className="flex-1 flex-row">
+                                                <div className="col p-0">
+                                                    <label className="panel__head__title">INSTITUTION</label>
+                                                </div>
+                                                <div className="col p-0">
+                                                    <label className="panel__head__title">ORIGINAL URL</label>
+                                                </div>
+                                                <div className="col p-0">
+                                                    <label className="panel__head__title">TRANSFORMED URL</label>
+                                                </div>
+                                                <div className="ml-auto ">
+                                                    <div className="flex-row invisible">
+                                                        <button className="btn btn--icon btn--icon--blue">
+                                                            <i className="far fa-edit"></i>
+                                                        </button>
+                                                        <button className="btn btn--icon btn--icon--red">
+                                                            <i className="far fa-trash-alt"> </i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="col p-0">
-                                            <textarea
-                                                className="input input--outline input--fit-cell full-height"
-                                                value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].link : transform.link}
-                                                readOnly={!this.state.linkTransforms[transform.id]}
-                                                disabled={isSaving} onChange={(e) => this.editField(transform.id, 'link', e)}
-                                            />
-                                        </div>
-                                        <div className="col p-0">
-                                            <textarea
-                                                className="input input--outline input--fit-cell full-height"
-                                                value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].transformation : transform.transformation}
-                                                readOnly={!this.state.linkTransforms[transform.id]}
-                                                disabled={isSaving} onChange={(e) => this.editField(transform.id, 'transformation', e)}
-                                            />
-                                        </div>
+                                        {linkTransforms && linkTransforms.length ? _.map(linkTransforms, transform => (
+                                            <div key={transform.id} className="panel__row flex-row">
+                                                <div className="flex-1 flex-row">
+                                                    <div className="col p-0">
+                                                        <select
+                                                            className="input input--outline input--fit-cell"
+                                                            style={{padding: 0}}
+                                                            value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].criteria : transform.criteria}
+                                                            disabled={!this.state.linkTransforms[transform.id] || isSaving}
+                                                            onChange={(e) => this.editField(transform.id, 'criteria', e)}
+                                                        >
+                                                        {_.map(settings.institutions, institution => (
+                                                            <option key={institution.id} value={institution.id}>{institution.name}</option>
+                                                        ))}
+                                                        </select>
+                                                    </div>
+                                                    <div className="col p-0">
+                                                        <textarea
+                                                            className="input input--outline input--fit-cell full-height"
+                                                            value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].link : transform.link}
+                                                            readOnly={!this.state.linkTransforms[transform.id]}
+                                                            disabled={isSaving} onChange={(e) => this.editField(transform.id, 'link', e)}
+                                                        />
+                                                    </div>
+                                                    <div className="col p-0">
+                                                        <textarea
+                                                            className="input input--outline input--fit-cell full-height"
+                                                            value={this.state.linkTransforms[transform.id] ? this.state.linkTransforms[transform.id].transformation : transform.transformation}
+                                                            readOnly={!this.state.linkTransforms[transform.id]}
+                                                            disabled={isSaving} onChange={(e) => this.editField(transform.id, 'transformation', e)}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="ml-auto">
+                                                    <div className="flex-row">
+                                                        {!this.state.linkTransforms[transform.id] ? (
+                                                            <button className="btn btn--icon btn--icon--blue" onClick={() => this.edit(transform)} disabled={isSaving}>
+                                                                <i className="far fa-edit"></i>
+                                                            </button>
+                                                        ) : (
+                                                            <React.Fragment>
+                                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(transform.id)} disabled={isSaving}>
+                                                                    <i className="far fa-save"></i>
+                                                                </button>
+                                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.cancelEdit(transform.id)} disabled={isSaving}>
+                                                                    <i className="fas fa-times"></i>
+                                                                </button>
+                                                            </React.Fragment>
+                                                        )}
+                                                        <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(transform.id)} disabled={isSaving}>
+                                                            <i className="far fa-trash-alt"> </i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )) : (
+                                            <div className="panel__row flex-row">
+                                                <div className="flex-1 flex-row">
+                                                    {isLoading ? <Loader /> : <label className="">No link transforms have been created</label>}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                    <div className="ml-auto">
-                                        <div className="flex-row">
-                                            {!this.state.linkTransforms[transform.id] ? (
-                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.edit(transform)} disabled={isSaving}>
-                                                    <i className="far fa-edit"></i>
-                                                </button>
-                                            ) : (
-                                                <React.Fragment>
-                                                    <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(transform.id)} disabled={isSaving}>
-                                                        <i className="far fa-save"></i>
-                                                    </button>
-                                                    <button className="btn btn--icon btn--icon--blue" onClick={() => this.cancelEdit(transform.id)} disabled={isSaving}>
-                                                        <i className="fas fa-times"></i>
-                                                    </button>
-                                                </React.Fragment>
-                                            )}
-                                            <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(transform.id)} disabled={isSaving}>
-                                                <i className="far fa-trash-alt"> </i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )) : (
-                                <div className="panel__row flex-row">
-                                    <div className="flex-1 flex-row">
-                                        {isLoading ? <Loader /> : <label className="">No link transforms have been created</label>}
-                                    </div>
-                                </div>
+                                </Flex>
                             )}
-                        </div>
-                    </Flex>
-                )}
-            </LinkTransformProvider>
+                        </LinkTransformProvider>
+                    );
+                }}
+            </SettingsProvider>
         );
     }
 });

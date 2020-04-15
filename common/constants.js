@@ -19,18 +19,6 @@ var Constants = {
         EXPIRY: false, // Doesn't work unless subscribed is set to true
         SHOW_WELCOME: false
     },
-
-    institutions: [
-        { label: 'University of Edinburgh', value: 'UNIVERSITY_OF_EDINBURGH' },
-        { label: 'Other', value: 'OTHER' },
-        { label: 'None', value: 'NONE' }
-    ],
-
-    difficultyLevels: [
-        {value: 'GREEN', label: 'Green'},
-        {value: 'AMBER', label: 'Amber'},
-        {value: 'RED', label: 'Red'},
-    ]
 };
 
 module.exports = Constants;

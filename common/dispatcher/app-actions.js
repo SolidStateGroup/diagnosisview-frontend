@@ -197,4 +197,9 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       code,
     });
   },
+  getSettings: function () {
+    Dispatcher.handleViewAction({
+      actionType: Actions.GET_SETTINGS,
+    });
+  },
 });
