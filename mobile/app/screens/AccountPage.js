@@ -247,7 +247,7 @@ const AccountPage = class extends Component {
 		</View>
 	)
 
-	renderRegisterForm = (error) => (
+	renderRegisterForm = (error, settings) => (
 		<View>
 			<View style={Styles.stackedForm}>
 				<TextInput
@@ -273,7 +273,7 @@ const AccountPage = class extends Component {
 					ref={c => this.repeatPasswordInput = c}
 				/>
 			</View>
-			{this.renderDropdowns()}
+			{this.renderDropdowns(settings)}
 			<View style={[Styles.actionsContainer, Styles.stacked]}>
 				<Button onPress={this.register} disabled={this.invalid()}>Register</Button>
 			</View>
@@ -381,7 +381,7 @@ const AccountPage = class extends Component {
 														Login
 													</Button>
 												</Row>
-												{!this.state.login ? this.renderRegisterForm(error) : this.renderLoginForm(error)}
+												{!this.state.login ? this.renderRegisterForm(error, settings) : this.renderLoginForm(error)}
 											</FormGroup>
 
 										) : (
