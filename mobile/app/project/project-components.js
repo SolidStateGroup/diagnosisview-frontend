@@ -13,3 +13,5 @@ global.LinkLogoStore = require('../../common-mobile/stores/link-logo-store');
 global.LinkLogoProvider = require('../../common-mobile/providers/LinkLogoProvider');
 global.LinkTransformStore = require('../../common-mobile/stores/link-transform-store');
 global.LinkTransformProvider = require('../../common-mobile/providers/LinkTransformProvider');
+global.SettingsStore = require('../../common-mobile/stores/settings-store');
+global.SettingsProvider = require('../../common-mobile/providers/SettingsProvider');
