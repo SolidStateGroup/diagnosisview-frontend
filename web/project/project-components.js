@@ -19,6 +19,8 @@ window.LinkTransformProvider = require('../../common/providers/LinkTransformProv
 window.LinkTransformStore = require('../../common/stores/link-transform-store');
 window.LinkLogoProvider = require('../../common/providers/LinkLogoProvider');
 window.LinkLogoStore = require('../../common/stores/link-logo-store');
+window.SettingsProvider = require('../../common/providers/SettingsProvider');
+window.SettingsStore = require('../../common/stores/settings-store');
 
 window.RenderInfo = require('../../common/providers/RenderInfo');
 

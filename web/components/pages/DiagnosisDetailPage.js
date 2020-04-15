@@ -26,7 +26,7 @@ module.exports = hot(module)(class extends React.Component {
             const edit = _.get(this.props.location, 'state.edit');
             // Load full diagnosis
             this.setState({ isLoading: true });
-            data.get(Project.api + 'code/' + code)
+            data.get(Project.api + 'admin/code/' + code)
                 .then(res => {
                     this.setState({
                         edit:true,
@@ -102,11 +102,13 @@ module.exports = hot(module)(class extends React.Component {
     onDifficultyLevelChange = (id, e) => {
         const diagnosis = this.state.diagnosis;
         const value = e.target.value;
+        const settings = SettingsStore.getSettings();
+        if (!settings) return;
         if (diagnosis) {
             _.find(diagnosis.links, {id}).difficultyLevel = value;
             this.setState({diagnosis});
         } else {
-            openConfirm(<h2>Confirm</h2>, <h3>{`Are you sure you want to change the difficulty on this link to ${_.find(Constants.difficultyLevels, {value}).label}?`}</h3>,
+            openConfirm(<h2>Confirm</h2>, <h3>{`Are you sure you want to change the difficulty on this link to ${_.find(settings.difficultyLevels, {id: value}).name}?`}</h3>,
                 () => {
                     this.setState({isSaving: true});
                     data.put(Project.api + 'admin/code/link', {
@@ -432,13 +434,13 @@ module.exports = hot(module)(class extends React.Component {
                             <div className="flex-1 flex-column">
                                 {!diagnosis ? <h1 className="content__title">{patientFriendlyName}</h1> : edit ?<h1 className="content__title">Edit Diagnosis</h1> : <h1 className="content__title">Add Diagnosis</h1>}
                             </div>
-                            {!diagnosis && code.indexOf('dv_') === 0 ? (
+                            {!diagnosis ? (
                                 <button className="btn btn--primary" onClick={() => this.setState({diagnosis: _.cloneDeep(this.state.original), edit:true})}>
                                     Edit Diagnosis
                                 </button>
                             ) : diagnosis ? (
-                                <button className="btn btn--primary" onClick={this.save}>
-                                    Save
+                                <button className="btn btn--primary" onClick={this.save} disabled={isSaving}>
+                                    {isSaving ? 'Saving..' : 'Save'}
                                 </button>
                             ) : null}
                         </div>
@@ -502,13 +504,13 @@ module.exports = hot(module)(class extends React.Component {
                                     <div className="col p-0">
                                         <label className="panel__head__title">HIDE FROM PATIENTS?</label>
                                         <p className="mb-0">
-                                            <Switch checked={hideFromPatients} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'hideFromPatients')} />
+                                            <Switch checked={hideFromPatients} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'hideFromPatients')} className={hideFromPatients ? 'rc-switch-disabled-red' : ''} />
                                         </p>
                                     </div>
                                     <div className="col p-0">
                                         <label className="panel__head__title">REMOVED EXTERNALLY?</label>
                                         <p className="mb-0">
-                                            <Switch checked={removedExternally} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'removedExternally')}/>
+                                            <Switch checked={removedExternally} disabled={!diagnosis} onChange={(on) => this.onSwitchChange(on, 'removedExternally')} className={removedExternally ? 'rc-switch-disabled-red' : ''} />
                                         </p>
                                     </div>
                                 </div>
@@ -775,36 +777,38 @@ const DisplayOrderBox = class extends React.Component {
         const {value, initialValue, dropdownValue, dropdownInitialValue} = this.state;
         const {onSubmit, isSaving ,id} = this.props;        
       
-        return( 
-            <React.Fragment>
-            <div className="col p-0">
-            <select
-                className="form-control input--fit-cell"
-                style={{padding: 0}}
-                value={dropdownValue}
-                disabled={isSaving}
-                onChange={(e) => this.setState({dropdownValue: e.target.value})}
-            >                
-                {_.map(Constants.difficultyLevels, (option, i) => {
-                    const isObj = typeof option === 'object';
-                    const label = isObj ? option.label || option.value : option;
-                    const value = isObj ? option.value : option;
+        return(
+            <SettingsProvider>
+				{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
+                    if (settingsIsLoading || !settings) return <Flex className="centered-container"><Loader /></Flex>;
                     return (
-                        <option key={i} value={value}>{label}</option>
-                    )
-                })}
-            </select>
-        </div>
-        <div className="col p-0">
-        <div className="container col"> 
-            <input type='number' className="input input--outline col" value={value} onChange={val => this.setState({value: Utils.safeParseEventValue(val)})}/>
-            {(initialValue != value || dropdownValue != dropdownInitialValue) && <React.Fragment>
-                <button className="btn btn--icon btn--icon--blue p-2" onClick={() => onSubmit(value, dropdownValue)}><i className="fas fa-check" /></button>
-                <button className="btn btn--icon btn--icon--blue p-2" onClick={() => this.setState({value: initialValue,dropdownValue:dropdownInitialValue})}><i className="fas fa-times" /></button>
-            </React.Fragment>}
-        </div>
-        </div>
-        </React.Fragment>
+                        <React.Fragment>
+                            <div className="col p-0">
+                                <select
+                                    className="form-control input--fit-cell"
+                                    style={{padding: 0}}
+                                    value={dropdownValue}
+                                    disabled={isSaving}
+                                    onChange={(e) => this.setState({dropdownValue: e.target.value})}
+                                >                
+                                    {_.map(settings.difficultyLevels, difficultyLevel => (
+                                        <option key={difficultyLevel.id} value={difficultyLevel.id}>{difficultyLevel.id === 'DO_NOT_OVERRIDE' ? 'Do not override' : difficultyLevel.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col p-0">
+                                <div className="container col"> 
+                                    <input type='number' className="input input--outline col" value={value} onChange={val => this.setState({value: Utils.safeParseEventValue(val)})}/>
+                                    {(initialValue != value || dropdownValue != dropdownInitialValue) && <React.Fragment>
+                                        <button className="btn btn--icon btn--icon--blue p-2" onClick={() => onSubmit(value, dropdownValue)}><i className="fas fa-check" /></button>
+                                        <button className="btn btn--icon btn--icon--blue p-2" onClick={() => this.setState({value: initialValue,dropdownValue:dropdownInitialValue})}><i className="fas fa-times" /></button>
+                                    </React.Fragment>}
+                                </div>
+                            </div>
+                        </React.Fragment>
+                    );
+                }}
+            </SettingsProvider>
         )
     } 
 }
