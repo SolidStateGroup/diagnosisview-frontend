@@ -44,6 +44,7 @@ const DashboardPage = class extends Component {
 	}
 
 	refreshApp = () => {
+		AppActions.getSettings();
 		if (AccountStore.getUser()) {
 			AppActions.getAccount(this.props.retrySubscription);
 		} else {
