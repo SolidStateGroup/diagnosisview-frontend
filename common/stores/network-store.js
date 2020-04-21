@@ -21,7 +21,7 @@ var handleIsConnected = (isConnected) => {
 };
 
 const heartbeat = () => {
-	fetch(Project.api.substr(0, Project.api.length - 4) + 'public/status')
+	fetch(`${Project.public}status`)
 		.then(res => {
 			store.isDBDown = !res.ok;
 		})

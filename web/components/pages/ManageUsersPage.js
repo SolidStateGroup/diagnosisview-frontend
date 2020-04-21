@@ -203,148 +203,155 @@ module.exports = hot(module)(class extends React.Component {
 
     render = () => {
         return (
-            <UsersProvider onSave={this.onSave}>
-                {({isLoading, isSaving, users}) => (
-                    <Flex className="content">
-                        <div className="flex-row pb-3 mb-3 border-bottom">
-                            <div className="flex-1 flex-column">
-                                <h1 className="content__title">Manage Users</h1>
-                            </div>
-                            <div className="flex-column">
-                                <button className="btn btn--primary" onClick={this.create}>
-                                    Create User
-                                </button>
-                            </div>
-                        </div>
-                        <div className="flex-row">
-                            <div className="ml-auto">
-                                <div className="flex-row mb-3">
-                                    <div className="flex-column">
-                                        <Button onClick={this.reset} disabled={!this.state.changes} className="btn btn--primary btn--hollow">Reset Changes</Button>
-                                    </div>
-                                    <div className="flex-column">
-                                        <Button onClick={this.save} disabled={!this.state.changes} className="btn btn--primary btn--hollow">Save Changes</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <ReactTable data={users} columns={[{
-                                accessor: 'username',
-                                Header: 'Username',
-                                style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderReadOnly(cellInfo, users),
-                                Filter: ({filter, onChange}) => (
-                                    <input
-                                        type='text'
-                                        placeholder="Search username"
-                                        className="input input--outline full-width"
-                                        value={filter ? filter.value : ''}
-                                        onChange={event => onChange(event.target.value)}
-                                    />
-                                ),
-                            }, {
-                                accessor: 'firstName',
-                                Header: 'First Name',
-                                style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderEditable(cellInfo, users, isSaving),
-                                Filter: ({filter, onChange}) => (
-                                    <input
-                                        type='text'
-                                        placeholder="Search first name"
-                                        className="input input--outline full-width"
-                                        value={filter ? filter.value : ''}
-                                        onChange={event => onChange(event.target.value)}
-                                    />
-                                ),
-                            }, {
-                                accessor: 'lastName',
-                                Header: 'Last Name',
-                                style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderEditable(cellInfo, users, isSaving),
-                                Filter: ({filter, onChange}) => (
-                                    <input
-                                        type='text'
-                                        placeholder="Search last name"
-                                        className="input input--outline full-width"
-                                        value={filter ? filter.value : ''}
-                                        onChange={event => onChange(event.target.value)}
-                                    />
-                                ),
-                            }, {
-                                accessor: 'occupation',
-                                Header: 'Occupation',
-                                style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderEditableDropdown(cellInfo,
-                                    ['Healthcare Practitioner', 'Healthcare Student', 'Patient', 'Other'], users, isSaving),
-                                Filter: ({filter, onChange}) => (
-                                    <input
-                                        type='text'
-                                        placeholder="Search occupation"
-                                        className="input input--outline full-width"
-                                        value={filter ? filter.value : ''}
-                                        onChange={event => onChange(event.target.value)}
-                                    />
-                                ),
-                            }, {
-                                accessor: 'institution',
-                                Header: 'Institution',
-                                style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderEditableDropdown(cellInfo,
-                                    ['University of Edinburgh', 'Other', 'None'], users, isSaving),
-                                Filter: ({filter, onChange}) => (
-                                    <input
-                                        type='text'
-                                        placeholder="Search institution"
-                                        className="input input--outline full-width"
-                                        value={filter ? filter.value : ''}
-                                        onChange={event => onChange(event.target.value)}
-                                    />
-                                ),
-                            }, {
-                                accessor: 'roleType',
-                                Header: 'Role',
-                                style: {cursor: 'pointer'},
-                                Cell: (cellInfo) => this.renderReadOnly(cellInfo, users, true),
-                                Filter: ({filter, onChange}) => (
-                                    <div className="flex-row">
-                                        <div className="flex-1 flex-row">
-                                            <input
-                                                type='text'
-                                                placeholder="Search role"
-                                                className="input input--outline full-width"
-                                                value={filter ? filter.value : ''}
-                                                onChange={event => onChange(event.target.value)}
-                                            />
+            <SettingsProvider>
+				{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
+                    if (settingsIsLoading || !settings) return <Flex className="centered-container"><Loader /></Flex>;
+                    return (
+                        <UsersProvider onSave={this.onSave}>
+                            {({isLoading, isSaving, users}) => (
+                                <Flex className="content">
+                                    <div className="flex-row pb-3 mb-3 border-bottom">
+                                        <div className="flex-1 flex-column">
+                                            <h1 className="content__title">Manage Users</h1>
                                         </div>
+                                        <div className="flex-column">
+                                            <button className="btn btn--primary" onClick={this.create}>
+                                                Create User
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="flex-row">
                                         <div className="ml-auto">
-                                            <div className="flex-row invisible">
-                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.changePassword(cellInfo.original)}>
-                                                    <i className="fas fa-lock"></i>
-                                                </button>
-                                                <button className="btn btn--icon btn--icon--red" onClick={() => this.delete(cellInfo.original)}>
-                                                    <i className="far fa-trash-alt"> </i>
-                                                </button>
+                                            <div className="flex-row mb-3">
+                                                <div className="flex-column">
+                                                    <Button onClick={this.reset} disabled={!this.state.changes} className="btn btn--primary btn--hollow">Reset Changes</Button>
+                                                </div>
+                                                <div className="flex-column">
+                                                    <Button onClick={this.save} disabled={!this.state.changes} className="btn btn--primary btn--hollow">Save Changes</Button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                ),
-                            }]}
-                            loading={isLoading}
-                            defaultPageSize={50}
-                            filterable={true}
-                            defaultFilterMethod={(filter, row, column) => {
-                                const id = filter.pivotId || filter.id
-                                return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) !== -1 : false
-                            }}
-                            SubComponent={row => <ExpandRow row={row} isSaving={isSaving} onChange={this.onExpandRowChange} changes={this.state.changes} />}
-                            freezeWhenExpanded={true}
-                            getTheadProps={theadProps}
-                            showPaginationTop
-                        />
-                    </Flex>
-                )}
-            </UsersProvider>
+
+                                    <ReactTable data={users} columns={[{
+                                            accessor: 'username',
+                                            Header: 'Username',
+                                            style: {cursor: 'pointer'},
+                                            Cell: (cellInfo) => this.renderReadOnly(cellInfo, users),
+                                            Filter: ({filter, onChange}) => (
+                                                <input
+                                                    type='text'
+                                                    placeholder="Search username"
+                                                    className="input input--outline full-width"
+                                                    value={filter ? filter.value : ''}
+                                                    onChange={event => onChange(event.target.value)}
+                                                />
+                                            ),
+                                        }, {
+                                            accessor: 'firstName',
+                                            Header: 'First Name',
+                                            style: {cursor: 'pointer'},
+                                            Cell: (cellInfo) => this.renderEditable(cellInfo, users, isSaving),
+                                            Filter: ({filter, onChange}) => (
+                                                <input
+                                                    type='text'
+                                                    placeholder="Search first name"
+                                                    className="input input--outline full-width"
+                                                    value={filter ? filter.value : ''}
+                                                    onChange={event => onChange(event.target.value)}
+                                                />
+                                            ),
+                                        }, {
+                                            accessor: 'lastName',
+                                            Header: 'Last Name',
+                                            style: {cursor: 'pointer'},
+                                            Cell: (cellInfo) => this.renderEditable(cellInfo, users, isSaving),
+                                            Filter: ({filter, onChange}) => (
+                                                <input
+                                                    type='text'
+                                                    placeholder="Search last name"
+                                                    className="input input--outline full-width"
+                                                    value={filter ? filter.value : ''}
+                                                    onChange={event => onChange(event.target.value)}
+                                                />
+                                            ),
+                                        }, {
+                                            accessor: 'occupation',
+                                            Header: 'Occupation',
+                                            style: {cursor: 'pointer'},
+                                            Cell: (cellInfo) => this.renderEditableDropdown(cellInfo,
+                                                ['Healthcare Practitioner', 'Healthcare Student', 'Patient', 'Other'], users, isSaving),
+                                            Filter: ({filter, onChange}) => (
+                                                <input
+                                                    type='text'
+                                                    placeholder="Search occupation"
+                                                    className="input input--outline full-width"
+                                                    value={filter ? filter.value : ''}
+                                                    onChange={event => onChange(event.target.value)}
+                                                />
+                                            ),
+                                        }, {
+                                            accessor: 'institution',
+                                            Header: 'Institution',
+                                            style: {cursor: 'pointer'},
+                                            Cell: (cellInfo) => this.renderEditableDropdown(cellInfo,
+                                                _.map(settings.institutions, institution => ({value: institution.id, label: institution.name})), users, isSaving),
+                                            Filter: ({filter, onChange}) => (
+                                                <input
+                                                    type='text'
+                                                    placeholder="Search institution"
+                                                    className="input input--outline full-width"
+                                                    value={filter ? filter.value : ''}
+                                                    onChange={event => onChange(event.target.value)}
+                                                />
+                                            ),
+                                        }, {
+                                            accessor: 'roleType',
+                                            Header: 'Role',
+                                            style: {cursor: 'pointer'},
+                                            Cell: (cellInfo) => this.renderReadOnly(cellInfo, users, true),
+                                            Filter: ({filter, onChange}) => (
+                                                <div className="flex-row">
+                                                    <div className="flex-1 flex-row">
+                                                        <input
+                                                            type='text'
+                                                            placeholder="Search role"
+                                                            className="input input--outline full-width"
+                                                            value={filter ? filter.value : ''}
+                                                            onChange={event => onChange(event.target.value)}
+                                                        />
+                                                    </div>
+                                                    <div className="ml-auto">
+                                                        <div className="flex-row invisible">
+                                                            <button className="btn btn--icon btn--icon--blue" onClick={() => this.changePassword(cellInfo.original)}>
+                                                                <i className="fas fa-lock"></i>
+                                                            </button>
+                                                            <button className="btn btn--icon btn--icon--red" onClick={() => this.delete(cellInfo.original)}>
+                                                                <i className="far fa-trash-alt"> </i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ),
+                                        }]}
+                                        loading={isLoading}
+                                        defaultPageSize={50}
+                                        filterable={true}
+                                        defaultFilterMethod={(filter, row, column) => {
+                                            const id = filter.pivotId || filter.id
+                                            return row[id] !== undefined ? String(row[id]).toLowerCase().indexOf(filter.value.toLowerCase()) !== -1 : false
+                                        }}
+                                        SubComponent={row => <ExpandRow row={row} isSaving={isSaving} onChange={this.onExpandRowChange} changes={this.state.changes} />}
+                                        freezeWhenExpanded={true}
+                                        getTheadProps={theadProps}
+                                        showPaginationTop
+                                    />
+                                </Flex>
+                            )}
+                        </UsersProvider>
+                    );
+                }}
+            </SettingsProvider>
         );
     }
 });
