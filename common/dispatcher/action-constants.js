@@ -32,4 +32,5 @@ module.exports = Object.assign({}, require('./base/_action-constants'), {
   "UPDATE_LINK_LOGO": "UPDATE_LINK_LOGO",
   "GET_EXTERNAL_STANDARDS": "GET_EXTERNAL_STANDARDS",
   "DELETE_CODE": "DELETE_CODE",
+  "GET_SETTINGS": "GET_SETTINGS",
 });
