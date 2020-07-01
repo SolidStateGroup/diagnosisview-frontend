@@ -13,13 +13,23 @@
     height:100%;
 
     &__link{
+        padding-top:5px;
         padding-left:15px;
         padding-right:15px;
         color:#212529;
+        >span {
+            font-size: 20px;
+            font-weight: bold;
+            color: $brand-primary;
+        }
 
         &--icon{
             padding-top: 5px;
             padding-left: 10px;
+        }
+
+        &--separator {
+            border-right: 1px solid black;
         }
     }
 }
