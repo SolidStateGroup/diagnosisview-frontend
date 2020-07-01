@@ -26,12 +26,12 @@ const TheComponent = class extends Component {
                             <img height={34} src={"/images/brand-medium.png"}/>
                         </Row>
                     </div>
-                    <Link id="manage-codes-link" className="nav__links__link d-flex align-items-center" to={`/admin/codes`}>
+                    <Link id="manage-codes-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/codes`}>
                         <span className="d-flex flex-1">Manage Codes</span>
                     </Link>
-                    <Link id="manage-users-link" className="nav__links__link d-flex align-items-center" to={`/admin/users`}>
+                    <Link id="manage-users-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/users`}>
                         <span className="d-flex flex-1">Manage Users</span></Link>
-                    <Link id="manage-link-transforms-link" className="nav__links__link d-flex align-items-center" to={`/admin/link-transforms`}>
+                    <Link id="manage-link-transforms-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/link-transforms`}>
                         <span className="d-flex flex-1">URL Transformation</span></Link>
                     <Link id="manage-link-logos-link" className="nav__links__link d-flex align-items-center" to={`/admin/link-logos`}>
                         <span className="d-flex flex-1">Manage Link Logos</span></Link>

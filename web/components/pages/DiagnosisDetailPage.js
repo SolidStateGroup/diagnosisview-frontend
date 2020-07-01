@@ -456,7 +456,6 @@ module.exports = hot(module)(class extends React.Component {
                                                 <input
                                                     className="input input--outline"
                                                     value={code}
-                                                    placeholder="Diagnosis code"
                                                     onChange={(e) => this.onEditField('code', e)}
                                                 />
                                             </p>
@@ -469,7 +468,6 @@ module.exports = hot(module)(class extends React.Component {
                                                 <input
                                                     className="input input--outline"
                                                     value={patientFriendlyName}
-                                                    placeholder="Diagnosis name"
                                                     onChange={(e) => this.onEditField('patientFriendlyName', e)}
                                                 />
                                             </p>
@@ -523,7 +521,6 @@ module.exports = hot(module)(class extends React.Component {
                                             <textarea
                                                 className="input input--outline"
                                                 value={fullDescription}
-                                                placeholder="--/--/----"
                                                 onChange={(e) => this.onEditField('fullDescription', e)}
                                             />
                                         </p>
@@ -785,8 +782,7 @@ const DisplayOrderBox = class extends React.Component {
                         <React.Fragment>
                             <div className="col p-0">
                                 <select
-                                    className="form-control input--fit-cell"
-                                    style={{padding: 0}}
+                                    className="input input--outline input--fit-cell"
                                     value={dropdownValue}
                                     disabled={isSaving}
                                     onChange={(e) => this.setState({dropdownValue: e.target.value})}

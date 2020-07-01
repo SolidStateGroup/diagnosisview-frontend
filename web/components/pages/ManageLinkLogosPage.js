@@ -128,8 +128,7 @@ module.exports = hot(module)(class extends React.Component {
                                                     <div className="col p-0">
                                                         <div className="flex-row">
                                                             <select
-                                                                className="form-control flex-1"
-                                                                style={{padding: 0}}
+                                                                className="input input--outline flex-1 mr-3"
                                                                 value={this.state.linkLogos[logo.id] ? this.state.linkLogos[logo.id].overrideDifficultyLevel : logo.overrideDifficultyLevel}
                                                                 disabled={!this.state.linkLogos[logo.id]}
                                                                 onChange={(e) => this.editField(logo.id, 'overrideDifficultyLevel', e)}
