@@ -301,7 +301,36 @@ footer.homepage{
 }
 
 .privacy-policy-link {
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
+
+}
+
+
+
+//HOMEPAGE IMPROVEMENTS
+
+
+.nav{
+	padding:10px 20px;
+
+	.brand{
+		&-image{
+			height:30px;
+		}
+	}
+}
+
+.hero{
+	&-gradient{
+		background:linear-gradient(#2575de, darken(#2575de, 5));
+	}
+}
+
+.section{
+	&--grey{
+		background:#efefef;
+	}
+}
+
+.icon--list{
+	height:26px;
 }
