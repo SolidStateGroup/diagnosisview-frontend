@@ -23,3 +23,19 @@
     }
 
 }
+
+
+//NEW HERO
+
+.hero{
+    &--shape-bg{
+        min-height:700px;
+        background:url('/images/hero-bg.svg') 0 0 no-repeat;
+        background-size:cover;
+        color:#fff;
+    }
+
+    &__image{
+        height:600px;
+    }
+}

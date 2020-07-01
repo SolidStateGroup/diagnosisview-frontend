@@ -29,6 +29,20 @@
     &--table-filter {
         opacity: 1;
     }
+
+    &--default{
+        background-color:#efefef!important;
+        padding-left:20px;
+    }
+}
+
+input.input--default{
+    background-color:#efefef!important;
+    padding-left:20px!important;
+
+    &::placeholder{
+        color:rgba(0,0,0,0.5);
+    }
 }
 
 .fieldset{
@@ -61,3 +75,5 @@
     margin-left: 5px;
     margin-right: 5px;
 }
+
+
