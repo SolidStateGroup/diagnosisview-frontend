@@ -319,12 +319,6 @@ footer.homepage{
 	}
 }
 
-.hero{
-	&-gradient{
-		background:linear-gradient(#2575de, darken(#2575de, 5));
-	}
-}
-
 .section{
 	&--grey{
 		background:#efefef;
@@ -333,4 +327,19 @@ footer.homepage{
 
 .icon--list{
 	height:26px;
+}
+
+.footer{
+	background:#2575de;
+	color:#fff;
+	padding:20px;
+
+	&__link{
+		color:#fff;
+		font-size:12px;
+
+		&:hover, &:active, &:focus{
+			color:#fff;
+		}
+	}
 }

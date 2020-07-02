@@ -66,6 +66,7 @@ module.exports = class extends React.Component {
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Info on your own mobile or tablet</li>
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Advanced patient info is the starting point (free)</li>
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Moving on to practitioner-level and expert-level professional resources</li>
+                                        <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> With an optional account you can access professional resources, as well as sync favourites and history across devices.</li>
                                     </ul>
                                 </div>
                                 <div className="col-lg-6">
@@ -91,49 +92,22 @@ module.exports = class extends React.Component {
                             </div>
                         </Flex>
 
-                        <div className="section section--grey p-5">
-                            <p>With an optional account you can access professional resources, as well as sync favourites and history across devices.</p>
-                            <img src="../../images/uoe-icon.jpeg" width="15%" />
-                            <p>DiagnosisView was developed by <a href="https://www.ed.ac.uk" target="_blank">The University of Edinburgh</a> with the support of the <a href="https://www.patientview.org" target="_blank">www.patientview.org</a> electronic health records system.</p>
-                            <a href="https://blogs.ed.ac.uk/diagnosisview/" target="_blank">DiagnosisView help pages and news updates are available here.</a>
+                        <div className="section section--grey p-5 flex align-items-center">
+                            <div className="panel--white col-md-6">
+                                <div className="flex-row justify-content-center text-center">
+                                    <img src="../../images/uoe-icon.jpeg" width="100px" />
+                                    <p>DiagnosisView was developed by <a href="https://www.ed.ac.uk" target="_blank">The University of Edinburgh</a> with the support of the <a href="https://www.patientview.org" target="_blank">www.patientview.org</a> electronic health records system.</p>
+                                </div>
+                            </div>
+                            <a href="https://blogs.ed.ac.uk/diagnosisview/" target="_blank" className="text-small mt-2">DiagnosisView help pages and news updates are available here.</a>
                         </div>
 
-                        <div className="section">
-                            <div className="text-center">
-                                <h5 className="text-dark">ADMIN LOGIN</h5>
-                                <p>DiagnosisView is only available as an app for mobile devices. Web app may be added one day!</p>
-                            </div>
-                            <div>
-                                <Column className="centered-container" style={{alignItems: 'stretch', justifyContent: 'center'}}>
-                                    <form onSubmit={(e) => {
-                                        e.preventDefault();
-                                        if (this.state.email && this.state.password) {
-                                            clearError();
-                                            this.login(this.props.id, this.state.name);
-                                        }
-                                    }}>
-                                        <Input
-                                            title="Email"
-                                            placeholder="email" type="email"
-                                            onChange={(e) => this.setState({ email: Utils.safeParseEventValue(e) })}
-                                            inputProps={{ className: "full-width text-center" }} />
 
-                                        <Input title="Password"
-                                               placeholder="password" type="password"
-                                               onChange={(e) => this.setState({ password: Utils.safeParseEventValue(e) })}
-                                               inputProps={{ className: "full-width text-center" }} />
 
-                                        <Button disabled={isLoading || !this.state.email || !this.state.password} onClick={this.login} className={'btn btn--primary'}>{isLoading ? 'Logging in..' : 'Login'}</Button>
-                                        {error && error.message && <div className="text-danger">{error.message}</div>}
-                                    </form>
-                                </Column>
-                            </div>
-                        </div>
-
-                        <footer>
+                        <footer className="footer">
                             <div></div>
-                            <div className="ml-auto">
-                                <Link className="nav-link" to='/privacy-policy'>Privacy Policy</Link>
+                            <div className="text-right">
+                                <Link className="footer__link" to='/privacy-policy'>Privacy Policy</Link>
                             </div>
                         </footer>
                         </div>
