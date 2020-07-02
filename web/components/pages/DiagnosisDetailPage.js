@@ -21,9 +21,13 @@ module.exports = hot(module)(class extends React.Component {
     }
 
     componentDidMount() {
-        const code = _.get(this.props.location, 'state.code');
+        this.load(this.props.location);
+    }
+
+    load = (location) => {
+        const code = _.get(location, 'state.code');
         if (code) {
-            const edit = _.get(this.props.location, 'state.edit');
+            const edit = _.get(location, 'state.edit');
             // Load full diagnosis
             this.setState({ isLoading: true });
             data.get(Project.api + 'admin/code/' + code)
@@ -38,6 +42,14 @@ module.exports = hot(module)(class extends React.Component {
         } else {
             // Must be a new diagnosis
             this.setState({ edit:false, diagnosis: {} });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const currentCode = _.get(this.props.location, 'state.code');
+        const nextCode = _.get(nextProps.location, 'state.code');
+        if (currentCode !== nextCode) {
+            this.load(nextProps.location);
         }
     }
 

@@ -14,6 +14,8 @@ const Popover = class extends React.Component {
     this.refs.focus.toggle();
   }
 
+  isOpen = () => this.state.isActive
+
   render () {
     var classNames = cn({
       popover: true,
