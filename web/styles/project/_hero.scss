@@ -30,7 +30,7 @@
 .hero{
     &--shape-bg{
         min-height:700px;
-        background:url('/images/hero-bg.svg') 0 0 no-repeat;
+        background:url('/images/hero-bg.svg') 0 0 repeat-x;
         background-size:cover;
         color:#fff;
     }
