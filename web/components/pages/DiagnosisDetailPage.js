@@ -659,7 +659,7 @@ module.exports = hot(module)(class extends React.Component {
                                         <label className="panel__head__title">DISPLAY TO FREE USERS?</label>
                                     </div>
                                     <div className="col p-0">
-                                        <label className="panel__head__title">URL TRANSFORMS ONLY?</label>
+                                        <label className="panel__head__title">PAYWALL ONLY?</label>
                                     </div>
                                     <div className="col p-0">
                                         <label className="panel__head__title">URL</label>

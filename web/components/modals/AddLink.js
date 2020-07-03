@@ -76,7 +76,7 @@ const TheComponent = class extends Component {
                             <fieldset className="fieldset pt-1 pb-4">
                                 <label className="">Displayed to free users?</label>
                                 <p className="text-small"><Switch checked={freeLink} onChange={checked => this.setState({freeLink: checked})}/></p>
-                                <label className="">URL transformations only?</label>
+                                <label className="">Paywall only?</label>
                                 <p className="text-small"><Switch checked={transformationsOnly} onChange={checked => this.setState({transformationsOnly: checked})}/></p>
                             </fieldset>
                             <div className="modal-footer text-center justify-content-center">

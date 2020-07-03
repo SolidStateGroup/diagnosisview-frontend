@@ -9,7 +9,7 @@ module.exports = (props) => (
 						<Column>
 							<ION style={{fontSize: em(2), color: 'white'}} name="md-warning"/>
 						</Column>
-						<Column style={{width: DeviceWidth - 100}}>
+						<Column>
 							<Text style={[Styles.barText]}>
 								{props.message || "The server connection appears to be down. Please try again later."}
 							</Text>

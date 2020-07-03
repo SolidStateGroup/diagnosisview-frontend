@@ -238,8 +238,15 @@ var controller = {
         updateAccount: function (details) {
             if (!store.model) return;
 
+            const institutionChanged = details.institution !== store.model.institution;
+
             store.saving();
             data.put(Project.api + 'user/', details)
+                .then(res => {
+                    if (!institutionChanged) return res;
+
+                    return DiagnosisStore.refreshCodes().then(() => res);
+                })
                 .then(res => {
                     res = controller.processUser(res);
 
