@@ -28,12 +28,12 @@ module.exports = class extends React.Component {
                 <AccountProvider onError={() => this.setState({password: ''})}>
                     {({error, isLoading}, {clearError}) => (
                         <div>
-                        <Flex className="hero--shape-bg mb-5">
+                        <Flex className="hero--shape-bg mb-0 mb-md-5">
                             <div className="nav">
-                                <div className="brand">
+                                <div className="brand mb-2 mb-md-0">
                                     <img className="brand-image mt-1" src={require('../../images/brand.png')}/>
                                 </div>
-                                <div className="ml-auto">
+                                <div className="ml-0 ml-md-auto">
                                     <form onSubmit={(e) => {
                                         e.preventDefault();
                                         if (this.state.email && this.state.password) {
@@ -53,7 +53,10 @@ module.exports = class extends React.Component {
                                                             onChange={(e) => this.setState({ password: Utils.safeParseEventValue(e) })}
                                                             inputClassName="input--default"/>
                                             </div>
-                                            <Button disabled={isLoading || !this.state.email || !this.state.password} onClick={this.login} className={'btn btn--primary'}>{isLoading ? 'Logging in..' : 'Login'}</Button>
+                                            <Button disabled={isLoading || !this.state.email || !this.state.password} onClick={this.login} className={'btn btn--primary nav__button'}>
+                                                <span className="nav__button__text">{isLoading ? 'Logging in..' : 'Login'}</span>
+                                                <img src="/images/icon-login.png" alt="login" className="image--icon"/>
+                                            </Button>
                                             {error && error.message && <div className="text-danger">{error.message}</div>}
                                         </div>
                                     </form>
@@ -61,8 +64,8 @@ module.exports = class extends React.Component {
                             </div>
                             <div className="flex-row">
                                 <div className="col-lg-6 px-5">
-                                    <h3 className="my-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h3>
-                                    <ul className="list-unstyled">
+                                    <h3 className="mb-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h3>
+                                    <ul className="feature-list list-unstyled">
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Info on your own mobile or tablet</li>
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Advanced patient info is the starting point (free)</li>
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Moving on to practitioner-level and expert-level professional resources</li>
@@ -91,6 +94,15 @@ module.exports = class extends React.Component {
                                 </div>
                             </div>
                         </Flex>
+
+                        <div className="section--feature px-4 mb-5">
+                            <ul className="list-unstyled">
+                                <li className="mb-3 mb-md-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> Info on your own mobile or tablet</li>
+                                <li className="mb-3 mb-md-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> Advanced patient info is the starting point (free)</li>
+                                <li className="mb-3 mb-md-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> Moving on to practitioner-level and expert-level professional resources</li>
+                                <li className="mb-3 mb-md-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> With an optional account you can access professional resources, as well as sync favourites and history across devices.</li>
+                            </ul>
+                        </div>
 
                         <div className="section section--grey p-5 flex align-items-center">
                             <div className="panel--white col-md-6">
