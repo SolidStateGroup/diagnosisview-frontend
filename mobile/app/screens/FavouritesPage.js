@@ -3,6 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react';
 import FavouriteComplexity from '../components/FavouriteComplexity';
+import PaywallLink from '../components/PaywallLink';
 
 const DIAGNOSIS_CELL_FLEX = 4;
 const DATE_ADDED_FLEX = 2;
@@ -110,13 +111,16 @@ const FavouritesPage = class extends Component {
 																<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} />
 																<Column style={{flex: DIAGNOSIS_CELL_FLEX}}>
 																	<Text style={[Styles.textSmall]}>{entry.name}</Text>
-																	{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
-																		<Column style={[Styles.noMargin, {flex: 1}]}>
-																			<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
-																			{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Flex><Text style={Styles.textSmall} numberOfLines={1} ellipsisMode="tail">{link.name}</Text></Flex> : null}
-																		</Column>
-																	) : <Text style={[Styles.textSmall]}>{link.name}</Text>
-																	}
+																	<Row>
+																		{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
+																			<Column style={[Styles.noMargin, {flex: 1}]}>
+																				<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																				{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Flex><Text style={Styles.textSmall} numberOfLines={1} ellipsisMode="tail">{link.name}</Text></Flex> : null}
+																			</Column>
+																		) : <Text style={[Styles.textSmall]}>{link.name}</Text>
+																		}
+																		{link.paywalled ? <PaywallLink navigator={this.props.navigator} paywalled={link.paywalled} /> : null}
+																	</Row>
 																</Column>
 																<Column style={{flex: DATE_ADDED_FLEX}}>
 																	<Text style={[Styles.textSmall]}>{moment(entry.date).format('DD MMM YYYY')}</Text>

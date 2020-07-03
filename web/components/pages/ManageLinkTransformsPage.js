@@ -68,11 +68,11 @@ module.exports = hot(module)(class extends React.Component {
                                 <Flex className={'content'}>
                                     <div className="flex-row mb-3">
                                         <div className="flex-1 flex-column">
-                                            <h1 className="content__title">URL Transformation</h1>
+                                            <h1 className="content__title">Paywall Management</h1>
                                         </div>
                                         <div className="flex-column">
                                             <button className="btn btn--primary" onClick={this.addNew}>
-                                                Add new link
+                                                Add new rule
                                             </button>
                                         </div>
                                     </div>

@@ -32,7 +32,7 @@ const TheComponent = class extends Component {
                     <Link id="manage-users-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/users`}>
                         <span className="d-flex flex-1">Manage Users</span></Link>
                     <Link id="manage-link-transforms-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/link-transforms`}>
-                        <span className="d-flex flex-1">URL Transformation</span></Link>
+                        <span className="d-flex flex-1">Paywall Management</span></Link>
                     <Link id="manage-link-logos-link" className="nav__links__link d-flex align-items-center" to={`/admin/link-logos`}>
                         <span className="d-flex flex-1">Manage Link Logos</span></Link>
                     <div className="ml-auto mr-3">
