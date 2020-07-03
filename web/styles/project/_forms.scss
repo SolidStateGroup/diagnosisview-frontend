@@ -40,6 +40,21 @@
     &--table-filter {
         opacity: 1;
     }
+
+    &--default{
+        background-color:#efefef!important;
+        padding-left:20px;
+        border-radius: 6px;
+    }
+}
+
+input.input--default{
+    background-color:#efefef!important;
+    padding-left:20px!important;
+
+    &::placeholder{
+        color:rgba(0,0,0,0.5);
+    }
 }
 
 .fieldset{
@@ -80,3 +95,19 @@
         min-width: 500px;
     }
 }
+
+//AUTOFILL STYLES
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    background-color:#efefef;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
