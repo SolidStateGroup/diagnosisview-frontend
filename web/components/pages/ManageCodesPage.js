@@ -3,7 +3,7 @@ import ReactTable from "react-table";
 
 const theadProps = () => ({
     style: {
-        fontWeight: '400'
+        fontWeight: '400',
     }
 })
 
@@ -87,11 +87,46 @@ module.exports = hot(module)(class extends React.Component {
                                     onChange={event => this.onFilterChange(event, onChange)}
                                 />
                             ),
+                        }, {
+                            width: 180,
+                            filterable: false,
+                            accessor: 'created',
+                            Header: 'Created',
+                            style: {cursor: 'pointer'},
+                            Cell: row => (
+                                <div className="col p-0">
+                                    {moment(row.original.created).format('DD/MM/YYYY HH:mm')}
+                                </div>
+                            ),
+                        }, {
+                            width: 100,
+                            filterable: false,
+                            accessor: 'hideFromPatients',
+                            Header: 'Hidden',
+                            style: {cursor: 'pointer'},
+                            Cell: row => (
+                                <div className="col p-0">
+                                    {row.original.hideFromPatients ? 'Yes' : 'No'}
+                                </div>
+                            ),
+                        }, {
+                            width: 140,
+                            filterable: false,
+                            accessor: 'removedExternally',
+                            Header: 'Removed Externally',
+                            style: {cursor: 'pointer'},
                             Cell: row => (
                                 <div className="flex-1 flex-row">
                                     <div className="col p-0">
-                                        {row.original.friendlyName}
+                                        {row.original.removedExternally ? 'Yes' : 'No'}
                                     </div>
+                                </div>
+                            ),
+                        }, {
+                            width: 140,
+                            filterable: false,
+                            Cell: row => (
+                                <div className="flex-1 flex-row">
                                     <div className="ml-auto">
                                         <div className="flex-row">
                                             <React.Fragment>
