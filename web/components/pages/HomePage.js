@@ -55,7 +55,7 @@ module.exports = class extends React.Component {
                                             </div>
                                             <Button disabled={isLoading || !this.state.email || !this.state.password} onClick={this.login} className={'btn btn--primary nav__button'}>
                                                 <span className="nav__button__text">{isLoading ? 'Logging in..' : 'Login'}</span>
-                                                <img src="/images/icon-login.png" alt="login" className="image--icon"/>
+                                                <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
                                             </Button>
                                             {error && error.message && <div className="text-danger">{error.message}</div>}
                                         </div>
@@ -64,7 +64,7 @@ module.exports = class extends React.Component {
                             </div>
                             <div className="flex-row">
                                 <div className="col-lg-6 px-5">
-                                    <h3 className="mb-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h3>
+                                    <h3 className="mt-5 mt-md-0 mb-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h3>
                                     <ul className="feature-list list-unstyled">
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Info on your own mobile or tablet</li>
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Advanced patient info is the starting point (free)</li>

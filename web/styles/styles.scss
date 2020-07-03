@@ -138,12 +138,26 @@ hr {
     display:none;
 }
 
+.nav__button__icon{
+    display: none;
+}
+
 @media screen and (max-width: $mobile-landscape) {
     .nav {
         padding:10px;
 
         &__button__text{
             display:none;
+        }
+    }
+
+    .nav__button__icon{
+        display: block;
+    }
+
+    button{
+        &.nav__button{
+            padding:10px;
         }
     }
 
