@@ -14,6 +14,26 @@
 .ReactTable .rt-thead.-filters input, .ReactTable .rt-thead.-filters select{
     @extend .input;
     @extend .input--outline;
+    font-size: 14px;
+    opacity: 1;
+    color: #585858;
+    font-weight: bold;
+    &::-webkit-input-placeholder {
+        font-style: italic;
+        color: grey;
+    }
+    &::-moz-placeholder {
+        font-style: italic;
+        color: grey;
+    }
+    &:-ms-input-placeholder {
+        font-style: italic;
+        color: grey;
+    }
+    &::placeholder {
+        font-style: italic;
+        color: grey;
+    }
 }
 
 .rt-resizable-header-content{
@@ -26,6 +46,11 @@
     padding:15px!important;
 }
 
+.ReactTable .rt-thead .rt-resizable-header-content{
+    color: #585858;
+    font-size: 15px;
+}
+
 .ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td, .ReactTable .rt-thead.-filters .rt-th{
     border-right:0;
     border-top:1px solid rgba(0,0,0,0.02);
@@ -34,6 +59,10 @@
 
 .ReactTable .rt-tbody .rt-td{
     padding:15px;
+}
+
+.ReactTable .rt-thead .rt-th {
+    white-space: pre-wrap;
 }
 
 .ReactTable .-pagination{

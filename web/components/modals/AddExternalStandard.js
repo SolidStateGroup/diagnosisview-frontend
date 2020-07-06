@@ -44,7 +44,6 @@ const TheComponent = class extends Component {
                             <div>
                                 <select
                                     className="fieldset__input input input--outline"
-                                    style={{padding: 0}}
                                     onChange={e => this.setState({externalStandard: Utils.safeParseEventValue(e)})}
                                 >
                                     <option value="">Select external standard..</option>

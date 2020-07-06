@@ -12,9 +12,9 @@ const FocusMonitor = class extends React.Component {
 	}
 
 	toggle = () => {
-		if (this.state.hasFocus && (new Date().valueOf() - this.state.updated > 200)) {
+		// if (this.state.hasFocus && (new Date().valueOf() - this.state.updated > 200)) {
 			this.focusChanged(!this.state.hasFocus);
-		}
+		// }
 	};
 
 	focusChanged = (hasFocus) => {

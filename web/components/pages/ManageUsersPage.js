@@ -128,8 +128,7 @@ module.exports = hot(module)(class extends React.Component {
             ? this.state.changes[uid][cellInfo.column.id] : users[cellInfo.index][cellInfo.column.id];
         return (
             <select
-                className="form-control"
-                style={{padding: 0}}
+                className="fieldset__input input input--outline full-width"
                 value={selectedOption}
                 disabled={disabled || isSaving}
                 onChange={e => {

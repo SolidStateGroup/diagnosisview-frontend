@@ -134,6 +134,9 @@ var controller = {
         refresh: function () {
             return Promise.all([controller.getCodes(), controller.getCategories()]);
         },
+        refreshCodes: function() {
+            return controller.getCodes();
+        }
     });
 
 store.dispatcherIndex = Dispatcher.register(store, function (payload) {
