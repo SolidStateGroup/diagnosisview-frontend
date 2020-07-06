@@ -44,8 +44,7 @@ const TheComponent = class extends Component {
                                         <label className="fieldset__label text-small text-muted">INSTITUTION</label>
                                         <div>
                                             <select
-                                                className="fieldset__input input input--outline"
-                                                style={{padding: 0}}
+                                                className="fieldset__input input input--outline full-width"
                                                 onChange={e => this.setState({institution: Utils.safeParseEventValue(e)})}
                                             >
                                                 <option value="">Select an institution..</option>

@@ -4,6 +4,7 @@
 import React, {Component, PropTypes} from 'react';
 import data from '../../common-mobile/stores/base/_data';
 import FavouriteComplexity from '../components/FavouriteComplexity';
+import PaywallLink from '../components/PaywallLink';
 
 const DiagnosisDetailPage = class extends Component {
 	static navigatorStyle = global.navbarStyle;
@@ -107,13 +108,16 @@ const DiagnosisDetailPage = class extends Component {
 															<Row>
 																<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} />
 																<Flex>
-																	{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
-																		<Column>
-																			<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
-																			{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text> : null}
-																		</Column>
-																	) : <Text>{link.name}</Text>
-																	}
+																	<Row>
+																		{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
+																			<Column>
+																				<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																				{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text> : null}
+																			</Column>
+																		) : <Text>{link.name}</Text>
+																		}
+																		{link.paywalled ? <PaywallLink navigator={this.props.navigator} paywalled={link.paywalled} /> : null}
+																	</Row>
 																</Flex>
 																<ION onPress={() => this.onFavourite(isFavourite, link)} name="ios-star" style={[Styles.listIconNav, isFavourite ? {color: '#ffd700'} : {}]}/>
 															</Row>

@@ -3,6 +3,7 @@
  */
 import React, { Component, PropTypes } from 'react';
 import FavouriteComplexity from '../components/FavouriteComplexity';
+import PaywallLink from '../components/PaywallLink';
 
 const MAX_RECENT = 3;
 
@@ -226,13 +227,16 @@ const DashboardPage = class extends Component {
 																		<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
 																		<Column style={[Styles.noMargin, {flex: 1}]}>
 																			<Text>{entry.name}</Text>
-																			{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
-																					<Row>
-																						<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
-																						{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Flex><Text numberOfLines={1} ellipsisMode="tail">{link.name}</Text></Flex> : null}
-																					</Row>
-																				) : <Text>{link.name}</Text>
-																			}
+																			<Row>
+																				{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
+																						<>
+																							<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																							{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Flex><Text numberOfLines={1} ellipsisMode="tail" style={Styles.textSmall}>{link.name}</Text></Flex> : null}
+																						</>
+																					) : <Text style={Styles.textSmall}>{link.name}</Text>
+																				}
+																				{link.paywalled ? <PaywallLink navigator={this.props.navigator} paywalled={link.paywalled} /> : null}
+																			</Row>
 																		</Column>
 																		<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
 																	</ListItem>

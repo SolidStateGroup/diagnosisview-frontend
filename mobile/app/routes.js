@@ -22,4 +22,5 @@ Navigation.registerComponent('logoheader', () => require('./components/LogoHeade
 Navigation.registerComponent('welcome', () => require('./screens/WelcomeLightbox'));
 Navigation.registerComponent('changePassword', () => require('./screens/ChangePasswordLightbox'));
 Navigation.registerComponent('favouriteComplexity', () => require('./screens/FavouriteComplexityLightbox'));
+Navigation.registerComponent('paywallDescription', () => require('./screens/PaywallDescriptionLightbox'));
 Navigation.registerComponent('forgotPassword', () => require('./screens/ForgotPasswordLightbox'));

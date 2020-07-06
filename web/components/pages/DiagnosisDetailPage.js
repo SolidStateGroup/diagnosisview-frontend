@@ -21,9 +21,13 @@ module.exports = hot(module)(class extends React.Component {
     }
 
     componentDidMount() {
-        const code = _.get(this.props.location, 'state.code');
+        this.load(this.props.location);
+    }
+
+    load = (location) => {
+        const code = _.get(location, 'state.code');
         if (code) {
-            const edit = _.get(this.props.location, 'state.edit');
+            const edit = _.get(location, 'state.edit');
             // Load full diagnosis
             this.setState({ isLoading: true });
             data.get(Project.api + 'admin/code/' + code)
@@ -38,6 +42,14 @@ module.exports = hot(module)(class extends React.Component {
         } else {
             // Must be a new diagnosis
             this.setState({ edit:false, diagnosis: {} });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const currentCode = _.get(this.props.location, 'state.code');
+        const nextCode = _.get(nextProps.location, 'state.code');
+        if (currentCode !== nextCode) {
+            this.load(nextProps.location);
         }
     }
 
@@ -456,7 +468,6 @@ module.exports = hot(module)(class extends React.Component {
                                                 <input
                                                     className="input input--outline"
                                                     value={code}
-                                                    placeholder="Diagnosis code"
                                                     onChange={(e) => this.onEditField('code', e)}
                                                 />
                                             </p>
@@ -469,7 +480,6 @@ module.exports = hot(module)(class extends React.Component {
                                                 <input
                                                     className="input input--outline"
                                                     value={patientFriendlyName}
-                                                    placeholder="Diagnosis name"
                                                     onChange={(e) => this.onEditField('patientFriendlyName', e)}
                                                 />
                                             </p>
@@ -523,7 +533,6 @@ module.exports = hot(module)(class extends React.Component {
                                             <textarea
                                                 className="input input--outline"
                                                 value={fullDescription}
-                                                placeholder="--/--/----"
                                                 onChange={(e) => this.onEditField('fullDescription', e)}
                                             />
                                         </p>
@@ -650,7 +659,7 @@ module.exports = hot(module)(class extends React.Component {
                                         <label className="panel__head__title">DISPLAY TO FREE USERS?</label>
                                     </div>
                                     <div className="col p-0">
-                                        <label className="panel__head__title">URL TRANSFORMS ONLY?</label>
+                                        <label className="panel__head__title">PAYWALL ONLY?</label>
                                     </div>
                                     <div className="col p-0">
                                         <label className="panel__head__title">URL</label>
@@ -785,8 +794,7 @@ const DisplayOrderBox = class extends React.Component {
                         <React.Fragment>
                             <div className="col p-0">
                                 <select
-                                    className="form-control input--fit-cell"
-                                    style={{padding: 0}}
+                                    className="input input--outline input--fit-cell"
                                     value={dropdownValue}
                                     disabled={isSaving}
                                     onChange={(e) => this.setState({dropdownValue: e.target.value})}
