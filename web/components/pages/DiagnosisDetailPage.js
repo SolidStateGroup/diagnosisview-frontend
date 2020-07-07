@@ -587,7 +587,7 @@ module.exports = hot(module)(class extends React.Component {
                                     </SettingsProvider>
                                     )}
                                     <Row className="text-small">{_.map(!diagnosis ? tags : selectedTags, tag => (
-                                        <Row key={tag.code} className="input input--outline tag">
+                                        <Row key={tag.code} className="input input--outline tag" style={{backgroundColor: Constants.tagColours[tag.code] || 'rgb(37, 117, 222)'}}>
                                             <span className="mr-2">{tag.description}</span>
                                             {!!diagnosis && (
                                             <button className="btn--icon tag--icon clickable" onClick={() => this.removeSelectedTag(tag.code)}>

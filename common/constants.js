@@ -19,6 +19,10 @@ var Constants = {
         EXPIRY: false, // Doesn't work unless subscribed is set to true
         SHOW_WELCOME: false
     },
+
+    tagColours: {
+        'CORE_CONDITION': '#2a8a27',
+    },
 };
 
 module.exports = Constants;
