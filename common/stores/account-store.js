@@ -89,7 +89,7 @@ var controller = {
             _.each(deviceFavourites, deviceFave => {
                 if (!_.find(serverFavourites, subFave => subFave.code === deviceFave.code && subFave.type === deviceFave.link.linkType.value)) {
                     console.log('Syncing device favourite to server', deviceFave);
-                    favouritesToSync.push({code: deviceFave.code, type: deviceFave.link.linkType.value, dateAdded: deviceFave.date});
+                    favouritesToSync.push({linkId: deviceFave.link.id, code: deviceFave.code, type: deviceFave.link.linkType.value, dateAdded: deviceFave.date});
                 }
             });
             return favouritesToSync;
