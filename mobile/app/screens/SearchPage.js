@@ -127,8 +127,15 @@ const SearchPage = class extends Component {
   renderRow = ({ item }) => {
     return (
       <ListItem onPress={() => this.onSearchResult(item)}>
-        <Text style={Styles.listSubText}>{item.friendlyName}</Text>
-        <ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
+        <Row style={Styles.flex}>
+          <Text numberOfLines={1}>{item.friendlyName}</Text>
+          {_.map(item.tags, ({id, code, description}) => (
+            <View key={id} style={[Styles.tag, { backgroundColor: Constants.tagColours[code] || pallette.primary }]}>
+              <Text style={[Styles.tagText]}>{description}</Text>
+            </View>
+          ))}
+        </Row>
+        <ION name="ios-arrow-forward" style={[Styles.listIconNav, Styles.ml5]} />
       </ListItem>
     );
   };

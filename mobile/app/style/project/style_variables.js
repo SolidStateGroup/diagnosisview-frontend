@@ -74,6 +74,7 @@ window.styleVariables =  Object.assign({
     //TYPE
     fontSizeBase: em(1.2),
     fontSizeSmall: em(0.85),
+    fontSizeSmaller: em(0.65),
     fontSizeMedium: em(1),
     fontSizeHeading: em(1.5),
     fontSizeSubHeading: em(1.2),
