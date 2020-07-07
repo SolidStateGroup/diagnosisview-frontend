@@ -4,6 +4,7 @@
 import React, { Component, PropTypes } from 'react';
 import FavouriteComplexity from '../components/FavouriteComplexity';
 import PaywallLink from '../components/PaywallLink';
+import Tag from '../components/Tag';
 
 const MAX_RECENT = 3;
 
@@ -198,12 +199,21 @@ const DashboardPage = class extends Component {
 										<HistoryProvider>
 											{({ history, isLoading }) => (
 												<View>
-													{_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => (
-														<ListItem key={i} onPress={() => this.onRecentSearch(entry.item.code, entry.item.friendlyName)}>
-															<Text>{entry.item.friendlyName}</Text>
-															<ION name="ios-search" style={[Styles.listIconNav]} />
-														</ListItem>
-													))}
+													{_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
+														const diagnosis = _.find(DiagnosisStore.getCodes(), {code: entry.item.code});
+														const tags = diagnosis && diagnosis.tags;
+														return (
+															<ListItem key={i} onPress={() => this.onRecentSearch(entry.item.code, entry.item.friendlyName)}>
+																<Row style={Styles.flex}>
+																	<Text numberOfLines={1}>{entry.item.friendlyName}</Text>
+																	{_.map(tags, tag => (
+																		<Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
+																	))}
+																</Row>
+																<ION name="ios-search" style={[Styles.listIconNav, Styles.ml5]} />
+															</ListItem>
+														)
+													})}
 												</View>
 											)}
 										</HistoryProvider>

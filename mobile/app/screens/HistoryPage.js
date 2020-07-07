@@ -74,17 +74,28 @@ const HistoryPage = class extends Component {
 										{({history, isLoading})=> isLoading ? <Loader/> : (
 											<FlatList
 												data={_.reverse(_.sortBy(history, 'date'))}
-												renderItem={({item: entry, index: i}) => (
-													<ListItem 
-													  	key={i} noAnim onPress={() => routeHelper.goDiagnosisDetail(this.props.navigator, entry.item.code, entry.item.friendlyName)}>
-															<Text style={[Styles.textSmall, {flex: DIAGNOSIS_CELL_FLEX}]}>{entry.item.friendlyName}</Text>
-															<Column style={{flex: DATE_SEARCHED_CELL_FLEX}}>
-																<Text style={[Styles.textSmall]}>{moment(entry.date).format('DD MMMM YYYY')}</Text>
-																<Text style={[Styles.textSmall]}>{moment(entry.date).format('HH:mm')}</Text>
-															</Column>
-															<ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>
-													</ListItem>
-												)}
+												renderItem={({item: entry, index: i}) => {
+													const diagnosis = _.find(DiagnosisStore.getCodes(), {code: entry.item.code});
+													const tags = diagnosis && diagnosis.tags;
+													return (
+														<ListItem 
+															key={i} noAnim onPress={() => routeHelper.goDiagnosisDetail(this.props.navigator, entry.item.code, entry.item.friendlyName)}>
+																<Row style={{flex: DIAGNOSIS_CELL_FLEX}}>
+																	<Text numberOfLines={1} style={Styles.textSmall}>{entry.item.friendlyName}</Text>
+																	{_.map(tags, ({id, code, description}) => (
+																		<View key={id} style={[Styles.tag, { backgroundColor: Constants.tagColours[code] || pallette.primary }]}>
+																			<Text style={[Styles.tagText]}>{description}</Text>
+																		</View>
+																	))}
+																</Row>
+																<Column style={{flex: DATE_SEARCHED_CELL_FLEX}}>
+																	<Text style={[Styles.textSmall]}>{moment(entry.date).format('DD MMMM YYYY')}</Text>
+																	<Text style={[Styles.textSmall]}>{moment(entry.date).format('HH:mm')}</Text>
+																</Column>
+																<ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>
+														</ListItem>
+													)
+												}}
 											/>
 										) }
 									</HistoryProvider>
