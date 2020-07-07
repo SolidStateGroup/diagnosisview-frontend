@@ -28,6 +28,10 @@ var controller = {
             store.loading();
             data.post(Project.api + 'login', details)
                 .then(res => {
+                    controller.setToken(res && res.token);
+                    return DiagnosisStore.refreshCodes().then(() => res)
+                })
+                .then(res => {
                     // Get device favourites and history to sync with server
                     var favouritesToSync = controller.getFavouritesToSync(res.favourites);
                     var historyToSync = controller.getHistoryToSync(res.history);
