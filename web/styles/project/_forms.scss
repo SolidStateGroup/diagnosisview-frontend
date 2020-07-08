@@ -31,9 +31,11 @@
         opacity: 1;
         color: #585858;
         font-weight: bold;
+        width: 100%;
         &::placeholder {
             font-style: italic;
-            color: grey;
+            color: #3f3f3f;
+            opacity: 0.5;
         }
     }
 
@@ -53,7 +55,8 @@ input.input--default{
     padding-left:20px!important;
 
     &::placeholder{
-        color:rgba(0,0,0,0.5);
+        color:#3f3f3f;
+        opacity: 0.5;
     }
 }
 
@@ -92,8 +95,18 @@ input.input--default{
     padding-left: 20px;
     padding-right: 20px;
     .popover-bt {
-        min-width: 500px;
+        min-width: 90%;
     }
+    .popover-inner {
+        min-width: 50%;
+        margin-top: 40px;
+    }
+}
+
+.quick-search-popover-container {
+    position: absolute;
+    width: 70%;
+    margin-left: 5px;
 }
 
 .tag {
@@ -107,6 +120,22 @@ input.input--default{
     >span {
         font-weight: bold;
     }
+}
+
+.quick-search-container {
+    align-items: center;
+    width: 50%;
+    align-self: center;
+}
+
+.quick-search-label {
+    float: left;
+}
+
+.quick-search-loader {
+    position: absolute;
+    right: 26%;
+    margin-top: 48px;
 }
 
 //AUTOFILL STYLES
