@@ -142,6 +142,7 @@ module.exports = {
     tag: {
         padding: 5,
         borderRadius: 4,
+        marginLeft: 4,
     },
 
     tagText: {
