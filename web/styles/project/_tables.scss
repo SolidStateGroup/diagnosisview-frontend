@@ -32,7 +32,8 @@
     }
     &::placeholder {
         font-style: italic;
-        color: grey;
+        color: #3f3f3f;
+        opacity: 0.5;
     }
 }
 
@@ -44,10 +45,50 @@
 
 .ReactTable .rt-thead .rt-resizable-header{
     padding:15px!important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.ReactTable .rt-resizer {
+    display: flex;
+}
+
+.ReactTable .rt-resizer:before {
+    display: inline-block;
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    color: transparent;
+    content: '.';
+    background-size: 18px 18px;
+    background-repeat: no-repeat; 
+    opacity: 0.87;
+    margin-top: 15px;
+}
+
+.ReactTable  .rt-resizable-header-content:after {
+    position: absolute;
+    right: 8px;
+    top: 3px;
+    height: 18px;
+    width: 18px;
+    z-index: 120;
+    color: transparent;
+    content: '.';
+}
+
+.ReactTable .rt-th.-sort-asc .rt-resizer:before {
+    transform: rotate(-90deg);
+    background-image: url(data:image/svg+xml;utf8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22iso-8859-1%22%3F%3E%3C%21--%20Generator%3A%20Adobe%20Illustrator%2019.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200%29%20%20--%3E%3Csvg%20version%3D%221.1%22%20id%3D%22Capa_1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20x%3D%220px%22%20y%3D%220px%22%09%20viewBox%3D%220%200%20512%20512%22%20style%3D%22enable-background%3Anew%200%200%20512%20512%3B%22%20xml%3Aspace%3D%22preserve%22%3E%3Cg%3E%09%3Cg%3E%09%09%3Cpath%20fill%3D%22rgb%2837%2C%20117%2C%20222%29%22%20d%3D%22M367.954%2C213.588L160.67%2C5.872c-7.804-7.819-20.467-7.831-28.284-0.029c-7.819%2C7.802-7.832%2C20.465-0.03%2C28.284%09%09%09l207.299%2C207.731c7.798%2C7.798%2C7.798%2C20.486-0.015%2C28.299L132.356%2C477.873c-7.802%2C7.819-7.789%2C20.482%2C0.03%2C28.284%09%09%09c3.903%2C3.896%2C9.016%2C5.843%2C14.127%2C5.843c5.125%2C0%2C10.25-1.958%2C14.157-5.873l207.269-207.701%09%09%09C391.333%2C275.032%2C391.333%2C236.967%2C367.954%2C213.588z%22/%3E%09%3C/g%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3C/svg%3E);
+}
+
+.ReactTable .rt-th.-sort-desc .rt-resizer:before {
+    transform: rotate(90deg);
+    background-image: url(data:image/svg+xml;utf8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22iso-8859-1%22%3F%3E%3C%21--%20Generator%3A%20Adobe%20Illustrator%2019.0.0%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200%29%20%20--%3E%3Csvg%20version%3D%221.1%22%20id%3D%22Capa_1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20x%3D%220px%22%20y%3D%220px%22%09%20viewBox%3D%220%200%20512%20512%22%20style%3D%22enable-background%3Anew%200%200%20512%20512%3B%22%20xml%3Aspace%3D%22preserve%22%3E%3Cg%3E%09%3Cg%3E%09%09%3Cpath%20fill%3D%22rgb%2837%2C%20117%2C%20222%29%22%20d%3D%22M367.954%2C213.588L160.67%2C5.872c-7.804-7.819-20.467-7.831-28.284-0.029c-7.819%2C7.802-7.832%2C20.465-0.03%2C28.284%09%09%09l207.299%2C207.731c7.798%2C7.798%2C7.798%2C20.486-0.015%2C28.299L132.356%2C477.873c-7.802%2C7.819-7.789%2C20.482%2C0.03%2C28.284%09%09%09c3.903%2C3.896%2C9.016%2C5.843%2C14.127%2C5.843c5.125%2C0%2C10.25-1.958%2C14.157-5.873l207.269-207.701%09%09%09C391.333%2C275.032%2C391.333%2C236.967%2C367.954%2C213.588z%22/%3E%09%3C/g%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3C/svg%3E);
 }
 
 .ReactTable .rt-thead .rt-resizable-header-content{
-    color: #585858;
+    color: $brand-primary;
     font-size: 15px;
 }
 
