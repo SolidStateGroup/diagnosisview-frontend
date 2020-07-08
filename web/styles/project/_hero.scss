@@ -30,7 +30,7 @@
 .hero{
     &--shape-bg{
         min-height:700px;
-        background:url('/images/hero-bg.svg') 0 0 repeat-x;
+        background:url('/images/hero-bg-tall.svg') 0 0 repeat-x;
         color:#fff;
     }
 
@@ -43,6 +43,7 @@
     .hero {
         &--shape-bg {
             min-height: 600px;
+            background:url('/images/hero-bg.svg') 0 0 repeat-x;
         }
     }
 }

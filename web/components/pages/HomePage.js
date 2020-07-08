@@ -29,6 +29,11 @@ module.exports = class extends React.Component {
                     {({error, isLoading}, {clearError}) => (
                         <div>
                         <Flex className="hero--shape-bg mb-0 mb-md-5">
+                            <div className="flat-panel flat-panel--warning flex-row align-items-center px-2 px-sm-4">
+                                <img src="/images/icon-alert.png" alt="alert" height="20px" className=""/>
+                                <p className="mb-0 ml-2 flex-1">DiagnosisView is only available as an app for mobile devices. Web login is currently for Admin access only.</p>
+                            </div>
+
                             <div className="nav">
                                 <div className="brand mb-2 mb-md-0">
                                     <img className="brand-image mt-1" src={require('../../images/brand.png')}/>
@@ -96,7 +101,7 @@ module.exports = class extends React.Component {
                         </Flex>
 
                         <div className="section--feature px-4 mb-5">
-                            <ul className="list-unstyled">
+                            <ul className="list-unstyled mt-4 mt-sm-0">
                                 <li className="mb-3 mb-md-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> Info on your own mobile or tablet</li>
                                 <li className="mb-3 mb-md-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> Advanced patient info is the starting point (free)</li>
                                 <li className="mb-3 mb-md-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> Moving on to practitioner-level and expert-level professional resources</li>

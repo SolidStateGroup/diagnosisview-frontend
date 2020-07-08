@@ -4,6 +4,8 @@
 import React, { Component, PropTypes } from "react";
 import data from '../../common-mobile/stores/base/_data';
 
+import Tag from '../components/Tag';
+
 const SearchHeader = props => (
   <ListItem style={Styles.listShort}>
     <View>
@@ -129,10 +131,8 @@ const SearchPage = class extends Component {
       <ListItem onPress={() => this.onSearchResult(item)}>
         <Row style={Styles.flex}>
           <Text numberOfLines={1}>{item.friendlyName}</Text>
-          {_.map(item.tags, ({id, code, description}) => (
-            <View key={id} style={[Styles.tag, { backgroundColor: Constants.tagColours[code] || pallette.primary }]}>
-              <Text style={[Styles.tagText]}>{description}</Text>
-            </View>
+          {_.map(item.tags, tag => (
+            <Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
           ))}
         </Row>
         <ION name="ios-arrow-forward" style={[Styles.listIconNav, Styles.ml5]} />

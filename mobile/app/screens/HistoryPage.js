@@ -2,6 +2,7 @@
  * Created by kylejohnson on 28/01/2017.
  */
 import React, {Component, PropTypes} from 'react';
+import Tag from '../components/Tag';
 
 const DIAGNOSIS_CELL_FLEX = 4;
 const DATE_SEARCHED_CELL_FLEX = 2;
@@ -82,10 +83,8 @@ const HistoryPage = class extends Component {
 															key={i} noAnim onPress={() => routeHelper.goDiagnosisDetail(this.props.navigator, entry.item.code, entry.item.friendlyName)}>
 																<Row style={{flex: DIAGNOSIS_CELL_FLEX}}>
 																	<Text numberOfLines={1} style={Styles.textSmall}>{entry.item.friendlyName}</Text>
-																	{_.map(tags, ({id, code, description}) => (
-																		<View key={id} style={[Styles.tag, { backgroundColor: Constants.tagColours[code] || pallette.primary }]}>
-																			<Text style={[Styles.tagText]}>{description}</Text>
-																		</View>
+																	{_.map(tags, tag => (
+																		<Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
 																	))}
 																</Row>
 																<Column style={{flex: DATE_SEARCHED_CELL_FLEX}}>
