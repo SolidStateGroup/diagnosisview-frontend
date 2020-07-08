@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1440px" height="680px" viewBox="0 0 1440 680" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Path 2</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#2575DE" offset="0%"></stop>
+            <stop stop-color="#0087FF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M1440,599.204162 L1440,0 L0,0 L0,599.204162 C304.710808,498.864017 556.634697,492.2322 755.771668,579.308711 C954.908639,666.385223 1182.98475,673.01704 1440,599.204162 Z" id="path-2"></path>
+        <filter x="-2.8%" y="-5.7%" width="105.7%" height="112.6%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="4" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="13" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.222137238 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Website" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Path-2" transform="translate(720.000000, 325.000000) scale(-1, 1) translate(-720.000000, -325.000000) ">
+            <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+            <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+        </g>
+    </g>
+</svg>
