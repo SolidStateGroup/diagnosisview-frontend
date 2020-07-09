@@ -95,28 +95,32 @@ export default class App extends Component {
         const redirect = location.query && location.query.redirect ? `?redirect=${location.query.redirect}` : "";
         const pageHasAside = location.pathname.indexOf('admin') !== -1;
         return (
-            <div>
+            <div className={pageHasAside ? 'admin-body' : ''}>
                 <AccountProvider onNoUser={this.onNoUser} onLogout={this.onLogout} onLogin={this.onLogin}>
                     {({ isLoading, user }) => (
                         <div>
                             <div>
                                 {pageHasAside ? <Nav /> : null}
                                 {pageHasAside && (
-                                    <div className="full-width quick-search-input flex mb-3">
-                                        <Row>
-                                            <input
-                                                className="input input--outline flex-1 input--quick-search"
-                                                placeholder="Diagnosis Quick Search"
-                                                onChange={this.onSearchChanged}
-                                                value={search}
-                                            />
-                                            {searching && <div style={{position: 'absolute', right: 30}}><Loader /></div>}
+                                    <div className="full-width quick-search-input flex mb-3 mt-3">
+                                        <Row className="quick-search-container">
+                                            <label className="quick-search-label mr-3">Diagnosis Quick Search:</label>
+                                            <div className="flex-1">
+                                                <input
+                                                    className="input input--outline input--quick-search"
+                                                    placeholder="Search by name or synonym"
+                                                    onChange={this.onSearchChanged}
+                                                    value={search}
+                                                />
+                                                {searching && <div className="quick-search-loader"><Loader /></div>}
+                                                <Popover ref={c => this.searchResultsPopover = c} renderTitle={() => null} className="quick-search-popover-container">
+                                                    {(toggle) => searchResults && searchResults.length ? _.map(searchResults, ({code, friendlyName}) => (
+                                                        <div key={code} className="list-item clickable" role="button" onClick={() => this.editDiagnosis(code)}>{friendlyName}</div>
+                                                    )) : null}
+                                                </Popover>
+                                            </div>
                                         </Row>
-                                        <Popover ref={c => this.searchResultsPopover = c} renderTitle={() => null} className="ml-3">
-                                            {(toggle) => searchResults && searchResults.length ? _.map(searchResults, ({code, friendlyName}) => (
-                                                <div key={code} className="list-item clickable" role="button" onClick={() => this.editDiagnosis(code)}>{friendlyName}</div>
-                                            )) : null}
-                                        </Popover>
+                                        
                                     </div>
                                 )}
                                 {this.props.children}
