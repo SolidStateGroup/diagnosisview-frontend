@@ -21,7 +21,7 @@ var Constants = {
     },
 
     tagColours: {
-        'CORE_CONDITION': '#2a8a27',
+        'CORE_CONDITION': 'rgba(81, 204, 81, 0.8)',
     },
 };
 
