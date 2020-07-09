@@ -50,7 +50,7 @@
 }
 
 .ReactTable .rt-resizer {
-    display: flex;
+    display: flex !important;
 }
 
 .ReactTable .rt-resizer:before {
