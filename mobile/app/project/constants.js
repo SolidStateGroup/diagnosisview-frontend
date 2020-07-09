@@ -1,3 +1,5 @@
+require('../style/style_screen');
+
 module.exports = {
   linkIcons: {
     'NHS_CHOICES': require('../images/nhs-choices.png'),
