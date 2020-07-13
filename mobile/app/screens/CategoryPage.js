@@ -3,6 +3,8 @@
  */
 import React, {Component, PropTypes} from 'react';
 
+import Tag from '../components/Tag';
+
 const CategoryHeader = (props) => (
 	<ListItem style={Styles.listShort}>
 		<View>
@@ -39,13 +41,18 @@ const CategoryPage = class extends Component {
 	}
 
 	renderRow = ({item}) => {
-			return (
-					<ListItem
-						onPress={() => this.onDiagnosisSelected(item)}>
-							<Text style={Styles.listSubText}>{item.friendlyName}</Text>
-							<ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>
-					</ListItem>
-			)
+		return (
+			<ListItem
+				onPress={() => this.onDiagnosisSelected(item)}>
+				<Row style={Styles.flex}>
+					<Text numberOfLines={1}>{item.friendlyName}</Text>
+					{_.map(item.tags, tag => (
+						<Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
+					))}
+				</Row>
+				<ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>
+			</ListItem>
+		)
 	};
 
 	render() {
