@@ -65,10 +65,12 @@ var controller = {
                 }
 
                 if (userIsSubscribed) {
-                    data.delete(Project.api + 'user/favourites', {linkId: link.id, code, type: link.linkType.value})
+                    index = _.findIndex(store.model, f => f.code === code && f.link.id === link.id);
+                    if (index === -1) return;
+                    const favourite = store.model[index];
+                    data.delete(Project.api + 'user/favourites', {linkId: favourite.originalLinkId === 0 ? 0 : link.id, code, type: link.linkType.value})
                         .then(res => {
                             console.log(res);
-                            index = _.findIndex(store.model, f => f.code === code && f.link.id === link.id);
                             if (index !== -1) {
                                 store.model.splice(index, 1);
                             }
@@ -108,6 +110,7 @@ var controller = {
                     code: f.code,
                     name: DiagnosisStore.getName(f.code),
                     link,
+                    originalLinkId: f.linkId,
                     date: f.dateAdded
                 })
             });
