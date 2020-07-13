@@ -17,13 +17,18 @@ module.exports = hot(module)(class extends React.Component {
     };
 
     state = {
-        edit:false
+        edit:false,
+        selectedTags: [],
     }
 
     componentDidMount() {
-        const code = _.get(this.props.location, 'state.code');
+        this.load(this.props.location);
+    }
+
+    load = (location) => {
+        const code = _.get(location, 'state.code');
         if (code) {
-            const edit = _.get(this.props.location, 'state.edit');
+            const edit = _.get(location, 'state.edit');
             // Load full diagnosis
             this.setState({ isLoading: true });
             data.get(Project.api + 'admin/code/' + code)
@@ -33,11 +38,20 @@ module.exports = hot(module)(class extends React.Component {
                         original: res,
                         isLoading: false,
                         diagnosis: edit ? _.cloneDeep(res) : undefined,
+                        selectedTags: _.cloneDeep(res.tags),
                     })
                 });
         } else {
             // Must be a new diagnosis
             this.setState({ edit:false, diagnosis: {} });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const currentCode = _.get(this.props.location, 'state.code');
+        const nextCode = _.get(nextProps.location, 'state.code');
+        if (currentCode !== nextCode) {
+            this.load(nextProps.location);
         }
     }
 
@@ -97,6 +111,25 @@ module.exports = hot(module)(class extends React.Component {
                         });
                 });
         }
+    }
+
+    onTagSelected = (e) => {
+        const code = Utils.safeParseEventValue(e);
+        if (!code) return;
+        const settings = SettingsStore.getSettings();
+        if (!settings) return;
+        const tag = _.find(settings.tags, {code});
+        const selectedTags = this.state.selectedTags || [];
+        selectedTags.push(tag);
+        this.setState({selectedTags});
+    }
+
+    removeSelectedTag = (code) => {
+        const selectedTags = this.state.selectedTags || [];
+        const index = _.findIndex(selectedTags, {code});
+        if (index === -1) return;
+        selectedTags.splice(index, 1);
+        this.setState({selectedTags});
     }
 
     onDifficultyLevelChange = (id, e) => {
@@ -393,34 +426,37 @@ module.exports = hot(module)(class extends React.Component {
         }
         return false
     }
+    
     validateLinks = (links) => {
         if(_.isEmpty(links)) return true       
         return (!links.some(link => this.checkLinkLevelError(link.difficultyLevel,link.displayOrder)))
     }
+
     save = () => {                
         const addNew = _.get(this.props.location, 'state.addNew');
         this.setState({isSaving: true});
         const diagnosis = this.state.diagnosis;        
         if(this.validateLinks(diagnosis.links)){
             diagnosis.description = diagnosis.patientFriendlyName;
+            diagnosis.tags = _.map(this.state.selectedTags, ({code}) => ({code}));
            
-        const action = addNew ? data.post(`${Project.api}admin/code`, diagnosis) : data.put(`${Project.api}admin/code`, diagnosis);
-        action.then(res => {
-            this.setState({ diagnosis: null, original: res, isSaving: false });
-            this.props.history.replace('/admin/diagnosis', { code: res.code });
-            alert('Diagnosis Saved!')
-        }, error => {                   
-            error.json().then(err => alert(`Save Error - ${err.message}`));
-        });
-    }
+            const action = addNew ? data.post(`${Project.api}admin/code`, diagnosis) : data.put(`${Project.api}admin/code`, diagnosis);
+            action.then(res => {
+                this.setState({ diagnosis: null, original: res, isSaving: false });
+                this.props.history.replace('/admin/diagnosis', { code: res.code });
+                alert('Diagnosis Saved!')
+            }, error => {                   
+                error.json().then(err => alert(`Save Error - ${err.message}`));
+            });
+        }
     }
 
     render = () => {
-        const { diagnosis, original, edit } = this.state;
+        const { diagnosis, original, edit, selectedTags } = this.state;
         if (!diagnosis && !original) return <Flex className="centered-container"><Loader /></Flex>
         const {
             code, patientFriendlyName, created, lastUpdate, hideFromPatients, removedExternally, fullDescription,
-            codeCategories, externalStandards, links,synonyms
+            codeCategories, externalStandards, links,synonyms, tags,
         } = diagnosis || original;
         
         return (
@@ -456,7 +492,6 @@ module.exports = hot(module)(class extends React.Component {
                                                 <input
                                                     className="input input--outline"
                                                     value={code}
-                                                    placeholder="Diagnosis code"
                                                     onChange={(e) => this.onEditField('code', e)}
                                                 />
                                             </p>
@@ -469,7 +504,6 @@ module.exports = hot(module)(class extends React.Component {
                                                 <input
                                                     className="input input--outline"
                                                     value={patientFriendlyName}
-                                                    placeholder="Diagnosis name"
                                                     onChange={(e) => this.onEditField('patientFriendlyName', e)}
                                                 />
                                             </p>
@@ -523,11 +557,45 @@ module.exports = hot(module)(class extends React.Component {
                                             <textarea
                                                 className="input input--outline"
                                                 value={fullDescription}
-                                                placeholder="--/--/----"
                                                 onChange={(e) => this.onEditField('fullDescription', e)}
                                             />
                                         </p>
                                     )}
+                                </div>
+                            </div>
+                            <div className="panel__row flex-row">
+                                <div className="col p-0">
+                                    <label className="panel__head__title">TAGS</label>
+                                    {!!diagnosis && (
+                                        <SettingsProvider>
+                                        {({settings, isLoading: settingsIsLoading, error: settingsError}) => {
+                                            if (settingsIsLoading || !settings) return <Flex className="centered-container"><Loader /></Flex>;
+                                            return (
+                                                <div className="mb-2">
+                                                    <select
+                                                        className="fieldset__input input input--outline tag-container"
+                                                        onChange={this.onTagSelected}
+                                                    >
+                                                        <option value="">Select a tag..</option>
+                                                        {_.map(_.filter(settings.tags, tag => !_.find(selectedTags, {code: tag.code})), ({code, description}) => (
+                                                            <option key={code} value={code}>{description}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                            )
+                                        }}
+                                    </SettingsProvider>
+                                    )}
+                                    <Row className="text-small">{_.map(!diagnosis ? tags : selectedTags, tag => (
+                                        <Row key={tag.code} className="input input--outline tag" style={{backgroundColor: Constants.tagColours[tag.code] || 'rgb(37, 117, 222)'}}>
+                                            <span className="mr-2">{tag.description}</span>
+                                            {!!diagnosis && (
+                                            <button className="btn--icon tag--icon clickable" onClick={() => this.removeSelectedTag(tag.code)}>
+                                                <i className="fas fa-times"> </i>
+                                            </button>
+                                            )}
+                                        </Row>
+                                    ))}</Row>
                                 </div>
                             </div>
                         </div>
@@ -650,7 +718,7 @@ module.exports = hot(module)(class extends React.Component {
                                         <label className="panel__head__title">DISPLAY TO FREE USERS?</label>
                                     </div>
                                     <div className="col p-0">
-                                        <label className="panel__head__title">URL TRANSFORMS ONLY?</label>
+                                        <label className="panel__head__title">PAYWALL ONLY?</label>
                                     </div>
                                     <div className="col p-0">
                                         <label className="panel__head__title">URL</label>
@@ -785,8 +853,7 @@ const DisplayOrderBox = class extends React.Component {
                         <React.Fragment>
                             <div className="col p-0">
                                 <select
-                                    className="form-control input--fit-cell"
-                                    style={{padding: 0}}
+                                    className="input input--outline input--fit-cell"
                                     value={dropdownValue}
                                     disabled={isSaving}
                                     onChange={(e) => this.setState({dropdownValue: e.target.value})}

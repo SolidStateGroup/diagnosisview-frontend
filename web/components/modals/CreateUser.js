@@ -47,7 +47,8 @@ const TheComponent = class extends Component {
 								<FormGroup>
 									<InputGroup
 										ref={(e) => this.input = e}
-										inputProps={{ name: 'username', className: "full-width" }}
+										className="full-width"
+										inputProps={{ name: 'username' }}
 										onChange={(e) => this.setState({ username: Utils.safeParseEventValue(e) })}
 										isValid={username && username.length}
 										type="text" title="Username*"
@@ -56,7 +57,8 @@ const TheComponent = class extends Component {
 								</FormGroup>
 								<FormGroup>
 									<InputGroup
-										inputProps={{ name: 'password', className: "full-width" }}
+										className="full-width"
+										inputProps={{ name: 'password' }}
 										onChange={(e) => this.setState({ password: Utils.safeParseEventValue(e) })}
 										isValid={password && password.length}
 										type="password" title="Password*"
@@ -65,7 +67,8 @@ const TheComponent = class extends Component {
 								</FormGroup>
 								<FormGroup>
 									<InputGroup
-										inputProps={{ name: 'repeatPassword', className: "full-width" }}
+										className="full-width"
+										inputProps={{ name: 'repeatPassword' }}
 										onChange={(e) => this.setState({ repeatPassword: Utils.safeParseEventValue(e) })}
 										isValid={repeatPassword && repeatPassword.length}
 										type="password" title="Repeat Password*"
@@ -74,7 +77,8 @@ const TheComponent = class extends Component {
 								</FormGroup>
 								<FormGroup>
 									<InputGroup
-										inputProps={{ name: 'firstName', className: "full-width" }}
+										className="full-width"
+										inputProps={{ name: 'firstName' }}
 										onChange={(e) => this.setState({ firstName: Utils.safeParseEventValue(e) })}
 										type="text" title="First Name*"
 										placeholder="First Name"
@@ -82,7 +86,8 @@ const TheComponent = class extends Component {
 								</FormGroup>
 								<FormGroup>
 									<InputGroup
-										inputProps={{ name: 'lastName', className: "full-width" }}
+										className="full-width"
+										inputProps={{ name: 'lastName' }}
 										onChange={(e) => this.setState({ lastName: Utils.safeParseEventValue(e) })}
 										type="text" title="Last Name*"
 										placeholder="Last Name"
@@ -91,8 +96,7 @@ const TheComponent = class extends Component {
 								<FormGroup>
 									<label>Occupation</label>
 									<select
-										className="form-control"
-										style={{padding: 0}}
+										className="input input--outline full-width"
 										disabled={isSaving}
 										onChange={e => this.setState({ occupation: Utils.safeParseEventValue(e) })}
 									>
@@ -111,8 +115,7 @@ const TheComponent = class extends Component {
 									<label>Institution</label>
 									{settingsIsLoading || !settings ? <Loader /> : (
 										<select
-											className="form-control"
-											style={{padding: 0}}
+											className="input input--outline full-width"
 											disabled={isSaving}
 											onChange={e => this.setState({ institution: Utils.safeParseEventValue(e) })}
 										>

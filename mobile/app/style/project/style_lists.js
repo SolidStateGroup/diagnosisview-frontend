@@ -137,5 +137,17 @@ module.exports = {
 
     listSubText: {
         flex: 1
-    }
+    },
+
+    tag: {
+        padding: 5,
+        borderRadius: 4,
+        marginLeft: 4,
+    },
+
+    tagText: {
+        fontSize: styleVariables.fontSizeSmaller,
+        fontWeight: 'bold',
+        color: 'white',
+    },
 };

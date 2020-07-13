@@ -28,6 +28,10 @@ var controller = {
             store.loading();
             data.post(Project.api + 'login', details)
                 .then(res => {
+                    controller.setToken(res && res.token);
+                    return DiagnosisStore.refreshCodes().then(() => res)
+                })
+                .then(res => {
                     // Get device favourites and history to sync with server
                     var favouritesToSync = controller.getFavouritesToSync(res.favourites);
                     var historyToSync = controller.getHistoryToSync(res.history);
@@ -85,7 +89,7 @@ var controller = {
             _.each(deviceFavourites, deviceFave => {
                 if (!_.find(serverFavourites, subFave => subFave.code === deviceFave.code && subFave.type === deviceFave.link.linkType.value)) {
                     console.log('Syncing device favourite to server', deviceFave);
-                    favouritesToSync.push({code: deviceFave.code, type: deviceFave.link.linkType.value, dateAdded: deviceFave.date});
+                    favouritesToSync.push({linkId: deviceFave.link.id, code: deviceFave.code, type: deviceFave.link.linkType.value, dateAdded: deviceFave.date});
                 }
             });
             return favouritesToSync;
@@ -238,8 +242,15 @@ var controller = {
         updateAccount: function (details) {
             if (!store.model) return;
 
+            const institutionChanged = details.institution !== store.model.institution;
+
             store.saving();
             data.put(Project.api + 'user/', details)
+                .then(res => {
+                    if (!institutionChanged) return res;
+
+                    return DiagnosisStore.refreshCodes().then(() => res);
+                })
                 .then(res => {
                     res = controller.processUser(res);
 

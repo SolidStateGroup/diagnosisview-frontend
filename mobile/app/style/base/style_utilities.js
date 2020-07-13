@@ -58,4 +58,8 @@ module.exports = {
         paddingLeft: 10,
         paddingRight: 10,
     },
+
+    flex: {
+        flex: 1,
+    },
 };

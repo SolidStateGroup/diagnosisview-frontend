@@ -23,3 +23,27 @@
     }
 
 }
+
+
+//NEW HERO
+
+.hero{
+    &--shape-bg{
+        min-height:700px;
+        background:url('/images/hero-bg-tall.svg') 0 0 repeat-x;
+        color:#fff;
+    }
+
+    &__image{
+        height:600px;
+    }
+}
+
+@media screen and (max-width: $mobile-landscape) {
+    .hero {
+        &--shape-bg {
+            min-height: 600px;
+            background:url('/images/hero-bg.svg') 0 0 repeat-x;
+        }
+    }
+}

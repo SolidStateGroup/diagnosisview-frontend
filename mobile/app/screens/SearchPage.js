@@ -4,6 +4,8 @@
 import React, { Component, PropTypes } from "react";
 import data from '../../common-mobile/stores/base/_data';
 
+import Tag from '../components/Tag';
+
 const SearchHeader = props => (
   <ListItem style={Styles.listShort}>
     <View>
@@ -127,8 +129,13 @@ const SearchPage = class extends Component {
   renderRow = ({ item }) => {
     return (
       <ListItem onPress={() => this.onSearchResult(item)}>
-        <Text style={Styles.listSubText}>{item.friendlyName}</Text>
-        <ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
+        <Row style={Styles.flex}>
+          <Text numberOfLines={1}>{item.friendlyName}</Text>
+          {_.map(item.tags, tag => (
+            <Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
+          ))}
+        </Row>
+        <ION name="ios-arrow-forward" style={[Styles.listIconNav, Styles.ml5]} />
       </ListItem>
     );
   };

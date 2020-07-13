@@ -19,7 +19,6 @@ const TheComponent = class extends Component {
     }
 
     render() {
-        console.log(this.props.existing);
         return (
             <CodesProvider>
 				{({ isLoading, categories }) => isLoading ? <Loader /> : (
@@ -28,7 +27,6 @@ const TheComponent = class extends Component {
                             <div>
                                 <select
                                     className="fieldset__input input input--outline"
-                                    style={{padding: 0}}
                                     onChange={e => this.setState({category: Utils.safeParseEventValue(e)})}
                                 >
                                     <option value="">Select a category..</option>
