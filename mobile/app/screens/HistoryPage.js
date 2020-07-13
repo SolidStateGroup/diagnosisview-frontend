@@ -2,6 +2,7 @@
  * Created by kylejohnson on 28/01/2017.
  */
 import React, {Component, PropTypes} from 'react';
+import Tag from '../components/Tag';
 
 const DIAGNOSIS_CELL_FLEX = 4;
 const DATE_SEARCHED_CELL_FLEX = 2;
@@ -74,17 +75,26 @@ const HistoryPage = class extends Component {
 										{({history, isLoading})=> isLoading ? <Loader/> : (
 											<FlatList
 												data={_.reverse(_.sortBy(history, 'date'))}
-												renderItem={({item: entry, index: i}) => (
-													<ListItem 
-													  	key={i} noAnim onPress={() => routeHelper.goDiagnosisDetail(this.props.navigator, entry.item.code, entry.item.friendlyName)}>
-															<Text style={[Styles.textSmall, {flex: DIAGNOSIS_CELL_FLEX}]}>{entry.item.friendlyName}</Text>
-															<Column style={{flex: DATE_SEARCHED_CELL_FLEX}}>
-																<Text style={[Styles.textSmall]}>{moment(entry.date).format('DD MMMM YYYY')}</Text>
-																<Text style={[Styles.textSmall]}>{moment(entry.date).format('HH:mm')}</Text>
-															</Column>
-															<ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>
-													</ListItem>
-												)}
+												renderItem={({item: entry, index: i}) => {
+													const diagnosis = _.find(DiagnosisStore.getCodes(), {code: entry.item.code});
+													const tags = diagnosis && diagnosis.tags;
+													return (
+														<ListItem 
+															key={i} noAnim onPress={() => routeHelper.goDiagnosisDetail(this.props.navigator, entry.item.code, entry.item.friendlyName)}>
+																<Row style={{flex: DIAGNOSIS_CELL_FLEX}}>
+																	<Text numberOfLines={1} style={Styles.textSmall}>{entry.item.friendlyName}</Text>
+																	{_.map(tags, tag => (
+																		<Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
+																	))}
+																</Row>
+																<Column style={{flex: DATE_SEARCHED_CELL_FLEX}}>
+																	<Text style={[Styles.textSmall]}>{moment(entry.date).format('DD MMMM YYYY')}</Text>
+																	<Text style={[Styles.textSmall]}>{moment(entry.date).format('HH:mm')}</Text>
+																</Column>
+																<ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>
+														</ListItem>
+													)
+												}}
 											/>
 										) }
 									</HistoryProvider>

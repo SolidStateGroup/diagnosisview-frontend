@@ -28,5 +28,40 @@
     &__title{
         font-size:1.1rem;
     }
+
+    &--white{
+        background:#fff;
+        border-radius: 15px;
+        box-shadow:0 0 20px rgba(0, 0, 0, 0.10);
+        overflow:hidden;
+        padding:20px;
+    }
 }
+
+.flat-panel{
+    &--warning{
+        background: #ffde67;
+        position: absolute;
+        top:60px;
+        left:0;
+        width:100%;
+        height:50px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: $handheld) {
+    .flat-panel{
+        &--warning{
+            position: relative;
+            top:0;
+            left:0;
+            width:100%;
+            min-height:50px;
+            height:auto;
+            font-size: 12px;
+        }
+    }
+}
+
 
