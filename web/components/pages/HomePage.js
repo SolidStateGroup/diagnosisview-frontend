@@ -79,7 +79,7 @@ module.exports = class extends React.Component {
                                 </div>
                                 <div className="col-lg-6">
                                     <Column className="centered-container">
-                                        <img src="/images/new-mockup-iphone.png" alt="" className="hero__image img-fluid"/>
+                                        <img src="/images/new-mockup-iphone-optim.png" alt="" className="hero__image img-fluid"/>
 
                                         <Row className="centered-container">
                                             <a href="https://apps.apple.com/us/app/diagnosisview/id1421837293?ls=1" target="_blank" className="button mobile-text-center mt10 mr10 mobile-text-center fill-white" style={{backgroundColor: '#297AFB', color: '#fff'}}>
