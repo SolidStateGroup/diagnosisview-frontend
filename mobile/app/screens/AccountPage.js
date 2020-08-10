@@ -214,7 +214,7 @@ const AccountPage = class extends Component {
 					labelHeight={this.state.institution ? 20 : 14}
 					baseColor={styleVariables.textLight}
 					inputContainerPadding={0}
-					data={_.map(settings.institutions, institution => ({value: institution.id, label: institution.name}))}
+					data={_.map(_.filter(settings.institutions, i => i.id === this.state.institution || !i.hidden), institution => ({value: institution.id, label: institution.name}))}
 					value={this.state.institution}
 					onChangeText={(institution) => this.setState({institution})}
 				/>
