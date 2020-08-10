@@ -42,10 +42,10 @@ var controller = {
         },
         update: function (id, institution) {
             store.saving();
-            (institution.image ? API.getBase64FromFile(linkLogo.image) : Promise.resolve())
+            (institution.image ? API.getBase64FromFile(institution.image) : Promise.resolve())
                 .then(base64 => {
                     if (base64) base64 = base64.substr(base64.indexOf('base64') + 7);
-                    return data.put(`${Project.api}institutions/${id}`, Object.assign({}, { ...institution }, base64 ? { image: base64, imageFormat: linkLogo.image.type } : {}))
+                    return data.put(`${Project.api}institutions/${id}`, Object.assign({}, { ...institution }, base64 ? { logoImage: base64, imageFormat: institution.image.type } : {}))
                         .then(res => {
                             const index = _.findIndex(store.model, {id});
                             store.model[index] = res;
