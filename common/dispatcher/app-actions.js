@@ -202,4 +202,40 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       actionType: Actions.GET_SETTINGS,
     });
   },
+  getInstitutions: function () {
+    Dispatcher.handleViewAction({
+      actionType: Actions.GET_INSTITUTIONS,
+    });
+  },
+  addInstitution: function (data) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.ADD_INSTITUTION,
+      data,
+    });
+  },
+  removeInstitution: function (id) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.REMOVE_INSTITUTION,
+      id,
+    });
+  },
+  updateInstitution: function (id, institution) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.UPDATE_INSTITUTION,
+      id,
+      institution,
+    });
+  },
+  institutionAdded: function (institution) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.INSTITUTION_ADDED,
+      institution,
+    });
+  },
+  institutionRemoved: function (id) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.INSTITUTION_REMOVED,
+      id,
+    });
+  },
 });
