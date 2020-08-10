@@ -208,7 +208,7 @@ module.exports = hot(module)(class extends React.Component {
                                         style: {cursor: 'pointer'},
                                         Cell: row => (
                                             <div className="col p-0">
-                                                {row.original.logoUrl && !this.state.institutions[row.original.id] && <img id={`imagePreview${row.original.id}`} src={row.original.logoUrl.indexOf('/api/') !== -1 ? Project.api + row.original.logoUrl.substr(5) : row.original.logoUrl} width="50" height="50" />}
+                                                {row.original.logoUrl && !this.state.institutions[row.original.id] && <img id={`imagePreview${row.original.id}`} src={row.original.logoUrl.indexOf('/api/') !== -1 ? Project.api + row.original.logoUrl.substr(5) : row.original.logoUrl} width="50" height="50" className="institution-logo" />}
                                                 {this.state.institutions[row.original.id] ? (
                                                     <React.Fragment>
                                                         <input
