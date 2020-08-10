@@ -19,5 +19,20 @@ module.exports = {
 
     stackedForm:{
         marginBottom:styleVariables.marginBaseVertical / 2
-    }
+    },
+
+    dashboardInstitutionLogo: {
+        width: 50,
+        height: 50,
+        alignSelf: 'center',
+        marginBottom: 10,
+        resizeMode: 'contain',
+    },
+
+    accountInstitutionLogo: {
+        width: 50,
+        height: 50,
+        marginLeft: 10,
+        resizeMode: 'contain',
+    },
 };
