@@ -21,7 +21,8 @@ module.exports = {
 		borderRadius:25,
 		borderColor:'#EDEDED',
 		borderWidth: PixelRatio.get() / 2,
-		height: styleVariables.inputHeight
+		height: styleVariables.inputHeight,
+		overflow: 'hidden'
 	},
 
 	inputIcon:{

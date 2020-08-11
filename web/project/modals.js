@@ -67,7 +67,7 @@ const Modal = class extends React.Component {
         <div tabIndex="-1" className="modal alert fade expand" role="dialog" aria-hidden="true">
           <div className="modal-dialog">
             <div className="modal-content">
-              <div className="modal-header">{this.header()}</div>
+              {this.props.hideHeader ? null : <div className="modal-header">{this.header()}</div>}
               <div className="modal-body">{this.body()}</div>
               {this.footer() ? <div className="modal-footer">{this.footer()}</div> : null}
             </div>
@@ -81,7 +81,8 @@ const Modal = class extends React.Component {
 Modal.propTypes = {
   header: OptionalNode,
   body: OptionalNode,
-  footer: OptionalNode
+  footer: OptionalNode,
+  hideHeader: OptionalBool,
 };
 
 const Confirm = class extends React.Component {
@@ -110,9 +111,9 @@ const Confirm = class extends React.Component {
   footer () {
     return (
       <div className="modal-button">
-        <button type="button" className="btn-link btn-link-secondary"
+        <button type="button" className="btn btn-secondary mr-2"
                 onClick={this.onNo}>{this.props.noText || 'No'}</button>
-        <button type="button" className="btn-link"
+        <button type="button" className="btn btn-primary"
                 onClick={this.onYes}>{this.props.yesText || 'Yes'}</button>
       </div>
     );
@@ -144,8 +145,8 @@ Confirm.propTypes = {
   noText: OptionalString,
 };
 
-exports.openModal = (header, body, footer) => {
-  render(<Modal header={header} footer={footer} body={body}/>, document.getElementById('modal'));
+exports.openModal = (header, body, footer, props = {}) => {
+  render(<Modal header={header} footer={footer} body={body} {...props} />, document.getElementById('modal'));
 };
 
 exports.openConfirm = (header, body, onYes, onNo) => {
