@@ -48,7 +48,16 @@ module.exports = hot(module)(class extends React.Component {
         openConfirm(<h2>Confirm</h2>, <p>Are you sure you want to delete this institution?</p>, () => AppActions.removeInstitution(id));
     }
 
+    removeLogo = (id) => {
+        openConfirm(<h2>Confirm</h2>, <p>Are you sure you want to delete the logo for this institution?</p>, () => AppActions.removeInstitutionLogo(id));
+    }
+
     save = (id) => {
+        const institutions = InstitutionsStore.getInstitutions();
+        if (_.find(institutions, i => i.id !== id && (i.code.toLowerCase() === this.state.institutions[id].code.toLowerCase() || i.description.toLowerCase() === this.state.institutions[id].description.toLowerCase()))) {
+            alert('Code and name must be unique');
+            return;
+        }
         AppActions.updateInstitution(id, this.state.institutions[id]);
     }
 
@@ -74,6 +83,13 @@ module.exports = hot(module)(class extends React.Component {
 
     editImage = (id, e) => {
         const institutions = this.state.institutions;
+        if (e.target.files[0].size > 1048576) {
+            alert('File size must be 1MB or less');
+            e.target.value = "";
+            institutions[id].image = null;
+            this.setState({institutions});
+            return;
+        }
         institutions[id].image = e.target.files[0];
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -164,7 +180,7 @@ module.exports = hot(module)(class extends React.Component {
                                         style: {cursor: 'pointer'},
                                         Cell: row => (
                                             <div className="col p-0">
-                                                {moment(row.original.lastUpdate).format('DD/MM/YYYY HH:mm')}
+                                                {row.original.lastUpdate ? moment(row.original.lastUpdate).format('DD/MM/YYYY HH:mm') : 'Never updated'}
                                             </div>
                                         ),
                                     }, {
@@ -175,7 +191,7 @@ module.exports = hot(module)(class extends React.Component {
                                         style: {cursor: 'pointer'},
                                         Cell: row => (
                                             <div className="col p-0">
-                                                <Switch checked={this.state.institutions[row.original.id] ? this.state.institutions[row.original.id].hidden : row.original.hidden} disabled={!this.state.institutions[row.original.id] || isSaving} onChange={(on) => this.editSwitch(row.original.id, 'hidden', on)} />
+                                                <Switch checked={this.state.institutions[row.original.id] ? this.state.institutions[row.original.id].hidden : row.original.hidden} disabled={!this.state.institutions[row.original.id] || isSaving} onChange={(on) => this.editSwitch(row.original.id, 'hidden', on)} className={!this.state.institutions[row.original.id] && row.original.hidden ? 'rc-switch-disabled-green' : ''} />
                                             </div>
                                         ),
                                     }, {
@@ -208,7 +224,14 @@ module.exports = hot(module)(class extends React.Component {
                                         style: {cursor: 'pointer'},
                                         Cell: row => (
                                             <div className="col p-0">
-                                                {row.original.logoUrl && !this.state.institutions[row.original.id] && <img id={`imagePreview${row.original.id}`} src={row.original.logoUrl.indexOf('/api/') !== -1 ? Project.api + row.original.logoUrl.substr(5) : row.original.logoUrl} width="50" height="50" className="institution-logo" />}
+                                                {row.original.logoUrl && !this.state.institutions[row.original.id] && (
+                                                    <Row>
+                                                        <img id={`imagePreview${row.original.id}`} src={row.original.logoUrl.indexOf('/api/') !== -1 ? Project.api + row.original.logoUrl.substr(5) : row.original.logoUrl} width="50" height="50" className="institution-logo" />
+                                                        <button className="btn btn--icon btn--icon--red" onClick={() => this.removeLogo(row.original.id)} disabled={isSaving}>
+                                                            <i className="far fa-trash-alt"> </i>
+                                                        </button>
+                                                    </Row>
+                                                )}
                                                 {this.state.institutions[row.original.id] ? (
                                                     <React.Fragment>
                                                         <input
@@ -218,8 +241,9 @@ module.exports = hot(module)(class extends React.Component {
                                                             value={this.state.institutions[row.original.id] ? this.state.institutions[row.original.id].file : undefined}
                                                             readOnly={!this.state.institutions[row.original.id]}
                                                             disabled={isSaving} onChange={(e) => this.editImage(row.original.id, e)}
+                                                            accept="image/*"
                                                         />
-                                                        <label for="file" className="clickable logo-file-label"><i className="fas fa-file-upload pr-2"></i>{this.state.institutions[row.original.id].image ? this.state.institutions[row.original.id].image.name : null}</label>
+                                                        <label for="file" className="clickable logo-file-label"><i className="fas fa-file-upload pr-2"></i><span className="text-small">{this.state.institutions[row.original.id].image ? this.state.institutions[row.original.id].image.name : '(Max size = 1MB)'}</span></label>
                                                     </React.Fragment>
                                                 ) : null}
                                             </div>

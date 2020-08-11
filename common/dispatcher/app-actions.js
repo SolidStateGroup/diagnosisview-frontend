@@ -238,4 +238,10 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       id,
     });
   },
+  removeInstitutionLogo: function (id) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.REMOVE_INSTITUTION_LOGO,
+      id,
+    });
+  },
 });

@@ -4,19 +4,18 @@ var data = require('./base/_data');
 var controller = {
         add: function ({code, description, hidden, image}) {
             store.saving();
-            API.getBase64FromFile(image)
-                .then(base64 => {
-                    base64 = base64.substr(base64.indexOf('base64') + 7);
-                    return data.post(`${Project.api}institutions`, { logoImage: base64, imageFormat: image.type, code, description, hidden })
-                        .then(res => {
-                            store.model = store.model || [];
-                            store.model.push(res);
-                            store.savedId = res.id;
-                            AppActions.institutionAdded({hidden: res.hidden, id: res.code, name: res.description});
-                            store.saved();
-                        });
-                })
-                .catch(e => AjaxHandler.error(InstitutionsStore, e));
+            const promise = image ? API.getBase64FromFile(image) : Promise.resolve();
+            promise.then(base64 => {
+                return data.post(`${Project.api}institutions`, Object.assign({}, image ? { logoImage: base64.substr(base64.indexOf('base64') + 7), imageFormat: image.type } : {}, { code, description, hidden }))
+                    .then(res => {
+                        store.model = store.model || [];
+                        store.model.push(res);
+                        store.savedId = res.id;
+                        AppActions.institutionAdded({hidden: res.hidden, id: res.code, name: res.description});
+                        store.saved();
+                    });
+            })
+            .catch(e => AjaxHandler.error(InstitutionsStore, e));
         },
         get: function () {
             store.loading();
@@ -55,6 +54,19 @@ var controller = {
                 })
                 .catch(e => AjaxHandler.error(InstitutionsStore, e));
         },
+        deleteLogo: function (id) {
+            store.saving();
+            data.delete(`${Project.api}institutions/${id}/logo`)
+                .then(() => {
+                    const index = _.findIndex(store.model, {id});
+                    if (index === -1) return;
+                    if (store.model[index].imageFormat) delete store.model[index].imageFormat;
+                    if (store.model[index].logoData) delete store.model[index].logoData;
+                    if (store.model[index].logoUrl) delete store.model[index].logoUrl;
+                    store.saved();
+                })
+                .catch(e => AjaxHandler.error(InstitutionsStore, e));
+        },
     },
     store = Object.assign({}, BaseStore, {
         id: 'institutions',
@@ -81,6 +93,9 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
             break;
         case Actions.UPDATE_INSTITUTION:
             controller.update(action.id, action.institution);
+            break;
+        case Actions.REMOVE_INSTITUTION_LOGO:
+            controller.deleteLogo(action.id);
             break;
         default:
             return;
