@@ -48,7 +48,7 @@ const TheComponent = class extends Component {
                                                 onChange={e => this.setState({institution: Utils.safeParseEventValue(e)})}
                                             >
                                                 <option value="">Select an institution..</option>
-                                                {_.map(settings.institutions, institution => (
+                                                {_.map(_.filter(settings.institutions, i => !i.hidden), institution => (
                                                     <option key={institution.id} value={institution.id}>{institution.name}</option>
                                                 ))}
                                             </select>

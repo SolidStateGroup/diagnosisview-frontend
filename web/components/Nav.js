@@ -27,14 +27,16 @@ const TheComponent = class extends Component {
                         </Row>
                     </div>
                     <Link id="manage-codes-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/codes`}>
-                        <span className="d-flex flex-1">Manage Codes</span>
+                        <span className="d-flex flex-1">Codes</span>
                     </Link>
                     <Link id="manage-users-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/users`}>
-                        <span className="d-flex flex-1">Manage Users</span></Link>
+                        <span className="d-flex flex-1">Users</span></Link>
+                    <Link id="manage-users-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/institutions`}>
+                        <span className="d-flex flex-1">Institutions</span></Link>
                     <Link id="manage-link-transforms-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/link-transforms`}>
                         <span className="d-flex flex-1">Paywall Management</span></Link>
                     <Link id="manage-link-logos-link" className="nav__links__link d-flex align-items-center" to={`/admin/link-logos`}>
-                        <span className="d-flex flex-1">Manage Link Logos</span></Link>
+                        <span className="d-flex flex-1">Link Logos</span></Link>
                     <div className="ml-auto mr-3">
                         <a id="logout-link" className="nav__links__link nav__links__link--logout d-flex align-items-center" onClick={this.logout}>
                             <span className="d-flex flex-1">Logout <i class="fas fa-sign-out-alt nav__links__link--icon"></i></span>
