@@ -191,36 +191,42 @@ const AccountPage = class extends Component {
 		routeHelper.showForgotPassword(this.props.navigator);
 	}
 
-	renderDropdowns = (settings) => (
-		<View>
-			<View style={Styles.stackedForm}>
-				<Dropdown
-					containerStyle={[Styles.dropdownInput]}
-					label="Occupation"
-					lineWidth={0}
-					labelHeight={this.state.occupation ? 20 : 14}
-					baseColor={styleVariables.textLight}
-					inputContainerPadding={0}
-					data={[{value: 'Healthcare Student'}, {value: 'Healthcare Practitioner'}, {value: 'Patient'}, {value: 'Other'}]}
-					value={this.state.occupation}
-					onChangeText={(occupation) => this.setState({occupation})}
-				/>
+	renderDropdowns = (settings) => {
+		const selectedInstitution = this.state.institution && _.find(settings.institutions, i => i.id === this.state.institution);
+		return (
+			<View>
+				<View style={Styles.stackedForm}>
+					<Dropdown
+						containerStyle={[Styles.dropdownInput]}
+						label="Occupation"
+						lineWidth={0}
+						labelHeight={this.state.occupation ? 20 : 14}
+						baseColor={styleVariables.textLight}
+						inputContainerPadding={0}
+						data={[{value: 'Healthcare Student'}, {value: 'Healthcare Practitioner'}, {value: 'Patient'}, {value: 'Other'}]}
+						value={this.state.occupation}
+						onChangeText={(occupation) => this.setState({occupation})}
+					/>
+				</View>
+				<Row style={Styles.stackedForm}>
+					<Flex>
+						<Dropdown
+							containerStyle={[Styles.dropdownInput]}
+							label="Institution"
+							lineWidth={0}
+							labelHeight={this.state.institution ? 20 : 14}
+							baseColor={styleVariables.textLight}
+							inputContainerPadding={0}
+							data={_.map(_.filter(settings.institutions, i => i.id === this.state.institution || !i.hidden), institution => ({value: institution.id, label: institution.name}))}
+							value={this.state.institution}
+							onChangeText={(institution) => this.setState({institution})}
+						/>
+					</Flex>
+					{selectedInstitution && selectedInstitution.logoUrl && <Image source={{uri: selectedInstitution.logoUrl.indexOf('/api/') !== -1 ? Project.api + selectedInstitution.logoUrl.substr(5) : selectedInstitution.logoUrl}} style={Styles.accountInstitutionLogo} />}
+				</Row>
 			</View>
-			<View style={Styles.stackedForm}>
-				<Dropdown
-					containerStyle={[Styles.dropdownInput]}
-					label="Institution"
-					lineWidth={0}
-					labelHeight={this.state.institution ? 20 : 14}
-					baseColor={styleVariables.textLight}
-					inputContainerPadding={0}
-					data={_.map(settings.institutions, institution => ({value: institution.id, label: institution.name}))}
-					value={this.state.institution}
-					onChangeText={(institution) => this.setState({institution})}
-				/>
-			</View>
-		</View>
-	)
+		)
+	}
 
 	renderLoginFields = (register) => (
 		<View>
