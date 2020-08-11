@@ -44,7 +44,16 @@ module.exports = hot(module)(class extends React.Component {
         this.setState({institutions});
     }
 
-    remove = (id) => {
+    remove = (id, institution) => {
+        if (_.get(institution, 'stats.users')) {
+            openModal(null, <p>This Institution cannot be deleted as it contains one or more users. Either delete linked users first or "Hide" the institution.</p>, (
+                <div className="modal-button">
+                    <button type="button" className="btn btn-primary"
+                            onClick={() => closeModal()}>OK</button>
+                </div>
+            ), { hideHeader: true });
+            return;
+        }
         openConfirm(<h2>Confirm</h2>, <p>Are you sure you want to delete this institution?</p>, () => AppActions.removeInstitution(id));
     }
 
@@ -269,7 +278,7 @@ module.exports = hot(module)(class extends React.Component {
                                                                 </button>
                                                             </React.Fragment>
                                                         )}
-                                                        <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(row.original.id)} disabled={isSaving}>
+                                                        <button className="btn btn--icon btn--icon--red" onClick={() => this.remove(row.original.id, row.original)} disabled={isSaving}>
                                                             <i className="far fa-trash-alt"> </i>
                                                         </button>
                                                     </div>
