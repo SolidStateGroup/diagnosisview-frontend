@@ -164,8 +164,10 @@ const DashboardPage = class extends Component {
 										<View style={Styles.hero}></View>
 										<View style={Styles.padded}>
 											<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-												<Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {},Styles.textCenter, (institution && institution.logoUrl) ? Styles.mb10 : {}]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.hyperlink]}>Search Now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}{institution ? ` under the institution ${institution.name}` : ''}</Text>) : null}</Text>
-												{institution && institution.logoUrl && <Image source={{uri: institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}} style={Styles.dashboardInstitutionLogo} />}
+												<Row>
+													{institution && institution.logoUrl && <Image source={{uri: institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}} style={Styles.dashboardInstitutionLogo} />}
+													<Flex><Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {}, (institution && institution.logoUrl) ? Styles.mb10 : {}]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.hyperlink]}>Search Now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}{institution ? ` under the institution ${institution.name}` : ''}</Text>) : null}</Text></Flex>
+												</Row>
 												{neverSubscribed ? (
 													<View>
 														{this.renderSubscribeParagraph()}

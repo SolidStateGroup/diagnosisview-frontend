@@ -25,7 +25,7 @@ module.exports = {
         width: 50,
         height: 50,
         alignSelf: 'center',
-        marginBottom: 10,
+        marginRight: 20,
         resizeMode: 'contain',
     },
 
