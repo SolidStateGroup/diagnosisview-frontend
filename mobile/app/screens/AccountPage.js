@@ -217,12 +217,12 @@ const AccountPage = class extends Component {
 							labelHeight={this.state.institution ? 20 : 14}
 							baseColor={styleVariables.textLight}
 							inputContainerPadding={0}
-							data={_.map(_.filter(settings.institutions, i => i.id === this.state.institution || !i.hidden), institution => ({value: institution.id, label: institution.name}))}
+							data={_.map(_.sortBy(_.filter(settings.institutions, i => i.id === this.state.institution || !i.hidden), i => i.id === 'OTHER' ? -2 : i.id === 'NONE' ? -1 : i.name.toLowerCase()), institution => ({value: institution.id, label: institution.name}))}
 							value={this.state.institution}
 							onChangeText={(institution) => this.setState({institution})}
 						/>
 					</Flex>
-					{selectedInstitution && selectedInstitution.logoUrl && <Image source={{uri: selectedInstitution.logoUrl.indexOf('/api/') !== -1 ? Project.api + selectedInstitution.logoUrl.substr(5) : selectedInstitution.logoUrl}} style={Styles.accountInstitutionLogo} />}
+					{(selectedInstitution && selectedInstitution.logoUrl) ? <Image source={{uri: selectedInstitution.logoUrl.indexOf('/api/') !== -1 ? Project.api + selectedInstitution.logoUrl.substr(5) : selectedInstitution.logoUrl}} style={Styles.accountInstitutionLogo} /> : null}
 				</Row>
 			</View>
 		)
