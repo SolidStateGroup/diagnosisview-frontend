@@ -156,7 +156,10 @@ const DashboardPage = class extends Component {
 					return (
 						<SettingsProvider>
 						{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
-							const institution = settings && user && user.institution && _.find(settings.institutions, i => i.id === user.institution);
+							let institution = settings && user && user.institution && _.find(settings.institutions, i => i.id === user.institution);
+							if (institution && (institution.id === 'OTHER' || institution.id === 'NONE')) {
+								institution = null;
+							}
 							return (
 								<Flex>
 									<NetworkBar />
@@ -166,7 +169,7 @@ const DashboardPage = class extends Component {
 											<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
 												<Row>
 													{institution && institution.logoUrl && <Image source={{uri: institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}} style={Styles.dashboardInstitutionLogo} />}
-													<Flex><Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {}, (institution && institution.logoUrl) ? Styles.mb10 : {}]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.hyperlink]}>Search Now</Text> or go to your History or saved Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}{institution ? ` under the institution ${institution.name}` : ''}</Text>) : null}</Text></Flex>
+													<Flex><Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {}, (institution && institution.logoUrl) ? {} : Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.hyperlink]}>Search Now</Text> or go to your History or Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}{institution ? ` and affiliated to the ${institution.name}` : ''}</Text>) : null}</Text></Flex>
 												</Row>
 												{neverSubscribed ? (
 													<View>

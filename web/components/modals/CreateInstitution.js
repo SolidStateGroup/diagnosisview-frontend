@@ -26,14 +26,24 @@ const TheComponent = class extends Component {
     }
 
     canSave = () => {
-        const { code, description, image } = this.state;
-        if (!code || !description || !image) return false;
+        const { code, description } = this.state;
+        if (!code || !description) return false;
 
         return true;
     }
 
+    onLogoChange = e => {
+        if (e.target.files[0].size > 1048576) {
+            alert('File size must be 1MB or less');
+            e.target.value = "";
+            this.setState({image: undefined});
+            return;
+        }
+        this.setState({image: e.target.files[0]})
+    }
+
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.image !== this.state.image) {
+        if (prevState.image !== this.state.image && this.state.image) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 $('#imagePreview').attr('src', e.target.result);
@@ -81,11 +91,11 @@ const TheComponent = class extends Component {
                                         </div>
                                     </fieldset>
                                     <fieldset className="fieldset pt-1 pb-4">
-                                        <label className="fieldset__label text-small text-muted">Logo (maximum size 50 x 50)</label>
+                                        <label className="fieldset__label text-small text-muted">Logo (maximum size 1MB)</label>
                                         <div className="flex-column">
                                             <input
                                                 type="file"
-                                                onChange={e => this.setState({image: e.target.files[0]})}
+                                                onChange={this.onLogoChange}
                                                 accept="image/*"
                                             />
                                         </div>
