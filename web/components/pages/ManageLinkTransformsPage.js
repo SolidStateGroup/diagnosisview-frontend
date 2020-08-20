@@ -26,6 +26,11 @@ module.exports = hot(module)(class extends React.Component {
     edit = (transform) => {
         const linkTransforms = this.state.linkTransforms;
         linkTransforms[transform.id] = _.cloneDeep(transform);
+        const institutions = SettingsStore.getSettings().institutions;
+        const index = _.findIndex(institutions, i => i.id === linkTransforms[transform.id].criteria);
+        if (index === -1 || institutions[index].hidden) {
+            linkTransforms[transform.id].criteria = '';
+        }
         this.setState({linkTransforms});
     }
 
@@ -40,6 +45,7 @@ module.exports = hot(module)(class extends React.Component {
 
     save = (id) => {
         const { criteria, link, transformation } = this.state.linkTransforms[id];
+        if (!criteria) return;
         AppActions.updateLinkTransform(id, { criteriaType: 'INSTITUTION', criteria, link, transformation });
     }
 
@@ -110,7 +116,8 @@ module.exports = hot(module)(class extends React.Component {
                                                             disabled={!this.state.linkTransforms[transform.id] || isSaving}
                                                             onChange={(e) => this.editField(transform.id, 'criteria', e)}
                                                         >
-                                                        {_.map(settings.institutions, institution => (
+                                                        <option value="">Select an institution..</option>
+                                                        {_.map(this.state.linkTransforms[transform.id] ? _.filter(settings.institutions, i => !i.hidden) : settings.institutions, institution => (
                                                             <option key={institution.id} value={institution.id}>{institution.name}</option>
                                                         ))}
                                                         </select>
@@ -140,7 +147,7 @@ module.exports = hot(module)(class extends React.Component {
                                                             </button>
                                                         ) : (
                                                             <React.Fragment>
-                                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(transform.id)} disabled={isSaving}>
+                                                                <button className="btn btn--icon btn--icon--blue" onClick={() => this.save(transform.id)} disabled={isSaving || !this.state.linkTransforms[transform.id].criteria}>
                                                                     <i className="far fa-save"></i>
                                                                 </button>
                                                                 <button className="btn btn--icon btn--icon--blue" onClick={() => this.cancelEdit(transform.id)} disabled={isSaving}>
