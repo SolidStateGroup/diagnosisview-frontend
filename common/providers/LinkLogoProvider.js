@@ -23,10 +23,6 @@ const TheComponent = class extends Component {
 			});
 		});
 
-		this.listenTo(LinkLogoStore, 'loaded', () => {
-			this.props.onLogin && this.props.onLogin();
-		})
-
 		this.listenTo(LinkLogoStore, 'saved', () => {
 			this.props.onSave && this.props.onSave(LinkLogoStore.savedId);
 		});

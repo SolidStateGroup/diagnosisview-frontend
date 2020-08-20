@@ -11,6 +11,18 @@ var controller = {
                 })
                 .catch(e => AjaxHandler.error(SettingsStore, e));
         },
+        institutionAdded: function (institution) {
+            if (!store.model) return;
+            store.model.institutions.push(institution);
+            store.loaded();
+        },
+        institutionRemoved: function (id) {
+            if (!store.model) return;
+            const index = _.findIndex(store.model.institutions, i => i.id === id);
+            if (index === -1) return;
+            store.model.institutions.splice(index, 1);
+            store.loaded();
+        },
     },
     store = Object.assign({}, BaseStore, {
         id: 'settings',
@@ -28,6 +40,12 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
     switch (action.actionType) {
         case Actions.GET_SETTINGS:
             controller.get();
+            break;
+        case Actions.INSTITUTION_ADDED:
+            controller.institutionAdded(action.institution);
+            break;
+        case Actions.INSTITUTION_REMOVED:
+            controller.institutionRemoved(action.id);
             break;
         default:
             return;
