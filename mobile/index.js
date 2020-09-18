@@ -51,16 +51,6 @@ const getUser = new Promise(function (resolve) {
             }
             if (res && res != 'null') {
                 var user = JSON.parse(res);
-                if (Constants.simulate.SUBSCRIBED) {
-                    console.log("WARNING: SIMULATING SUBSCRIPTION")
-                    user.activeSubscription = true;
-                    if (Constants.simulate.EXPIRY) {
-                        user.paymentData = user.paymentData || [];
-                        res.expiryDate = moment().add(1, 'y').subtract(14, 'days').valueOf();
-                        user.paymentData.unshift(JSON.stringify({expiryTimeMillis: res.expiryDate, autoRenewing: false}));
-                        user.activeSubscription = res.expiryDate.isAfter(moment());
-                    }
-                }
                 AccountStore.setUser(user)
             }
             resolve(res)
@@ -121,7 +111,17 @@ const retrySubscription = new Promise(function (resolve) {
     })
 })
 
-Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, iconsLoaded]).then(([user, retrySubscription]) => {
+const getSubscription = new Promise((resolve) => {
+    AsyncStorage.getItem('subscription', (err, res) => {
+        if (err || !res) {
+            return resolve(false);
+        }
+        SubscriptionStore.subscription = res ? JSON.parse(res) : null;
+        resolve(SubscriptionStore.subscription)
+    })
+})
+
+Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, getSubscription, iconsLoaded]).then(([user, retrySubscription]) => {
     global.iconsMap = iconsMap;
 
     global.modalNavButtons = {
