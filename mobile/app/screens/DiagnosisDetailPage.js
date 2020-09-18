@@ -99,7 +99,7 @@ const DiagnosisDetailPage = class extends Component {
 													const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
 													if (!link.displayLink) {
 														return null;
-													} else if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+													} else if (!SubscriptionStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
 														return null;
 													}
 													const isFavourite = _.find(favourites, f => f.code === this.props.code && f.link.id === link.id);

@@ -23,6 +23,8 @@ window.InstitutionsProvider = require('../../common/providers/InstitutionsProvid
 window.InstitutionsStore = require('../../common/stores/institutions-store');
 window.SettingsProvider = require('../../common/providers/SettingsProvider');
 window.SettingsStore = require('../../common/stores/settings-store');
+window.SubscriptionStore = require('../../common/stores/subscription-store');
+window.SubscriptionProvider = require('../../common/providers/SubscriptionProvider');
 
 window.RenderInfo = require('../../common/providers/RenderInfo');
 
