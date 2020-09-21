@@ -24,17 +24,6 @@ const DashboardPage = class extends Component {
 
 	componentDidMount() {
 		this.listenTo(AccountStore, 'change', () => this.forceUpdate());
-		RNIap.prepare()
-			.then(() => RNIap.getSubscriptions(iapItemSkus))
-			.then(subscriptions => {
-				console.log('subscriptions', subscriptions);
-			})
-			.then(() => RNIap.getAvailablePurchases())
-			.then(purchases => {
-				console.log('available purchases', purchases);
-			});
-
-		this.refreshApp();
 
 		AppState.addEventListener('change', this.handleAppStateChange);
 	}
@@ -47,6 +36,7 @@ const DashboardPage = class extends Component {
 
 	refreshApp = () => {
 		AppActions.getSettings();
+		AppActions.checkSubscription();
 		if (AccountStore.getUser()) {
 			AppActions.getAccount(this.props.retrySubscription);
 		} else {
@@ -111,11 +101,7 @@ const DashboardPage = class extends Component {
 
 	subscribe = () => {
 		API.trackEvent(Constants.events.DASHBOARD_SUBSCRIBE);
-		if (AccountStore.getUser()) {
-			API.subscribe();
-		} else {
-			routeHelper.goRegister(this.props.navigator);
-		}
+		AppActions.buySubscription();
 	}
 
 	onSearch = () => {
@@ -143,7 +129,7 @@ const DashboardPage = class extends Component {
 			<Text onPress={() => this.goToDiagnosis('acne', 'Acne')} style={[Styles.textMedium, Styles.hyperlink]}>Acne, </Text>
 			<Text onPress={() => this.goToDiagnosis('cystic-fibrosis', 'Cystic fibrosis')} style={[Styles.textMedium, Styles.hyperlink]}>Cystic fibrosis, </Text>
 			<Text onPress={() => this.goToDiagnosis('heart-failure', 'Heart failure')} style={[Styles.textMedium, Styles.hyperlink]}>Heart failure</Text>
-			{`). A subscription also gives unlimited history/favourites synchronised between devices.`}
+			{`). Registering an account gives unlimited history/favourites synchronised between devices.`}
 		</Text>
 	)
 
@@ -151,130 +137,137 @@ const DashboardPage = class extends Component {
 		return (
 			<AccountProvider onLogin={this.onLogin}>
 				{({ user, isLoading }) => {
-					const paymentData = user && user.paymentData && user.paymentData.length && JSON.parse(_.last(user.paymentData).response);
-					const neverSubscribed = !user || (!user.activeSubscription && (!user.paymentData || !user.paymentData.length));
 					return (
-						<SettingsProvider>
-						{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
-							let institution = settings && user && user.institution && _.find(settings.institutions, i => i.id === user.institution);
-							if (institution && (institution.id === 'OTHER' || institution.id === 'NONE')) {
-								institution = null;
-							}
-							return (
-								<Flex>
-									<NetworkBar />
-									<ScrollView>
-										<View style={Styles.hero}></View>
-										<View style={Styles.padded}>
-											<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-												<Row>
-													{institution && institution.logoUrl && <Image source={{uri: institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}} style={Styles.dashboardInstitutionLogo} />}
-													<Flex><Text style={[Styles.textMedium, neverSubscribed ? Styles.paragraph : {}, (institution && institution.logoUrl) ? {} : Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.hyperlink]}>Search Now</Text> or go to your History or Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]}>You are {user.activeSubscription ? 'subscribed' : 'logged in'}{institution ? ` and affiliated to the ${institution.name}` : ''}</Text>) : null}</Text></Flex>
-												</Row>
-												{neverSubscribed ? (
-													<View>
-														{this.renderSubscribeParagraph()}
-														<Button onPress={this.subscribe}>Subscribe now</Button>
-													</View>
-												) : null}
-												{/* <View style={[Styles.stackedFormInv]}>
-													<Button onPress={this.onSearch}>Search now</Button>
-												</View> */}
-											</View>
-											{user && user.expiryDate && !user.autoRenewing ? (() => {
-												const expiryDate = moment(user.expiryDate);
-												if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment())) {
-													return (
+						<SubscriptionProvider>
+							{({subscription, isLoading: subscriptionLoading}) => {
+								const paymentData = user && user.paymentData && user.paymentData.length && JSON.parse(_.last(user.paymentData).response);
+								const neverSubscribed = !subscriptionLoading && !subscription;
+								return (
+									<SettingsProvider>
+									{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
+										let institution = settings && user && user.institution && _.find(settings.institutions, i => i.id === user.institution);
+										if (institution && (institution.id === 'OTHER' || institution.id === 'NONE')) {
+											institution = null;
+										}
+										return (
+											<Flex>
+												<NetworkBar />
+												<ScrollView>
+													<View style={Styles.hero}></View>
+													<View style={Styles.padded}>
 														<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-															<Text style={[Styles.textCenter, Styles.paragraph]}>Your account will expire {moment().isSame(expiryDate, 'd') ? 'today at ' + expiryDate.format('HH:mm') : 'on ' + expiryDate.format('DD-MM-YYYY')}</Text>
-															<Button onPress={this.subscribe}>Renew now</Button>
-														</View>
-													)
-												} else if (expiryDate.isSameOrBefore(moment()) && !user.activeSubscription) {
-													return (
-														<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-															<Text style={[Styles.textCenter, Styles.textMedium, Styles.paragraph]}>Your account has expired. {this.renderSubscribeParagraph()}</Text>
-															<Button onPress={this.subscribe}>Renew now</Button>
-														</View>
-													);
-												} else {
-													return null;
-												}
-											})() : null}
-											<View style={[Styles.whitePanel, Styles.noPadding]}>
-												<ListItem>
-													<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT SEARCHES</Text>
-													<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goHistory}>More <ION name="ios-arrow-forward" /></Text>
-												</ListItem>
-												<HistoryProvider>
-													{({ history, isLoading }) => (
-														<View>
-															{_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
-																const diagnosis = _.find(DiagnosisStore.getCodes(), {code: entry.item.code});
-																const tags = diagnosis && diagnosis.tags;
-																return (
-																	<ListItem key={i} onPress={() => this.onRecentSearch(entry.item.code, entry.item.friendlyName)}>
-																		<Row style={Styles.flex}>
-																			<Text numberOfLines={1}>{entry.item.friendlyName}</Text>
-																			{_.map(tags, tag => (
-																				<Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
-																			))}
-																		</Row>
-																		<ION name="ios-search" style={[Styles.listIconNav, Styles.ml5]} />
-																	</ListItem>
-																)
-															})}
-														</View>
-													)}
-												</HistoryProvider>
-												<ListItem>
-													<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT FAVOURITES</Text>
-													<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goFavourites}>More <ION name="ios-arrow-forward" /></Text>
-												</ListItem>
-												<LinkLogoProvider>
-													{({ linkLogos, isLoading }) => (
-														<FavouritesProvider>
-															{({ favourites, isLoading }) => (
+															<Row>
+																{institution && institution.logoUrl && <Image source={{uri: institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}} style={Styles.dashboardInstitutionLogo} />}
+																<Text style={[institution && institution.logoUrl ? Styles.flex : {}, Styles.textMedium, neverSubscribed ? Styles.paragraph : {}, (institution && institution.logoUrl) ? {} : Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.hyperlink]}>Search Now</Text> or go to your History or Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]}>You are {subscription ? 'subscribed' : 'logged in'}{institution ? ` and affiliated to the ${institution.name}` : ''}</Text>) : subscription ? <Text style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]} onPress={() => routeHelper.goAccount(this.props.navigator)}>You are subscribed but not registered with DiagnosisView yet.</Text> : null}</Text>
+															</Row>
+															{neverSubscribed ? (
 																<View>
-																	{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
-																		const { link } = entry;
-																		const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
-																		if (!AccountStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
-																			return null;
-																		}
-																		return (
-																			<ListItem key={i} onPress={() => this.onFavourite(link.link, entry.name)}>
-																				<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
-																				<Column style={[Styles.noMargin, {flex: 1}]}>
-																					<Text>{entry.name}</Text>
-																					<Row>
-																						{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
-																								<>
-																									<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
-																									{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Flex><Text numberOfLines={1} ellipsisMode="tail" style={Styles.textSmall}>{link.name}</Text></Flex> : null}
-																								</>
-																							) : <Text style={Styles.textSmall}>{link.name}</Text>
-																						}
-																						{link.paywalled ? <PaywallLink navigator={this.props.navigator} paywalled={link.paywalled} /> : null}
-																					</Row>
-																				</Column>
-																				<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
-																			</ListItem>
-																		)
-																	})}
+																	{this.renderSubscribeParagraph()}
+																	<Button onPress={this.subscribe}>Subscribe now</Button>
 																</View>
-															)}
-														</FavouritesProvider>
-													)}
-												</LinkLogoProvider>
-											</View>
-										</View>
-									</ScrollView>
-								</Flex>
-							)
-						}}
-						</SettingsProvider>
-					);
+															) : null}
+															{subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : null}
+															{/* <View style={[Styles.stackedFormInv]}>
+																<Button onPress={this.onSearch}>Search now</Button>
+															</View> */}
+														</View>
+														{subscription && !SubscriptionStore.isSubscriptionAutoRenewing() && !AccountStore.isAdmin() ? (() => {
+															const expiryDate = SubscriptionStore.getSubscriptionExpiryDate() && moment(SubscriptionStore.getSubscriptionExpiryDate());
+															if (!expiryDate || expiryDate.isSameOrBefore(moment())) {
+																return (
+																	<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
+																		<Text style={[Styles.textCenter, Styles.textMedium, Styles.paragraph]}>Your subscription has expired. {this.renderSubscribeParagraph()}</Text>
+																		<Button onPress={this.subscribe}>Renew now</Button>
+																	</View>
+																);
+															} else if (expiryDate.isBefore(moment().add(1, 'month')) && expiryDate.isAfter(moment())) {
+																return (
+																	<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
+																		<Text style={[Styles.textCenter, Styles.textMedium, Styles.paragraph]}>Your subscription will expire {moment().isSame(expiryDate, 'd') ? 'today at ' + expiryDate.format('HH:mm') : 'on ' + expiryDate.format('DD-MM-YYYY')}</Text>
+																		<Button onPress={this.subscribe}>Renew now</Button>
+																	</View>
+																)
+															} else {
+																return null;
+															}
+														})() : null}
+														<View style={[Styles.whitePanel, Styles.noPadding]}>
+															<ListItem>
+																<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT SEARCHES</Text>
+																<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goHistory}>More <ION name="ios-arrow-forward" /></Text>
+															</ListItem>
+															<HistoryProvider>
+																{({ history, isLoading }) => (
+																	<View>
+																		{_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
+																			const diagnosis = _.find(DiagnosisStore.getCodes(), {code: entry.item.code});
+																			const tags = diagnosis && diagnosis.tags;
+																			return (
+																				<ListItem key={i} onPress={() => this.onRecentSearch(entry.item.code, entry.item.friendlyName)}>
+																					<Row style={Styles.flex}>
+																						<Text numberOfLines={1}>{entry.item.friendlyName}</Text>
+																						{_.map(tags, tag => (
+																							<Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
+																						))}
+																					</Row>
+																					<ION name="ios-search" style={[Styles.listIconNav, Styles.ml5]} />
+																				</ListItem>
+																			)
+																		})}
+																	</View>
+																)}
+															</HistoryProvider>
+															<ListItem>
+																<Text style={[Styles.listHeading, Styles.semiBold, {backgroundColor:'transparent', paddingTop:4}]}>RECENT FAVOURITES</Text>
+																<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goFavourites}>More <ION name="ios-arrow-forward" /></Text>
+															</ListItem>
+															<LinkLogoProvider>
+																{({ linkLogos, isLoading }) => (
+																	<FavouritesProvider>
+																		{({ favourites, isLoading }) => (
+																			<View>
+																				{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
+																					const { link } = entry;
+																					const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
+																					if (!subscription && link.difficultyLevel != "GREEN" && !link.freeLink) {
+																						return null;
+																					}
+																					return (
+																						<ListItem key={i} onPress={() => this.onFavourite(link.link, entry.name)}>
+																							<FavouriteComplexity navigator={this.props.navigator} difficultyLevel={link.difficultyLevel} containerStyle={[Styles.listIconNavMarginRight]} />
+																							<Column style={[Styles.noMargin, {flex: 1}]}>
+																								<Text>{entry.name}</Text>
+																								<Row>
+																									{(logoImageUrl || Constants.linkIcons[link.linkType.value]) ? (
+																											<>
+																												<Image source={logoImageUrl ? {uri: logoImageUrl} : Constants.linkIcons[link.linkType.value]} style={Styles.listItemImage} />
+																												{(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <Flex><Text numberOfLines={1} ellipsisMode="tail" style={Styles.textSmall}>{link.name}</Text></Flex> : null}
+																											</>
+																										) : <Text style={Styles.textSmall}>{link.name}</Text>
+																									}
+																									{link.paywalled ? <PaywallLink navigator={this.props.navigator} paywalled={link.paywalled} /> : null}
+																								</Row>
+																							</Column>
+																							<ION name="ios-arrow-forward" style={[Styles.listIconNav]} />
+																						</ListItem>
+																					)
+																				})}
+																			</View>
+																		)}
+																	</FavouritesProvider>
+																)}
+															</LinkLogoProvider>
+														</View>
+													</View>
+												</ScrollView>
+											</Flex>
+										)
+									}}
+									</SettingsProvider>
+								);
+							}}
+						</SubscriptionProvider>
+					)
 				}}
 			</AccountProvider>
 		)

@@ -36,7 +36,7 @@ const HistoryPage = class extends Component {
 	subscribe = () => {
 		API.trackEvent(Constants.events.HISTORY_SUBSCRIBE);
 		if (AccountStore.getUser()) {
-			API.subscribe();
+			AppActions.buySubscription();
 		} else {
 			routeHelper.goRegister(this.props.navigator);
 		}
@@ -46,62 +46,70 @@ const HistoryPage = class extends Component {
 		return (
 			<AccountProvider>
 				{({user, isLoading})=>(
-					<Flex>
-						<NetworkBar />
-						<ScrollView>
-							<View style={Styles.hero}></View>
-							<View style={Styles.padded}>
-								{!user || !user.activeSubscription ? (
-									<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-										<Text style={[Styles.textCenter, Styles.paragraph]}>Displays search history on this device from the last 20 searches only.</Text>
-										<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited search history across all your devices, please {user && user.paymentData && user.paymentData.length ? 'renew' : 'subscribe'}.</Text>
-										<Button onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe') + ' now'}</Button>
+					<SubscriptionProvider>
+						{({subscription, isLoading: subscriptionLoading}) => (
+							<Flex>
+								<NetworkBar />
+								<ScrollView>
+									<View style={Styles.hero}></View>
+									<View style={Styles.padded}>
+										{!AccountStore.hasActiveSubscription() ? (
+											<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
+												{subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
+													<>
+														<Text style={[Styles.textCenter, Styles.paragraph]}>Displays search history on this device from the last 20 searches only.</Text>
+														<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited search history across all your devices, please {(!user && !subscription) ? 'subscribe and register' : !subscription ? 'subscribe' : 'register'}.</Text>
+														<Button onPress={this.subscribe}>{(!user ? 'Register' : 'Subscribe') + ' now'}</Button>
+													</>
+												)}
+											</View>
+										) : null}
+										{AccountStore.hasActiveSubscription() ? (
+											<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
+												<Text style={[Styles.textCenter]}>Your full history list across all your signed-in devices.</Text>
+											</View>
+										) : null}
+										<View style={[Styles.whitePanel,Styles.noPadding]}>
+											<ListItem>
+												<Text style={[Styles.listHeading,Styles.semiBold, {flex: DIAGNOSIS_CELL_FLEX}]}>Diagnosis</Text>
+												<Column style={{flex: DATE_SEARCHED_CELL_FLEX}}>
+													<Text style={[Styles.listHeading,Styles.semiBold]}>Date Searched</Text>
+												</Column>
+												<ION name="ios-arrow-forward" style={[Styles.listIconNav, {opacity: 0}]}/>
+											</ListItem>
+											<HistoryProvider>
+												{({history, isLoading})=> isLoading ? <Loader/> : (
+													<FlatList
+														data={_.reverse(_.sortBy(history, entry => moment(entry.date).valueOf()))}
+														renderItem={({item: entry, index: i}) => {
+															const diagnosis = _.find(DiagnosisStore.getCodes(), {code: entry.item.code});
+															const tags = diagnosis && diagnosis.tags;
+															return (
+																<ListItem 
+																	key={i} noAnim onPress={() => routeHelper.goDiagnosisDetail(this.props.navigator, entry.item.code, entry.item.friendlyName)}>
+																		<Row style={{flex: DIAGNOSIS_CELL_FLEX}}>
+																			<Text numberOfLines={1} style={Styles.textSmall}>{entry.item.friendlyName}</Text>
+																			{_.map(tags, tag => (
+																				<Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
+																			))}
+																		</Row>
+																		<Column style={{flex: DATE_SEARCHED_CELL_FLEX}}>
+																			<Text style={[Styles.textSmall]}>{moment(entry.date).format('DD MMMM YYYY')}</Text>
+																			<Text style={[Styles.textSmall]}>{moment(entry.date).format('HH:mm')}</Text>
+																		</Column>
+																		<ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>
+																</ListItem>
+															)
+														}}
+													/>
+												) }
+											</HistoryProvider>
+										</View>
 									</View>
-								) : null}
-								{user && user.activeSubscription ? (
-									<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
-										<Text style={[Styles.textCenter]}>Your full history list across all your signed-in devices.</Text>
-									</View>
-								) : null}
-								<View style={[Styles.whitePanel,Styles.noPadding]}>
-									<ListItem>
-										<Text style={[Styles.listHeading,Styles.semiBold, {flex: DIAGNOSIS_CELL_FLEX}]}>Diagnosis</Text>
-										<Column style={{flex: DATE_SEARCHED_CELL_FLEX}}>
-											<Text style={[Styles.listHeading,Styles.semiBold]}>Date Searched</Text>
-										</Column>
-										<ION name="ios-arrow-forward" style={[Styles.listIconNav, {opacity: 0}]}/>
-									</ListItem>
-									<HistoryProvider>
-										{({history, isLoading})=> isLoading ? <Loader/> : (
-											<FlatList
-												data={_.reverse(_.sortBy(history, 'date'))}
-												renderItem={({item: entry, index: i}) => {
-													const diagnosis = _.find(DiagnosisStore.getCodes(), {code: entry.item.code});
-													const tags = diagnosis && diagnosis.tags;
-													return (
-														<ListItem 
-															key={i} noAnim onPress={() => routeHelper.goDiagnosisDetail(this.props.navigator, entry.item.code, entry.item.friendlyName)}>
-																<Row style={{flex: DIAGNOSIS_CELL_FLEX}}>
-																	<Text numberOfLines={1} style={Styles.textSmall}>{entry.item.friendlyName}</Text>
-																	{_.map(tags, tag => (
-																		<Tag key={tag.id} navigator={this.props.navigator} tag={tag} />
-																	))}
-																</Row>
-																<Column style={{flex: DATE_SEARCHED_CELL_FLEX}}>
-																	<Text style={[Styles.textSmall]}>{moment(entry.date).format('DD MMMM YYYY')}</Text>
-																	<Text style={[Styles.textSmall]}>{moment(entry.date).format('HH:mm')}</Text>
-																</Column>
-																<ION name="ios-arrow-forward" style={[Styles.listIconNav]}/>
-														</ListItem>
-													)
-												}}
-											/>
-										) }
-									</HistoryProvider>
-								</View>
-							</View>
-						</ScrollView>
-					</Flex>
+								</ScrollView>
+							</Flex>
+						)}
+					</SubscriptionProvider>
 				)}
 			</AccountProvider>
 		)

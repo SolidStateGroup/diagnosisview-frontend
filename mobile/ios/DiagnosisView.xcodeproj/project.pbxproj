@@ -1088,7 +1088,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 8UFDJCMUH2;
+						DevelopmentTeam = RS9E45N5W4;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -1873,7 +1873,7 @@
 				CODE_SIGN_ENTITLEMENTS = DiagnosisView.entitlements;
 				CURRENT_PROJECT_VERSION = 15;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 8UFDJCMUH2;
+				DEVELOPMENT_TEAM = RS9E45N5W4;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
@@ -1892,7 +1892,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile.test;
 				PRODUCT_NAME = DiagnosisView;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1924,7 +1924,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile.test;
 				PRODUCT_NAME = DiagnosisView;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

@@ -5,7 +5,6 @@ import AccountStore from './account-store';
 var controller = {
         addToHistory: function (item) {
             store.saving();
-            const userIsSubscribed = AccountStore.isSubscribed();
             AsyncStorage.getItem('history', (err, res) => {
                 if (err) {
                     store.goneABitWest(err);
@@ -16,14 +15,15 @@ var controller = {
                 var history = res ? JSON.parse(res) : [];
                 const search = {
                     item,
-                    date: Date.now()
+                    date: moment().valueOf()
                 };
                 history.push(search);
+                history = _.sortBy(history, entry => moment(entry.date).valueOf());
                 if (history.length > 20) { // Only store 20 on the device
                     history.splice(0, 1);
                 }
 
-                if (userIsSubscribed) {
+                if (AccountStore.hasActiveSubscription()) {
                     data.put(Project.api + 'user/history', {code: item.code, dateAdded: search.date})
                         .then(res => {
                             console.log(res);
@@ -41,7 +41,7 @@ var controller = {
             })
         },
         getHistory: function () {
-            if (!AccountStore.isSubscribed()) return;
+            if (!AccountStore.hasActiveSubscription()) return;
 
             store.loading();
             // data.get('user/history')
@@ -63,10 +63,10 @@ var controller = {
                         code: h.code,
                         friendlyName: DiagnosisStore.getName(h.code)
                     },
-                    date: h.dateAdded
+                    date: h.dateAdded,
                 })
             });
-            AsyncStorage.setItem("history", JSON.stringify(_.take(_.reverse(_.sortBy(history, 'date')), 20)))
+            AsyncStorage.setItem("history", JSON.stringify(_.take(_.reverse(_.sortBy(history, entry => moment(entry.date).valueOf())), 20)))
             store.model = history;
             store.loaded();
         },

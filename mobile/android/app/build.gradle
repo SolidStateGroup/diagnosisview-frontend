@@ -56,7 +56,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.solidstategroup.dvmobile"
+        applicationId "com.solidstategroup.dvmobile.test2"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 10
