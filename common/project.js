@@ -1,6 +1,6 @@
 module.exports = {
-    debug: true,
-    api: 'https://api-staging.diagnosisview.org/api/',
-    public: 'https://api-staging.diagnosisview.org/public/',
+    debug: false,
+    api: 'https://api.diagnosisview.org/api/',
+    public: 'https://api.diagnosisview.org/public/',
     ga: ''
 };
