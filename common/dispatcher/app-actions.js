@@ -43,6 +43,23 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       silent
     });
   },
+  checkSubscription: function (callbacks = {}) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.CHECK_SUBSCRIPTION,
+      callbacks,
+    });
+  },
+  buySubscription: function () {
+    Dispatcher.handleViewAction({
+      actionType: Actions.BUY_SUBSCRIPTION,
+    });
+  },
+  setSubscription: function (details) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.SET_SUBSCRIPTION,
+      details,
+    });
+  },
   getAccount: function (retrySubscription) { //refresh the entire app
     Dispatcher.handleViewAction({
       actionType: Actions.GET_ACCOUNT,

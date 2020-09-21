@@ -8,7 +8,11 @@ var controller = {
                 .then(res => {
                     controller.onLogin(res);
                     store.saved();
-                    API.subscribe();
+                    if (!SubscriptionStore.isSubscribed()) {
+                        AppActions.buySubscription();
+                    } else {
+                        controller.subscribe(SubscriptionStore.getPurchase(), true);
+                    }
                 })
                 .catch(e => AjaxHandler.error(AccountStore, e));
         },
@@ -38,11 +42,11 @@ var controller = {
 
                     res = controller.processUser(res);
 
-                    if (res.activeSubscription && !res.autoRenewing) {
-                        controller.scheduleExpiryNotifications(res.expiryDate);
+                    if (SubscriptionStore.isSubscribed() && !res.activeSubscription) {
+                        controller.subscribe(SubscriptionStore.getPurchase(), true);
                     }
 
-                    if (res.activeSubscription && (favouritesToSync.length || historyToSync.length)) {
+                    if (SubscriptionStore.isSubscribed() && (favouritesToSync.length || historyToSync.length)) {
                         controller.setToken(res && res.token);
                         return (favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res))
                             .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res))
@@ -108,6 +112,8 @@ var controller = {
         },
 
         subscribe: function (purchase, silent) {
+            if (!store.model) return;
+
             store.saving();
 
             const renewal = store.model.paymentData && store.model.paymentData.length ? true : false;
@@ -118,12 +124,24 @@ var controller = {
 
             // Validate purchase
             console.log(JSON.stringify(purchase));
-            data.post(`${Project.api}user/validate/${Platform.OS}`, purchase)
+            AsyncStorage.getItem('subscriptionLinkedTo')
                 .then(res => {
+                    if (res && res != store.model.id) {
+                        console.log('Attempted to activate subscription on device which already linked subscription to another account');
+                        store.saved();
+                        return Promise.reject(new Error('Attempted to activate subscription on device which already linked subscription to another account'));
+                    }
+                    return data.post(`${Project.api}user/validate/${Platform.OS}`, purchase)
+                })
+                .then(res => {
+                    AsyncStorage.setItem("subscriptionLinkedTo", store.model.id.toString());
                     AsyncStorage.removeItem("retrySubscription");
                     return res;
                 })
                 .catch(e => {
+                    if (e instanceof Error) {
+                        return Promise.reject(e);
+                    }
                     return e.json().then(err => {
                         console.log('Failed to validate purchase', err);
                         if (err.status === 400) { // Failed validation
@@ -148,53 +166,20 @@ var controller = {
                 .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res)) // Sync history
                 .then(res => {
                     console.log(res);
-                    if (!silent) {
-                        Alert.alert('', !renewal ? "Your account has been successfully activated" : `Your account has been successfully extended to ${moment().add(1, 'y').format('DD/MM/YYYY')}`);
-                    }
                     store.model = this.processUser(res);
                     AsyncStorage.setItem('user', JSON.stringify(store.model));
-                    if (!res.autoRenewing) {
-                        controller.scheduleExpiryNotifications(res.expiryDate);
-                    } else {
-                        API.push.cancelAllNotifications();
-                    }
                     store.saved();
                 });
         },
 
-        scheduleExpiryNotifications: (expiryDate) => {
-            const now = moment();
-            if (now.isBefore(moment(expiryDate).subtract(1, 'M'), 'd')) {
-                console.log('Scheduling expiry warning for 1 month before expiry');
-                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${moment(expiryDate).format('DD/MM/YY')}. Please renew now`, null, moment(expiryDate).subtract(1, 'M').valueOf());
-            }
-            if (now.isBefore(moment(expiryDate).subtract(1, 'w'), 'd')) {
-                console.log('Scheduling expiry warning for 1 week before expiry');
-                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', `Your account will expire on ${moment(expiryDate).format('DD/MM/YY')}. Please renew now`, null, moment(expiryDate).subtract(1, 'w').valueOf());
-            }
-            if (now.isBefore(moment(expiryDate).subtract(1, 'd'), 'd')) {
-                console.log('Scheduling expiry warning for 1 day before expiry');
-                API.push.scheduleLocalNotification('expiry-warning', 'Account expiry warning', 'Your account expires tomorrow. Please renew now for continued access to unlimited history/favourites on all devices', null, moment(expiryDate).subtract(1, 'd').valueOf());
-            }
-        },
-
         processUser: (res) => {
-            if (Constants.simulate.SUBSCRIBED) {
-                console.log("WARNING: SIMULATING SUBSCRIPTION")
-                res.activeSubscription = true;
-                if (Constants.simulate.EXPIRY) {
-                    res.paymentData = res.paymentData || [];
-                    res.expiryDate = moment().add(1, 'y').subtract(14, 'days').valueOf();
-                    res.paymentData.unshift(JSON.stringify({expiryTimeMillis: res.expiryDate, autoRenewing: false}));
-                    res.activeSubscription = res.expiryDate.isAfter(moment());
-                }
-            }
+            const isSubscribed = res.roleType === 'ADMIN' || SubscriptionStore.isSubscribed();
 
-            if (res.activeSubscription && res.favourites && res.favourites.length) {
+            if (isSubscribed && res.favourites && res.favourites.length) {
                 AppActions.setSubscribedFavourites(res.favourites);
             }
 
-            if (res.activeSubscription && res.history && res.history.length) {
+            if (isSubscribed && res.history && res.history.length) {
                 AppActions.setSubscribedHistory(res.history);
             }
 
@@ -213,14 +198,10 @@ var controller = {
                     }
                     res = controller.processUser(res);
 
-                    if (store.model.autoRenewing && !res.autoRenewing && res.activeSubscription) {
-                        // Active subscription but cancelled (Android only), schedule expiry notifications
-                        controller.scheduleExpiryNotifications(res.expiryDate);
-                    }
-
                     if (store.model.activeSubscription && !res.activeSubscription) {
                         // Active subscription has expired, removed paid links from favourites
                         AppActions.setDeviceFavourites();
+                        AppActions.setDeviceHistory();
                     }
 
                     if (retrySubscription) {
@@ -260,18 +241,21 @@ var controller = {
                     store.saved();
                 })
                 .catch(e => AjaxHandler.error(AccountStore, e));
-        }
+        },
     },
     store = Object.assign({}, BaseStore, {
         id: 'account',
         getUser: function () {
             return store.model
         },
-        isSubscribed: function () {
-            return store.model && store.model.activeSubscription;
+        hasActiveSubscription: function () {
+            return store.model && SubscriptionStore.isSubscribed();
         },
         setUser: function(user) {
             controller.setUser(user);
+        },
+        isAdmin: function () {
+            return store.model && store.model.roleType === 'ADMIN';
         }
     });
 
