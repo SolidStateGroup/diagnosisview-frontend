@@ -16,7 +16,7 @@ const DashboardPage = class extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			appState: AppState.currentState
+			appState: 'active'
 		};
 		ES6Component(this);
 		routeHelper.handleNavEvent(props.navigator, 'dashboard', this.onNavigatorEvent);
@@ -24,6 +24,8 @@ const DashboardPage = class extends Component {
 
 	componentDidMount() {
 		this.listenTo(AccountStore, 'change', () => this.forceUpdate());
+
+		this.refreshApp();
 
 		AppState.addEventListener('change', this.handleAppStateChange);
 	}
