@@ -1,5 +1,6 @@
 import BottomSheet from 'react-native-bottomsheet';
 import firebase from 'react-native-firebase';
+const _data = require('../../common-mobile/stores/base/_data');
 
 const FCM = firebase.messaging();
 const analytics = firebase.analytics();
@@ -205,30 +206,53 @@ global.API = {
         return initialLink ? cb(link) : null;
     },
     push,
-    subscribe: () => {
-		RNIap.buySubscription(iapItemSkus[0])
-			.then(purchase => {
-                AppActions.subscribe(purchase);
-			})
-			.catch(e => {
-                console.error(e);
-                if (typeof e === 'object') {
-                    switch (e.message) {
-                        case 'You already own this item.':
-                            Alert.alert('', 'You have already purchased a subscription on this device. Please login with the account that it was originally bought with.');
-                            break;
-                        case 'Cancelled.':
-                            break;
-
-                        default:
-                            Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later.');
-                            break;
-                    }
-                } else {
-                    Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later.');
+    validateReceipt: async (receipt) => {
+        const isTestApp = DeviceInfo.getBundleId().indexOf('test') !== -1;
+        const result = await Platform.select({
+            ios: RNIap.validateReceiptIos({
+                'receipt-data': receipt,
+                password: isTestApp ? '9f8e85c251bb4d6094c9f630b94be9b3' : 'todo'
+            }, isTestApp),
+            android: (async () => {
+                try {
+                    const res = await _data.post(`${Project.api}user/validate/android/public`, { packageName: DeviceInfo.getBundleId(), productId: iapItemSkus[0], purchaseToken: receipt });
+                    console.log(res);
+                    return res;
+                } catch (e) {
+                    console.log(e);
+                    return false;
                 }
-			});
-    },
+            })()
+        })
+
+        if (Platform.OS === 'ios') {
+            if (result.status !== 0) return;
+            const sortedReceipts = _.sortBy(result.latest_receipt_info, ({purchase_date_ms}) => -purchase_date_ms);
+            const latestReceipt = sortedReceipts && sortedReceipts.length && sortedReceipts[0];
+            if (!latestReceipt) {
+                console.log('Latest receipt could not be determined.')
+                return;
+            }
+            const expiryDate = moment(parseInt(latestReceipt.purchase_date_ms)).add(1, result.receipt.receipt_type.toLowerCase().includes('sandbox') ? 'hour' : 'year');
+            if (expiryDate.isSameOrBefore(moment())) {
+                console.log('Receipt has expired.')
+                return;
+            }
+            AppActions.setSubscription({autoRenewing: false, expiryDate, result, receipt});
+            AsyncStorage.setItem('transactionReceipt', receipt);
+        } else {
+            if (!result) return;
+            const expiryDate = moment(parseInt(result.expiryTimeMillis));
+            const autoRenewing = result.autoRenewing;
+            if (expiryDate.isSameOrBefore(moment())) {
+                console.log('Receipt has expired.')
+                return;
+            }
+            AppActions.setSubscription({autoRenewing, expiryDate, result, receipt});
+            AsyncStorage.setItem('transactionReceipt', receipt);
+        }
+        return true;
+    }
 };
 
 

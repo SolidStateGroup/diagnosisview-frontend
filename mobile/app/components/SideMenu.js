@@ -48,7 +48,7 @@ const TheComponent = class extends Component {
 
     logout = () => {
         routeHelper.closeDrawer(this.props.navigator);
-        Alert.alert('Confirm', 'Are you sure you wish to log out?' + (AccountStore.isSubscribed() ? ' Your history and favourites will no longer be saved against your account' : ''), [
+        Alert.alert('Confirm', 'Are you sure you wish to log out?' + ((AccountStore.hasActiveSubscription()) ? ' Your history and favourites will no longer be saved against your account' : ''), [
             {text: 'No', style: 'cancel'},
             {text: 'Yes', onPress: AppActions.logout}
         ]);

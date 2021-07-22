@@ -5,7 +5,6 @@ import AccountStore from './account-store';
 var controller = {
         setFavourite: function(code, name, link) {
             store.saving();
-            const userIsSubscribed = AccountStore.isSubscribed();
             AsyncStorage.getItem('favourites', (err, res) => {
                 if (err) {
                     store.goneABitWest(err);
@@ -14,7 +13,7 @@ var controller = {
                 }
 
                 var favourites = res ? JSON.parse(res) : [];
-                if (favourites.length >= 5 && !userIsSubscribed)  {
+                if (favourites.length >= 5 && !AccountStore.hasActiveSubscription())  {
                     Alert.alert('', `Maximum number of favourites reached. ${!AccountStore.getUser() ? 'Please sign in or create an account to add more' : 'Please subscribe or renew your subscription to add more'}`);
                     return;
                 }
@@ -33,7 +32,7 @@ var controller = {
                 favourites.push(favourite);
                 AsyncStorage.setItem('favourites', JSON.stringify(favourites));
 
-                if (userIsSubscribed) {
+                if (AccountStore.hasActiveSubscription()) {
                     data.put(Project.api + 'user/favourites', {linkId: link.id, code, type: link.linkType.value, dateAdded: favourite.date})
                         .then(res => {
                             console.log(res);
@@ -50,7 +49,6 @@ var controller = {
         },
         removeFavourite: function(code, link) {
             store.saving();
-            const userIsSubscribed = AccountStore.isSubscribed();
             AsyncStorage.getItem('favourites', (err, res) => {
                 if (err) {
                     store.goneABitWest(err);
@@ -64,7 +62,7 @@ var controller = {
                     favourites.splice(index, 1);
                 }
 
-                if (userIsSubscribed) {
+                if (AccountStore.hasActiveSubscription()) {
                     index = _.findIndex(store.model, f => f.code === code && f.link.id === link.id);
                     if (index === -1) return;
                     const favourite = store.model[index];
@@ -86,7 +84,7 @@ var controller = {
             });
         },
         getFavourites: function () {
-            if (!AccountStore.isSubscribed()) return;
+            if (!AccountStore.hasActiveSubscription()) return;
 
             store.loading();
             // data.get(Project.api + 'user/favourites')
@@ -128,7 +126,7 @@ var controller = {
                 }
 
                 const favourites = res ? JSON.parse(res) : [];
-                store.model = _.take(_.reverse(_.sortBy(_.filter(favourites, f => f.link.difficultyLevel === 'GREEN' || f.link.freeLink), 'date')), 5);
+                store.model = _.take(_.reverse(_.sortBy(SubscriptionStore.isSubscribed() ? favourites : _.filter(favourites, f => f.link.difficultyLevel === 'GREEN' || f.link.freeLink), 'date')), 5);
                 AsyncStorage.setItem("favourites", JSON.stringify(store.model));
                 store.loaded();
             })
