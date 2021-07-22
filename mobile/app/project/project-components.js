@@ -17,3 +17,5 @@ global.LinkTransformStore = require('../../common-mobile/stores/link-transform-s
 global.LinkTransformProvider = require('../../common-mobile/providers/LinkTransformProvider');
 global.SettingsStore = require('../../common-mobile/stores/settings-store');
 global.SettingsProvider = require('../../common-mobile/providers/SettingsProvider');
+global.SubscriptionStore = require('../../common-mobile/stores/subscription-store');
+global.SubscriptionProvider = require('../../common-mobile/providers/SubscriptionProvider');

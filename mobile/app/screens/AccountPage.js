@@ -81,7 +81,7 @@ const AccountPage = class extends Component {
 	}
 
 	subscribe = () => {
-		API.subscribe();
+		AppActions.buySubscription();
 	}
 
 	showRegisterForm = () => {
@@ -123,7 +123,7 @@ const AccountPage = class extends Component {
 	}
 
 	logout = () => {
-		Alert.alert('Confirm', 'Are you sure you want to log out?' + (AccountStore.isSubscribed() ? ' Your history and favourites will no longer be saved against your account' : ''), [
+		Alert.alert('Confirm', 'Are you sure you want to log out?' + (AccountStore.hasActiveSubscription() ? ' Your history and favourites will no longer be saved against your account' : ''), [
 			{text: 'No', style: 'cancel'},
 			{text: 'Yes', onPress: () => {
 				this.accountProvider.clearError();
@@ -168,12 +168,14 @@ const AccountPage = class extends Component {
 
 	onLogin = () => {
 		const user = AccountStore.getUser();
-		this.setState({
-			firstName: user.firstName,
-			lastName: user.lastName,
-			occupation: user.occupation || '',
-			institution: user.institution || ''
-		});
+		if (user) {
+			this.setState({
+				firstName: user.firstName,
+				lastName: user.lastName,
+				occupation: user.occupation || '',
+				institution: user.institution || ''
+			});
+		}
 	}
 
 	updateAccount = () => {
@@ -361,68 +363,87 @@ const AccountPage = class extends Component {
 		return (
 			<AccountProvider ref={c => this.accountProvider = c} onLogin={this.onLogin} onLogout={this.onLogout} onSave={this.onLogin}>
 				{({user, isLoading, isSaving, error})=>(
-					<SettingsProvider>
-						{({settings, isLoading: settingsIsLoading, error: settingsError}) => (
-							<Flex>
-								<NetworkBar />
-								{(isLoading || isSaving || settingsIsLoading || !settings) ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
-								<KeyboardAwareScrollView style={{backgroundColor:pallette.backgroundBase}} keyboardShouldPersistTaps="handled">
-										<View style={Styles.hero}></View>
-										<View style={[ Styles.stacked, Styles.padded]}>
-										{user && user.activeSubscription ? (
-											<View style={[Styles.whitePanel, Styles.padded]}>
-												<Text style={[Styles.textCenter, Styles.stacked, Styles.semiBold]}>{user.emailAddress}</Text>
-												<Text style={[Styles.textCenter, Styles.stacked]}>Your account is active.</Text>
-												<Text style={[Styles.textCenter, { color: '#2980b9', textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
-											</View>
-										) : null}
-										{!user || !user.activeSubscription ? (
-											<View style={[Styles.whitePanel, Styles.padded]}>
-												<Text style={[Styles.textMedium, Styles.paragraph]}>
-													A user account unlocks access to professional resources that are unavailable in the free version, and helps us to cover maintenance and improvement costs.
-												</Text>
-												<Text style={[Styles.textMedium, Styles.paragraph]}>
-													Some paywalled resources are mapped as amber or red links. If you are associated with an institution that has registered with us, direct links may be provided so that you only have to log in once.
-												</Text>
-												<Text style={[Styles.textMedium, Styles.paragraph]}>
-													Account holders can also have unlimited history and save unlimited favourites, and these are kept synchronised between devices.
-												</Text>
-												{user && !user.activeSubscription ? <Button style={{marginTop: 10}} onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe') + ' now'}</Button> : null}
-											</View>
-										) : null}
-										{!user ? (
-											<FormGroup>
-												<Row style={{alignItems:'center', marginBottom:10, justifyContent:'center'}}>
-													<Button
-														onPress={this.showRegisterForm}
-														style={this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlLeft] : Styles.segmentedControl}
-														textStyle={this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
-													>
-														Register
-													</Button>
-													<Button
-														onPress={this.showLoginForm}
-														style={!this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlRight, {alignSelf: 'auto'}] : [Styles.segmentedControl,{alignSelf: 'auto'}]}
-														textStyle={!this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
-													>
-														Login
-													</Button>
-												</Row>
-												{!this.state.login ? this.renderRegisterForm(error, settings) : this.renderLoginForm(error)}
-											</FormGroup>
+					<SubscriptionProvider>
+						{({subscription, isLoading: subscriptionLoading}) => (
+							<SettingsProvider>
+								{({settings, isLoading: settingsIsLoading, error: settingsError}) => (
+									<Flex>
+										<NetworkBar />
+										{(isLoading || isSaving || settingsIsLoading || !settings) ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
+										<KeyboardAwareScrollView style={{backgroundColor:pallette.backgroundBase}} keyboardShouldPersistTaps="handled">
+												<View style={Styles.hero}></View>
+												<View style={[ Styles.stacked, Styles.padded]}>
+												{(subscription || user) ? (
+													<View style={[Styles.whitePanel, Styles.padded, (!subscription || !user) ? Styles.mb10 : {}]}>
+														{user ? <Text style={[Styles.textCenter, Styles.semiBold]}>{user.emailAddress}</Text> : null}
+														{subscription ? (
+															<React.Fragment>
+																<Text style={[Styles.textCenter]}>Your subscription is active.</Text>
+																<Text style={[Styles.textCenter, { color: '#2980b9', textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
+															</React.Fragment>
+														) : null}
+													</View>
+												) : null}
+												{(!subscription || !user) ? (
+													<View style={[Styles.whitePanel, Styles.padded, subscription ? Styles.mt10 : {}]}>
+														{(!subscription && !subscriptionLoading) ? (
+															<React.Fragment>
+																<Text style={[Styles.textMedium, Styles.paragraph]}>
+																	Subscribe to access professional resources that are unavailable in the free version. The fee helps us to cover maintenance and improvement costs.
+																</Text>
+																<Button style={[Styles.mb10, Styles.mt5]} onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe')}</Button>
+															</React.Fragment>
+														) : subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : null}
+														{!user ? (
+															<React.Fragment>
+															<Text style={[Styles.textMedium, Styles.paragraph]}>
+															Register your DiagnosisView account to access the features below, or tap Login if you have one already:
+															</Text>
+															<Text style={[Styles.textMedium, Styles.paragraph]}>
+																- Account holders can have unlimited history and unlimited favourites, and these are synchronised between your devices.
+															</Text>
+															<Text style={[Styles.textMedium, Styles.paragraph]}>
+																- Some paywalled resources are mapped as amber or red links. If you belong to an affiliated institution, direct links may be provided so that you only have to log in once.
+															</Text>
+															</React.Fragment>
+														) : null}
+													</View>
+												) : null}
+												{!user ? (
+													<FormGroup>
+														<Row style={{alignItems:'center', marginBottom:10, justifyContent:'center'}}>
+															<Button
+																onPress={this.showRegisterForm}
+																style={this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlLeft] : Styles.segmentedControl}
+																textStyle={this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
+															>
+																Register
+															</Button>
+															<Button
+																onPress={this.showLoginForm}
+																style={!this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlRight, {alignSelf: 'auto'}] : [Styles.segmentedControl,{alignSelf: 'auto'}]}
+																textStyle={!this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
+															>
+																Login
+															</Button>
+														</Row>
+														{!this.state.login ? this.renderRegisterForm(error, settings) : this.renderLoginForm(error)}
+													</FormGroup>
 
-										) : (
-											<FormGroup>
-												{this.renderAccountForm(user, error, settings)}
-												<Button onPress={this.logout}>Logout</Button>
-											</FormGroup>
+												) : (
+													<FormGroup>
+														{this.renderAccountForm(user, error, settings)}
+														<Button onPress={this.logout}>Logout</Button>
+													</FormGroup>
+												)}
+											</View>
+										</KeyboardAwareScrollView>
 										)}
-									</View>
-								</KeyboardAwareScrollView>
+									</Flex>
 								)}
-							</Flex>
+							</SettingsProvider>
 						)}
-					</SettingsProvider>
+					</SubscriptionProvider>
 				)}
 			</AccountProvider>
 		)
