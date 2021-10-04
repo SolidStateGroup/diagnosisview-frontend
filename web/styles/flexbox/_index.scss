@@ -4,7 +4,9 @@
   @include flexbox();
   @include flex-direction(column)
 }
-
+.flex-align-start {
+  align-items: flex-start !important;
+}
 .flex-row {
   @include flexbox();
   @include flex-direction(row);

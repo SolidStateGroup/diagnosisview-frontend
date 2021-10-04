@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import Aside from './Aside';
 import Nav from './Nav';
+import NavHeader from "./NavHeader";
+import NavAdmin from './NavAdmin';
 import Popover from './base/Popover';
 import _data from '../../common/stores/base/_data';
 
@@ -29,10 +31,18 @@ export default class App extends Component {
         const { pathname } = this.context.router.history.location;
         const user = AccountStore.getUser();
         AppActions.getSettings();
-        if (user && (pathname == '/' || pathname == '/login' || pathname == '/demo' || pathname == '/signup')) {
-            this.context.router.history.replace('/admin');
-        } else if (!user && pathname.indexOf('/admin') !== -1) {
+        if (pathname.includes("/admin") && !AccountStore.isAdmin()) {
             this.context.router.history.replace('/');
+        }
+        if (pathname.includes("/dashboard") && !AccountStore.model) {
+            this.context.router.history.replace('/');
+        }
+        if (user && (pathname == '/' || pathname == '/login' || pathname == '/demo' || pathname == '/signup')) {
+            if (AccountStore.isAdmin()) {
+                this.context.router.history.replace('/admin');
+            } else {
+                this.context.router.history.replace('/dashboard');
+            }
         }
     }
 
@@ -43,7 +53,11 @@ export default class App extends Component {
 
         //Redirect on login
         if (location.pathname == '/' || location.pathname == '/login' || location.pathname == '/demo' || location.pathname == '/signup') {
-            this.context.router.history.replace(redirect ? redirect : '/admin');
+            if (AccountStore.isAdmin()) {
+                this.context.router.history.replace(redirect ? redirect : '/admin');
+            } else {
+                this.context.router.history.replace(redirect ? redirect : '/dashboard');
+            }
         }
     };
 
@@ -93,15 +107,16 @@ export default class App extends Component {
         const { searchResults, searching, search } = this.state;
         const { location } = this.context.router.history;
         const redirect = location.query && location.query.redirect ? `?redirect=${location.query.redirect}` : "";
-        const pageHasAside = location.pathname.indexOf('admin') !== -1;
+        const pageHasAside = location.pathname.indexOf('dashboard') !== -1;
+        const pageHasAdminAside = location.pathname.indexOf('admin') !== -1 ;
         return (
-            <div className={pageHasAside ? 'admin-body' : ''}>
+            <div className={pageHasAdminAside ? 'admin-body' : ''}>
                 <AccountProvider onNoUser={this.onNoUser} onLogout={this.onLogout} onLogin={this.onLogin}>
                     {({ isLoading, user }) => (
                         <div>
                             <div>
-                                {pageHasAside ? <Nav /> : null}
-                                {pageHasAside && (
+                                {pageHasAdminAside ? <NavAdmin /> : null}
+                                {pageHasAdminAside && (
                                     <div className="full-width quick-search-input flex mb-3 mt-3">
                                         <Row className="quick-search-container">
                                             <label className="quick-search-label mr-3">Diagnosis Quick Search:</label>
@@ -120,10 +135,16 @@ export default class App extends Component {
                                                 </Popover>
                                             </div>
                                         </Row>
-                                        
+
                                     </div>
                                 )}
-                                {this.props.children}
+                                {pageHasAside ? <NavHeader /> : null}
+                                <div className="row">
+                                    {pageHasAside ? <Nav /> : null}
+                                    <div className={pageHasAside && "col-md-9 ml-sm-auto col-lg-10 px-md-4 mt-3"}>
+                                        {this.props.children}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}

@@ -29,10 +29,10 @@ module.exports = class extends React.Component {
                     {({error, isLoading}, {clearError}) => (
                         <div>
                         <Flex className="hero--shape-bg mb-0 mb-md-5">
-                            <div className="flat-panel flat-panel--warning flex-row align-items-center px-2 px-sm-4">
-                                <img src="/images/icon-alert.png" alt="alert" height="20px" className=""/>
-                                <p className="mb-0 ml-2 flex-1">DiagnosisView is only available as an app for mobile devices. Web login is currently for Admin access only.</p>
-                            </div>
+                            {/*<div className="flat-panel flat-panel--warning flex-row align-items-center px-2 px-sm-4">*/}
+                            {/*    <img src="/images/icon-alert.png" alt="alert" height="20px" className=""/>*/}
+                            {/*    <p className="mb-0 ml-2 flex-1">DiagnosisView is only available as an app for mobile devices. Web login is currently for Admin access only.</p>*/}
+                            {/*</div>*/}
 
                             <div className="nav">
                                 <div className="brand mb-2 mb-md-0">
@@ -67,15 +67,30 @@ module.exports = class extends React.Component {
                                     </form>
                                 </div>
                             </div>
-                            <div className="flex-row">
+                            <div className="flex-row flex-align-start">
                                 <div className="col-lg-6 px-5">
-                                    <h3 className="mt-5 mt-md-0 mb-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h3>
+                                    <h3 style={{marginTop:100}} className="mb-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h3>
                                     <ul className="feature-list list-unstyled">
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Info on your own mobile or tablet</li>
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Advanced patient info is the starting point (free)</li>
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Moving on to practitioner-level and expert-level professional resources</li>
                                         <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> With an optional account you can access professional resources, as well as sync favourites and history across devices.</li>
+                                        <li className="mb-2"><img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> DiagnosisView help pages and news updates are available <a className="text-light" target="_blank" href="https://blogs.ed.ac.uk/diagnosisview/">here</a></li>
                                     </ul>
+                                    <Row>
+                                        <Link
+                                            style={{width:146}}
+                                            className="button button__rounded"
+                                            to={`/search`
+                                            }><span>Search a Topic</span>
+                                        </Link>
+                                        <Link
+                                            style={{width:146}}
+                                            className="button button__outline button__rounded ml-4"
+                                            to={`/signup`
+                                            }><span>Sign Up</span>
+                                        </Link>
+                                    </Row>
                                 </div>
                                 <div className="col-lg-6">
                                     <Column className="centered-container">
@@ -113,10 +128,12 @@ module.exports = class extends React.Component {
                             <div className="panel--white col-md-6">
                                 <div className="flex-row justify-content-center text-center">
                                     <img src="../../images/uoe-icon.jpeg" width="100px" />
-                                    <p>DiagnosisView was developed by <a href="https://www.ed.ac.uk" target="_blank">The University of Edinburgh</a> with the support of the <a href="https://www.patientview.org" target="_blank">www.patientview.org</a> electronic health records system.</p>
+                                    <div className="mt-2 text-center">
+                                        DiagnosisView was developed by <a className="font-weight-bold" href="https://www.ed.ac.uk" target="_blank">The University of Edinburgh</a> with the support of the <a className="font-weight-bold" href="https://www.patientview.org" target="_blank">www.patientview.org</a> electronic health records system.
+
+                                    </div>
                                 </div>
                             </div>
-                            <a href="https://blogs.ed.ac.uk/diagnosisview/" target="_blank" className="text-small mt-2">DiagnosisView help pages and news updates are available here.</a>
                         </div>
 
 
@@ -124,6 +141,7 @@ module.exports = class extends React.Component {
                         <footer className="footer">
                             <div></div>
                             <div className="text-right">
+                                <a target="_blank" className="footer__link mr-4" href='https://blogs.ed.ac.uk/diagnosisview'>Help</a>
                                 <Link className="footer__link" to='/privacy-policy'>Privacy Policy</Link>
                             </div>
                         </footer>

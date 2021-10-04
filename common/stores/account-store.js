@@ -26,7 +26,9 @@ var controller = {
                     controller.onLogin(res);
                     store.loaded();
                 })
-                .catch(e => AjaxHandler.error(AccountStore, e));
+                .catch(e => {
+                    controller.login(details)
+                });
         },
         login: (details) => {
             store.loading();

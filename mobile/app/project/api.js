@@ -1,6 +1,6 @@
 import BottomSheet from 'react-native-bottomsheet';
 import firebase from 'react-native-firebase';
-const _data = require('../../common-mobile/stores/base/_data');
+const _data = require('../../../common/stores/base/_data');
 
 const FCM = firebase.messaging();
 const analytics = firebase.analytics();

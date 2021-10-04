@@ -1,13 +1,13 @@
 import 'react-native-globals'; //Adds <View etc to global scope
 
-global.Project = require('../../common-mobile/project');
+global.Project = require('../../../common/project');
 
 require('./polyfill');
 require('./api');
 require('../style/style_screen');
 require('./base-components');
 require('./project-components');
-global.AjaxHandler = require('../../common-mobile/ajax-handler');
+global.AjaxHandler = require('../../../common/ajax-handler');
 
 import ION from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -16,19 +16,19 @@ global.FontAwesome = FontAwesome;
 global.ION = ION;
 global.MaterialIcon = MaterialIcon;
 
-import Constants from '../../common-mobile/constants';
+import Constants from '../../../common/constants';
 import MobileConstants from '../project/constants';
-import Utils from '../../common-mobile/utils/utils';
-import Format from '../../common-mobile/utils/format';
+import Utils from '../../../common/utils/utils';
+import Format from '../../../common/utils/format';
 global.Constants = Object.assign({}, Constants, MobileConstants);
 global.Utils = Utils;
 global.Format = Format;
 
 //Flux dispatcher
-import ES6Component from '../../common-mobile/ES6Component';
-import Dispatcher from '../../common-mobile/dispatcher/dispatcher';
-import AppActions from '../../common-mobile/dispatcher/app-actions';
-import Actions from '../../common-mobile/dispatcher/action-constants';
+import ES6Component from '../../../common/ES6Component';
+import Dispatcher from '../../../common/dispatcher/dispatcher';
+import AppActions from '../../../common/dispatcher/app-actions';
+import Actions from '../../../common/dispatcher/action-constants';
 
 global.Dispatcher = Dispatcher;
 global.ES6Component = ES6Component;
