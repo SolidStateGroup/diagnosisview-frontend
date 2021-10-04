@@ -148,17 +148,34 @@ footer.homepage{
 /*button*/
 .button {
 	display: inline-block;
-	padding: 15px 20px;
+	padding: 10px 20px;
   border-radius: 3px;
+	text-align: center;
   font-size: 15px;
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
   text-decoration: none;
   background: white;
-	color: black;
+	color: #1C1C1C;
+	font-weight: 600;
   white-space: nowrap;
-	border: none;
+	border: 2px solid transparent;
 	-webkit-appearance: none;
 	cursor: pointer;
+	&:hover {
+		text-decoration: none;
+	}
+	&__rounded {
+		border-radius: 6px;
+	}
+	&__outline {
+		box-shadow: none;
+		&:hover {
+			color: white;
+		}
+		background: transparent;
+		border-color: white;
+		color: white;
+	}
 }
 .button__full {
 	width: 100%;

@@ -1,4 +1,25 @@
 {
   "presets": ["es2015", "react", "stage-1"],
-  "plugins": ["transform-runtime", "react-hot-loader/babel"]
+  "plugins": ["transform-runtime", "react-hot-loader/babel",
+    [
+      "module-resolver",
+      {
+        "root": ["."],
+        "extensions": [
+          ".ios.ts",
+          ".android.ts",
+          ".ts",
+          ".ios.tsx",
+          ".android.tsx",
+          ".tsx",
+          ".jsx",
+          ".js",
+          ".json"
+        ],
+        "alias": {
+          "common": "../common"
+        }
+      }
+    ]
+  ]
 }

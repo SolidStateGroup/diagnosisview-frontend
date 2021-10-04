@@ -11,11 +11,13 @@ import ManageLinkTransformsPage from './components/pages/ManageLinkTransformsPag
 import ManageLinkLogosPage from './components/pages/ManageLinkLogosPage';
 import DiagnosisDetailPage from './components/pages/DiagnosisDetailPage';
 import NotFoundPage from './components/pages/NotFoundPage';
+import DashboardPage from "./components/pages/DashboardPage";
 
 export default (
     <App>
         <Switch>
             <Route path="/" exact component={HomePage}/>
+            <Route path="/dashboard" exact component={DashboardPage}/>
             <Route path="/admin/codes" exact component={ManageCodesPage}/>
             <Route path="/admin/users" exact component={ManageUsersPage}/>
             <Route path="/admin/institutions" exact component={InstitutionsPage}/>

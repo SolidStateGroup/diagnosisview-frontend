@@ -1,5 +1,5 @@
 var currentScreen = '/';
-import AccountStore from '../common-mobile/stores/account-store'
+import AccountStore from '../../common/stores/account-store'
 import {Navigation} from "react-native-navigation";
 
 

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import data from '../../common-mobile/stores/base/_data';
+import data from '../../../common/stores/base/_data';
 
 const Welcome = class extends Component {
 	displayName: 'Welcome'

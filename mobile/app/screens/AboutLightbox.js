@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-const data = require('../../common-mobile/stores/base/_data');
+const data = require('../../../common/stores/base/_data');
 
 const About = class extends Component {
 	displayName: 'About'

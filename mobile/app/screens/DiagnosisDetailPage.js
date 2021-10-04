@@ -2,7 +2,7 @@
  * Created by kylejohnson on 28/01/2017.
  */
 import React, {Component, PropTypes} from 'react';
-import data from '../../common-mobile/stores/base/_data';
+import data from '../../../common/stores/base/_data';
 import FavouriteComplexity from '../components/FavouriteComplexity';
 import PaywallLink from '../components/PaywallLink';
 

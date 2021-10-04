@@ -1,6 +1,6 @@
-import Dispatcher  from '../../common-mobile/dispatcher/dispatcher';
-import AppActions  from '../../common-mobile/dispatcher/app-actions';
-import Actions  from '../../common-mobile/dispatcher/action-constants';
+import Dispatcher  from '../../../common/dispatcher/dispatcher';
+import AppActions  from '../../../common/dispatcher/app-actions';
+import Actions  from '../../../common/dispatcher/action-constants';
 global.Dispatcher = Dispatcher;
 global.AppActions = AppActions;
 global.Actions = Actions;
@@ -27,8 +27,8 @@ window.RequiredNode = React.PropTypes.node.isRequired;
 window.RequiredElement = React.PropTypes.node.isRequired;
 
 
-window.Component = require('../../common-mobile/Component');
-window.ES6Component = require('../../common-mobile/ES6Component');
+window.Component = require('../../../common/Component');
+window.ES6Component = require('../../../common/ES6Component');
 
 //Animation
 window.Fade = require('../components/base/animation/Fade');
