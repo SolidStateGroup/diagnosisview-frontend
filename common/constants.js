@@ -8,6 +8,7 @@ var Constants = {
         "HISTORY_SUBSCRIBE": {event: 'Subscribe pressed', category: 'History'},
         "FAVOURITES_SUBSCRIBE": {event: 'Subscribe pressed', category: 'Favourites'},
     },
+    occupations: [{value: 'Healthcare Student'}, {value: 'Healthcare Practitioner'}, {value: 'Patient'}, {value: 'Other'}],
     pages: {},
     strings: {},
 
