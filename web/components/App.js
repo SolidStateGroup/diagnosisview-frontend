@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import Aside from './Aside';
 import Nav from './Nav';
-import NavHeader from "./NavHeader";
 import NavAdmin from './NavAdmin';
 import Popover from './base/Popover';
 import _data from '../../common/stores/base/_data';
+import Navbar from "./Navbar";
 
 export default class App extends Component {
 
@@ -108,6 +108,7 @@ export default class App extends Component {
         const { location } = this.context.router.history;
         const redirect = location.query && location.query.redirect ? `?redirect=${location.query.redirect}` : "";
         const pageHasAside = location.pathname.indexOf('dashboard') !== -1;
+        const pageHasNav = location.pathname.indexOf('admin') === -1 && location.pathname.indexOf('dashboard') === -1 && location.pathname.indexOf('terms-of-use') === -1 && location.pathname.indexOf('privacy-policy') === -1;
         const pageHasAdminAside = location.pathname.indexOf('admin') !== -1 ;
         return (
             <div className={pageHasAdminAside ? 'admin-body' : ''}>
@@ -138,13 +139,17 @@ export default class App extends Component {
 
                                     </div>
                                 )}
-                                {pageHasAside ? <NavHeader /> : null}
-                                <div className="row">
-                                    {pageHasAside ? <Nav /> : null}
-                                    <div className={pageHasAside && "col-md-9 ml-sm-auto col-lg-10 px-md-4 mt-3"}>
-                                        {this.props.children}
+                                {pageHasNav && <Navbar onRegister={()=>{
+                                    this.context.router.history.replace(redirect ? redirect : '/dashboard');
+
+                                }}/>}
+                                    <div>
+                                        {pageHasAside ? <Nav /> : null}
+                                        <div className={pageHasAside ? "col-md-9 ml-sm-auto col-lg-10 px-md-4 mt-3": "col-md-12"}>
+                                            {this.props.children}
+                                        </div>
                                     </div>
-                                </div>
+
                             </div>
                         </div>
                     )}

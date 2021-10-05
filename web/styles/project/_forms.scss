@@ -1,9 +1,12 @@
+.custom-select {
+    background-color: #F0F1FF;
+    border: 1px solid rgba(7, 27, 57, 0.4);
+    border-radius: 6px;
+}
 .input{
     background: #fff;
-    padding: 10px 20px;
     border-radius: 20px;
     box-shadow: none;
-    height: 40px;
     font-size: 12px;
 
     &:focus{
@@ -11,7 +14,24 @@
     }
 
     &--outline{
-        border: 1px solid #b5b5b5;
+        border: 1px solid rgba(7, 27, 57, 0.4);
+        border-radius: 6px;
+        width:100%;
+        background-color: #F0F1FF;
+
+        height: 38px;
+        line-height: 38px;
+        input {
+            height: 100%;
+            width: 100%;
+            text-indent: 5px;
+            &::placeholder {
+                color: #071B39;
+                opacity: 50%;
+            }
+            font-size: 15px;
+            background-color: transparent;
+        }
     }
 
     &--mini{
