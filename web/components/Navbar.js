@@ -26,11 +26,16 @@ class TheComponent extends Component {
                         <Flex/>
                         <Modal
                             unmountOnClose
-                            isOpen={this.state.modalOpen||isSignup}
+                            isOpen={this.state.modalOpen||isSignup && !this.state.forceClose}
                             toggle={()=>{
-                                if(isSignup) {
-                                    this.props.history.replace("/")
-                                }
+                                this.setState({forceClose:true, modalOpen:false})
+                                setTimeout(()=>{
+                                    this.setState({forceClose:false})
+                                    if(isSignup) {
+                                        this.props.history.replace("/")
+                                    }
+                                },350)
+
                                 this.setState({modalOpen:false})
                             }}
                         >
@@ -157,6 +162,9 @@ class TheComponent extends Component {
                                                 this.login(this.props.id, this.state.name);
                                             }
                                         }}>
+                                            <h3 className="mb-4 mt-2">
+                                                Log in
+                                            </h3>
                                             <InputGroup
                                                 title="Email"
                                                 placeholder="Enter email"
