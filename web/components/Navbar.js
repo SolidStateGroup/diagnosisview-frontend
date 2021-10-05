@@ -15,6 +15,7 @@ class TheComponent extends Component {
         AppActions.register({firstName:this.state.firstName, lastName:this.state.lastName, username: this.state.email, password:this.state.password, occupation:this.state.occupation, institution:this.state.institution});
     }
     render() {
+        const isSignup = this.props.location.pathname === "/signup"
         return (
             <AccountProvider onSave={this.props.onRegister}>
                 {({error, isLoading}, {clearError}) => (
@@ -25,12 +26,17 @@ class TheComponent extends Component {
                         <Flex/>
                         <Modal
                             unmountOnClose
-                            isOpen={this.state.modalOpen}
-                            toggle={()=>this.setState({modalOpen:!this.state.modalOpen})}
+                            isOpen={this.state.modalOpen||isSignup}
+                            toggle={()=>{
+                                if(isSignup) {
+                                    this.props.history.replace("/")
+                                }
+                                this.setState({modalOpen:false})
+                            }}
                         >
                             <ModalBody test="">
                                 <div className="ml-0 ml-md-auto">
-                                    {this.state.isSignup ? (
+                                    {isSignup ? (
                                         <form onSubmit={(e) => {
                                             e.preventDefault();
                                             if (this.state.email && this.state.password) {
@@ -141,7 +147,7 @@ class TheComponent extends Component {
                                             </p>
                                             {error && error.message && <div className="text-danger">{error.message}</div>}
                                             <hr/>
-                                            Have an Account? <a onClick={()=>this.setState({isSignup:!this.state.isSignup})} href="#">Log in</a>
+                                            Have an Account? <Link to="/">Log in</Link>
                                         </form>
                                     ): (
                                         <form onSubmit={(e) => {
@@ -176,7 +182,7 @@ class TheComponent extends Component {
 
                                             {error && error.message && <div className="text-danger">{error.message}</div>}
                                             <hr/>
-                                            Not a member? <a onClick={()=>this.setState({isSignup:!this.state.isSignup})} href="#">Sign up</a>
+                                            Not a member? <Link to="/signup">Sign up</Link>
                                         </form>
                                     )}
 
@@ -193,5 +199,6 @@ class TheComponent extends Component {
         )
     }
 }
+import { withRouter } from 'react-router-dom';
 
-export default TheComponent
+export default withRouter(TheComponent)
