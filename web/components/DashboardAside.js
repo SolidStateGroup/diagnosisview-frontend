@@ -43,7 +43,9 @@ const TheComponent = class extends Component {
                         return !!institution && (
                             <div className="dashboard-aside__institution mb-4">
                                 <Row>
-                                    <img src={institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}/>
+                                    {institution.logoUrl && (
+                                        <img src={institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}/>
+                                    )}
                                     <Flex className="ml-2 text-light">
                                         {institution.name}
                                     </Flex>
