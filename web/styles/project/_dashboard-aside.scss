@@ -1,0 +1,36 @@
+.dashboard-aside {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    z-index: 100;
+    width: 320px;
+    padding: 48px 0 0;
+    background-color: $primary;
+    flex-direction: column;
+  &__link {
+    height: 45px;
+    line-height: 45px;
+    border-radius: 6px;
+    font-size: 16px;
+    text-decoration: none !important;
+    &-text {
+      margin-top: 2px;
+    }
+    .fa,.far {
+      display: block;
+      width: 40px;
+      font-size: 24px;
+    }
+    color: rgba(255,255,255,.6);
+    @include transition(all 200ms);
+    &:hover {
+      color: white;
+    }
+    &.active {
+      background: #5496FF;
+      color: white;
+    }
+  }
+}
