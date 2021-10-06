@@ -24,6 +24,20 @@ class TheComponent extends Component {
                             <img className="brand-image mt-1" src={require('../images/brand.png')}/>
                         </div>
                         <Flex/>
+                        <Row>
+                            <Link to="/signup" onClick={()=>this.setState({modalOpen:true, isSignup:true})}>
+                                <Button className={'btn button--outline-dark nav__button mr-3'}>
+                                    <span className="nav__button__text">{isLoading ? 'Signing up..' : 'Sign up'}</span>
+                                    <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
+                                </Button>
+                            </Link>
+                            <Button onClick={()=>this.setState({modalOpen:true})} className={'btn btn--primary nav__button'}>
+                                <span className="nav__button__text">{isLoading ? 'Logging in..' : 'Log in'}</span>
+                                <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
+                            </Button>
+                        </Row>
+
+
                         <Modal
                             unmountOnClose
                             isOpen={this.state.modalOpen||isSignup && !this.state.forceClose}
@@ -52,88 +66,88 @@ class TheComponent extends Component {
                                             <h3 className="mb-4 mt-2">
                                                 Sign Up
                                             </h3>
-                                                <div className="row">
-                                                    <div className="col-md-6 mb-4">
-                                                        <InputGroup
-                                                            title="First name"
-                                                            placeholder="Enter first name"
-                                                            onChange={(e) => this.setState({ firstName: Utils.safeParseEventValue(e) })}
-                                                            inputClassName="input--default" />
-                                                    </div>
-                                                    <div className="col-md-6 mb-4">
-                                                        <InputGroup
-                                                            title="Last name"
-                                                            placeholder="Enter first name"
-                                                            onChange={(e) => this.setState({ lastName: Utils.safeParseEventValue(e) })}
-                                                            inputClassName="input--default" />
-                                                    </div>
-                                                    <div className="col-md-12 mb-4">
-                                                        <InputGroup
-                                                            title="Email"
-                                                            type="email"
-                                                            placeholder="Enter email"
-                                                            onChange={(e) => this.setState({ email: Utils.safeParseEventValue(e) })}
-                                                            inputClassName="input--default" />
-                                                    </div>
-                                                    <div className="col-md-6 mb-4">
-                                                        <InputGroup
-                                                            type="password"
-                                                            title="Password"
-                                                            placeholder="Minimum 7 characters"
-                                                            onChange={(e) => this.setState({ password: Utils.safeParseEventValue(e) })}
-                                                            inputClassName="input--default"/>
-                                                    </div>
-                                                    <div className="col-md-6 mb-4">
-                                                        <InputGroup
-                                                            type="password"
-                                                            title="Confirm Password"
-                                                            placeholder="Minimum 7 characters"
-                                                            onChange={(e) => this.setState({ confirmPassword: Utils.safeParseEventValue(e) })}
-                                                            inputClassName="input--default"/>
-                                                    </div>
-                                                    <div className="col-md-6 mb-4">
-                                                        <InputGroup
-                                                            title="Occupation"
-                                                            placeholder="Enter password"
-                                                            onChange={(e) => this.setState({ confirmPassword: Utils.safeParseEventValue(e) })}
-                                                            component={(
-                                                                <select onChange={(e)=>this.setState({occupation:Utils.safeParseEventValue(e)})} className="custom-select">
-                                                                    <option value="">
-                                                                        Please Select
+                                            <div className="row">
+                                                <div className="col-md-6 mb-4">
+                                                    <InputGroup
+                                                        title="First name"
+                                                        placeholder="Enter first name"
+                                                        onChange={(e) => this.setState({ firstName: Utils.safeParseEventValue(e) })}
+                                                        inputClassName="input--default" />
+                                                </div>
+                                                <div className="col-md-6 mb-4">
+                                                    <InputGroup
+                                                        title="Last name"
+                                                        placeholder="Enter first name"
+                                                        onChange={(e) => this.setState({ lastName: Utils.safeParseEventValue(e) })}
+                                                        inputClassName="input--default" />
+                                                </div>
+                                                <div className="col-md-12 mb-4">
+                                                    <InputGroup
+                                                        title="Email"
+                                                        type="email"
+                                                        placeholder="Enter email"
+                                                        onChange={(e) => this.setState({ email: Utils.safeParseEventValue(e) })}
+                                                        inputClassName="input--default" />
+                                                </div>
+                                                <div className="col-md-6 mb-4">
+                                                    <InputGroup
+                                                        type="password"
+                                                        title="Password"
+                                                        placeholder="Minimum 7 characters"
+                                                        onChange={(e) => this.setState({ password: Utils.safeParseEventValue(e) })}
+                                                        inputClassName="input--default"/>
+                                                </div>
+                                                <div className="col-md-6 mb-4">
+                                                    <InputGroup
+                                                        type="password"
+                                                        title="Confirm Password"
+                                                        placeholder="Minimum 7 characters"
+                                                        onChange={(e) => this.setState({ confirmPassword: Utils.safeParseEventValue(e) })}
+                                                        inputClassName="input--default"/>
+                                                </div>
+                                                <div className="col-md-6 mb-4">
+                                                    <InputGroup
+                                                        title="Occupation"
+                                                        placeholder="Enter password"
+                                                        onChange={(e) => this.setState({ confirmPassword: Utils.safeParseEventValue(e) })}
+                                                        component={(
+                                                            <select onChange={(e)=>this.setState({occupation:Utils.safeParseEventValue(e)})} className="custom-select">
+                                                                <option value="">
+                                                                    Please Select
+                                                                </option>
+                                                                {Constants.occupations.map((v)=>(
+                                                                    <option value={v.value} key={v.value}>
+                                                                        {v.value}
                                                                     </option>
-                                                                    {Constants.occupations.map((v)=>(
-                                                                        <option value={v.value} key={v.value}>
-                                                                            {v.value}
-                                                                        </option>
-                                                                    ))}
-                                                                </select>
-                                                            )}
-                                                            inputClassName="input--default"/>
-
-                                                    </div>
-                                                    <SettingsProvider>
-                                                        {({settings, isLoading: settingsIsLoading, error: settingsError}) => (
-                                                            <div className="col-md-6 mb-4">
-                                                                <InputGroup
-                                                                    title="Institution"
-                                                                    onChange={(e) => this.setState({ confirmPassword: Utils.safeParseEventValue(e) })}
-                                                                    component={(
-                                                                        <select onChange={(e)=>this.setState({institution:Utils.safeParseEventValue(e)})} className="custom-select">
-                                                                            <option value="">
-                                                                                Enter Occupation
-                                                                            </option>
-                                                                            {settings && _.map(_.filter(settings.institutions, i => !i.hidden), institution => (
-                                                                                <option key={institution.id} value={institution.id}>{institution.name}</option>
-                                                                            ))}
-                                                                        </select>
-                                                                    )}
-                                                                    inputClassName="input--default"/>
-                                                            </div>
-                                                            )}
-
-                                                    </SettingsProvider>
+                                                                ))}
+                                                            </select>
+                                                        )}
+                                                        inputClassName="input--default"/>
 
                                                 </div>
+                                                <SettingsProvider>
+                                                    {({settings, isLoading: settingsIsLoading, error: settingsError}) => (
+                                                        <div className="col-md-6 mb-4">
+                                                            <InputGroup
+                                                                title="Institution"
+                                                                onChange={(e) => this.setState({ confirmPassword: Utils.safeParseEventValue(e) })}
+                                                                component={(
+                                                                    <select onChange={(e)=>this.setState({institution:Utils.safeParseEventValue(e)})} className="custom-select">
+                                                                        <option value="">
+                                                                            Enter Occupation
+                                                                        </option>
+                                                                        {settings && _.map(_.filter(settings.institutions, i => !i.hidden), institution => (
+                                                                            <option key={institution.id} value={institution.id}>{institution.name}</option>
+                                                                        ))}
+                                                                    </select>
+                                                                )}
+                                                                inputClassName="input--default"/>
+                                                        </div>
+                                                    )}
+
+                                                </SettingsProvider>
+
+                                            </div>
 
                                             <Button disabled={isLoading
                                             || !this.state.email
@@ -197,10 +211,6 @@ class TheComponent extends Component {
                                 </div>
                             </ModalBody>
                         </Modal>
-                        <Button onClick={()=>this.setState({modalOpen:true})} className={'btn btn--primary nav__button'}>
-                            <span className="nav__button__text">{isLoading ? 'Logging in..' : 'Login'}</span>
-                            <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
-                        </Button>
                     </div>
                 )}
             </AccountProvider>
