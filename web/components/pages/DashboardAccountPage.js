@@ -144,7 +144,7 @@ this.setState({updatingPassword:true, error:"",updatedPassword:false})
                                 </SettingsProvider>
                             </div>
 
-                                <Button disabled={isSaving} className="btn btn--primary mb-2">
+                                <Button disabled={isSaving|| !this.state.firstName || !this.state.lastName} className="btn btn--primary mb-2">
                                     Save
                                 </Button>
                                 {(this.state.updatedProfile) && <div className="text-success">Your account has been updated</div>}
