@@ -14,59 +14,17 @@ module.exports = class extends React.Component {
 
     }
 
-    login = () => {
-        AppActions.adminLogin({
-            username: this.state.email,
-            password: this.state.password
-        });
-    }
-
     render = () => {
         return (
             <div className="app-container">
-
-                <AccountProvider onError={() => this.setState({password: ''})}>
-                    {({error, isLoading}, {clearError}) => (
                         <div>
-                        <Flex className="hero--shape-bg mb-0 mb-md-5">
+                        <Flex className="hero--shape-bg row mb-0 mb-md-5">
                             {/*<div className="flat-panel flat-panel--warning flex-row align-items-center px-2 px-sm-4">*/}
                             {/*    <img src="/images/icon-alert.png" alt="alert" height="20px" className=""/>*/}
                             {/*    <p className="mb-0 ml-2 flex-1">DiagnosisView is only available as an app for mobile devices. Web login is currently for Admin access only.</p>*/}
                             {/*</div>*/}
 
-                            <div className="nav">
-                                <div className="brand mb-2 mb-md-0">
-                                    <img className="brand-image mt-1" src={require('../../images/brand.png')}/>
-                                </div>
-                                <div className="ml-0 ml-md-auto">
-                                    <form onSubmit={(e) => {
-                                        e.preventDefault();
-                                        if (this.state.email && this.state.password) {
-                                            clearError();
-                                            this.login(this.props.id, this.state.name);
-                                        }
-                                    }}>
-                                        <div className="flex-row">
-                                            <div className="mr-1">
-                                                <Input
-                                                    placeholder="email" type="email"
-                                                    onChange={(e) => this.setState({ email: Utils.safeParseEventValue(e) })}
-                                                    inputClassName="input--default" />
-                                            </div>
-                                            <div className="mr-2">
-                                                <Input      placeholder="password" type="password"
-                                                            onChange={(e) => this.setState({ password: Utils.safeParseEventValue(e) })}
-                                                            inputClassName="input--default"/>
-                                            </div>
-                                            <Button disabled={isLoading || !this.state.email || !this.state.password} onClick={this.login} className={'btn btn--primary nav__button'}>
-                                                <span className="nav__button__text">{isLoading ? 'Logging in..' : 'Login'}</span>
-                                                <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
-                                            </Button>
-                                            {error && error.message && <div className="text-danger">{error.message}</div>}
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+
                             <div className="flex-row flex-align-start">
                                 <div className="col-lg-6 px-5">
                                     <h3 style={{marginTop:100}} className="mb-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h3>
@@ -124,7 +82,7 @@ module.exports = class extends React.Component {
                             </ul>
                         </div>
 
-                        <div className="section section--grey p-5 flex align-items-center">
+                        <div className="section row section--grey p-5 flex align-items-center">
                             <div className="panel--white col-md-6">
                                 <div className="flex-row justify-content-center text-center">
                                     <img src="../../images/uoe-icon.jpeg" width="100px" />
@@ -138,16 +96,14 @@ module.exports = class extends React.Component {
 
 
 
-                        <footer className="footer">
-                            <div></div>
-                            <div className="text-right">
+                        <footer className="footer flex row">
+                            <div className="text-right float-right">
                                 <a target="_blank" className="footer__link mr-4" href='https://blogs.ed.ac.uk/diagnosisview'>Help</a>
-                                <Link className="footer__link" to='/privacy-policy'>Privacy Policy</Link>
+                                <Link className="footer__link mr-4" to='/privacy-policy'>Privacy Policy</Link>
+                                <Link className="footer__link" to='/terms-of-use'>Terms of Use</Link>
                             </div>
                         </footer>
                         </div>
-                    )}
-                </AccountProvider>
             </div>
         );
     }

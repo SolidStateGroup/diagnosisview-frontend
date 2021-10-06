@@ -5,7 +5,15 @@ h1,h2,h3,h4,h5,h6{
 }
 
 .text-small{
-    font-size:0.75rem!important;
+    font-size:13px!important;
+    a {
+        font-size:13px!important;
+    }
+}
+
+.text-lighter {
+    opacity: 70%;
+    color: #071B39;
 }
 
 .text-muted{

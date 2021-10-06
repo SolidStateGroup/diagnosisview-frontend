@@ -18,7 +18,7 @@ const FormGroup = class extends Component {
 	render() {
 		const {props} = this;
 		const id = Utils.GUID();
-		const {inputProps} = this.props;
+		const {inputProps={}, component} = this.props;
 		return (
 			<div className={"form-group text-dark"}>
 				<label htmlFor={id} className="cols-sm-2 control-label">{props.title}</label>
@@ -33,12 +33,15 @@ const FormGroup = class extends Component {
 
 				<div>
 					<div>
-						<Input ref="input" {...inputProps} isValid={props.isValid} disabled={props.disabled}
-							   className={`input input--outline${props.className ? ` ${props.className}` : ''}`}
-							   inputClassName={inputProps.className}
-							   value={props.value}
-							   onChange={props.onChange} type={props.type || 'text'} id={id}
-							   placeholder={props.placeholder}/>
+						{component || (
+							<Input ref="input" {...inputProps} isValid={props.isValid} disabled={props.disabled}
+								   className={`input input--outline${props.className ? ` ${props.className}` : ''}`}
+								   inputClassName={inputProps.className}
+								   value={props.value}
+								   onChange={props.onChange} type={props.type || 'text'} id={id}
+								   placeholder={props.placeholder}/>
+						)}
+
 					</div>
 				</div>
 			</div>
