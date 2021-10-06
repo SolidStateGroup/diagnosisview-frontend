@@ -7,11 +7,9 @@ button{
 
         &--primary{
             background:$brand-primary;
-            box-shadow:0 0 8px rgba(0,0,0,0.4);
+            //box-shadow:0 0 8px rgba(0,0,0,0.4);
             border-radius:4px;
-            font-size:$font-smaller;
-            padding:10px 20px;
-
+            border: 2px solid transparent;
             &:hover{
                 background:$brand-primary;
             }
