@@ -1,6 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import InputGroup from "../base/forms/InputGroup";
+import data from "../../../common/stores/base/_data";
 
 
 class TheComponent extends Component {
@@ -22,13 +23,47 @@ class TheComponent extends Component {
     }
     save = (e)=> {
         e.preventDefault()
+        this.accountProvider.clearError();
+        this.setState({error: '',updatedProfile:false});
+        AppActions.updateAccount({
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            occupation: this.state.occupation,
+            institution: this.state.institution
+        });
     }
     updatePassword = (e)=> {
-        if(this.state.password || (this.state.newPassword !== this.state.confirmNewPassword))
+        e.preventDefault()
+        if(!this.state.password || (this.state.newPassword !== this.state.confirmNewPassword))
             return
+this.setState({updatingPassword:true, error:"",updatedPassword:false})
+        data.put(Project.api + 'user/', { username: AccountStore.getUser().username, oldPassword:this.state.password, password: this.state.newPassword })
+            .then(res => {
+                AppActions.setToken(res.token);
+                this.setState({updatingPassword:false, updatedPassword:true})
+            })
+            .catch(e => {
+                if (e && e.json) {
+                    e.json()
+                        .then((res)=>{
+                            this.setState({updatingPassword:false, error:res})
+
+                        })
+                } else {
+                    this.setState({updatingPassword:false, error: { "message":"There was an error processing your request" }})
+
+                }
+            });
     }
     render() {
-        return <div className="container-fluid">
+        console.log(this.state.error)
+        return (
+            <AccountProvider ref={c => this.accountProvider = c} onLogin={this.onLogin} onLogout={this.onLogout} onSave={()=>{
+                this.setState({updatedProfile:true})
+            }}>
+                {({user, isLoading, isSaving, error})=>(
+
+                    <div className="container-fluid">
             <h4>My Account</h4>
 
 
@@ -72,9 +107,6 @@ class TheComponent extends Component {
                                         onChange={(e) => this.setState({ confirmPassword: Utils.safeParseEventValue(e) })}
                                         component={(
                                             <select value={this.state.occupation} onChange={(e)=>this.setState({occupation:Utils.safeParseEventValue(e)})} className="custom-select">
-                                                <option value="">
-                                                    Please Select
-                                                </option>
                                                 {Constants.occupations.map((v)=>(
                                                     <option value={v.value} key={v.value}>
                                                         {v.value}
@@ -95,9 +127,6 @@ class TheComponent extends Component {
                                                         onChange={(e) => this.setState({ confirmPassword: Utils.safeParseEventValue(e) })}
                                                         component={(
                                                             <select value={this.state.institution} onChange={(e)=>this.setState({institution:Utils.safeParseEventValue(e)})} className="custom-select">
-                                                                <option value="">
-                                                                    Enter Occupation
-                                                                </option>
                                                                 {settings && _.map(_.filter(settings.institutions, i => !i.hidden), institution => (
                                                                     <option key={institution.id} value={institution.id}>{institution.name}</option>
                                                                 ))}
@@ -115,9 +144,11 @@ class TheComponent extends Component {
                                 </SettingsProvider>
                             </div>
 
-                                <Button className="btn btn--primary">
+                                <Button disabled={isSaving} className="btn btn--primary mb-2">
                                     Save
                                 </Button>
+                                {(this.state.updatedProfile) && <div className="text-success">Your account has been updated</div>}
+
                             </form>
 
                             <form onSubmit={this.updatePassword} className="mb-4">
@@ -149,9 +180,12 @@ class TheComponent extends Component {
                                             inputClassName="input--default"/>
                                     </div>
                                 </div>
-                                <Button disabled={!this.state.password || (this.state.newPassword !== this.state.confirmNewPassword)} className="btn btn--primary">
+                                <Button disabled={this.state.updatingPassword || !this.state.password || (this.state.newPassword !== this.state.confirmNewPassword)} className="btn btn--primary mb-2">
                                     Update Password
                                 </Button>
+                                {(this.state.updatedPassword) && <div className="text-success">Your password has been updated</div>}
+                                {(error||this.state.error) && ((error||this.state.error).message) && <div className="text-danger">{(error||this.state.error).message}</div>}
+
                             </form>
                         </div>
                     </div>
@@ -160,7 +194,9 @@ class TheComponent extends Component {
                     </div>
                 </div>
         </div>
-    }
+                )}
+            </AccountProvider>
+        )}
 }
 
 export default TheComponent
