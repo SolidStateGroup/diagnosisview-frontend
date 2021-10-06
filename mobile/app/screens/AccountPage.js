@@ -224,7 +224,7 @@ const AccountPage = class extends Component {
 						labelHeight={this.state.occupation ? 20 : 14}
 						baseColor={styleVariables.textLight}
 						inputContainerPadding={0}
-						data={[{value: 'Healthcare Student'}, {value: 'Healthcare Practitioner'}, {value: 'Patient'}, {value: 'Other'}]}
+						data={Constants.occupations}
 						value={this.state.occupation}
 						onChangeText={(occupation) => this.setState({occupation})}
 					/>

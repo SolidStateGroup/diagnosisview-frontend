@@ -8,10 +8,12 @@ import ManageCodesPage from './components/pages/ManageCodesPage';
 import ManageUsersPage from './components/pages/ManageUsersPage';
 import InstitutionsPage from './components/pages/InstitutionsPage';
 import ManageLinkTransformsPage from './components/pages/ManageLinkTransformsPage';
+import TermsOfUsePage from './components/pages/TermsOfUsePage';
 import ManageLinkLogosPage from './components/pages/ManageLinkLogosPage';
 import DiagnosisDetailPage from './components/pages/DiagnosisDetailPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import DashboardPage from "./components/pages/DashboardPage";
+import SearchPage from "./components/pages/SearchPage";
 import DashboardAccountPage from "./components/pages/DashboardAccountPage";
 import DashboardSearchPage from "./components/pages/DashboardSearchPage";
 import DashboardHistoryPage from "./components/pages/DashboardHistoryPage";
@@ -37,6 +39,8 @@ export default (
             <Route path="/admin" component={ManageCodesPage}/>
             <Route path="/login" exact component={HomePage}/>
             <Route path="/signup" exact component={HomePage}/>
+            <Route path="/search" exact component={SearchPage}/>
+            <Route path="/terms-of-use" exact component={TermsOfUsePage}/>
             <Route path="/privacy-policy" exact component={PrivacyPolicyPage}/>
             <Route component={NotFoundPage}/>
         </Switch>
