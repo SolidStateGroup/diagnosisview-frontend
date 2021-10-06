@@ -145,8 +145,11 @@ export default class App extends Component {
                                 }}/>}
                                     <div>
                                         {pageHasAside ? <DashboardAside /> : null}
-                                        <div className={pageHasAside && "col-md-9 ml-sm-auto col-lg-10 px-md-4 mt-3"}>
-                                            {this.props.children}
+                                        <div className={pageHasAside && "dashboard-aside__content"}>
+                                            <div className="col-md-12">
+
+                                                {this.props.children}
+                                            </div>
                                         </div>
                                     </div>
 

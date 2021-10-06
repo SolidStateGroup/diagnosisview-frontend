@@ -30,11 +30,31 @@ const TheComponent = class extends Component {
     render() {
         const isAdmin = AccountStore.isAdmin();
         return (
-            <div className="dashboard-aside px-2">
+            <div className="dashboard-aside">
                 <div className="text-center mt-4 mb-4">
-
                     <img width={199} src="/images/brand-light.png"/>
                 </div>
+
+                <SettingsProvider>
+                    {({settings, isLoading: settingsIsLoading, error: settingsError}) => (
+                <AccountProvider>
+                    {({user, isLoading})=>{
+                        const institution = SettingsStore.model && SettingsStore.model.institutions.find((v)=>v.id === AccountStore.model.institution)
+                        return !!institution && (
+                            <div className="dashboard-aside__institution mb-4">
+                                <Row>
+                                    <img src={institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}/>
+                                    <Flex className="ml-2 text-light">
+                                        {institution.name}
+                                    </Flex>
+                                </Row>
+                            </div>
+
+                        )
+                    }}
+                </AccountProvider>
+                        )}
+                </SettingsProvider>
                 <Flex>
                     {links.map((l)=>(
                         <NavLink exact activeClassName="active" className="dashboard-aside__link px-2" to={l.to} key={l.to}>
