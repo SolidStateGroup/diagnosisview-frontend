@@ -28,8 +28,13 @@ const TheComponent = class extends Component {
     }
 
     render() {
+        const isAdmin = AccountStore.isAdmin();
         return (
-            <div className="col-md-2 dashboard-aside px-2">
+            <div className="dashboard-aside px-2">
+                <div className="text-center mt-4 mb-4">
+
+                    <img width={199} src="/images/brand-light.png"/>
+                </div>
                 <Flex>
                     {links.map((l)=>(
                         <NavLink exact activeClassName="active" className="dashboard-aside__link px-2" to={l.to} key={l.to}>
@@ -42,14 +47,16 @@ const TheComponent = class extends Component {
                         </NavLink>
                     ))}
                 </Flex>
-                <NavLink activeClassName="active" className="dashboard-aside__link px-2" to={"/admin"}>
-                    <Row>
-                        <span className={"fa fa-user-shield " + "mr-2"}/>
-                        <span className="dashboard-aside__link-text">
-                            Admin
-                        </span>
-                    </Row>
-                </NavLink>
+                {isAdmin && (
+                    <NavLink activeClassName="active" className="dashboard-aside__link px-2" to={"/admin"}>
+                        <Row>
+                            <span className={"fa fa-user-shield " + "mr-2"}/>
+                            <span className="dashboard-aside__link-text">
+                                Admin
+                            </span>
+                        </Row>
+                    </NavLink>
+                )}
                 <span className="dashboard-aside__link cursor-pointer px-2" onClick={AppActions.logout}>
                     <Row>
                         <span className={"fa fa-sign-out-alt " + "mr-2"}/>
