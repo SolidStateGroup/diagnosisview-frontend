@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Aside from './Aside';
 import DashboardAside from './DashboardAside';
-import NavHeader from "./NavHeader";
 import NavAdmin from './NavAdmin';
 import Popover from './base/Popover';
 import _data from '../../common/stores/base/_data';
