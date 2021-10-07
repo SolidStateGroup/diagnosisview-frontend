@@ -1,0 +1,54 @@
+.dashboard-aside {
+    position: fixed;
+    top: 0;
+    padding-left: 14px;
+    padding-right: 14px;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    z-index: 100;
+    width: 243px;
+    background-color: $primary;
+    flex-direction: column;
+  &__institution {
+    padding: 16px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #105DD9;
+    img {
+      width:40px;
+      height: 40px;
+      border-radius: 6px;
+    }
+    border-radius: 6px;
+    width: 214px;
+    height: 70px;
+  }
+  &__content {
+    margin-left: 243px;
+  }
+  &__link {
+    height: 45px;
+    line-height: 45px;
+    border-radius: 6px;
+    font-size: 16px;
+    text-decoration: none !important;
+    &-text {
+      margin-top: 2px;
+    }
+    .fa,.far {
+      display: block;
+      width: 40px;
+      font-size: 24px;
+    }
+    color: rgba(255,255,255,.6);
+    @include transition(all 200ms);
+    &:hover {
+      color: white;
+    }
+    &.active {
+      background: #5496FF;
+      color: white;
+    }
+  }
+}

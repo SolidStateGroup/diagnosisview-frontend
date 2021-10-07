@@ -152,6 +152,7 @@ footer.homepage{
   border-radius: 3px;
 	text-align: center;
   font-size: 15px;
+	border: 2px solid transparent;
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
   text-decoration: none;
   background: white;
@@ -164,10 +165,10 @@ footer.homepage{
 	&:hover {
 		text-decoration: none;
 	}
-	&__rounded {
+	&--rounded {
 		border-radius: 6px;
 	}
-	&__outline {
+	&--outline {
 		box-shadow: none;
 		&:hover {
 			color: white;
@@ -175,6 +176,17 @@ footer.homepage{
 		background: transparent;
 		border-color: white;
 		color: white;
+	}
+	&--outline-dark {
+		box-shadow: none;
+		&:hover {
+			color: white;
+			background: transparent!important;
+		}
+		border-radius: 6px;
+		background: transparent;
+		border: 2px solid $primary !important;
+		color: $primary !important;
 	}
 }
 .button__full {
