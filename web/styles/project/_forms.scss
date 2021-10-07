@@ -130,9 +130,14 @@ input.input--default{
 }
 
 .tag {
+    border-radius: 6px;
+    height: 22px;
+    line-height: 22px;
     color: white;
     background-color: $brand-primary;
     padding: 0 10px 0 15px;
+    font-size: 13px;
+    font-weight: bold;
     &--icon {
         color: white;
         font-size:1.25rem;

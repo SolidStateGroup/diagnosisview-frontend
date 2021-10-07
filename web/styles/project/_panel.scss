@@ -29,6 +29,14 @@
         font-size:1.1rem;
     }
 
+    &__header{
+        font-weight: bold;
+        font-size: 13px;
+        .fa {
+            font-size: 18px;
+        }
+    }
+
     &--white{
         background:#fff;
         border-radius: 15px;
