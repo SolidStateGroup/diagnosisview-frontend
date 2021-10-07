@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Aside from './Aside';
-import Nav from './Nav';
+import DashboardAside from './DashboardAside';
 import NavAdmin from './NavAdmin';
 import Popover from './base/Popover';
 import _data from '../../common/stores/base/_data';
@@ -144,9 +144,12 @@ export default class App extends Component {
 
                                 }}/>}
                                     <div>
-                                        {pageHasAside ? <Nav /> : null}
-                                        <div className={pageHasAside ? "col-md-9 ml-sm-auto col-lg-10 px-md-4 mt-3": "col-md-12"}>
-                                            {this.props.children}
+                                        {pageHasAside ? <DashboardAside /> : null}
+                                        <div className={pageHasAside && "dashboard-aside__content"}>
+                                            <div className="col-md-12">
+
+                                                {this.props.children}
+                                            </div>
                                         </div>
                                     </div>
 

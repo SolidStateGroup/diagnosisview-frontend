@@ -38,13 +38,13 @@ module.exports = class extends React.Component {
                                     <Row>
                                         <Link
                                             style={{width:146}}
-                                            className="button button__rounded"
+                                            className="button button--rounded"
                                             to={`/search`
                                             }><span>Search a Topic</span>
                                         </Link>
                                         <Link
                                             style={{width:146}}
-                                            className="button button__outline button__rounded ml-4"
+                                            className="button button--outline button--rounded ml-4"
                                             to={`/signup`
                                             }><span>Sign Up</span>
                                         </Link>
