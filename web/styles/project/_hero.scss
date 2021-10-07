@@ -47,3 +47,11 @@
         }
     }
 }
+
+
+.hero {
+    &--shape-bg-small {
+        min-height: 230px;
+        background:url('/images/hero-bg.svg') 0 0 repeat-x;
+    }
+}
