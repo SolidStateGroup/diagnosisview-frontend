@@ -5,6 +5,7 @@ import NavAdmin from './NavAdmin';
 import Popover from './base/Popover';
 import _data from '../../common/stores/base/_data';
 import Navbar from "./Navbar";
+import DashboardNavbar from "./DashboardNavbar";
 
 export default class App extends Component {
 
@@ -145,8 +146,11 @@ export default class App extends Component {
                                         {pageHasAside ? <DashboardAside /> : null}
                                         <div className={pageHasAside && "dashboard-aside__content"}>
                                             <div className="col-md-12">
+                                                {pageHasAside && <DashboardNavbar/>}
+                                                <div className="mt-2">
 
-                                                {this.props.children}
+                                                    {this.props.children}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
