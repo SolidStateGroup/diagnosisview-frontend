@@ -25,7 +25,7 @@ class TheComponent extends Component {
                         </Link>
                         <Flex/>
                         <Row>
-                            <Link to="/#pricing">
+                            <Link to={Constants.webPayments?"/#pricing":"/signup"}>
                                 <Button className={'btn button--outline-dark nav__button mr-3'}>
                                     <span className="nav__button__text">{isLoading ? 'Signing up..' : 'Sign up'}</span>
                                     <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>

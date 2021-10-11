@@ -22,7 +22,6 @@ class HomePage extends React.Component {
                 }
             }
         }
-        console.log(prevProps.router, this.props.router)
     }
 
     componentDidMount() {
@@ -121,7 +120,7 @@ class HomePage extends React.Component {
                                     </PricePanel>
                                     <PricePanel subtitle="Access to pro features." className="ml-md-4 ml-sm-0" price={Math.ceil(1.79*12)} points={[
                                         "Unlimited result history and favourites across multiple devices.",
-                                        "Access to result links for practitioners and advanced students."
+                                        "Access to result professional resources for practitioners and advanced students."
                                     ]} title="Professional">
 
                                         <Link to={"/signup?plan=pro"}>
