@@ -15,7 +15,7 @@ const TheComponent = ({title, subtitle, points, price,className, children}) => {
                     <hr/>
                 </div>
                 {points.map((v)=>(
-                    <Row className="no-wrap text-left">
+                    <Row className="no-wrap text-left mb-2">
                         <span className="text-success mr-2 fa fa-check-circle"/> <span>{v}</span>
                     </Row>
                 ))}
