@@ -251,6 +251,12 @@ var controller = {
             return store.model
         },
         hasActiveSubscription: function () {
+            return !store.hasExpiredSubscription() && store.model && SubscriptionStore.isSubscribed();
+        },
+        hasExpiredSubscription: function () {
+            // return new Date().toISOString()
+            return store.model && false
+            subscription && !SubscriptionStore.isSubscriptionAutoRenewing() && !AccountStore.isAdmin()
             return store.model && SubscriptionStore.isSubscribed();
         },
         setUser: function(user) {
