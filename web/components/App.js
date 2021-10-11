@@ -33,6 +33,9 @@ export default class App extends Component {
         const { pathname } = this.context.router.history.location;
         const user = AccountStore.getUser();
         AppActions.getSettings();
+        AppActions.getCodeCategories();
+        AppActions.getLinkLogos();
+
         if (pathname.includes("/admin") && !AccountStore.isAdmin()) {
             this.context.router.history.replace('/');
         }
