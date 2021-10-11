@@ -53,10 +53,10 @@
     &--shape-bg-small {
         background:url('/images/hero-bg-small.svg') 0 0 repeat-x;
         z-index: -1;
-        top: 60px;
+        top: -60px;
         left:0px;
         right:0;
-        position: fixed;
+        position: absolute;
         min-height: 230px;
     }
 }
