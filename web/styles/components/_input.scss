@@ -27,7 +27,7 @@ textarea {
 		line-height: 48px;
 		text-indent: 45px;
 		::placeholder {
-			color: #071B39;
+			color: $brand-navy;
 			opacity: 0.4;
 		}
 		.input {

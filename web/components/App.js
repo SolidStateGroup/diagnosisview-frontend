@@ -6,6 +6,7 @@ import Popover from './base/Popover';
 import _data from '../../common/stores/base/_data';
 import Navbar from "./Navbar";
 import DashboardNavbar from "./DashboardNavbar";
+import ErrorAlert from "./ErrorAlert";
 
 export default class App extends Component {
 
@@ -148,7 +149,15 @@ export default class App extends Component {
                                             <div className="col-md-12">
                                                 {pageHasAside && <DashboardNavbar/>}
                                                 <div className="mt-2">
-
+                                                    {AccountStore.hasExpiredSubscription() && (
+                                                        <div className="col-md-6 mb-4">
+                                                            <ErrorAlert>
+                                                                Your annual Professional subscription expired on {moment(AccountStore.hasExpiredSubscription()).format("Do MMM HH:mm")}.
+                                                                <br/>
+                                                                <Link to="/account?manage=1">Click here to renew</Link>
+                                                            </ErrorAlert>
+                                                        </div>
+                                                    )}
                                                     {this.props.children}
                                                 </div>
                                             </div>

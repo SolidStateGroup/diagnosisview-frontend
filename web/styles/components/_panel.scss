@@ -25,7 +25,39 @@
 		color: $panel-heading-color;
 
 	}
+&--subscription {
+	position: relative;
+	overflow: hidden;
+	padding-left: 35px;
+	padding-right: 35px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	.logo {
+		position: absolute;
+		z-index: 0;
+		right: -40px;
+		top: 0;
+	}
+	&__content {
+		position: relative;
+		z-index: 1;
+	}
+	background-color: $brand-navy;
+	color: white;
+	border-radius: 20px;
+	box-shadow: 0 6px 13px 0 rgba(32, 28, 38, 0.2);
+	line-height: 26px;
+	a {
+		color: white;
+		&.button {
+			color: #1C1C1C;
+			&:hover {
+				color: $brand-navy;
+			}
+		}
+	}
 
+}
 	&--price {
 		width: 310px;
 		align-self: stretch;

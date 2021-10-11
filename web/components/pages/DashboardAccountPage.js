@@ -3,6 +3,8 @@ import { Component } from 'react';
 import InputGroup from "../base/forms/InputGroup";
 import data from "../../../common/stores/base/_data";
 import PanelHeader from "../PanelHeader";
+import SubscriptionPanel from "../SubscriptionPanel";
+import ErrorAlert from "../ErrorAlert";
 
 
 class TheComponent extends Component {
@@ -64,11 +66,9 @@ this.setState({updatingPassword:true, error:"",updatedPassword:false})
                 {({user, isLoading, isSaving, error})=>(
 
                     <div className="container-fluid">
-            <h4 className="mb-4">My Account</h4>
-
-
+                <h4 className="mb-4">My Account</h4>
                 <div className="row">
-                    <div className="col-md-7">
+                    <div className="col-xl-8 mb-lg-4 col-lg-12">
                         <div className="panel--white">
                             <form className="mb-4" onSubmit={this.save}>
                                 <PanelHeader className="mb-4 mt-2" icon={"fa fa-cog"}>
@@ -194,7 +194,38 @@ this.setState({updatingPassword:true, error:"",updatedPassword:false})
                             </form>
                         </div>
                     </div>
-                    <div className="col-md-5">
+                    <div className="col-xl-4 col-lg-12">
+                        {Constants.webPayments && (
+                            <div style={{maxWidth:307}}>
+                                {!AccountStore.hasActiveSubscription() && (
+                                    <SubscriptionPanel title="Subscribe Now">
+                                        <div className="mb-2">
+                                            Subscribe to see additional professional resources on all topics (demos here to <Link to="/codes/acne">Acne</Link>, <Link to="/codes/cystic-fibrosis">Cystic fibrosis</Link>, <Link to="/codes/heart-failure">Heart failure</Link>).
+                                        </div>
+                                        <div>
+                                            Subscribing also unlocks unlimited history / favourites synchronised between devices and activates paywalled links to your institution.
+                                        </div>
+
+                                        <Link to="/dashboard/account?manage=1">
+                                            <a className="button button--rounded full-width mt-4">
+                                                Subscribe Now
+                                            </a>
+                                        </Link>
+
+                                    </SubscriptionPanel>
+                                )}
+                                {AccountStore.hasActiveSubscription() && (
+                                    <SubscriptionPanel title="You are subscribed to the Professional Plan">
+                                        <Link to="/dashboard/account?manage=1">
+                                            <a className="button button--rounded full-width mt-4">
+                                                Manage Subscription
+                                            </a>
+                                        </Link>
+
+                                    </SubscriptionPanel>
+                                )}
+                            </div>
+                        )}
 
                     </div>
                 </div>

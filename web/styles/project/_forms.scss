@@ -2,7 +2,7 @@
     background-color: #F0F1FF;
     border: 1px solid rgba(7, 27, 57, 0.4);
     border-radius: 6px;
-    color: #071B39;
+    color: $brand-navy;
 }
 .input{
     background: #fff;
@@ -27,7 +27,7 @@
             width: 100%;
             text-indent: 5px;
             &::placeholder {
-                color: #071B39;
+                color: $brand-navy;
                 opacity: 50%;
             }
             font-size: 15px;

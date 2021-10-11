@@ -204,7 +204,11 @@ class TheComponent extends Component {
 
                                             {error && error.message && <div className="text-danger">{error.message}</div>}
                                             <hr/>
-                                            Not a member? <Link to="/signup">Sign up</Link>
+                                            Not a member? <Link onClick={()=>{
+                                                if(Constants.webPayments) {
+                                                    this.setState({modalOpen:false})
+                                                }
+                                        }} to={Constants.webPayments?"/#pricing":"/signup"}>Sign up</Link>
                                         </form>
                                     )}
 

@@ -4,7 +4,7 @@ h1,h2,h3,h4,h5,h6{
 
 }
 .empty-search-text {
-    color: #071B39;
+    color: $brand-navy;
     font-size: 20px;
     line-height: 24px;
     text-align: center;
@@ -24,7 +24,7 @@ a {
 }
 .text-lighter {
     opacity: 70%;
-    color: #071B39;
+    color: $brand-navy;
 }
 
 .text-muted{
