@@ -1,6 +1,8 @@
 import React from "react";
+import PricePanel from "../PricePanel";
+import { withRouter } from "react-router-dom";
 
-module.exports = class extends React.Component {
+class HomePage extends React.Component {
     static contextTypes = {
         router: React.PropTypes.object.isRequired
     };
@@ -10,7 +12,27 @@ module.exports = class extends React.Component {
         this.state = {};
     }
 
-    componentWillMount() {
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.location.hash !== prevProps.location.hash) {
+            if (this.props.location.hash) {
+                const el = document.getElementById(this.props.location.hash.replace("#",""))
+                if (el) {
+                    el.scrollIntoView({behavior: "smooth"})
+                    this.props.history.replace("/")
+                }
+            }
+        }
+        console.log(prevProps.router, this.props.router)
+    }
+
+    componentDidMount() {
+        if (this.props.location.hash) {
+            const el = document.getElementById(this.props.location.hash.replace("#",""))
+            if (el) {
+                el.scrollIntoView({behavior: "smooth"})
+                this.props.history.replace("/")
+            }
+        }
 
     }
 
@@ -82,6 +104,36 @@ module.exports = class extends React.Component {
                             </ul>
                         </div>
 
+                            {Constants.webPayments && (
+                                <div className="text-center mb-4">
+                                    <h1 className="mb-5">Sign Up</h1>
+                                <Row className="justify-content-center" id="pricing">
+                                    <PricePanel className="mr-md-4 mb-md-0 mb-4 mr-sm-0" price={0}
+                                                subtitle="Free for life. Upgrade account at any point."
+                                                points={[
+                                        "5 result history and favourites across multiple devices.",
+                                    ]} title="Starter">
+                                        <Link to={"/signup"}>
+                                            <a className="button button--rounded full-width">
+                                                Sign Up
+                                            </a>
+                                        </Link>
+                                    </PricePanel>
+                                    <PricePanel subtitle="Access to pro features." className="ml-md-4 ml-sm-0" price={Math.ceil(1.79*12)} points={[
+                                        "Unlimited result history and favourites across multiple devices.",
+                                        "Access to result links for practitioners and advanced students."
+                                    ]} title="Professional">
+
+                                        <Link to={"/signup?plan=pro"}>
+                                            <Button className="button btn--primary button--rounded full-width">
+                                                Sign Up
+                                            </Button>
+                                        </Link>
+                                    </PricePanel>
+                                </Row>
+                                </div>
+                            )}
+
                         <div className="section row section--grey p-5 flex align-items-center">
                             <div className="panel--white col-md-6">
                                 <div className="flex-row justify-content-center text-center">
@@ -93,7 +145,6 @@ module.exports = class extends React.Component {
                                 </div>
                             </div>
                         </div>
-
 
 
                         <footer className="footer flex row">
@@ -108,3 +159,5 @@ module.exports = class extends React.Component {
         );
     }
 };
+
+module.exports = withRouter(HomePage)
