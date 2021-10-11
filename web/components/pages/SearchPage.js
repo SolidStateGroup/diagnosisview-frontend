@@ -81,7 +81,7 @@ class TheComponent extends Component {
                                 </div>
                             ) : fuzzySearchLoading && (
                                 <div className="my-2 text-center">
-                                    <Loader/>
+
                                 </div>
                             )}
                     </div>

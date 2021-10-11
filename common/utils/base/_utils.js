@@ -71,13 +71,21 @@ var Utils = {
         return encodeURIComponent(k) + '=' + encodeURIComponent(obj[k]);
       }).join('&');
     },
+  fromParam(str) {
+      // {min:100,max:200} <- ?min=100&max=200
+      const documentSearch =
+          typeof document === "undefined" ? "" : document.location.search;
 
-    fromParam: function (str) { //{min:100,max:200} <- ?min=100&max=200
-      return (str || document.location.search).replace(/(^\?)/, '').split("&").map(function (n) {
-        return n = n.split("="), this[n[0]] = n[1];
-      }.bind({}))[0];
+      if (!str && !documentSearch) {
+      return {};
+      }
+      // eslint-disable-next-line
+      const urlString = (str || documentSearch).replace(/(^\?)/, '');
+      return JSON.parse(
+          `{"${urlString.replace(/&/g, '","').replace(/=/g, '":"')}"}`,
+          (key, value) => (key === "" ? value : decodeURIComponent(value))
+      );
     },
-
     preventDefault: function (e) {
       if (e && e.preventDefault) {
         e.preventDefault();
