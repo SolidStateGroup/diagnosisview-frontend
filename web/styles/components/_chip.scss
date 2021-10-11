@@ -1,25 +1,19 @@
 @import "../variables";
 
 .chip {
-	align-self: flex-start !important;
-	height: 26px;
-	background-color: $input-placeholder-color;
-	padding: 0 10px;
-	border-radius: 16px;
-	margin-right: $input-padding-x;
-	font-size: 0.75em;
-	color: #777;
-	.chip-icon {
-		font-size: 2em;
-		cursor: pointer;
-		margin-left: $input-padding-x;
-		width: 18px;
-		height: 18px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		border-radius: 50%;
-		color: $input-placeholder-color;
-		background: darken($input-placeholder-color, 25);
+	display: inline-block;
+	background-color: $link-color;
+	color: white;
+	font-size: 13px;
+	padding-top: 2px;
+	line-height: 22px;
+	border-radius: 11px;
+	padding-left: 6px;
+	padding-right: 6px;
+	.fa {
+		display: inline-block !important;
+		margin-top: 2px;
+		margin-left: 5px;
+		font-size: 13px !important;
 	}
 }
