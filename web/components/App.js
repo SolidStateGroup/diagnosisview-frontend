@@ -52,13 +52,11 @@ export default class App extends Component {
         const redirect = location.query && location.query.redirect;
 
         //Redirect on login
-        if (location.pathname == '/' || location.pathname == '/login' || location.pathname == '/demo' || location.pathname == '/signup') {
             if (AccountStore.isAdmin()) {
                 this.context.router.history.replace(redirect ? redirect : '/admin');
             } else {
                 this.context.router.history.replace(redirect ? redirect : '/dashboard');
             }
-        }
     };
 
     onLogout = () => {

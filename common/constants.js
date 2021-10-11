@@ -1,4 +1,5 @@
 var Constants = {
+    webPayments: true,
     events: {
         "LOGIN": {"event": "User login", "category": "User"},
         "REGISTER": {"event": "User register", "category": "User"},

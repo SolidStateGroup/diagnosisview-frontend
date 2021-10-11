@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react'; // we need this to make JSX compile
+import React  from 'react'; // we need this to make JSX compile
 
-const TheComponent: FunctionComponent = ({}) => {
+const TheComponent = ({}) => {
     return (
         <div>
             dashboard

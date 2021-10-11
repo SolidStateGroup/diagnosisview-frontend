@@ -38,7 +38,7 @@ const TheComponent = class extends Component {
                             return  (
             <div className="dashboard-aside">
                 {!!user && !!settings ? (
-                    <div>
+                    <Flex>
                         <div className="text-center mt-4 mb-4">
                             <img width={199} src="/images/brand-light.png"/>
                         </div>
@@ -85,7 +85,7 @@ const TheComponent = class extends Component {
                                 </span>
                             </Row>
                         </span>
-                    </div>
+                    </Flex>
                 ): (
                     <div>
                         <div className="text-center mt-4 mb-4">

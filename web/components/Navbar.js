@@ -5,13 +5,13 @@ import { toJSON } from "lodash/seq";
 
 class TheComponent extends Component {
     state = {}
-    login(){
+    login = () =>{
         AppActions.adminLogin({
             username: this.state.email,
             password: this.state.password
         });
     }
-    register(){
+    register= () =>{
         AppActions.register({firstName:this.state.firstName, lastName:this.state.lastName, username: this.state.email, password:this.state.password, occupation:this.state.occupation, institution:this.state.institution});
     }
     render() {
@@ -20,12 +20,12 @@ class TheComponent extends Component {
             <AccountProvider onSave={this.props.onRegister}>
                 {({error, isLoading}, {clearError}) => (
                     <div className="nav">
-                        <div className="brand mb-2 mb-md-0">
+                        <Link to="/" className="brand mb-2 mb-md-0">
                             <img className="brand-image mt-1" src={require('../images/brand.png')}/>
-                        </div>
+                        </Link>
                         <Flex/>
                         <Row>
-                            <Link to="/signup" onClick={()=>this.setState({modalOpen:true, isSignup:true})}>
+                            <Link to="/#pricing">
                                 <Button className={'btn button--outline-dark nav__button mr-3'}>
                                     <span className="nav__button__text">{isLoading ? 'Signing up..' : 'Sign up'}</span>
                                     <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
@@ -166,7 +166,7 @@ class TheComponent extends Component {
                                             </p>
                                             {error && error.message && <div className="text-danger">{error.message}</div>}
                                             <hr/>
-                                            Have an Account? <Link to="/">Log in</Link>
+                                            Have an Account? <Link onClick={()=>this.setState({modalOpen:true})} to="/">Log in</Link>
                                         </form>
                                     ): (
                                         <form onSubmit={(e) => {

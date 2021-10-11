@@ -59,7 +59,7 @@ const Input = class extends React.Component {
 	}
 
 	render() {
-		const {isValid, onSearchChange, mask, placeholderChar, disableHighlight, containerStyle, inputClassName, ...rest} = this.props;
+		const {isValid, icon, onSearchChange, mask, placeholderChar, disableHighlight, containerStyle, inputClassName, ...rest} = this.props;
 
 		const className = cn({
 			'input-container': true,
@@ -94,6 +94,7 @@ const Input = class extends React.Component {
 							onBlur={this.onBlur}
 							className={innerClassName}/>
 					)}
+				{icon && <span className={`${icon} icon`}/> }
 			</div>
 		);
 	}

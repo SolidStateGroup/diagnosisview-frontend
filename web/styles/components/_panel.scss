@@ -1,3 +1,4 @@
+
 @import "../variables";
 @import "../flexbox/mixins";
 
@@ -25,6 +26,25 @@
 
 	}
 
+	&--price {
+		width: 310px;
+		align-self: stretch;
+		&__subtitle {
+			font-size: 20px;
+		}
+		&__title {
+			font-size: 36px;
+			font-weight: bold;
+		}
+	}
+	&--info  {
+		.fa {
+			margin-top: 2px;
+		}
+		border: 1px dotted #297AFB;
+		border-radius: 20px;
+		font-size: 15px;
+	}
 	.panel-content {
 		background-color: $panel-bg;
 		padding: $input-padding-y $input-padding-x;
