@@ -39,9 +39,9 @@ const TheComponent = class extends Component {
             <div className="dashboard-aside">
                 {!!user && !!settings ? (
                     <Flex>
-                        <div className="text-center mt-4 mb-4">
+                        <Link to="/dashboard" className="text-center mt-4 mb-4">
                             <img width={199} src="/images/brand-light.png"/>
-                        </div>
+                        </Link>
                         {institution &&  !!institution.logoUrl && (
                             <div style={{height:70}} className="dashboard-aside__institution mb-4">
                                 <Row>
