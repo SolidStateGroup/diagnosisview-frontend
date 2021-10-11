@@ -66,7 +66,7 @@ class HomePage extends React.Component {
                                         <Link
                                             style={{width:146}}
                                             className="button button--outline button--rounded ml-4"
-                                            to={`/signup`
+                                            to={`/#pricing`
                                             }><span>Sign Up</span>
                                         </Link>
                                     </Row>
@@ -110,7 +110,10 @@ class HomePage extends React.Component {
                                     <PricePanel className="mr-md-4 mb-md-0 mb-4 mr-sm-0" price={0}
                                                 subtitle="Free for life. Upgrade account at any point."
                                                 points={[
-                                        "5 result history and favourites across multiple devices.",
+                                                    "Entry level (green) links",
+                                                    "Save search history",
+                                                    "Create favourites",
+                                                    "Synchronise between mobile app, website and unlimited devices",
                                     ]} title="Starter">
                                         <Link to={"/signup"}>
                                             <a className="button button--rounded full-width">
@@ -118,9 +121,12 @@ class HomePage extends React.Component {
                                             </a>
                                         </Link>
                                     </PricePanel>
-                                    <PricePanel subtitle="Access to pro features." className="ml-md-4 ml-sm-0" price={Math.ceil(1.79*12)} points={[
-                                        "Unlimited result history and favourites across multiple devices.",
-                                        "Access to result professional resources for practitioners and advanced students."
+                                    <PricePanel subtitle="Only £3/Year (special launch offer)." className="ml-md-4 ml-sm-0" price={Math.ceil(3)} points={[
+                                        "Student/practitioner level (amber) links",
+                                        "Expert level (red) links",
+                                        "Unlimited search history",
+                                        "Unlimited favourites",
+                                        "Activate paywalled links to your institution",
                                     ]} title="Professional">
 
                                         <Link to={"/signup?plan=pro"}>

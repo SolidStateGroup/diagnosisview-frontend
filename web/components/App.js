@@ -140,7 +140,10 @@ export default class App extends Component {
                                     </div>
                                 )}
                                 {pageHasNav && <Navbar onRegister={()=>{
-                                    this.context.router.history.replace(redirect ? redirect : '/dashboard');
+                                    const isPro = document.location.href.includes("plan");
+                                    setTimeout(()=>{
+                                        this.context.router.history.replace(redirect ? redirect : isPro? '/dashboard/account?manage=1':"/dashboard");
+                                    }, 500)
 
                                 }}/>}
                                     <div>
@@ -148,7 +151,7 @@ export default class App extends Component {
                                         <div className={pageHasAside && "dashboard-aside__content"}>
                                             <div className="col-md-12">
                                                 {pageHasAside && <DashboardNavbar/>}
-                                                <div className="mt-2">
+                                                <div>
                                                     {AccountStore.hasExpiredSubscription() && (
                                                         <div className="col-md-6 mb-4">
                                                             <ErrorAlert>

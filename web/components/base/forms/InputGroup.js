@@ -17,7 +17,7 @@ const FormGroup = class extends Component {
 
 	render() {
 		const {props} = this;
-		const id = Utils.GUID();
+		const id = props.id || Utils.GUID();
 		const {inputProps={}, component} = this.props;
 		return (
 			<div className={"form-group text-dark"}>

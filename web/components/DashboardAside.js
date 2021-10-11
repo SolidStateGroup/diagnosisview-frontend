@@ -42,7 +42,7 @@ const TheComponent = class extends Component {
                         <div className="text-center mt-4 mb-4">
                             <img width={199} src="/images/brand-light.png"/>
                         </div>
-                        {institution && (
+                        {institution &&  !!institution.logoUrl && (
                             <div style={{height:70}} className="dashboard-aside__institution mb-4">
                                 <Row>
                                     {institution.logoUrl && (
