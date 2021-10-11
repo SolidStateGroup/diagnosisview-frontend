@@ -27,7 +27,7 @@ const TheComponent = class extends Component {
                         </Row>
                     </div>
                     <Link id="manage-codes-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/dashboard`}>
-                        <span className="d-flex flex-1">Regular Dashboard</span>
+                        <span className="d-flex flex-1">Patient Dashboard</span>
                     </Link>
                     <Link id="manage-codes-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/codes`}>
                         <span className="d-flex flex-1">Codes</span>
