@@ -14,8 +14,9 @@ import DiagnosisDetailPage from './components/pages/DiagnosisDetailPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import DashboardPage from "./components/pages/DashboardPage";
 import SearchPage from "./components/pages/SearchPage";
-import DashboardAccountPage from "./components/pages/DashboardAccountPage";
 import DashboardSearchPage from "./components/pages/DashboardSearchPage";
+import DashboardAccountPage from "./components/pages/DashboardAccountPage";
+import AccessibilityPolicyPage from "./components/pages/AccessibilityPolicyPage";
 import DashboardHistoryPage from "./components/pages/DashboardHistoryPage";
 import DashboardFavouritesPage from "./components/pages/DashboardFavouritesPage";
 import DashboardFeedbackPage from "./components/pages/DashboardFeedbackPage";
@@ -42,6 +43,7 @@ export default (
             <Route path="/search" exact component={SearchPage}/>
             <Route path="/terms-of-use" exact component={TermsOfUsePage}/>
             <Route path="/privacy-policy" exact component={PrivacyPolicyPage}/>
+            <Route path="/accessibility-policy" exact component={AccessibilityPolicyPage}/>
             <Route component={NotFoundPage}/>
         </Switch>
     </App>
