@@ -15,12 +15,18 @@ textarea {
 	background-color: transparent;
 
 	&--search {
+		overflow: hidden;
+		&--dark {
+			background-color: #F0F1FF;
+			border: 1px solid rgba(7, 27, 57, 0.2);
+		}
 		position: relative;
 		.icon {
 			color: $primary;
 			position: absolute;
 			left:-30px;
 			top:14px;
+			font-size: 18px;
 		}
 		background-color: white;
 		height: 48px;
@@ -31,6 +37,7 @@ textarea {
 			opacity: 0.4;
 		}
 		.input {
+			color: $brand-navy;
 			font-size: 20px;
 			width:100%;
 			border-radius: 0;

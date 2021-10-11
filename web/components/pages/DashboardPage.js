@@ -19,8 +19,8 @@ class TheComponent extends Component {
                 this.setState({updatedProfile:true})
             }}>
                 {({user, isLoading, isSaving, error})=>(
-
                     <div className="container-fluid">
+
                         <h4 className="mb-4">My Account</h4>
                         <div className="row">
                             <div className="col-xl-8 mb-lg-4 col-lg-12">
