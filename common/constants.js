@@ -1,5 +1,32 @@
 var Constants = {
     webPayments: true,
+    linkIcons: {
+        'NHS_CHOICES': '/images/nhs-choices.png',
+        'MEDLINE_PLUS': '/images/logo-medlineplus.png',
+        'NICE_CKS': '/images/nice.png',
+        'CUSTOM': '/images/default-link.png',
+    },
+    difficultyLevels: (difficultyLevel)=> {
+        let colour, text;
+        switch (difficultyLevel && difficultyLevel.toLowerCase()) {
+            case 'green':
+            default:
+                colour = 'Green';
+                text = 'suitable for students or professionals new to the topic.';
+                break;
+
+            case 'amber':
+                colour = 'Amber';
+                text = 'for practitioners and advanced students.';
+                break;
+
+            case 'red':
+                colour = 'Red';
+                text = 'advanced info.';
+                break;
+        }
+        return {colour,text}
+    },
     events: {
         "LOGIN": {"event": "User login", "category": "User"},
         "REGISTER": {"event": "User register", "category": "User"},
