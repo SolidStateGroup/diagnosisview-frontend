@@ -54,9 +54,20 @@ jobs:
     env:
       PUSH_PACKAGES: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
 
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       - name: Remove existing dist
-        if: ${{ env.PUSH_PACKAGES }}
+        #        if: ${{ env.PUSH_PACKAGES }}
         run: rm -rf build/
 
       - name: Installing NPM
@@ -69,15 +80,16 @@ jobs:
         run: npm run bundle
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
-
-      - name: Deploy to S3
-        if: ${{ env.PUSH_PACKAGES }}
-        run: aws s3 sync ${{ secrets.SOURCE }} s3://${{ secrets.BUCKET_DEV }} --delete
+        run: echo DONE
+  #        uses: aws-actions/configure-aws-credentials@v1
+  #        with:
+  #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+  #
+  #      - name: Deploy to S3
+  #        if: ${{ env.PUSH_PACKAGES }}
+  #        run: aws s3 sync ${{ secrets.SOURCE }} s3://${{ secrets.BUCKET_DEV }} --delete
 
   DeployProd:
     #Depends on build's job
