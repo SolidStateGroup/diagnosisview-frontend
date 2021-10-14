@@ -42,11 +42,11 @@ jobs:
         run: npm run test
 
       - name: Remove existing dist
-      if: ${{ env.PUSH_PACKAGES }}
-      run: rm -rf build/
+        if: ${{ env.PUSH_PACKAGES }}
+        run: rm -rf build/
 
       - name: Installing NPM
-         run: npm install
+        run: npm install
 
       - name: Run env Prod
         run: npm run env_dev
