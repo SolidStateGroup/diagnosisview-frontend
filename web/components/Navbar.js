@@ -74,7 +74,7 @@ class TheComponent extends Component {
 
         return (
             <AccountProvider onSave={this.props.onRegister}>
-                {({error, isLoading, isSaving}, {clearError}) => {
+                {({error, isLoading, user, isSaving}, {clearError}) => {
                     const theError = this.state.error || error
                     return (
                         <div className="nav">
@@ -82,18 +82,25 @@ class TheComponent extends Component {
                                 <img className="brand-image" src={require('../images/brand.png')}/>
                             </Link>
                             <Flex/>
-                            <Row>
-                                <Link to={Constants.webPayments?"/#pricing":"/signup"}>
-                                    <Button className={'btn button--outline-dark nav__button mr-3'}>
-                                        <span className="nav__button__text">{isLoading ? 'Signing up..' : 'Sign up'}</span>
+                            {user? (
+                                <Button onClick={AppActions.logout} className={'btn button--outline-dark nav__button mr-3'}>
+                                    <span className="nav__button__text">Logout</span>
+                                </Button>
+                            ): (
+                                <Row>
+                                    <Link to={Constants.webPayments?"/#pricing":"/signup"}>
+                                        <Button className={'btn button--outline-dark nav__button mr-3'}>
+                                            <span className="nav__button__text">{isLoading ? 'Signing up..' : 'Sign up'}</span>
+                                            <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
+                                        </Button>
+                                    </Link>
+                                    <Button onClick={()=>this.setState({modalOpen:true})} className={'btn btn--primary nav__button'}>
+                                        <span className="nav__button__text">{isLoading ? 'Logging in..' : 'Log in'}</span>
                                         <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
                                     </Button>
-                                </Link>
-                                <Button onClick={()=>this.setState({modalOpen:true})} className={'btn btn--primary nav__button'}>
-                                    <span className="nav__button__text">{isLoading ? 'Logging in..' : 'Log in'}</span>
-                                    <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
-                                </Button>
-                            </Row>
+                                </Row>
+                            )}
+
 
 
                             <Modal

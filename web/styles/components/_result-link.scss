@@ -1,0 +1,29 @@
+.result-link {
+  .fa, .far, .fas {
+    color: $primary;
+    &.fa-chevron-right {
+      &:hover {
+        color: $primary;
+      }
+    }
+    &:hover {
+      color: darken($primary, 20);
+    }
+  }
+  .fa-lock {
+    color: $secondary !important;
+  }
+}
+
+.tooltip {
+  .tooltip-inner {
+    max-width: 400px;
+    background-color: #f1f1f1;
+    color: $body-color;
+    font-weight: 400;
+  }
+  .arrow::before {
+    border-top-color: #f1f1f1 !important;
+  }
+}
+
