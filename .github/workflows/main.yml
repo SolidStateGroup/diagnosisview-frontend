@@ -47,7 +47,7 @@ jobs:
     #Depends on build's job
     needs: build
     name: Deploy Develop
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+#    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
 
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
