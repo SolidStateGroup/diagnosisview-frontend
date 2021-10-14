@@ -45,12 +45,6 @@ jobs:
         if: ${{ env.PUSH_PACKAGES }}
         run: rm -rf build/
 
-      - name: Installing NPM
-        run: npm install
-
-      - name: Run env Prod
-        run: npm run env_dev
-
       - name: Bundle Application
         run: npm run bundle
 
