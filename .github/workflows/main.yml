@@ -1,12 +1,12 @@
-name: DV FE Build and Deploy Production
+name: DV FE Build and Deploy
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -41,9 +41,65 @@ jobs:
       - name: Run Tests
         run: npm run test
 
+
+  #Deploy's job
+  DeployDev:
+    #Depends on build's job
+    needs: build
+    name: Deploy Develop
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    env:
+      PUSH_PACKAGES: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+
+    steps:
       - name: Remove existing dist
         if: ${{ env.PUSH_PACKAGES }}
         run: rm -rf build/
+
+      - name: Installing NPM
+        run: npm install
+
+      - name: Run env Dev
+        run: npm run env_dev
+
+      - name: Bundle Application
+        run: npm run bundle
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Deploy to S3
+        if: ${{ env.PUSH_PACKAGES }}
+        run: aws s3 sync ${{ secrets.SOURCE }} s3://${{ secrets.BUCKET_DEV }} --delete
+
+  DeployProd:
+    #Depends on build's job
+    needs: build
+    name: Deploy Prod
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+
+    #Run on Ubuntu using the latest version
+    runs-on: ubuntu-latest
+    env:
+      PUSH_PACKAGES: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+
+    steps:
+      - name: Remove existing dist
+        if: ${{ env.PUSH_PACKAGES }}
+        run: rm -rf build/
+
+      - name: Installing NPM
+        run: npm install
+
+      - name: Run env Prod
+        run: npm run env_prod
 
       - name: Bundle Application
         run: npm run bundle
