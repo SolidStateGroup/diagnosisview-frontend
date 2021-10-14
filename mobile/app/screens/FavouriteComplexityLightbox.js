@@ -2,24 +2,8 @@ import React, {Component, PropTypes} from 'react';
 
 const FavouriteComplexity = (props) => {
 	const {difficultyLevel} = props;
-	var colour, text;
-	switch (difficultyLevel && difficultyLevel.toLowerCase()) {
-		case 'green':
-		default:
-			colour = 'Green';
-			text = 'suitable for students or professionals new to the topic.';
-			break;
+	var {colour, text} = Constants.difficultyLevels(difficultyLevel);
 
-		case 'amber':
-			colour = 'Amber';
-			text = 'for practitioners and advanced students.';
-			break;
-
-		case 'red':
-			colour = 'Red';
-			text = 'advanced info.';
-			break;
-	}
 	return (
 		<View style={Styles.lightboxOuter}>
 			<View style={Styles.lightbox}>
