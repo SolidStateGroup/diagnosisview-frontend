@@ -36,6 +36,7 @@ export default (
             <Route path="/admin/institutions" exact component={InstitutionsPage}/>
             <Route path="/admin/link-transforms" exact component={ManageLinkTransformsPage}/>
             <Route path="/admin/link-logos" exact component={ManageLinkLogosPage}/>
+            <Route path="/codes/:id" exact component={DiagnosisDetailPage}/>
             <Route path="/admin/diagnosis" exact component={DiagnosisDetailPage}/>
             <Route path="/admin" component={ManageCodesPage}/>
             <Route path="/login" exact component={HomePage}/>

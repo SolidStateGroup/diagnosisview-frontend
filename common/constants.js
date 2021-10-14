@@ -1,5 +1,26 @@
 var Constants = {
     webPayments: true,
+    difficultyLevels: (difficultyLevel)=> {
+        let colour, text;
+        switch (difficultyLevel && difficultyLevel.toLowerCase()) {
+            case 'green':
+            default:
+                colour = 'Green';
+                text = 'suitable for students or professionals new to the topic.';
+                break;
+
+            case 'amber':
+                colour = 'Amber';
+                text = 'for practitioners and advanced students.';
+                break;
+
+            case 'red':
+                colour = 'Red';
+                text = 'advanced info.';
+                break;
+        }
+        return {colour,text}
+    },
     events: {
         "LOGIN": {"event": "User login", "category": "User"},
         "REGISTER": {"event": "User register", "category": "User"},

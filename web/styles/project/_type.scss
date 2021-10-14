@@ -10,6 +10,15 @@ h1,h2,h3,h4,h5,h6{
     text-align: center;
     opacity: 0.8;
 }
+.text-green {
+    color: $success;
+}
+.text-amber {
+    color: #EFCA08;
+}
+.text-red {
+    color: #E15555;
+}
 .text-small{
     font-size:13px!important;
     a {

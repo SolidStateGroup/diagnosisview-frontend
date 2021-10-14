@@ -23,6 +23,10 @@ export default class App extends Component {
         this.state = {
             search: '',
         }
+        AsyncStorage.getItem('favourites', (err, res) => {
+            FavouritesStore.model = res ? JSON.parse(res) : [];
+            FavouritesStore.trigger("change")
+        });
     }
 
     logout = () => {
