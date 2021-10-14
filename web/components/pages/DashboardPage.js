@@ -1,7 +1,12 @@
 import React from 'react';
 import { Component } from 'react';
 import SubscriptionStatus from "../SubscriptionStatus";
+import PanelHeader from "../PanelHeader";
+import ResultLink from "../ResultLink";
+import ResultListItem from "../ResultListItem";
+import ResultHistoryLink from "../ResultHistoryLink";
 
+const MAX_RECENT = 5;
 
 class TheComponent extends Component {
 
@@ -13,6 +18,10 @@ class TheComponent extends Component {
         }
     }
 
+    componentDidMount() {
+        AppActions.getCodes()
+    }
+
     render() {
         return (
             <AccountProvider ref={c => this.accountProvider = c} onLogin={this.onLogin} onLogout={this.onLogout} onSave={()=>{
@@ -21,14 +30,67 @@ class TheComponent extends Component {
                 {({user, isLoading, isSaving, error})=>(
                     <div className="container-fluid">
 
-                        <h4 className="mb-4">My Account</h4>
-                        <div className="row">
-                            <div className="col-xl-8 mb-lg-4 col-lg-12">
-                            </div>
-                            <div className="col-xl-4 col-lg-12">
-                                <SubscriptionStatus/>
-                            </div>
-                        </div>
+                        <CodesProvider>
+                            {({ isLoading, categories }) => {
+                                return (
+                                    <div>
+                                        <h4 className="mb-4">User Dashboard</h4>
+                                        <div className="row">
+                                            <div className="col-xl-8 mb-lg-4 col-lg-12">
+                                                <div>
+                                                    {!!history && !!history.length && (
+                                                      <div>
+                                                          <PanelHeader icon="fa fa-search">
+                                                              Recent Searches
+                                                          </PanelHeader>
+                                                          <div className="panel--white mt-2 mb-4">
+                                                              {DiagnosisStore.getCodes() ? (
+                                                                  <HistoryProvider>
+                                                                      {({ history, isLoading }) => (
+                                                                          <div>
+                                                                              {_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
+                                                                                  const diagnosis = _.find(DiagnosisStore.getCodes(), { code: entry.item.code });
+                                                                                  return (
+                                                                                      <ResultListItem result={diagnosis} key={diagnosis.code}/>
+                                                                                  )
+                                                                              })}
+                                                                          </div>
+                                                                      )}
+                                                                  </HistoryProvider>
+                                                              ): <div className="text-center"><Loader/></div> }
+
+                                                          </div>
+                                                      </div>
+                                                    )}
+                                                </div>
+
+
+                                                <FavouritesProvider>
+                                                    {({ favourites, isLoading }) => !!favourites && !!favourites.length && (
+                                                        <div>
+                                                            <PanelHeader icon="fa fa-search">
+                                                                Recent Favourites
+                                                            </PanelHeader>
+                                                            <div className="panel--white mt-2">
+                                                                {_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (res, i) => {
+                                                                    const { link, entry, name } = res;
+                                                                    return <ResultHistoryLink className="mb-3 mx-2" code={entry} name={name} link={link}/>
+                                                                })}
+                                                            </div>
+                                                        </div>
+                                                        )}
+                                                </FavouritesProvider>
+                                                            </div>
+                                            <div className="col-xl-4 col-lg-12">
+                                                <SubscriptionStatus/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }}
+                        </CodesProvider>
+
+
                     </div>
                 )}
             </AccountProvider>

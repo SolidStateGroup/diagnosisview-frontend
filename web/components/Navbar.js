@@ -78,7 +78,7 @@ class TheComponent extends Component {
                     const theError = this.state.error || error
                     return (
                         <div className="nav">
-                            <Link to="/" className="brand">
+                            <Link to={AccountStore.model? "/dashboard":"/"} className="brand">
                                 <img className="brand-image" src={require('../images/brand.png')}/>
                             </Link>
                             <Flex/>

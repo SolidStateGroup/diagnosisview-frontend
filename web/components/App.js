@@ -27,6 +27,10 @@ export default class App extends Component {
             FavouritesStore.model = res ? JSON.parse(res) : [];
             FavouritesStore.trigger("change")
         });
+        AsyncStorage.getItem('history', (err, res) => {
+            HistoryStore.model = res ? JSON.parse(res) : [];
+            HistoryStore.trigger("change")
+        });
     }
 
     logout = () => {
