@@ -88,7 +88,7 @@ jobs:
 
       - name: Deploy to S3
         if: ${{ env.PUSH_PACKAGES }}
-        run: aws s3 sync ${{ secrets.SOURCE }} s3://${{ secrets.BUCKET_DEV }} --delete
+        run: aws s3 sync ${{ secrets.SOURCE }} ${{ secrets.BUCKET_DEV }} --delete
 
   DeployProd:
     #Depends on build's job
@@ -130,4 +130,4 @@ jobs:
 
       - name: Deploy to S3
         if: ${{ env.PUSH_PACKAGES }}
-        run: aws s3 sync ${{ secrets.SOURCE }} s3://${{ secrets.BUCKET_PROD }} --delete
+        run: aws s3 sync ${{ secrets.SOURCE }} ${{ secrets.BUCKET_PROD }} --delete
