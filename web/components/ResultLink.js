@@ -1,5 +1,7 @@
 import React  from 'react'; // we need this to make JSX compile
 import { UncontrolledTooltip } from 'reactstrap';
+import SubscriptionStore from "../../common/stores/subscription-store";
+import AccountStore from "../../common/stores/account-store";
 
 
 const TheComponent = ({link, code, name, className}) => {
@@ -20,8 +22,9 @@ const TheComponent = ({link, code, name, className}) => {
                 <FavouritesProvider>
                     {({favourites})=>{
                         const isFavourite = _.find(favourites, f => f.code === code && f.link.id === link.id);
-                        const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
+                        const logoImageUrl = Utils.getLinkLogo(linkLogos, link) || Constants.linkIcons[link.linkType.value];
                         let style = {};
+                        const limit =    FavouritesStore.model.length > 3 && SubscriptionStore.isSubscribed()
                         if (!link.displayLink) {
                             return null;
                         } else if (!SubscriptionStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
@@ -38,14 +41,36 @@ const TheComponent = ({link, code, name, className}) => {
                                 <UncontrolledTooltip placement="top" target={`link${link.id}`}>
                                     {`Level = '${colour}', ${text}`}
                                 </UncontrolledTooltip>
+                                {
+                                    limit && !isFavourite && (
+                                        <UncontrolledTooltip placement="top" target={`link${link.id}favourite`}>
+                                            Maximum number of favourites reached. {!AccountStore.getUser() ? 'Please sign in or create an account to add more.' : 'Please subscribe or renew your subscription to add more.'}
+                                        </UncontrolledTooltip>
+                                    )
+                                }
+                                {link.paywalled && (
+                                    <div className="px-2" id={`link${link.id}lock`}>
+                                        <span className={"fa fa-"+(link.paywalled === "LOCKED" ? "lock": "lock-open")}/>
+                                        <UncontrolledTooltip placement="top" target={`link${link.id}lock`}>
+                                            {link.paywalled === 'LOCKED' ?
+                                                'Your user account or institution doesn\'t have a registered account for this resource, though a summary or preview may be displayed. If you have a personal login, or a separate login from your institution, you will be able to log in at the site despite the padlock.' :
+                                                'Your user account or institution has full access to this resource. Please tap the link to view the article (you may need to enter via an institutional login).'
+                                            }
+                                        </UncontrolledTooltip>
+                                    </div>
+                                )}
                                 <Flex style={{height:"30px"}} onClick={onLinkClick}/>
-                                <div  className="mr-5">
-                                    {isFavourite? (
-                                        <span onClick={onRemoveFavourite} className="fa fa-star"/>
-                                    ): (
-                                        <span onClick={onFavourite} className="far fa-star"/>
-                                    )}
-                                </div>
+
+                                {!!AccountStore.model && (
+                                    <div  className="mr-5">
+                                        {isFavourite? (
+                                            <span onClick={onRemoveFavourite} className="fa fa-star"/>
+                                        ): (
+                                            <span id={`link${link.id}favourite`} onClick={limit?null:onFavourite} className="far fa-star"/>
+                                        )}
+                                    </div>
+                                )}
+
                                 <span className="fas fa-chevron-right"/>
                             </Row>
                         )

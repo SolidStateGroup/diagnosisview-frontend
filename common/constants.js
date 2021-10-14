@@ -1,5 +1,11 @@
 var Constants = {
     webPayments: true,
+    linkIcons: {
+        'NHS_CHOICES': '/images/nhs-choices.png',
+        'MEDLINE_PLUS': '/images/logo-medlineplus.png',
+        'NICE_CKS': '/images/nice.png',
+        'CUSTOM': '/images/default-link.png',
+    },
     difficultyLevels: (difficultyLevel)=> {
         let colour, text;
         switch (difficultyLevel && difficultyLevel.toLowerCase()) {

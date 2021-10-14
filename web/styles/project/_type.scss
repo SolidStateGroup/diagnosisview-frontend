@@ -11,13 +11,13 @@ h1,h2,h3,h4,h5,h6{
     opacity: 0.8;
 }
 .text-green {
-    color: $success;
+    color: $success !important;
 }
 .text-amber {
-    color: #EFCA08;
+    color: #EFCA08 !important;
 }
 .text-red {
-    color: #E15555;
+    color: #E15555 !important;
 }
 .text-small{
     font-size:13px!important;
