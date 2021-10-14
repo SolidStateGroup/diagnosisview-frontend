@@ -30,7 +30,7 @@ const DiagnosisDetailPage = class extends Component {
 	get = () => {
 		data.get(Project.api + 'code/' + this.props.match.params.id)
 			.then(res => {
-				console.log(res);
+				AppActions.addToHistory(res);
 				const links = _.sortBy(res.links, 'displayOrder');
 				this.setState({
 					description: res.fullDescription,
