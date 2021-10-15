@@ -40,7 +40,7 @@ class TheComponent extends Component {
                                                 <div>
                                                     {!!history && !!history.length && (
                                                       <div>
-                                                          <PanelHeader icon="fa fa-search">
+                                                          <PanelHeader viewMoreLink={"/dashboard/history"} icon="fa fa-search">
                                                               Recent Searches
                                                           </PanelHeader>
                                                           <div className="panel--white mt-2 mb-4">
@@ -71,7 +71,7 @@ class TheComponent extends Component {
 
                                                         return !!favourites && !!favourites.length && (
                                                         <div>
-                                                            <PanelHeader icon="fa fa-search">
+                                                            <PanelHeader viewMoreLink={"/dashboard/favourites"} icon="fa fa-search">
                                                                 Recent Favourites
                                                             </PanelHeader>
                                                             <div className="panel--white mt-2">

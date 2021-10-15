@@ -9,6 +9,13 @@
     clear: both;
     height: 0;
 }
+.no-underline {
+    text-decoration: none !important;
+    &:hover {
+        text-decoration: none !important;
+
+    }
+}
 .clearfix { display: inline-block; }
 /* start commented backslash hack \*/
 * html .clearfix { height: 1%; }
