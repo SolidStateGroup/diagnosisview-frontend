@@ -56,7 +56,7 @@ class TheComponent extends Component {
         }
 
         if (password !== repeatPassword) {
-            this.setState({error: {message:'Passwords do not match'}});
+            this.setState({error: {message:'Passwords do not match. Please correct and try again.'}});
             document.getElementById("password").focus();
             return;
         }
@@ -67,6 +67,7 @@ class TheComponent extends Component {
             return;
         }
 
+        this.setState({error:null})
         AppActions.register({firstName:this.state.firstName, lastName:this.state.lastName, username: this.state.username, password:this.state.password, occupation:this.state.occupation, institution:this.state.institution});
     }
     render() {
@@ -108,6 +109,17 @@ class TheComponent extends Component {
                                 isOpen={this.state.modalOpen||isSignup && !this.state.forceClose}
                                 toggle={()=>{
                                     this.setState({forceClose:true, modalOpen:false})
+                                    AccountStore.error = null;
+                                    this.setState({
+                                        error: null,
+                                        firstName: null,
+                                        lastName: null,
+                                        username: null,
+                                        password: null,
+                                        occupation: null,
+                                        institution: null
+                                    });
+                                    AccountStore.trigger("change")
                                     setTimeout(()=>{
                                         this.setState({forceClose:false})
                                         if(isSignup) {
@@ -218,7 +230,7 @@ class TheComponent extends Component {
                                                 </div>
 
                                                 <Button disabled={isLoading
-                                                || isSaving || this.invalid()} onClick={this.register} className={'btn btn--primary nav__button'}>
+                                                || isSaving || this.invalid()} onClick={this.register} className={'btn btn-lg btn--primary nav__button'}>
                                                     <span className="nav__button__text">{isLoading ? 'Signing up..' : 'Sign up'}</span>
                                                     <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
                                                 </Button>
@@ -262,7 +274,7 @@ class TheComponent extends Component {
                                                 <Button disabled={isLoading
                                                 || !this.state.username
                                                 || !this.state.password
-                                                } onClick={this.login} className={'btn btn--primary nav__button'}>
+                                                } onClick={this.login} className={'btn btn-lg btn--primary nav__button'}>
                                                     <span className="nav__button__text">{isLoading ? 'Logging in..' : 'Log in'}</span>
                                                     <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
                                                 </Button>

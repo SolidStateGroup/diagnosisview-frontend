@@ -101,6 +101,11 @@ input:disabled {
     display: inline-block;
 }
 
+a.link-dark {
+    color: $brand-navy;
+    text-decoration: underline;
+}
+
 //.app-container {
 //  margin-top: 50px;
 //}
