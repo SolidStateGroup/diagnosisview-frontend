@@ -70,7 +70,7 @@ const TheComponent = ({link, code, name, className}) => {
                                     </div>
                                 )}
 
-                                <span className="fas fa-chevron-right"/>
+                                <span onClick={onLinkClick} className="fas fa-chevron-right"/>
                             </Row>
                         )
                     }}
