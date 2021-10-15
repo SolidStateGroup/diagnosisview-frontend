@@ -1,4 +1,5 @@
 global.API = {
+    isMobile: false,
     ajaxHandler: function (store, res) {
         switch (res.status) {
             case 404:

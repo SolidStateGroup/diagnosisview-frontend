@@ -1,7 +1,7 @@
 import React  from 'react'; // we need this to make JSX compile
 
 const PremiumLinkMessage = ({className}) => {
-    if(SubscriptionStore.isSubscribed()) return null
+    if(AccountStore.hasActiveSubscription()) return null
     return (
         <div>
             <Row className={className}>

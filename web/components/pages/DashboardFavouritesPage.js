@@ -1,11 +1,109 @@
-import React  from 'react'; // we need this to make JSX compile
+import React from 'react';
+import { Component } from 'react';
+import SubscriptionStatus from "../SubscriptionStatus";
+import PanelHeader from "../PanelHeader";
+import ResultLink from "../ResultLink";
+import ResultListItem from "../ResultListItem";
+import ResultHistoryLink from "../ResultHistoryLink";
 
-const TheComponent = ({}) => {
-    return (
-        <div>
-            dashboard
-        </div>
-    )
+const MAX_RECENT = 9999;
+
+class TheComponent extends Component {
+
+    constructor() {
+        super();
+
+        this.state ={
+
+        }
+    }
+
+    componentDidMount() {
+        AppActions.getCodes()
+    }
+
+    render() {
+        return (
+            <AccountProvider ref={c => this.accountProvider = c} onLogin={this.onLogin} onLogout={this.onLogout} onSave={()=>{
+                this.setState({updatedProfile:true})
+            }}>
+                {({user, isLoading, isSaving, error})=>(
+                    <div className="container-fluid">
+
+                        <CodesProvider>
+                            {({ isLoading, categories }) => {
+                                return (
+                                    <div>
+                                        <h4 className="mb-4">User Dashboard</h4>
+                                        <div className="row">
+                                            <div className="col-xl-8 mb-lg-4 col-lg-12">
+                                                <div>
+                                                    {!!history && !!history.length ? (
+                                                        <div>
+                                                            <div className="panel--white mt-2 mb-4">
+                                                                {DiagnosisStore.getCodes() ? (
+                                                                    <HistoryProvider>
+                                                                        {({ history, isLoading }) => (
+                                                                            <div>
+                                                                                {_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
+                                                                                    const diagnosis = _.find(DiagnosisStore.getCodes(), { code: entry.item.code });
+                                                                                    return (
+                                                                                        <ResultListItem
+                                                                                            date={entry.date}
+                                                                                            result={diagnosis}
+                                                                                            key={diagnosis.code}
+                                                                                        />
+                                                                                    )
+                                                                                })}
+                                                                            </div>
+                                                                        )}
+                                                                    </HistoryProvider>
+                                                                ) : <div className="text-center"><Loader/></div>}
+
+                                                            </div>
+                                                        </div>
+                                                    ) : <div>
+                                                        {!isLoading && <div>You have no favourites</div>}
+                                                    </div>
+                                                    }
+                                                </div>
+
+
+                                                <FavouritesProvider>
+                                                    {({ favourites, isLoading }) => {
+                                                        const results = _.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT);
+
+                                                        return !!favourites && !!favourites.length && (
+                                                            <div>
+                                                                <PanelHeader viewMoreLink={"/dashboard/favourites"} icon="fa fa-search">
+                                                                    Recent Favourites
+                                                                </PanelHeader>
+                                                                <div className="panel--white mt-2">
+                                                                    {_.map(results,(res, i) => {
+                                                                        const { link, entry, name } = res;
+                                                                        const isLast = results.length-1 === i
+                                                                        return <ResultHistoryLink className={"mx-2 " + (!isLast && "mb-3")} code={entry} name={name} link={link}/>
+                                                                    })}
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }}
+                                                </FavouritesProvider>
+                                            </div>
+                                            <div className="col-xl-4 col-lg-12">
+                                                <SubscriptionStatus/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }}
+                        </CodesProvider>
+
+
+                    </div>
+                )}
+            </AccountProvider>
+        )}
 }
 
 export default TheComponent
