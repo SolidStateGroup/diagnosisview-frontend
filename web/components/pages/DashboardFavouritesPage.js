@@ -5,6 +5,8 @@ import PanelHeader from "../PanelHeader";
 import ResultLink from "../ResultLink";
 import ResultListItem from "../ResultListItem";
 import ResultHistoryLink from "../ResultHistoryLink";
+import SearchInput from "../SearchInput";
+import ResultFavouriteLink from "../ResultFavouriteLink";
 
 const MAX_RECENT = 9999;
 
@@ -22,6 +24,11 @@ class TheComponent extends Component {
         AppActions.getCodes()
     }
 
+    filter =(link)=>{
+        if(!this.state.search) return true
+        return link.name.toLowerCase().startsWith(this.state.search.toLowerCase())
+    }
+
     render() {
         return (
             <AccountProvider ref={c => this.accountProvider = c} onLogin={this.onLogin} onLogout={this.onLogout} onSave={()=>{
@@ -34,56 +41,30 @@ class TheComponent extends Component {
                             {({ isLoading, categories }) => {
                                 return (
                                     <div>
-                                        <h4 className="mb-4">User Dashboard</h4>
+                                        <h4 className="mb-4">Favourites</h4>
                                         <div className="row">
                                             <div className="col-xl-8 mb-lg-4 col-lg-12">
-                                                <div>
-                                                    {!!history && !!history.length ? (
-                                                        <div>
-                                                            <div className="panel--white mt-2 mb-4">
-                                                                {DiagnosisStore.getCodes() ? (
-                                                                    <HistoryProvider>
-                                                                        {({ history, isLoading }) => (
-                                                                            <div>
-                                                                                {_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
-                                                                                    const diagnosis = _.find(DiagnosisStore.getCodes(), { code: entry.item.code });
-                                                                                    return (
-                                                                                        <ResultListItem
-                                                                                            date={entry.date}
-                                                                                            result={diagnosis}
-                                                                                            key={diagnosis.code}
-                                                                                        />
-                                                                                    )
-                                                                                })}
-                                                                            </div>
-                                                                        )}
-                                                                    </HistoryProvider>
-                                                                ) : <div className="text-center"><Loader/></div>}
-
-                                                            </div>
-                                                        </div>
-                                                    ) : <div>
-                                                        {!isLoading && <div>You have no favourites</div>}
+                                                <div className="row mb-4">
+                                                    <div className="col-lg-6 col-md-12">
+                                                        <SearchInput
+                                                            value={this.state.search}
+                                                            className="input-container--search--dark"
+                                                            placeholder={"Search favourites"}
+                                                            onChange={(e)=>this.setState({search: Utils.safeParseEventValue(e)})}
+                                                        />
                                                     </div>
-                                                    }
                                                 </div>
-
-
                                                 <FavouritesProvider>
                                                     {({ favourites, isLoading }) => {
-                                                        const results = _.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT);
-
-                                                        return !!favourites && !!favourites.length && (
+                                                        const results = _.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT).filter(this.filter);
+                                                        return !!favourites && (
                                                             <div>
-                                                                <PanelHeader viewMoreLink={"/dashboard/favourites"} icon="fa fa-search">
-                                                                    Recent Favourites
-                                                                </PanelHeader>
-                                                                <div className="panel--white mt-2">
+                                                                <div style={{paddingBottom:4}} className="panel--white panel--outline mt-2 mb-4">
                                                                     {_.map(results,(res, i) => {
                                                                         const { link, entry, name } = res;
-                                                                        const isLast = results.length-1 === i
-                                                                        return <ResultHistoryLink className={"mx-2 " + (!isLast && "mb-3")} code={entry} name={name} link={link}/>
+                                                                        return <ResultFavouriteLink date={res.date} className={"mx-2 mb-3"} code={res.code} name={name} link={link}/>
                                                                     })}
+                                                                    {!!results && results.length === 0  && <div className="text-center mb-3">No results{!!this.state.search && <span> found for "<strong>{this.state.search}</strong>"</span>}</div>}
                                                                 </div>
                                                             </div>
                                                         )

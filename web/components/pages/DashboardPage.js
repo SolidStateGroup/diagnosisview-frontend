@@ -74,7 +74,7 @@ class TheComponent extends Component {
                                                             <PanelHeader viewMoreLink={"/dashboard/favourites"} icon="fa fa-search">
                                                                 Recent Favourites
                                                             </PanelHeader>
-                                                            <div className="panel--white mt-2">
+                                                            <div className="panel--white mt-2 mb-4">
                                                                 {_.map(results,(res, i) => {
                                                                     const { link, entry, name } = res;
                                                                     const isLast = results.length-1 === i
