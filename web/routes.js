@@ -21,6 +21,7 @@ import AccessibilityPolicyPage from "./components/pages/AccessibilityPolicyPage"
 import DashboardHistoryPage from "./components/pages/DashboardHistoryPage";
 import DashboardFavouritesPage from "./components/pages/DashboardFavouritesPage";
 import DashboardFeedbackPage from "./components/pages/DashboardFeedbackPage";
+import DashboardResultDetailPage from "./components/pages/DashboardResultDetailPage";
 
 export default (
     <App>
@@ -31,6 +32,7 @@ export default (
             <Route path="/dashboard/search" exact component={DashboardSearchPage}/>
             <Route path="/dashboard/history" exact component={DashboardHistoryPage}/>
             <Route path="/dashboard/favourites" exact component={DashboardFavouritesPage}/>
+            <Route path="/dashboard/codes/:id" exact component={DashboardResultDetailPage}/>
             <Route path="/dashboard/feedback" exact component={DashboardFeedbackPage}/>
             <Route path="/admin/codes" exact component={ManageCodesPage}/>
             <Route path="/admin/users" exact component={ManageUsersPage}/>
