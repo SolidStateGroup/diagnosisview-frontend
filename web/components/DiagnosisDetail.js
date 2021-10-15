@@ -50,7 +50,7 @@ class TheComponent extends Component {
                     <div>
                         { _.map(links, link => {
                             return (
-                                <ResultLink className="mb-3 mx-2" code={this.props.id} name={name} link={link}/>
+                                <ResultLink key={link.id} className="mb-3 mx-2" code={this.props.id} name={name} link={link}/>
                             );
                         })}
                     </div>

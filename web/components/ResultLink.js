@@ -40,13 +40,7 @@ const TheComponent = ({link, code, name, className}) => {
                                 <UncontrolledTooltip placement="top" target={`link${link.id}`}>
                                     {`Level = '${colour}', ${text}`}
                                 </UncontrolledTooltip>
-                                {
-                                    limit && !isFavourite && (
-                                        <UncontrolledTooltip placement="top" target={`link${link.id}favourite`}>
-                                            Maximum number of favourites reached. {!AccountStore.getUser() ? 'Please sign in or create an account to add more.' : 'Please subscribe or renew your subscription to add more.'}
-                                        </UncontrolledTooltip>
-                                    )
-                                }
+
                                 {link.paywalled && (
                                     <div className="px-2" id={`link${link.id}lock`}>
                                         <span className={"fa fa-"+(link.paywalled === "LOCKED" ? "lock": "lock-open")}/>
@@ -62,6 +56,9 @@ const TheComponent = ({link, code, name, className}) => {
 
                                 {!!AccountStore.model && (
                                     <div  className="mr-5">
+                                        <UncontrolledTooltip placement="top" target={`link${link.id}favourite`}>
+                                            Maximum number of favourites reached. {!AccountStore.getUser() ? 'Please sign in or create an account to add more.' : 'Please subscribe or renew your subscription to add more.'}
+                                        </UncontrolledTooltip>
                                         {isFavourite? (
                                             <span onClick={onRemoveFavourite} className="fa fa-star"/>
                                         ): (
