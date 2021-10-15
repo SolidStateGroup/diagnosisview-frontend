@@ -37,6 +37,10 @@
         }
     }
 
+    &--no-pad-bottom {
+        padding-bottom:4px !important;
+    }
+
     &--white{
         background:#fff;
         border-radius: 15px;
