@@ -60,6 +60,26 @@ class TheComponent extends Component {
                                                         return !!favourites && (
                                                             <div>
                                                                 <div style={{paddingBottom:4}} className="panel--white panel--outline mt-2 mb-4">
+                                                                    <div className="panel--outline__header">
+                                                                        <Row>
+                                                                            <Flex>
+                                                                                <Row className="ml-1">
+                                                                                    <span className="fa fa-star"/>
+                                                                                    <strong className="ml-3">
+                                                                                        Favourites
+                                                                                    </strong>
+                                                                                </Row>
+                                                                            </Flex>
+                                                                                <Row>
+                                                                                    <span className="fa fa-calendar"/>
+                                                                                    <strong className="ml-3">
+                                                                                        Date Added
+                                                                                    </strong>
+                                                                                </Row>
+                                                                            <div style={{width:160}}/>
+
+                                                                        </Row>
+                                                                    </div>
                                                                     {_.map(results,(res, i) => {
                                                                         const { link, entry, name } = res;
                                                                         return <ResultFavouriteLink date={res.date} className={"mx-2 mb-3"} code={res.code} name={name} link={link}/>
