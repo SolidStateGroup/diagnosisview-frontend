@@ -58,8 +58,8 @@ const HistoryPage = class extends Component {
 												{subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
 													<>
 														<Text style={[Styles.textCenter, Styles.paragraph]}>Displays search history on this device from the last 20 searches only.</Text>
-														<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited search history across all your devices, please {(!user && !subscription) ? 'subscribe and register' : !subscription ? 'subscribe' : 'register'}.</Text>
-														<Button onPress={this.subscribe}>{(!user ? 'Register' : 'Subscribe') + ' now'}</Button>
+														<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited search history across all your devices, please {(!user && !subscription) ? 'subscribe' : !subscription ? 'subscribe' : 'register'}.</Text>
+														<Button onPress={this.subscribe}>{(!user ? 'Subscribe' : 'Subscribe') + ' now'}</Button>
 													</>
 												)}
 											</View>
@@ -85,7 +85,7 @@ const HistoryPage = class extends Component {
 															const diagnosis = _.find(DiagnosisStore.getCodes(), {code: entry.item.code});
 															const tags = diagnosis && diagnosis.tags;
 															return (
-																<ListItem 
+																<ListItem
 																	key={i} noAnim onPress={() => routeHelper.goDiagnosisDetail(this.props.navigator, entry.item.code, entry.item.friendlyName)}>
 																		<Row style={{flex: DIAGNOSIS_CELL_FLEX}}>
 																			<Text numberOfLines={1} style={Styles.textSmall}>{entry.item.friendlyName}</Text>

@@ -4,8 +4,10 @@ import SubscriptionStatus from "../SubscriptionStatus";
 import SearchInput from "../SearchInput";
 import ResultFavouriteLink from "../ResultFavouriteLink";
 import PagedList from "../PagedList";
+import AccountStore from "../../../common/stores/account-store";
 
 const MAX_RECENT = 9999;
+const MAX_RECENT_UNSUBSCRIBED = 5;
 
 class TheComponent extends Component {
 
@@ -23,6 +25,9 @@ class TheComponent extends Component {
 
     filter =(link)=>{
         if(!this.state.search) return true
+        if (!AccountStore.hasActiveSubscription() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+            return false;
+        }
         return link.name.toLowerCase().startsWith(this.state.search.toLowerCase())
     }
 
@@ -58,7 +63,7 @@ class TheComponent extends Component {
                                                         }
                                                         const favourites = this.state.favourites;
 
-                                                        const results = _.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT).filter(this.filter);
+                                                        const results = _.take(_.reverse(_.sortBy(favourites, 'date')), AccountStore.hasActiveSubscription()?MAX_RECENT:MAX_RECENT_UNSUBSCRIBED).filter(this.filter);
                                                         return !!favourites && (
                                                             <div>
                                                                 <PagedList
