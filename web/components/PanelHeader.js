@@ -4,9 +4,11 @@ import React  from 'react'; // we need this to make JSX compile
 
 const TheComponent = ({children, icon, className,viewMoreLink}) => {
     return (
-        <Row className={"panel__header " + className||""}>
+        <Row className={"panel__header no-wrap " + className||""}>
             <Flex>
-                <span className={icon+" mr-1"}/> {children}
+                <Row className="align-items-start">
+                    <span className={icon+" mr-1"}/> {children}
+                </Row>
             </Flex>
             {!!viewMoreLink && (
                 <Link className="no-underline" to={viewMoreLink}>
