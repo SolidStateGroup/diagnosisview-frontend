@@ -32,13 +32,13 @@ const TheComponent = ({link, code, name,date, className}) => {
                         const {colour,text} = Constants.difficultyLevels(link.difficultyLevel)
                         return (
                             <Row className={className + " result-link cursor-pointer"}>
-                                    <Row style={{width:250}}>
-                                        <div onClick={onLinkClick} id={`link${link.id}`}>
+                                    <Row onClick={onLinkClick} style={{width:250}}>
+                                        <div id={`link${link.id}`}>
                                             <span style={style} className={"fa fa-info-circle text-" + link.difficultyLevel.toLowerCase()}/>
                                         </div>
-                                        <img onClick={onLinkClick} className="mx-3" src={logoImageUrl} height={20}/>
+                                        <img className="mx-3" src={logoImageUrl} height={20}/>
                                     </Row>
-                                <Flex>
+                                <Flex onClick={onLinkClick}>
                                     <Row>
                                         {name}
                                         {link.paywalled && (
@@ -65,7 +65,7 @@ const TheComponent = ({link, code, name,date, className}) => {
                                                 </UncontrolledTooltip>
                                             )
                                         }
-                                        <div className="mr-4">
+                                        <div onClick={onLinkClick} className="mr-4">
                                             {moment(date).format("Do MMMM YYYY HH:mm")}
                                         </div>
                                         {!!AccountStore.model && (
@@ -80,7 +80,7 @@ const TheComponent = ({link, code, name,date, className}) => {
                                     </Row>
 
 
-                                <span className="fas fa-chevron-right"/>
+                                <span onClick={onLinkClick} className="fas fa-chevron-right"/>
                             </Row>
                         )
                     }}

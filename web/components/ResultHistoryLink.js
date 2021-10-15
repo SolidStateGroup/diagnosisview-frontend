@@ -56,7 +56,7 @@ const TheComponent = ({link, code, name, className}) => {
                                 <Flex style={{height:"30px"}} onClick={onLinkClick}/>
                                 <img onClick={onLinkClick} className="ml-3 mr-3" src={logoImageUrl} height={20}/>
 
-                                <span className="fas fa-chevron-right"/>
+                                <span onClick={onLinkClick} className="fas fa-chevron-right"/>
                             </Row>
                         )
                     }}
