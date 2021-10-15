@@ -10,10 +10,13 @@ const TheComponent = ({result, date}) => {
             <Link to={AccountStore.model? "/dashboard/codes/"+result.code:"/codes/"+result.code}>
                 <Row>
                     <Flex value={2}>
-                        <div className="mr-2">{result.friendlyName}</div>
-                        {_.map(result.tags, tag => (
-                            <Tag key={tag.id} tag={tag} />
-                        ))}
+                        <Row>
+                            <div className="mr-2">{result.friendlyName}</div>
+                            {_.map(result.tags, tag => (
+                                <Tag key={tag.id} tag={tag} />
+                            ))}
+                        </Row>
+
                     </Flex>
                     {date && (
                         <Flex value={1}>
