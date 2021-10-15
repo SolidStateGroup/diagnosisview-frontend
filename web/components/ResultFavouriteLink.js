@@ -32,28 +32,15 @@ const TheComponent = ({link, code, name,date, className}) => {
                         const {colour,text} = Constants.difficultyLevels(link.difficultyLevel)
                         return (
                             <Row className={className + " result-link cursor-pointer"}>
-                                <Flex>
-                                    <Row>
+                                    <Row style={{width:250}}>
                                         <div onClick={onLinkClick} id={`link${link.id}`}>
                                             <span style={style} className={"fa fa-info-circle text-" + link.difficultyLevel.toLowerCase()}/>
                                         </div>
                                         <img onClick={onLinkClick} className="mx-3" src={logoImageUrl} height={20}/>
-                                        {name}
                                     </Row>
-                                </Flex>
-
                                 <Flex>
                                     <Row>
-                                        <UncontrolledTooltip placement="top" target={`link${link.id}`}>
-                                            {`Level = '${colour}', ${text}`}
-                                        </UncontrolledTooltip>
-                                        {
-                                            limit && !isFavourite && (
-                                                <UncontrolledTooltip placement="top" target={`link${link.id}favourite`}>
-                                                    Maximum number of favourites reached. {!AccountStore.getUser() ? 'Please sign in or create an account to add more.' : 'Please subscribe or renew your subscription to add more.'}
-                                                </UncontrolledTooltip>
-                                            )
-                                        }
+                                        {name}
                                         {link.paywalled && (
                                             <div className="px-2" id={`link${link.id}lock`}>
                                                 <span className={"fa fa-"+(link.paywalled === "LOCKED" ? "lock": "lock-open")}/>
@@ -65,8 +52,22 @@ const TheComponent = ({link, code, name,date, className}) => {
                                                 </UncontrolledTooltip>
                                             </div>
                                         )}
-                                        {moment(date).format("Do MMMM YYYY HH:mm")}
-                                        <Flex style={{height:"30px"}} onClick={onLinkClick}/>
+                                    </Row>
+                                </Flex>
+                                    <Row>
+                                        <UncontrolledTooltip placement="top" target={`link${link.id}`}>
+                                            {`Level = '${colour}', ${text}`}
+                                        </UncontrolledTooltip>
+                                        {
+                                            limit && !isFavourite && (
+                                                <UncontrolledTooltip placement="top" target={`link${link.id}favourite`}>
+                                                    Maximum number of favourites reached. {!AccountStore.getUser() ? 'Please sign in or create an account to add more.' : 'Please subscribe or renew your subscription to add more.'}
+                                                </UncontrolledTooltip>
+                                            )
+                                        }
+                                        <div className="mr-4">
+                                            {moment(date).format("Do MMMM YYYY HH:mm")}
+                                        </div>
                                         {!!AccountStore.model && (
                                             <div  className="mr-5">
                                                 {isFavourite? (
@@ -77,7 +78,6 @@ const TheComponent = ({link, code, name,date, className}) => {
                                             </div>
                                         )}
                                     </Row>
-                                </Flex>
 
 
                                 <span className="fas fa-chevron-right"/>
