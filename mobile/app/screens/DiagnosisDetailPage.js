@@ -42,7 +42,7 @@ const DiagnosisDetailPage = class extends Component {
 	get = () => {
 		data.get(Project.api + 'code/' + this.props.code)
 			.then(res => {
-				console.log(res);
+				// console.log(res);
 				const links = _.sortBy(res.links, 'displayOrder');
 				this.setState({
 					description: res.fullDescription,

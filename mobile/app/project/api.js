@@ -217,10 +217,10 @@ global.API = {
             android: (async () => {
                 try {
                     const res = await _data.post(`${Project.api}user/validate/android/public`, { packageName: DeviceInfo.getBundleId(), productId: iapItemSkus[0], purchaseToken: receipt });
-                    console.log(res);
+                    // console.log(res);
                     return res;
                 } catch (e) {
-                    console.log(e);
+                    // console.log(e);
                     return false;
                 }
             })()

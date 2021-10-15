@@ -118,7 +118,6 @@ module.exports = hot(module)(class extends React.Component {
         _.each(newChanges, (value, key) => {
             changes[uid][key] = value;
         });
-        console.log(changes);
         this.setState({changes});
     }
 

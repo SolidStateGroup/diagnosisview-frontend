@@ -35,7 +35,7 @@ var controller = {
                 if (AccountStore.hasActiveSubscription()) {
                     data.put(Project.api + 'user/favourites', {linkId: link.id, code, type: link.linkType.value, dateAdded: favourite.date})
                         .then(res => {
-                            console.log(res);
+                            // console.log(res);
                             store.model = store.model || [];
                             store.model.push(favourite);
                             store.saved();
@@ -52,7 +52,7 @@ var controller = {
             AsyncStorage.getItem('favourites', (err, res) => {
                 if (err) {
                     store.goneABitWest(err);
-                    console.log(err);
+                    // console.log(err);
                     return;
                 }
 
@@ -68,7 +68,7 @@ var controller = {
                     const favourite = store.model[index];
                     data.delete(Project.api + 'user/favourites', {linkId: favourite.originalLinkId === 0 ? 0 : link.id, code, type: link.linkType.value})
                         .then(res => {
-                            console.log(res);
+                            // console.log(res);
                             if (index !== -1) {
                                 store.model.splice(index, 1);
                             }

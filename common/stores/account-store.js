@@ -95,7 +95,7 @@ var controller = {
             const deviceFavourites = FavouritesStore.getFavourites();
             _.each(deviceFavourites, deviceFave => {
                 if (!_.find(serverFavourites, subFave => subFave.code === deviceFave.code && subFave.type === deviceFave.link.linkType.value)) {
-                    console.log('Syncing device favourite to server', deviceFave);
+                    // console.log('Syncing device favourite to server', deviceFave);
                     favouritesToSync.push({linkId: deviceFave.link.id, code: deviceFave.code, type: deviceFave.link.linkType.value, dateAdded: deviceFave.date});
                 }
             });
@@ -107,7 +107,7 @@ var controller = {
             const deviceHistory = HistoryStore.getHistory();
             _.map(deviceHistory, deviceEntry => {
                 if (!_.find(serverHistory, subEntry => subEntry.code === deviceEntry.item.code && subEntry.dateAdded === deviceEntry.date)) {
-                    console.log('Syncing device history entry to server', deviceEntry);
+                    // console.log('Syncing device history entry to server', deviceEntry);
                     historyToSync.push({code: deviceEntry.item.code, dateAdded: deviceEntry.date});
                 }
             });
@@ -126,11 +126,11 @@ var controller = {
             var historyToSync = controller.getHistoryToSync(store.model.history);
 
             // Validate purchase
-            console.log(JSON.stringify(purchase));
+            // console.log(JSON.stringify(purchase));
             AsyncStorage.getItem('subscriptionLinkedTo')
                 .then(res => {
                     if (res && res != store.model.id) {
-                        console.log('Attempted to activate subscription on device which already linked subscription to another account');
+                        // console.log('Attempted to activate subscription on device which already linked subscription to another account');
                         store.saved();
                         return Promise.reject(new Error('Attempted to activate subscription on device which already linked subscription to another account'));
                     }
@@ -146,7 +146,7 @@ var controller = {
                         return Promise.reject(e);
                     }
                     return e.json().then(err => {
-                        console.log('Failed to validate purchase', err);
+                        // console.log('Failed to validate purchase', err);
                         if (err.status === 400) { // Failed validation
                             store.model.activeSubscription = false;
                             AsyncStorage.setItem('user', JSON.stringify(store.model));
@@ -160,7 +160,7 @@ var controller = {
                     })
                     .catch(err => {
                         // Something has gone very wrong, store this purchase for retry and return account to enable subscription on device
-                        console.log('Failed to validate purchase', err);
+                        // console.log('Failed to validate purchase', err);
                         AsyncStorage.setItem("retrySubscription", JSON.stringify(purchase));
                         return data.get(Project.api + 'account');
                     })
@@ -168,7 +168,7 @@ var controller = {
                 .then(res => favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res)) // Sync favourites
                 .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res)) // Sync history
                 .then(res => {
-                    console.log(res);
+                    // console.log(res);
                     store.model = this.processUser(res);
                     AsyncStorage.setItem('user', JSON.stringify(store.model));
                     store.saved();
@@ -211,8 +211,6 @@ var controller = {
                         res.activeSubscription = true;
                     }
 
-                    console.log(res);
-
                     controller.onLogin(res);
 
                     if (retrySubscription) {
@@ -238,7 +236,7 @@ var controller = {
                 .then(res => {
                     res = controller.processUser(res);
 
-                    console.log(res);
+                    // console.log(res);
 
                     controller.onLogin(res);
                     store.saved();
