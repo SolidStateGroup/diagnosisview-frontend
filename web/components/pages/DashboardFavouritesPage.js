@@ -1,12 +1,9 @@
 import React from 'react';
 import { Component } from 'react';
 import SubscriptionStatus from "../SubscriptionStatus";
-import PanelHeader from "../PanelHeader";
-import ResultLink from "../ResultLink";
-import ResultListItem from "../ResultListItem";
-import ResultHistoryLink from "../ResultHistoryLink";
 import SearchInput from "../SearchInput";
 import ResultFavouriteLink from "../ResultFavouriteLink";
+import PagedList from "../PagedList";
 
 const MAX_RECENT = 9999;
 
@@ -50,7 +47,7 @@ class TheComponent extends Component {
                                                             value={this.state.search}
                                                             className="input-container--search--dark"
                                                             placeholder={"Search favourites"}
-                                                            onChange={(e)=>this.setState({search: Utils.safeParseEventValue(e)})}
+                                                            onChange={(e)=>this.setState({page:0, search: Utils.safeParseEventValue(e)})}
                                                         />
                                                     </div>
                                                 </div>
@@ -59,7 +56,13 @@ class TheComponent extends Component {
                                                         const results = _.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT).filter(this.filter);
                                                         return !!favourites && (
                                                             <div>
-                                                                <div style={{paddingBottom:4}} className="panel--white panel--outline mt-2 mb-4">
+                                                                <PagedList
+                                                                    page={this.state.page}
+                                                                    onPageChange={(page)=>this.setState({page})}
+                                                                data={results}
+                                                                containerStyle={{paddingBottom:4}}
+                                                                containerClassName="panel--white panel--outline mt-2 mb-4"
+                                                                header={(
                                                                     <div className="panel--outline__header">
                                                                         <Row>
                                                                             <Flex>
@@ -70,22 +73,24 @@ class TheComponent extends Component {
                                                                                     </strong>
                                                                                 </Row>
                                                                             </Flex>
-                                                                                <Row>
-                                                                                    <span className="fa fa-calendar"/>
-                                                                                    <strong className="ml-3">
-                                                                                        Date Added
-                                                                                    </strong>
-                                                                                </Row>
+                                                                            <Row>
+                                                                                <span className="fa fa-calendar"/>
+                                                                                <strong className="ml-3">
+                                                                                    Date Added
+                                                                                </strong>
+                                                                            </Row>
                                                                             <div style={{width:160}}/>
-
                                                                         </Row>
                                                                     </div>
-                                                                    {_.map(results,(res, i) => {
-                                                                        const { link, entry, name } = res;
-                                                                        return <ResultFavouriteLink date={res.date} className={"mx-2 mb-3"} code={res.code} name={name} link={link}/>
-                                                                    })}
-                                                                    {!!results && results.length === 0  && <div className="text-center mb-3">No results{!!this.state.search && <span> found for "<strong>{this.state.search}</strong>"</span>}</div>}
-                                                                </div>
+                                                                )}
+                                                                renderItem={(res)=>{
+                                                                    const { link, entry, name } = res;
+                                                                    return <ResultFavouriteLink date={res.date} className={"mx-2 mb-3"} code={res.code} name={name} link={link}/>
+                                                                }}
+                                                                >
+
+                                                                </PagedList>
+                                                                {!!results && results.length === 0  && <div className="text-center mb-3">No results{!!this.state.search && <span> found for "<strong>{this.state.search}</strong>"</span>}</div>}
                                                             </div>
                                                         )
                                                     }}
