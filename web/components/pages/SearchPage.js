@@ -8,6 +8,7 @@ import SearchEmpty from "../SearchEmpty";
 import WhoFor from "../WhoFor";
 import ResultListItem from "../ResultListItem";
 import PanelHeader from "../PanelHeader";
+import Footer from "../Footer";
 
 class TheComponent extends Component {
     state = {
@@ -94,8 +95,7 @@ class TheComponent extends Component {
                     <WhoFor/>
                 </div>
             </div>
-
-
+            <Footer fixed/>
         </div>;
     }
 }

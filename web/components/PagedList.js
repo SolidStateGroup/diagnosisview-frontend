@@ -23,7 +23,7 @@ class TheComponent extends Component<ComponentType> {
                         <div className="col-xl-8 col-lg-12">
                             <Row className="justify-content-center">
                                 {chunks.map((v,i)=>(
-                                    <a onClick={()=>this.props.onPageChange(i)} className={"button button--page button--rounded mr-2 " + (i === page ? " button--primary": " ")}>
+                                    <a key={i} onClick={()=>this.props.onPageChange(i)} className={"button button--page button--rounded mr-2 " + (i === page ? " button--primary": " ")}>
                                         {i+1}
                                     </a>
                                 ))}

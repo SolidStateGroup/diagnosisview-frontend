@@ -8,6 +8,7 @@ import PanelHeader from "../PanelHeader";
 import ResultLink from "../ResultLink";
 import PremiumLinkMessage from "../PremiumLinkMessage";
 import DiagnosisDetail from "../DiagnosisDetail";
+import Footer from "../Footer";
 
 const DiagnosisDetailPage = class extends Component {
 
@@ -24,7 +25,7 @@ const DiagnosisDetailPage = class extends Component {
 						<WhoFor/>
 					</div>
 				</div>
-
+<Footer fixed/>
 			</div>
 		)
 	}
