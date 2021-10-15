@@ -165,8 +165,20 @@ footer.homepage{
 	&:hover {
 		text-decoration: none;
 	}
+	&--page {
+		width:36px;
+		line-height: 36px;
+		padding: 0 !important;
+	}
 	&--rounded {
 		border-radius: 6px;
+		&-shadow {
+			box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.04), 0 2px 1px 0 rgba(0, 0, 0, 0.03), 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+		}
+	}
+	&--primary {
+		color: white !important;
+		background-color: $primary;
 	}
 	&--outline {
 		box-shadow: none;

@@ -72,7 +72,7 @@ const TheComponent = class extends Component {
                                 <Row>
                                     <span className={"fa fa-user-shield " + "mr-2"}/>
                                     <span className="dashboard-aside__link-text">
-                                        Admin
+                                        Admin Site
                                     </span>
                                 </Row>
                             </NavLink>

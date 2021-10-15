@@ -7,7 +7,7 @@
     left: 0;
     display: flex;
     z-index: 100;
-    width: 243px;
+    width: $dashboard-aside-width;
     background-color: $primary;
     flex-direction: column;
   &__institution {

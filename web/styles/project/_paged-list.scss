@@ -1,0 +1,8 @@
+.paged-list {
+	&__paging {
+		position: fixed;
+		bottom: 28px;
+		left: $dashboard-aside-width;
+		right: 0;
+	}
+}
