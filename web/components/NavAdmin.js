@@ -26,9 +26,7 @@ const TheComponent = class extends Component {
                             <img height={34} src={"/images/brand-medium.png"}/>
                         </Row>
                     </div>
-                    <Link id="manage-codes-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/dashboard`}>
-                        <span className="d-flex flex-1">Patient Dashboard</span>
-                    </Link>
+
                     <Link id="manage-codes-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/codes`}>
                         <span className="d-flex flex-1">Codes</span>
                     </Link>
@@ -38,8 +36,11 @@ const TheComponent = class extends Component {
                         <span className="d-flex flex-1">Institutions</span></Link>
                     <Link id="manage-link-transforms-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/link-transforms`}>
                         <span className="d-flex flex-1">Paywall Management</span></Link>
-                    <Link id="manage-link-logos-link" className="nav__links__link d-flex align-items-center" to={`/admin/link-logos`}>
+                    <Link id="manage-link-logos-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/admin/link-logos`}>
                         <span className="d-flex flex-1">Link Logos</span></Link>
+                    <Link id="manage-codes-link" className="nav__links__link nav__links__link--separator d-flex align-items-center" to={`/dashboard`}>
+                        <span className="d-flex flex-1">Web User Home</span>
+                    </Link>
                     <div className="ml-auto mr-3">
                         <a id="logout-link" className="nav__links__link nav__links__link--logout d-flex align-items-center" onClick={this.logout}>
                             <span className="d-flex flex-1">Logout <i class="fas fa-sign-out-alt nav__links__link--icon"></i></span>
