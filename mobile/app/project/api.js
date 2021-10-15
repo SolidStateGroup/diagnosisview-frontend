@@ -16,6 +16,7 @@ var PushManager = class {
     static token = null;
     static onNotification = null;
 
+    isMobile: true;
 
     getInitialNotification = () => Notifications.getInitialNotification();
 

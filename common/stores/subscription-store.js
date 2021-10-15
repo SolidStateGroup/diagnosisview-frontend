@@ -11,7 +11,7 @@ var controller = {
 
             const subscriptions = await RNIap.getSubscriptions(iapItemSkus);
             console.log('subscriptions', subscriptions);
-            
+
             const transactionReceipt = await AsyncStorage.getItem('transactionReceipt');
             let receiptToValidate;
             if (!transactionReceipt) {
@@ -50,7 +50,7 @@ var controller = {
 
             RNIap.buySubscription(iapItemSkus[0])
                 .then(purchase => {
-                    console.log(JSON.stringify(purchase)); 
+                    console.log(JSON.stringify(purchase));
                     return API.validateReceipt(Platform.OS === 'ios' ? purchase.transactionReceipt : purchase.purchaseToken);
                 })
                 .then(() => {
@@ -129,6 +129,7 @@ var controller = {
         id: 'subscription',
         subscription: null,
         isSubscribed: function () {
+            if (!API.isMobile) return true
             return AccountStore.isAdmin() || (store.subscription && moment(store.subscription.expiryDate).isAfter(moment()));
         },
         isSubscriptionAutoRenewing: function () {

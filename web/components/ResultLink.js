@@ -1,6 +1,5 @@
 import React  from 'react'; // we need this to make JSX compile
 import { UncontrolledTooltip } from 'reactstrap';
-import SubscriptionStore from "../../common/stores/subscription-store";
 import AccountStore from "../../common/stores/account-store";
 
 
@@ -24,10 +23,10 @@ const TheComponent = ({link, code, name, className}) => {
                         const isFavourite = _.find(favourites, f => f.code === code && f.link.id === link.id);
                         const logoImageUrl = Utils.getLinkLogo(linkLogos, link) || Constants.linkIcons[link.linkType.value];
                         let style = {};
-                        const limit =    FavouritesStore.model.length > 3 && SubscriptionStore.isSubscribed()
+                        const limit =    FavouritesStore.model.length > 3 && AccountStore.hasActiveSubscription()
                         if (!link.displayLink) {
                             return null;
-                        } else if (!SubscriptionStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+                        } else if (!AccountStore.hasActiveSubscription() && link.difficultyLevel != "GREEN" && !link.freeLink) {
                             return null;
                         }
                         const {colour,text} = Constants.difficultyLevels(link.difficultyLevel)
