@@ -66,19 +66,24 @@ class TheComponent extends Component {
 
 
                                                 <FavouritesProvider>
-                                                    {({ favourites, isLoading }) => !!favourites && !!favourites.length && (
+                                                    {({ favourites, isLoading }) => {
+                                                        const results = _.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT);
+
+                                                        return !!favourites && !!favourites.length && (
                                                         <div>
                                                             <PanelHeader icon="fa fa-search">
                                                                 Recent Favourites
                                                             </PanelHeader>
                                                             <div className="panel--white mt-2">
-                                                                {_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (res, i) => {
+                                                                {_.map(results,(res, i) => {
                                                                     const { link, entry, name } = res;
-                                                                    return <ResultHistoryLink className="mb-3 mx-2" code={entry} name={name} link={link}/>
+                                                                    const isLast = results.length-1 === i
+                                                                    return <ResultHistoryLink className={"mx-2 " + (!isLast && "mb-3")} code={entry} name={name} link={link}/>
                                                                 })}
                                                             </div>
                                                         </div>
-                                                        )}
+                                                    )
+                                                    }}
                                                 </FavouritesProvider>
                                                             </div>
                                             <div className="col-xl-4 col-lg-12">
