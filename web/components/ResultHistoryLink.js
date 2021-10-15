@@ -37,7 +37,7 @@ const TheComponent = ({link, code, name, className}) => {
                                 <span style={style} className={"fa fa-info-circle text-" + link.difficultyLevel.toLowerCase()}/>
                                 </div>
 
-                                <a className="ml-2">
+                                <a onClick={onLinkClick} className="ml-2">
                                     {name}
                                 </a>
 
