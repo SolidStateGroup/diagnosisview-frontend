@@ -74,8 +74,8 @@ const FavouritesPage = class extends Component {
 												{subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
 													<>
 														<Text style={[Styles.textCenter, Styles.paragraph]}>Saves up to 5 favourite links on this device only.</Text>
-														<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited favourites across all your devices, please {(!user && !subscription) ? 'subscribe and register' : !subscription ? 'subscribe' : 'register'}.</Text>
-														<Button onPress={this.subscribe}>{(!user ? 'Register' : 'Subscribe') + ' now'}</Button>
+														<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited favourites across all your devices, please {(!user && !subscription) ? 'subscribe' : !subscription ? 'subscribe' : 'register'}.</Text>
+														<Button onPress={this.subscribe}>{(!user ? 'Subscribe' : 'Subscribe') + ' now'}</Button>
 													</>
 												)}
 											</View>
