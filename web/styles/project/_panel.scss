@@ -44,6 +44,13 @@
         overflow:hidden;
         padding:20px;
     }
+    &--outline {
+        border: 1px solid #D8D8D8;
+        &__header {
+            line-height: 40px;
+            border-bottom: 1px solid #D8D8D8;
+        }
+    }
 }
 
 .flat-panel{
