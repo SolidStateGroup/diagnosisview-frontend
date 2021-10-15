@@ -7,7 +7,7 @@ const TheComponent = ({children, icon, className,viewMoreLink}) => {
         <Row className={"panel__header no-wrap " + className||""}>
             <Flex>
                 <Row className="align-items-start">
-                    <span className={icon+" mr-1"}/> {children}
+                    <span className={icon+" mr-2"}/> {children}
                 </Row>
             </Flex>
             {!!viewMoreLink && (
