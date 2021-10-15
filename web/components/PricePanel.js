@@ -4,10 +4,10 @@ const TheComponent = ({title, subtitle, points, price,className, children}) => {
     return (
         <div className={"panel--white panel--price py-4 " + className}>
             <Flex className="px-4" style={{height:"100%"}}>
-                <div className="panel--price__title">
+                <div className="panel--price__title text-left">
                     {title}
                 </div>
-                <div className="panel--price__subtitle">
+                <div className="panel--price__subtitle text-left">
                     {subtitle}
                 </div>
                 <div>
@@ -20,7 +20,7 @@ const TheComponent = ({title, subtitle, points, price,className, children}) => {
                     </Row>
                 ))}
                 <Flex/>
-                <div>
+                <div className="text-left">
                     {price? <span>
                             <span className="panel--price__title">£{price}</span>
                             <span className="panel--price__subtitle"> / per year</span>
