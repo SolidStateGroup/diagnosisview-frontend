@@ -140,14 +140,19 @@ class HomePage extends React.Component {
                             )}
 
                         <div className="section row section--grey p-5 flex align-items-center">
-                            <div className="panel--white col-md-6">
-                                <div className="flex-row justify-content-center text-center">
-                                    <img src="../../images/uoe-icon.jpeg" width="100px" />
-                                    <div className="mt-2 text-center">
-                                        DiagnosisView was developed by <a className="font-weight-bold" href="https://www.ed.ac.uk" target="_blank">The University of Edinburgh</a> with the support of the <a className="font-weight-bold" href="https://www.patientview.org" target="_blank">www.patientview.org</a> electronic health records system.
+                            <div className="col-md-5">
+                                <div className="panel--white mx-4">
+                                    <div className="justify-content-center text-center">
+                                        <div>
 
+                                            <img src="../../images/uoe-icon.jpeg" width="100px" />
+                                        </div>
+                                        <div className="mt-2 text-center">
+                                            DiagnosisView was developed by <a className="font-weight-bold link-dark" href="https://www.ed.ac.uk" target="_blank">The University of Edinburgh</a> <a className="font-weight-bold link-dark" href="https://www.ed.ac.uk/medicine-vet-medicine/edinburgh-medical-school" target="_blank">Medical School</a>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
 
