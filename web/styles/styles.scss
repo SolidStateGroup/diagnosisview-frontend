@@ -100,7 +100,9 @@ input:disabled {
 .inline-block {
     display: inline-block;
 }
-
+.text-underline {
+    text-decoration: underline !important;
+}
 a.link-dark {
     color: $brand-navy;
     text-decoration: underline;

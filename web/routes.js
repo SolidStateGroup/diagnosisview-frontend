@@ -13,6 +13,7 @@ import ManageLinkLogosPage from './components/pages/ManageLinkLogosPage';
 import DiagnosisDetailPage from './components/pages/DiagnosisDetailPage';
 import NotFoundPage from './components/pages/NotFoundPage';
 import DashboardPage from "./components/pages/DashboardPage";
+import DiagnosisDetailPageAdmin from "./components/pages/DiagnosisDetailPageAdmin";
 import SearchPage from "./components/pages/SearchPage";
 import DashboardSearchPage from "./components/pages/DashboardSearchPage";
 import DashboardAccountPage from "./components/pages/DashboardAccountPage";
@@ -37,7 +38,7 @@ export default (
             <Route path="/admin/link-transforms" exact component={ManageLinkTransformsPage}/>
             <Route path="/admin/link-logos" exact component={ManageLinkLogosPage}/>
             <Route path="/codes/:id" exact component={DiagnosisDetailPage}/>
-            <Route path="/admin/diagnosis" exact component={DiagnosisDetailPage}/>
+            <Route path="/admin/diagnosis" exact component={DiagnosisDetailPageAdmin}/>
             <Route path="/admin" component={ManageCodesPage}/>
             <Route path="/login" exact component={HomePage}/>
             <Route path="/signup" exact component={HomePage}/>
