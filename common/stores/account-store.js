@@ -79,6 +79,7 @@ var controller = {
 
         setUser: function (user) {
             controller.onLogin(user);
+            controller.getAccount()
             store.loaded();
         },
 
@@ -251,7 +252,7 @@ var controller = {
             return store.model
         },
         hasActiveSubscription: function () {
-            return !store.hasExpiredSubscription() && store.model && SubscriptionStore.isSubscribed();
+            return !store.hasExpiredSubscription() && store.model && store.model.activeSubscription && SubscriptionStore.isSubscribed();
         },
         hasExpiredSubscription: function () {
             // return new Date().toISOString()

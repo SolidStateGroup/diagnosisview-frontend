@@ -13,7 +13,7 @@ class TheComponent extends Component {
         super();
 
         this.state ={
-
+            favourites: null
         }
     }
 
@@ -52,7 +52,12 @@ class TheComponent extends Component {
                                                     </div>
                                                 </div>
                                                 <FavouritesProvider>
-                                                    {({ favourites, isLoading }) => {
+                                                    {({ favourites:_favourites, isLoading }) => {
+                                                        if (!this.state.favourites && _favourites) {
+                                                            this.state.favourites = _.cloneDeep(_favourites);
+                                                        }
+                                                        const favourites = this.state.favourites;
+
                                                         const results = _.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT).filter(this.filter);
                                                         return !!favourites && (
                                                             <div>
@@ -60,8 +65,7 @@ class TheComponent extends Component {
                                                                     page={this.state.page}
                                                                     onPageChange={(page)=>this.setState({page})}
                                                                 data={results}
-                                                                containerStyle={{paddingBottom:4}}
-                                                                containerClassName="panel--white panel--outline mt-2 mb-4"
+                                                                containerClassName="panel--white panel--no-pad-bottom panel--outline mt-2 mb-4"
                                                                 header={(
                                                                     <div className="panel--outline__header">
                                                                         <Row>
