@@ -40,6 +40,13 @@ class TheComponent extends Component {
         e.preventDefault()
         if(!this.state.password || (this.state.newPassword !== this.state.confirmNewPassword))
             return
+
+        if (this.state.newPassword.length < 7) {
+            this.setState({error: {message:'Password must be at least 7 characters'}});
+            document.getElementById("password").focus();
+            return;
+
+        }
 this.setState({updatingPassword:true, error:"",updatedPassword:false})
         data.put(Project.api + 'user/', { username: AccountStore.getUser().username, oldPassword:this.state.password, password: this.state.newPassword })
             .then(res => {
