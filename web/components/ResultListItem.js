@@ -4,7 +4,6 @@ import Tag from "./Tag"; // we need this to make JSX compile
 
 
 const TheComponent = ({result, date}) => {
-    console.log(result)
     return (
         <ListItem className="list-item--no-hover list-item--no-pad">
             <Link to={AccountStore.model? "/dashboard/codes/"+result.code:"/codes/"+result.code}>

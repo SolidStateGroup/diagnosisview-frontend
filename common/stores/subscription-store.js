@@ -10,13 +10,13 @@ var controller = {
             } catch (e) {}
 
             const subscriptions = await RNIap.getSubscriptions(iapItemSkus);
-            console.log('subscriptions', subscriptions);
+            // console.log('subscriptions', subscriptions);
 
             const transactionReceipt = await AsyncStorage.getItem('transactionReceipt');
             let receiptToValidate;
             if (!transactionReceipt) {
                 store.purchases = await RNIap.getAvailablePurchases();
-                console.log('available purchases', store.purchases);
+                // console.log('available purchases', store.purchases);
 
                 // todo: set active subscription to true if there is a valid purchase
                 const validPurchases = _.sortBy(store.purchases, ({transactionDate}) => -transactionDate);
@@ -50,7 +50,7 @@ var controller = {
 
             RNIap.buySubscription(iapItemSkus[0])
                 .then(purchase => {
-                    console.log(JSON.stringify(purchase));
+                    // console.log(JSON.stringify(purchase));
                     return API.validateReceipt(Platform.OS === 'ios' ? purchase.transactionReceipt : purchase.purchaseToken);
                 })
                 .then(() => {

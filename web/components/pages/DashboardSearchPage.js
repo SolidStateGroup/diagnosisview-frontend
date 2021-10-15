@@ -22,9 +22,6 @@ class TheComponent extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         const selectedCategory = Utils.fromParam(prevProps.location.search).category;
         const newCategory = Utils.fromParam(this.props.location.search).category;
-        if (newCategory && (newCategory !== selectedCategory)) {
-            console.log(newCategory)
-        }
     }
 
     search = (terms) => {

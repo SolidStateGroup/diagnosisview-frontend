@@ -26,7 +26,7 @@ var controller = {
                 if (AccountStore.hasActiveSubscription()) {
                     data.put(Project.api + 'user/history', {code: item.code, dateAdded: search.date})
                         .then(res => {
-                            console.log(res);
+                            // console.log(res);
                             store.model = store.model || [];
                             store.model.push(search);
                             AsyncStorage.setItem("history", JSON.stringify(history));
