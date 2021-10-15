@@ -64,6 +64,11 @@ export default class App extends Component {
         const { location } = this.context.router.history;
         const redirect = location.query && location.query.redirect;
 
+        const { pathname } = this.context.router.history.location;
+
+        if (pathname.includes("admin")||pathname.includes("dashboard"))
+            return
+
         //Redirect on login
             if (AccountStore.isAdmin()) {
                 this.context.router.history.replace(redirect ? redirect : '/admin');
