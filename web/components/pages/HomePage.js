@@ -38,8 +38,11 @@ class HomePage extends React.Component {
 
     render = () => {
         return (
-            <div className="app-container">
-                        <div>
+
+            <div>
+
+                <div className="app-container">
+                    <div>
                         <Flex className="hero--shape-bg row mb-0 mb-md-5">
                             {/*<div className="flat-panel flat-panel--warning flex-row align-items-center px-2 px-sm-4">*/}
                             {/*    <img src="/images/icon-alert.png" alt="alert" height="20px" className=""/>*/}
@@ -116,9 +119,9 @@ class HomePage extends React.Component {
                             </div>
                         </Flex>
 
-                            {Constants.webPayments && (
-                                <div className="text-center mb-4">
-                                    <h1 className="mb-5">Sign Up</h1>
+                        {Constants.webPayments && (
+                            <div className="text-center mb-4">
+                                <h1 className="mb-5">Sign Up</h1>
                                 <Row className="justify-content-center" id="pricing">
                                     <PricePanel className="mr-md-4 mb-md-0 mb-4 mr-sm-0" price={0}
                                                 subtitle="Free for life. Upgrade account at any point."
@@ -127,7 +130,7 @@ class HomePage extends React.Component {
                                                     "Save search history",
                                                     "Create favourites",
                                                     "Synchronise between mobile app, website and unlimited devices",
-                                    ]} title="Starter">
+                                                ]} title="Starter">
                                         <Link to={"/signup"}>
                                             <a className="button button--rounded full-width">
                                                 Sign Up
@@ -149,8 +152,8 @@ class HomePage extends React.Component {
                                         </Link>
                                     </PricePanel>
                                 </Row>
-                                </div>
-                            )}
+                            </div>
+                        )}
 
                         <div className="section row section--grey p-5 flex align-items-center">
                             <div className="col-md-5">
@@ -170,8 +173,9 @@ class HomePage extends React.Component {
                         </div>
 
 
-                    <Footer/>
-                        </div>
+                    </div>
+                </div>
+                <Footer/>
             </div>
         );
     }

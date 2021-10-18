@@ -67,6 +67,30 @@ const TheComponent = class extends Component {
                                 </NavLink>
                             ))}
                         </Flex>
+                        <NavLink activeClassName="active" className="dashboard-aside__link px-2" to={"/accessibility-policy"}>
+                            <Row>
+                                <span className={"fa fa-universal-access " + "mr-2"}/>
+                                <span className="dashboard-aside__link-text">
+                                    Accessibility Policy
+                                </span>
+                            </Row>
+                        </NavLink>
+                        <NavLink activeClassName="active" className="dashboard-aside__link px-2" to={"/privacy-policy"}>
+                            <Row>
+                                <span className={"fa fa-shield-alt " + "mr-2"}/>
+                                <span className="dashboard-aside__link-text">
+                                    Privacy Policy
+                                </span>
+                            </Row>
+                        </NavLink>
+                        <NavLink activeClassName="active" className="dashboard-aside__link px-2" to={"/terms-of-use"}>
+                            <Row>
+                                <span className={"fa fa-file " + "mr-2"}/>
+                                <span className="dashboard-aside__link-text">
+                                    Terms of Use
+                                </span>
+                            </Row>
+                        </NavLink>
                         {isAdmin && (
                             <NavLink activeClassName="active" className="dashboard-aside__link px-2" to={"/admin"}>
                                 <Row>

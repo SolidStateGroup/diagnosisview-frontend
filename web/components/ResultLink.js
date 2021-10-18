@@ -56,9 +56,12 @@ const TheComponent = ({link, code, name, className}) => {
 
                                 {!!AccountStore.model && (
                                     <div  className="mr-5">
-                                        <UncontrolledTooltip placement="top" target={`link${link.id}favourite`}>
-                                            Maximum number of favourites reached. {!AccountStore.getUser() ? 'Please sign in or create an account to add more.' : 'Please subscribe or renew your subscription to add more.'}
-                                        </UncontrolledTooltip>
+                                        {!isFavourite && (
+                                            <UncontrolledTooltip placement="top" target={`link${link.id}favourite`}>
+                                                Maximum number of favourites reached. {!AccountStore.getUser() ? 'Please sign in or create an account to add more.' : 'Please subscribe or renew your subscription to add more.'}
+                                            </UncontrolledTooltip>
+                                        )}
+
                                         {isFavourite? (
                                             <span onClick={onRemoveFavourite} className="fa fa-star"/>
                                         ): (
