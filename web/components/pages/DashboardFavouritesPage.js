@@ -51,7 +51,7 @@ class TheComponent extends Component {
                                                         <SearchInput
                                                             value={this.state.search}
                                                             className="input-container--search--dark"
-                                                            placeholder={"Search favourites"}
+                                                            placeholder={"Search Favourites"}
                                                             onChange={(e)=>this.setState({page:0, search: Utils.safeParseEventValue(e)})}
                                                         />
                                                     </div>

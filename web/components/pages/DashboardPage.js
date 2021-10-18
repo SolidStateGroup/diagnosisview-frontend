@@ -50,6 +50,7 @@ class TheComponent extends Component {
                                                                           <div>
                                                                               {_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
                                                                                   const diagnosis = _.find(DiagnosisStore.getCodes(), { code: entry.item.code });
+                                                                                  if (!diagnosis) return  null
                                                                                   return (
                                                                                       <ResultListItem result={diagnosis} key={diagnosis.code}/>
                                                                                   )

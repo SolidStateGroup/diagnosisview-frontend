@@ -250,13 +250,13 @@ var controller = {
             return store.model
         },
         hasActiveSubscription: function () {
+            if (API.isMobile) {
+                return store.model && SubscriptionStore.isSubscribed();
+            }
             return !store.hasExpiredSubscription() && store.model && store.model.activeSubscription && SubscriptionStore.isSubscribed();
         },
         hasExpiredSubscription: function () {
-            // return new Date().toISOString()
-            return store.model && false
-            subscription && !SubscriptionStore.isSubscriptionAutoRenewing() && !AccountStore.isAdmin()
-            return store.model && SubscriptionStore.isSubscribed();
+            return store.model && store.model.expiryDate && !store.model.autoRenewing && moment(store.model.expiryDate).isBefore(moment())
         },
         setUser: function(user) {
             controller.setUser(user);
