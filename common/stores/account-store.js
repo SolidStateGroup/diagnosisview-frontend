@@ -250,6 +250,9 @@ var controller = {
             return store.model
         },
         hasActiveSubscription: function () {
+            if (store.isAdmin())
+                return true
+
             if (API.isMobile) {
                 return store.model && SubscriptionStore.isSubscribed();
             }
