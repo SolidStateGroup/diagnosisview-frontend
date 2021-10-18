@@ -32,14 +32,12 @@ const TheComponent = class extends Component {
 	changePassword = () => {
 		const { password, repeatPassword } = this.state;
 		if (password !== repeatPassword) {
-			this.setState({error: 'Passwords do not match', password: '', repeatPassword: ''});
-			this.passwordInput.focus();
+			this.setState({error: 'Passwords do not match'});
 			return;
 		}
 
 		if (password.length < 7) {
-			this.setState({error: 'Password should be at least 7 characters', password: '', repeatPassword: ''});
-			this.passwordInput.focus();
+			this.setState({error: 'Password should be at least 7 characters'});
 			return;
 		}
 
