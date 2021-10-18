@@ -8,7 +8,7 @@ import AccountStore from "../../../common/stores/account-store";
 import ResultListItem from "../ResultListItem";
 
 const MAX_RECENT = 9999;
-const MAX_RECENT_UNSUBSCRIBED = 5;
+const MAX_RECENT_UNSUBSCRIBED = 20;
 
 class TheComponent extends Component {
 
