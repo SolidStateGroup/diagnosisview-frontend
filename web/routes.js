@@ -44,6 +44,7 @@ export default (
             <Route path="/admin" component={ManageCodesPage}/>
             <Route path="/login" exact component={HomePage}/>
             <Route path="/signup" exact component={HomePage}/>
+            <Route path="/forgot-password" exact component={HomePage}/>
             <Route path="/search" exact component={SearchPage}/>
             <Route path="/terms-of-use" exact component={TermsOfUsePage}/>
             <Route path="/privacy-policy" exact component={PrivacyPolicyPage}/>
