@@ -23,6 +23,7 @@ const HistoryPage = class extends Component {
 
 	onNavigatorEvent = (event) => {
 		if (event.id == routeHelper.navEvents.SHOW) {
+			AppActions.getHistory();
 			API.trackPage('History Screen');
 		} else if (event.type == 'NavBarButtonPress') {
 			if (event.id == 'menu') {
@@ -78,7 +79,7 @@ const HistoryPage = class extends Component {
 												<ION name="ios-arrow-forward" style={[Styles.listIconNav, {opacity: 0}]}/>
 											</ListItem>
 											<HistoryProvider>
-												{({history, isLoading})=> isLoading ? <Loader/> : (
+												{({history, isLoading})=> isLoading && !history ? <Loader/> : (
 													<FlatList
 														data={_.reverse(_.sortBy(history, entry => moment(entry.date).valueOf()))}
 														renderItem={({item: entry, index: i}) => {

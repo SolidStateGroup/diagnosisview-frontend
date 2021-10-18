@@ -199,7 +199,7 @@ const DashboardPage = class extends Component {
 																<Text style={[Styles.textSmall, {backgroundColor:'transparent', paddingTop:4}]} onPress={this.goHistory}>More <ION name="ios-arrow-forward" /></Text>
 															</ListItem>
 															<HistoryProvider>
-																{({ history, isLoading }) => (
+																{({ history, isLoading }) => !history && isLoading? <Loader/> : (
 																	<View>
 																		{_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
 																			const diagnosis = _.find(DiagnosisStore.getCodes(), {code: entry.item.code});
