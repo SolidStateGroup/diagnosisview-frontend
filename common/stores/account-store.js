@@ -259,7 +259,7 @@ var controller = {
             return !store.hasExpiredSubscription() && store.model && store.model.activeSubscription && SubscriptionStore.isSubscribed();
         },
         hasExpiredSubscription: function () {
-            return store.model && store.model.expiryDate && !store.model.autoRenewing && moment(store.model.expiryDate).isBefore(moment())
+            return store.model && store.model.expiryDate && !store.model.autoRenewing && moment(store.model.expiryDate).isBefore(moment()) && store.model.expiryDate
         },
         setUser: function(user) {
             controller.setUser(user);
