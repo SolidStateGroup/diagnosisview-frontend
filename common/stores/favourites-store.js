@@ -32,10 +32,9 @@ var controller = {
                 favourites.push(favourite);
                 AsyncStorage.setItem('favourites', JSON.stringify(favourites));
 
-                if (AccountStore.hasActiveSubscription()) {
+                if (AccountStore.model) {
                     data.put(Project.api + 'user/favourites', {linkId: link.id, code, type: link.linkType.value, dateAdded: favourite.date})
                         .then(res => {
-                            // console.log(res);
                             store.model = store.model || [];
                             store.model.push(favourite);
                             store.saved();
@@ -62,7 +61,7 @@ var controller = {
                     favourites.splice(index, 1);
                 }
 
-                if (AccountStore.hasActiveSubscription()) {
+                if (AccountStore.model) {
                     index = _.findIndex(store.model, f => f.code === code && f.link.id === link.id);
                     if (index === -1) return;
                     const favourite = store.model[index];
@@ -84,52 +83,26 @@ var controller = {
             });
         },
         getFavourites: function () {
-            if (!AccountStore.hasActiveSubscription()) return;
+            if (!AccountStore.model && !store.model) {
+                AsyncStorage.getItem('favourites', (err, res) => {
+                    store.model = res ? JSON.parse(res) : [];
+                });
+                return
+            }
 
             store.loading();
-            // data.get(Project.api + 'user/favourites')
-            //     .then(res => {
-                // @TODO mutate results with the name of the diangosis
-                // @TODO would expect entire link object back here
-            //         store.model = res;
-            //         store.loaded();
-            //     });
-            setTimeout(() => {
-                store.loaded();
-            }, 2000);
+            data.get(Project.api + 'user/favourites')
+                .then(res => {
+                    store.model = res;
+                    AsyncStorage.setItem('favourites', JSON.stringify(res));
+                    store.loaded();
+                });
         },
-        setSubscribedFavourites: function (subscribedFavourites) {
-            // Convert them to what we would normally store
-            var favourites = [];
-            _.each(subscribedFavourites, f => {
-                const link = f.linkId ? DiagnosisStore.getLinkById(f.code, f.linkId) : DiagnosisStore.getLink(f.code, f.type);
-                if (!link) return;
-                favourites.push({
-                    code: f.code,
-                    name: DiagnosisStore.getName(f.code),
-                    link,
-                    originalLinkId: f.linkId,
-                    date: f.dateAdded
-                })
-            });
-            AsyncStorage.setItem("favourites", JSON.stringify(favourites));
-            store.model = favourites;
+        clearDeviceFavourites: function () {
+            store.loading();
+            store.model = null;
+            AsyncStorage.setItem("favourites","")
             store.loaded();
-        },
-        setDeviceFavourites: function () {
-            store.loading();
-            AsyncStorage.getItem('favourites', (err, res) => {
-                if (err) {
-                    store.goneABitWest(err);
-                    console.log(err);
-                    return;
-                }
-
-                const favourites = res ? JSON.parse(res) : [];
-                store.model = _.take(_.reverse(_.sortBy(SubscriptionStore.isSubscribed() ? favourites : _.filter(favourites, f => f.link.difficultyLevel === 'GREEN' || f.link.freeLink), 'date')), 5);
-                AsyncStorage.setItem("favourites", JSON.stringify(store.model));
-                store.loaded();
-            })
         }
     },
     store = Object.assign({}, BaseStore, {
@@ -152,11 +125,8 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
         case Actions.GET_FAVOURITES:
             controller.getFavourites();
             break;
-        case Actions.SET_SUBSCRIBED_FAVOURITES:
-            controller.setSubscribedFavourites(action.favourites);
-            break;
-        case Actions.SET_DEVICE_FAVOURITES:
-            controller.setDeviceFavourites();
+        case Actions.CLEAR_DEVICE_FAVOURITES:
+            controller.clearDeviceFavourites();
             break;
         default:
             return;

@@ -66,32 +66,20 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       retrySubscription
     });
   },
-  setSubscribedFavourites: function (favourites) {
-    Dispatcher.handleViewAction({
-      actionType: Actions.SET_SUBSCRIBED_FAVOURITES,
-      favourites
-    });
-  },
-  setSubscribedHistory: function (history) {
-    Dispatcher.handleViewAction({
-      actionType: Actions.SET_SUBSCRIBED_HISTORY,
-      history
-    });
-  },
   updateAccount: function (details) {
     Dispatcher.handleViewAction({
       actionType: Actions.UPDATE_ACCOUNT,
       details
     });
   },
-  setDeviceFavourites: function () {
+  clearDeviceFavourites: function () {
     Dispatcher.handleViewAction({
-      actionType: Actions.SET_DEVICE_FAVOURITES,
+      actionType: Actions.CLEAR_DEVICE_FAVOURITES,
     });
   },
-  setDeviceHistory: function () {
+  clearDeviceHistory: function () {
     Dispatcher.handleViewAction({
-      actionType: Actions.SET_DEVICE_HISTORY,
+      actionType: Actions.CLEAR_DEVICE_HISTORY,
     });
   },
   getUsers: function () {

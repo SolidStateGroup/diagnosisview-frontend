@@ -18,6 +18,7 @@ class TheComponent extends Component {
     componentDidMount() {
         this.listenTo(AccountStore, 'change', () => this.forceUpdate());
         this.setState({isLoading: true});
+        AppActions.getFavourites();
         this.get();
     }
 
