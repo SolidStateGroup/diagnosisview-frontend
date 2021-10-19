@@ -21,6 +21,7 @@ class TheComponent extends Component {
 
     componentDidMount() {
         AppActions.getCodes()
+        AppActions.getFavourites()
     }
 
     filter =(link)=>{

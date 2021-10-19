@@ -39,6 +39,8 @@ const DashboardPage = class extends Component {
 	refreshApp = () => {
 		AppActions.getSettings();
 		AppActions.checkSubscription();
+		AppActions.getHistory()
+		AppActions.getFavourites()
 		if (AccountStore.getUser()) {
 			AppActions.getAccount(this.props.retrySubscription);
 		} else {
@@ -58,6 +60,8 @@ const DashboardPage = class extends Component {
 	onNavigatorEvent = (event) => {
 		if (event.id == routeHelper.navEvents.SHOW) {
 			API.trackPage('Dashboard Screen');
+			AppActions.getHistory();
+			AppActions.getFavourites();
 			AsyncStorage.getItem("welcomeShown", (err, res) => {
 				if (!err && (!res || Constants.simulate.SHOW_WELCOME)) {
 					routeHelper.showWelcome(this.props.navigator);

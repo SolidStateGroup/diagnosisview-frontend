@@ -22,6 +22,7 @@ class TheComponent extends Component {
 
     componentDidMount() {
         AppActions.getCodes()
+        AppActions.getHistory()
     }
 
     filter =(link)=>{
@@ -62,6 +63,9 @@ class TheComponent extends Component {
                                                         <HistoryProvider>
                                                             {({ history, isLoading }) => {
 
+                                                                if (!history && isLoading) {
+                                                                    return <div className="text-center"><Loader/></div>
+                                                                }
                                                                 const results = _.map(_.take(_.reverse(_.sortBy(history, 'date')), AccountStore.hasActiveSubscription()? MAX_RECENT: MAX_RECENT_UNSUBSCRIBED), (entry, i) => {
                                                                     const diagnosis = _.find(DiagnosisStore.getCodes(), { code: entry.item.code });
                                                                     if (!diagnosis) return  null

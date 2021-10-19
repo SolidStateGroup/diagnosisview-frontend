@@ -20,6 +20,8 @@ class TheComponent extends Component {
 
     componentDidMount() {
         AppActions.getCodes()
+        AppActions.getHistory()
+        AppActions.getFavourites()
     }
 
     render() {
@@ -38,38 +40,43 @@ class TheComponent extends Component {
                                         <div className="row">
                                             <div className="col-xl-8 mb-lg-4 col-lg-12">
                                                 <div>
-                                                    {!!history && !!history.length && (
                                                       <div>
                                                           <PanelHeader viewMoreLink={"/dashboard/history"} icon="fa fa-search">
                                                               Recent Searches
                                                           </PanelHeader>
                                                           <div className="panel--white mt-2 mb-4">
-                                                              {DiagnosisStore.getCodes() ? (
+                                                              {DiagnosisStore.getCodes() && (
                                                                   <HistoryProvider>
-                                                                      {({ history, isLoading }) => (
-                                                                          <div>
-                                                                              {_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
-                                                                                  const diagnosis = _.find(DiagnosisStore.getCodes(), { code: entry.item.code });
-                                                                                  if (!diagnosis) return  null
-                                                                                  return (
-                                                                                      <ResultListItem result={diagnosis} key={diagnosis.code}/>
-                                                                                  )
-                                                                              })}
-                                                                          </div>
-                                                                      )}
+                                                                      {({ history, isLoading }) => {
+
+                                                                          return (
+                                                                              <div>
+                                                                                  {_.map(_.take(_.reverse(_.sortBy(history, 'date')), MAX_RECENT), (entry, i) => {
+                                                                                      const diagnosis = _.find(DiagnosisStore.getCodes(), { code: entry.item.code });
+                                                                                      if (!diagnosis) return  null
+                                                                                      return (
+                                                                                          <ResultListItem result={diagnosis} key={diagnosis.code}/>
+                                                                                      )
+                                                                                  })}
+                                                                              </div>
+                                                                          )
+                                                                      }}
                                                                   </HistoryProvider>
-                                                              ): <div className="text-center"><Loader/></div> }
+                                                              )}
 
                                                           </div>
                                                       </div>
-                                                    )}
                                                 </div>
 
 
                                                 <FavouritesProvider>
                                                     {({ favourites, isLoading }) => {
                                                         const results = _.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT);
-
+                                                        if (!favourites && isLoading) {
+                                                            return <div className="text-center">
+                                                                <Loader/>
+                                                            </div>
+                                                        }
                                                         return !!favourites && !!favourites.length && (
                                                         <div>
                                                             <PanelHeader viewMoreLink={"/dashboard/favourites"} icon="fa fa-search">
