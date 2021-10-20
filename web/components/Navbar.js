@@ -365,7 +365,7 @@ class TheComponent extends Component {
                                                                id="password"
                                                                type="password"
                                                                className="mb-4"
-                                                               title="Password"
+                                                               title="New Password"
                                                                value={this.state.password}
                                                                placeholder="Minimum 7 characters"
                                                                onChange={(e) => this.setState({ password: Utils.safeParseEventValue(e) })}
@@ -373,7 +373,7 @@ class TheComponent extends Component {
                                                            <InputGroup
                                                                className="mb-4"
                                                                type="password"
-                                                               title="Confirm Password"
+                                                               title="Confirm New Password"
                                                                value={this.state.repeatPassword}
                                                                placeholder="Minimum 7 characters"
                                                                onChange={(e) => this.setState({ repeatPassword: Utils.safeParseEventValue(e) })}
