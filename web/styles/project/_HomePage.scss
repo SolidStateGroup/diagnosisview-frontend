@@ -377,6 +377,14 @@ footer.homepage{
 
 .footer{
 	background:#2575de;
+	&.light {
+		background-color: transparent;
+		color: $brand-navy;
+
+		.footer__link {
+			color: $brand-navy;
+		}
+	}
 	color:#fff;
 	padding:20px;
 
@@ -387,5 +395,18 @@ footer.homepage{
 		&:hover, &:active, &:focus{
 			color:#fff;
 		}
+	}
+}
+
+.dashboard-container {
+	min-height: calc(100vh - 100px);
+	margin-bottom: 50px;
+	position: relative;
+	.footer {
+		position: absolute;
+		left: 0;
+		right: 20px;
+		bottom: -55px;
+		padding: 15px;
 	}
 }
