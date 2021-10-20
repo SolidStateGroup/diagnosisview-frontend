@@ -7,6 +7,7 @@ import _data from '../../common/stores/base/_data';
 import Navbar from "./Navbar";
 import DashboardNavbar from "./DashboardNavbar";
 import ErrorAlert from "./ErrorAlert";
+import Footer from "./Footer";
 
 export default class App extends Component {
 
@@ -159,7 +160,7 @@ export default class App extends Component {
                                         <div className={pageHasAside && "dashboard-aside__content"}>
                                             <div className="col-md-12">
                                                 {pageHasAside && <DashboardNavbar/>}
-                                                <div>
+                                                <div className={pageHasAside&&"dashboard-container"}>
                                                     {AccountStore.hasExpiredSubscription() && (
                                                         <div className="col-md-6 mb-4">
                                                             <ErrorAlert>
@@ -170,6 +171,9 @@ export default class App extends Component {
                                                         </div>
                                                     )}
                                                     {this.props.children}
+                                                    {pageHasAside &&(
+                                                        <Footer light/>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>

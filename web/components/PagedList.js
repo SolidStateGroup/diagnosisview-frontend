@@ -20,7 +20,7 @@ class TheComponent extends Component<ComponentType> {
 
                 <div className="paged-list__paging">
                     <div className="row">
-                        <div className="col-xl-8 col-lg-12">
+                        <div className="col-lg-12 mb-4">
                             <Row className="justify-content-center">
                                 {chunks.map((v,i)=>(
                                     <a key={i} onClick={()=>this.props.onPageChange(i)} className={"button button--page button--rounded mr-2 " + (i === page ? " button--primary": " ")}>
