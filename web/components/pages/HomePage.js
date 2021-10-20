@@ -71,12 +71,12 @@ class HomePage extends React.Component {
                                         </li>
                                         <li className="mb-3">
                                             <Row className="no-wrap align-items-start">
-                                                <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> With an optional account you can access professional resources, as well as sync favourites and history across devices.
+                                                <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> With an optional account you can access professional resources, as well as sync favourites and history across devices
                                             </Row>
                                         </li>
                                         <li className="mb-3">
                                             <Row className="no-wrap align-items-start">
-                                                <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> DiagnosisView help pages and news updates are {" "}<a style={{fontSize:16}} className="text-light ml-1 text-underline" target="_blank" href="https://blogs.ed.ac.uk/diagnosisview/">available here</a>
+                                                <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /><a style={{fontSize:16}} className="text-light ml-1 text-underline" target="_blank" href="https://blogs.ed.ac.uk/diagnosisview/">Help pages and news updates here</a>
 
                                             </Row>
                                         </li>

@@ -57,8 +57,8 @@ class TheComponent extends Component {
                                     <li className="mb-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> Info on your own mobile or tablet</li>
                                     <li className="mb-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> Advanced patient info is the starting point (free)</li>
                                     <li className="mb-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> Moving on to practitioner-level and expert-level professional resources</li>
-                                    <li className="mb-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> With an optional account you can access professional resources, as well as sync favourites and history across devices.</li>
-                                    <li className="mb-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> DiagnosisView help pages and news updates are available <a className="text-light" target="_blank" href="https://blogs.ed.ac.uk/diagnosisview/">here</a></li>
+                                    <li className="mb-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> With an optional account you can access professional resources, as well as sync favourites and history across devices</li>
+                                    <li className="mb-2"><img className="icon--list" src="/images/icon-medical--blue.png" alt="Medical circle" /> <a className="text-light" target="_blank" href="https://blogs.ed.ac.uk/diagnosisview/">Help pages and news updates here</a></li>
                                 </ul>
                             </ModalBody>
                         </Modal>
