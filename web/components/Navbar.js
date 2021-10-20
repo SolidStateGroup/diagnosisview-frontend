@@ -331,7 +331,7 @@ class TheComponent extends Component {
                                                 }
                                             }}>
                                                 <h3 className="mb-4 mt-2">
-                                                    Forgot Password
+                                                    {isConfirm? "Reset Password": "Forgot Password"}
                                                 </h3>
                                                 {isConfirm? (
                                                    <div>
