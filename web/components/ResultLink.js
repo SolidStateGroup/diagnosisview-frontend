@@ -23,7 +23,7 @@ const TheComponent = ({link, code, name, className}) => {
                         const isFavourite = _.find(favourites, f => f.code === code && f.link.id === link.id);
                         const logoImageUrl = Utils.getLinkLogo(linkLogos, link) || Constants.linkIcons[link.linkType.value];
                         let style = {};
-                        const limit =    FavouritesStore.model && FavouritesStore.model.length >= 5 && !AccountStore.hasActiveSubscription()
+                        const limit =    !!FavouritesStore.model && FavouritesStore.model.length >= 5 && !AccountStore.hasActiveSubscription()
                         if (!link.displayLink) {
                             return null;
                         } else if (!AccountStore.hasActiveSubscription() && link.difficultyLevel != "GREEN" && !link.freeLink) {
@@ -56,7 +56,7 @@ const TheComponent = ({link, code, name, className}) => {
 
                                 {!!AccountStore.model && (
                                     <div  className="mr-5">
-                                        {!isFavourite && (
+                                        {!isFavourite &&limit && (
                                             <UncontrolledTooltip placement="top" target={`link${link.id}favourite`}>
                                                 Maximum number of favourites reached. {!AccountStore.getUser() ? 'Please sign in or create an account to add more.' : 'Please subscribe or renew your subscription to add more.'}
                                             </UncontrolledTooltip>
