@@ -91,12 +91,13 @@ var controller = {
             }
 
             store.loading();
-            data.get(Project.api + 'user/favourites')
-                .then(res => {
-                    store.model = res;
-                    AsyncStorage.setItem('favourites', JSON.stringify(res));
-                    store.loaded();
-                });
+            // data.get(Project.api + 'user/favourites')
+            //     .then(res => {
+            //         store.model = res;
+            //         AsyncStorage.setItem('favourites', JSON.stringify(res));
+            //         store.loaded();
+            //     });
+            store.loaded()
         },
         clearDeviceFavourites: function () {
             store.loading();

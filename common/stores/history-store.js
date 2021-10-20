@@ -5,7 +5,10 @@ import AccountStore from './account-store';
 var controller = {
         addToHistory: function (item) {
             store.saving();
-
+                const search = {
+                    item,
+                    date: moment().valueOf()
+                };
                 if (AccountStore.model) {
                     data.put(Project.api + 'user/history', {code: item.code, dateAdded: search.date})
                         .then(res => {
@@ -25,10 +28,7 @@ var controller = {
                         }
 
                         var history = res ? JSON.parse(res) : [];
-                        const search = {
-                            item,
-                            date: moment().valueOf()
-                        };
+
                         history.push(search);
                         history = _.sortBy(history, entry => moment(entry.date).valueOf());
                         if (history.length > 20) { // Only store 20 on the device
@@ -50,7 +50,15 @@ var controller = {
             }
             data.get(Project.api + 'user/history')
                 .then(res => {
-                    store.model = res;
+                    store.model = res.map((v)=>{
+                        return {
+                            "item": {
+                                "code": v.code,
+                                "friendlyName": v.friendlyName
+                            },
+                            "date": v.dateAdded
+                        }
+                    });
                     store.loaded();
                 })
         },
