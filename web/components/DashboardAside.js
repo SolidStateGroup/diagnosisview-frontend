@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Popover from './base/Popover';
 import { NavLink } from "react-router-dom";
+import FeedbackModal from "./FeedbackModal";
 
 const links = [
     {name:"User Dashboard", icon:"fa fa-home", to:"/dashboard"},
@@ -8,7 +9,7 @@ const links = [
     {name:"History", icon:"fa fa-history", to:"/dashboard/history"},
     {name:"Favourites", icon:"far fa-star", to:"/dashboard/favourites"},
     {name:"Account", icon:"fa fa-cog", to:"/dashboard/account"},
-    {name:"Feedback", icon:"far fa-comment", to:"/dashboard/feedback"},
+    {name:"Feedback", icon:"far fa-comment", to:""},
 ]
 export default TheComponent
 const TheComponent = class extends Component {
@@ -54,9 +55,10 @@ const TheComponent = class extends Component {
                                 </Row>
                             </div>
                         )}
+                        <FeedbackModal modalOpen={this.state.showFeedback} onToggle={(e)=>this.setState({showFeedback:false})}/>
 
                         <Flex>
-                            {links.map((l)=>(
+                            {links.map((l)=> l.to? (
                                 <NavLink exact activeClassName="active" className="dashboard-aside__link px-2" to={l.to} key={l.to}>
                                     <Row>
                                         <span className={l.icon + " " + "mr-2"}/>
@@ -65,6 +67,15 @@ const TheComponent = class extends Component {
                                         </span>
                                     </Row>
                                 </NavLink>
+                            ): (
+                                <a href="#" onClick={()=>this.setState({showFeedback:true})} className="dashboard-aside__link px-2">
+                                    <Row>
+                                        <span className={l.icon + " " + "mr-2"}/>
+                                        <span className="dashboard-aside__link-text">
+                                            {l.name}
+                                        </span>
+                                    </Row>
+                                </a>
                             ))}
                         </Flex>
                         <span className="dashboard-aside__link cursor-pointer px-2" onClick={AppActions.logout}>
