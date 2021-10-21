@@ -20,7 +20,7 @@ import DashboardAccountPage from "./components/pages/DashboardAccountPage";
 import AccessibilityPolicyPage from "./components/pages/AccessibilityPolicyPage";
 import DashboardHistoryPage from "./components/pages/DashboardHistoryPage";
 import DashboardFavouritesPage from "./components/pages/DashboardFavouritesPage";
-import DashboardFeedbackPage from "./components/pages/DashboardFeedbackPage";
+import DashboardAboutPage from "./components/pages/DashboardAboutPage";
 import DashboardResultDetailPage from "./components/pages/DashboardResultDetailPage";
 
 export default (
@@ -33,7 +33,7 @@ export default (
             <Route path="/dashboard/history" exact component={DashboardHistoryPage}/>
             <Route path="/dashboard/favourites" exact component={DashboardFavouritesPage}/>
             <Route path="/dashboard/codes/:id" exact component={DashboardResultDetailPage}/>
-            <Route path="/dashboard/feedback" exact component={DashboardFeedbackPage}/>
+            <Route path="/dashboard/about" exact component={DashboardAboutPage}/>
             <Route path="/admin/codes" exact component={ManageCodesPage}/>
             <Route path="/admin/users" exact component={ManageUsersPage}/>
             <Route path="/admin/institutions" exact component={InstitutionsPage}/>
