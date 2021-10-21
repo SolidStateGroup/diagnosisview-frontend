@@ -31,7 +31,7 @@ class TheComponent extends Component {
                     Give us some feedback
                 </ModalHeader>
                 <ModalBody>
-                    <textarea value={this.state.feedback} rows={5} onChange={(e)=>this.setState({feedback:Utils.safeParseEventValue(e)})}/>
+                    <textarea maxLength={1000} value={this.state.feedback} rows={5} onChange={(e)=>this.setState({feedback:Utils.safeParseEventValue(e)})}/>
                     {this.state.error && (
                         <div className="text-danger mv-2">{this.state.error}</div>
                     )}
