@@ -2,14 +2,18 @@ var BaseStore = require('./base/_store');
 var data = require('./base/_data');
 
 var controller = {
-        register: (details, historyToSync1 = controller.getHistoryToSync(res.history)) => {
+        register: (details) => {
             store.saving();
             data.post(Project.api + 'register', details)
-                .then(res => {
+                .then(async res => {
                     // Get device favourites and history to sync with server
                     var favouritesToSync = controller.getFavouritesToSync(res.favourites);
-                    var historyToSync = historyToSync1;
-
+                    var historyToSync = await AsyncStorage.getItem("history");
+                    if(historyToSync) {
+                        historyToSync = JSON.parse(historyToSync)
+                    } else {
+                        historyToSync = []
+                    }
                     return (favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res))
                         .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res))
                         .then(res => {
