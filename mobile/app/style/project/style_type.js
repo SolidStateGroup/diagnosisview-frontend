@@ -7,6 +7,14 @@ module.exports = {
         fontFamily: 'Open Sans',
     },
 
+    textAnchor: {
+    	backgroundColor:'transparent',
+        color: colour.primary,
+        textDecorationLine: 'underline',
+        fontSize: styleVariables.fontSizeBase,
+        fontFamily: 'Open Sans',
+    },
+
     semiBold:{
         fontWeight:'bold',
     },

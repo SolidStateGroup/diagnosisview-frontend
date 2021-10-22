@@ -1,10 +1,16 @@
 {
-  "name": "boilerplate",
+  "name": "DiagnosisView",
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "env_prod": "cross-env ENV=prod node ../bin/env.js",
+    "env_dev": "cross-env ENV=dev node ../bin/env.js",
     "start": "react-native start",
     "aab": "cd ./android && ./gradlew bundleRelease && open ./app/build/outputs/bundle/release && cd ../",
+    "codepush:android:dev": "npm run env_dev && appcenter codepush release-react -a Solid-State-Group/DiagnosisView-Android -d Staging",
+    "codepush:android:prod": "npm run env_prod && appcenter codepush release-react -a Solid-State-Group/DiagnosisView-Android -d Production",
+    "codepush:ios:dev": "npm run env_dev && appcenter codepush release-react -xp ./ios/DiagnosisView.xcodeproj -a Solid-State-Group/DiagnosisView-iOS -d Staging",
+    "codepush:ios:prod": "npm run env_prod && appcenter codepush release-react -xp ./ios/DiagnosisView.xcodeproj -a Solid-State-Group/DiagnosisView-iOS -d Production",
     "android": "npm run watch & react-native run-android",
     "andDebug": "cd ./android & sh ./gradlew -q dependencies app:dependencies --configuration compile",
     "andClean": "cd ./android & sh ./gradlew clean && react-native run android",
@@ -19,6 +25,7 @@
     "watch": "cd ./bin && sh ./common-watch.sh"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "events": "^1.1.1",
     "flux-react-dispatcher": "^1.2.5",
     "inputmask-core": "^2.2.0",
@@ -30,6 +37,7 @@
     "react-native-auto-height-image": "^1.0.1",
     "react-native-bottomsheet": "^1.9.5",
     "react-native-branch": "3.0.0-beta.2",
+    "react-native-code-push": "^7.0.4",
     "react-native-confirmation-code-input": "^1.0.4",
     "react-native-device-info": "2.1.2",
     "react-native-fabric": "^0.5.1",
@@ -37,8 +45,7 @@
     "react-native-firebase": "5.5.3",
     "react-native-globals": "^0.50.0",
     "react-native-hyperlink": "0.0.14",
-    "react-native-iap": "^1.2.5",
-    "react-native-interactable": "https://github.com/SolidStateGroup/react-native-interactable",
+    "react-native-iap": "^4.6.2",
     "react-native-keyboard-aware-scroll-view": "^0.6.0",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-material-dropdown": "^0.11.1",

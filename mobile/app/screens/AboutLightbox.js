@@ -25,7 +25,7 @@ const About = class extends Component {
 			<View style={Styles.lightboxOuter}>
 				<View style={[Styles.lightbox,{paddingTop:10}]}>
 					<KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true}>
-						{this.state.showForm ? this.renderForm() : this.renderAboutText()}
+						{this.renderForm()}
 					</KeyboardAwareScrollView>
 				</View>
 			</View>

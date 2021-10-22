@@ -6,10 +6,10 @@ var controller = {
             store.loading();
 
             try {
-                await RNIap.prepare();
             } catch (e) {}
 
             const subscriptions = await RNIap.getSubscriptions(iapItemSkus);
+            debugger
             // console.log('subscriptions', subscriptions);
 
             const transactionReceipt = await AsyncStorage.getItem('transactionReceipt');
@@ -48,7 +48,7 @@ var controller = {
 
             const renewal = store.isSubscribed();
 
-            RNIap.buySubscription(iapItemSkus[0])
+            RNIap.requestSubscription(iapItemSkus[0])
                 .then(purchase => {
                     // console.log(JSON.stringify(purchase));
                     return API.validateReceipt(Platform.OS === 'ios' ? purchase.transactionReceipt : purchase.purchaseToken);

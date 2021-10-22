@@ -17,6 +17,7 @@ Navigation.registerComponent('/diagnosis', () => require('./screens/DiagnosisDet
 // Other
 Navigation.registerComponent('side-menu', () => require('./components/SideMenu'));
 Navigation.registerComponent('about', () => require('./screens/AboutLightbox'));
+Navigation.registerComponent('info', () => require('./screens/InfoScreen'));
 Navigation.registerComponent('brokenLink', () => require('./screens/BrokenLinkLightbox'));
 Navigation.registerComponent('logoheader', () => require('./components/LogoHeader'));
 Navigation.registerComponent('welcome', () => require('./screens/WelcomeLightbox'));
