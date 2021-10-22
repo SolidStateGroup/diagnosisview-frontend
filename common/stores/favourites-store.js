@@ -83,20 +83,20 @@ var controller = {
             });
         },
         getFavourites: function () {
-            if (!AccountStore.model && !store.model) {
-                AsyncStorage.getItem('favourites', (err, res) => {
-                    store.model = res ? JSON.parse(res) : [];
-                });
-                return
-            }
+            // if (!AccountStore.model && !store.model) {
+            //     AsyncStorage.getItem('favourites', (err, res) => {
+            //         store.model = res ? JSON.parse(res) : [];
+            //     });
+            //     return
+            // }
 
             store.loading();
-            // data.get(Project.api + 'user/favourites')
-            //     .then(res => {
-            //         store.model = res;
-            //         AsyncStorage.setItem('favourites', JSON.stringify(res));
-            //         store.loaded();
-            //     });
+            data.get(Project.api + 'user/favourites')
+                .then(res => {
+                    store.model = res && res.map((v)=>({...v, name:v.friendlyName}));
+                    AsyncStorage.setItem('favourites', JSON.stringify(store.model));
+                    store.loaded();
+                });
             store.loaded()
         },
         clearDeviceFavourites: function () {
