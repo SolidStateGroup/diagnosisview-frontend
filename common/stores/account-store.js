@@ -58,7 +58,7 @@ var controller = {
                         controller.subscribe(SubscriptionStore.getPurchase(), true);
                     }
 
-                    if (SubscriptionStore.isSubscribed() && (favouritesToSync.length || historyToSync.length)) {
+                    if (SubscriptionStore.isSubscribed()) {
                         controller.setToken(res && res.token);
                         return controller.processUser(res);
                     } else {
