@@ -45,7 +45,7 @@ class TheComponent extends Component {
                             {({ isLoading, categories }) => {
                                 return (
                                     <div>
-                                        <h4 className="mb-4">Favourites</h4>
+                                        <h4 className="mb-4">History</h4>
                                         <div className="row">
                                             <div className="col-xl-8 mb-lg-4 col-lg-12">
                                                 <div className="row mb-4">
