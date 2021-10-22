@@ -18,9 +18,12 @@ const TheComponent = ({result, date}) => {
 
                     </Flex>
                     {date && (
-                        <Flex value={1}>
+                        <Row>
+                        <Flex value={2}>
                             {moment(date).format("Do MMMM YYYY HH:mm")}
                         </Flex>
+                            <div style={{ width: 130 }}/>
+                        </Row>
                     )}
                 </Row>
             </Link>
