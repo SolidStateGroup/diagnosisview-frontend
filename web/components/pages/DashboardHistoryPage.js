@@ -30,7 +30,7 @@ class TheComponent extends Component {
 
         if (!link) return  false;
 
-        return link.friendlyName.toLowerCase().startsWith(this.state.search.toLowerCase())
+        return link.diagnosis.friendlyName.toLowerCase().startsWith(this.state.search.toLowerCase())
     }
 
     render() {
