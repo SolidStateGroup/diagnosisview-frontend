@@ -93,7 +93,7 @@ var controller = {
             store.loading();
             data.get(Project.api + 'user/favourites')
                 .then(res => {
-                    store.model = res && res.map((v)=>({...v, name:v.friendlyName}));
+                    store.model = res && res.map((v)=>({...v, name:v.friendlyName, date: v.dateAdded}));
                     AsyncStorage.setItem('favourites', JSON.stringify(store.model));
                     store.loaded();
                 });
