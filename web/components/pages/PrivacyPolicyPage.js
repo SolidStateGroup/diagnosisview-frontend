@@ -28,7 +28,7 @@ module.exports = class extends React.Component {
                     {({error, isLoading}, {clearError}) => (
                         <Flex>
                             <div>
-                                <img className="margin-bottom" src={require('../../images/brand.png')} width="44" />
+                                <img className="margin-bottom" src={require('../../images/brand.png')} height="44" />
                                 <Link to='/' style={{float: 'right'}}>Back to Home</Link>
                                 <h1>Privacy Policy</h1>
 <p>University of Edinburgh built the DiagnosisView app as a Freemium app. This SERVICE is intended for use as is.</p>

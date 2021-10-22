@@ -69,7 +69,7 @@ class TheComponent extends Component {
                                                                 const results = _.map(_.take(_.reverse(_.sortBy(history, 'date')), AccountStore.hasActiveSubscription()? MAX_RECENT: MAX_RECENT_UNSUBSCRIBED), (entry, i) => {
                                                                     const diagnosis = _.find(DiagnosisStore.getCodes(), { code: entry.item.code });
                                                                     if (!diagnosis) return  null
-                                                                    return diagnosis;
+                                                                    return { diagnosis, date:entry.date };
                                                                 }).filter(this.filter)
 
                                                                 return !!history && (
@@ -106,11 +106,13 @@ class TheComponent extends Component {
                                                                                     </Row>
                                                                                 </div>
                                                                             )}
-                                                                            renderItem={(diagnosis, i) => {
+                                                                            renderItem={({ diagnosis,date }, i) => {
                                                                                 if (!diagnosis) return null
                                                                                 return  (
-                                                                                    <ResultListItem result={diagnosis}
-                                                                                                    key={`${i}`}
+                                                                                    <ResultListItem
+                                                                                        date={date}
+                                                                                        result={diagnosis}
+                                                                                        key={`${i}`}
                                                                                     />
                                                                                 )
 
