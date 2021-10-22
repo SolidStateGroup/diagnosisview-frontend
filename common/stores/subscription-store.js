@@ -35,8 +35,8 @@ var controller = {
 
             if (store.subscription && !result) {
                 // Active subscription has expired, removed paid links from favourites
-                AppActions.setDeviceFavourites();
-                AppActions.setDeviceHistory();
+                AppActions.clearDeviceFavourites();
+                AppActions.clearDeviceHistory();
             }
 
             store.loaded();

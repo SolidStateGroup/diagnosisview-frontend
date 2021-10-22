@@ -22,7 +22,7 @@ const TheComponent = ({link, code, name, className}) => {
                     {({favourites})=>{
                         const logoImageUrl = Utils.getLinkLogo(linkLogos, link) || Constants.linkIcons[link.linkType.value];
                         let style = {};
-                        const limit =    FavouritesStore.model.length > 3 && !AccountStore.hasActiveSubscription()
+                        const limit =   FavouritesStore.model && FavouritesStore.model.length > 3 && !AccountStore.hasActiveSubscription()
                         if (!link.displayLink) {
                             return null;
                         } else if (!AccountStore.hasActiveSubscription() && link.difficultyLevel != "GREEN" && !link.freeLink) {

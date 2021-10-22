@@ -2,17 +2,26 @@ var BaseStore = require('./base/_store');
 var data = require('./base/_data');
 
 var controller = {
-        register: (details) => {
+        register: (details, historyToSync1 = controller.getHistoryToSync(res.history)) => {
             store.saving();
             data.post(Project.api + 'register', details)
                 .then(res => {
-                    controller.onLogin(res);
-                    store.saved();
-                    if (!SubscriptionStore.isSubscribed()) {
-                        AppActions.buySubscription();
-                    } else {
-                        controller.subscribe(SubscriptionStore.getPurchase(), true);
-                    }
+                    // Get device favourites and history to sync with server
+                    var favouritesToSync = controller.getFavouritesToSync(res.favourites);
+                    var historyToSync = historyToSync1;
+
+                    return (favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res))
+                        .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res))
+                        .then(res => {
+                            controller.onLogin(res);
+                            store.saved();
+                            if (!SubscriptionStore.isSubscribed()) {
+                                AppActions.buySubscription();
+                            } else {
+                                controller.subscribe(SubscriptionStore.getPurchase(), true);
+                            }
+                        })
+
                 })
                 .catch(e => AjaxHandler.error(AccountStore, e));
         },
@@ -38,9 +47,6 @@ var controller = {
                     return DiagnosisStore.refreshCodes().then(() => res)
                 })
                 .then(res => {
-                    // Get device favourites and history to sync with server
-                    var favouritesToSync = controller.getFavouritesToSync(res.favourites);
-                    var historyToSync = controller.getHistoryToSync(res.history);
 
                     res = controller.processUser(res);
 
@@ -50,11 +56,7 @@ var controller = {
 
                     if (SubscriptionStore.isSubscribed() && (favouritesToSync.length || historyToSync.length)) {
                         controller.setToken(res && res.token);
-                        return (favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res))
-                            .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res))
-                            .then(res => {
-                                return controller.processUser(res);
-                            })
+                        return controller.processUser(res);
                     } else {
                         return res;
                     }
@@ -85,8 +87,10 @@ var controller = {
 
         logout: function () {
             controller.setUser(null);
-            AppActions.setDeviceFavourites();
-            AppActions.setDeviceHistory();
+            AppActions.clearDeviceFavourites();
+            AppActions.clearDeviceHistory();
+            AsyncStorage.setItem("history","")
+            AsyncStorage.setItem("favourites","")
             API.push && API.push.cancelAllNotifications();
         },
 
@@ -176,16 +180,6 @@ var controller = {
         },
 
         processUser: (res) => {
-            const isSubscribed = res.roleType === 'ADMIN' || SubscriptionStore.isSubscribed();
-
-            if (isSubscribed && res.favourites && res.favourites.length) {
-                AppActions.setSubscribedFavourites(res.favourites);
-            }
-
-            if (isSubscribed && res.history && res.history.length) {
-                AppActions.setSubscribedHistory(res.history);
-            }
-
             return res;
         },
 
@@ -203,8 +197,8 @@ var controller = {
 
                     if (store.model.activeSubscription && !res.activeSubscription) {
                         // Active subscription has expired, removed paid links from favourites
-                        AppActions.setDeviceFavourites();
-                        AppActions.setDeviceHistory();
+                        AppActions.clearDeviceFavourites();
+                        AppActions.clearDeviceHistory();
                     }
 
                     if (retrySubscription) {
