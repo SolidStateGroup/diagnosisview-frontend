@@ -3,7 +3,29 @@
  */
 import React, {Component, PropTypes} from 'react';
 import { TouchableOpacity } from "react-native";
+import codePush from 'react-native-code-push'
 
+const codePushOptions = {
+	checkFrequency: __DEV__
+		? codePush.CheckFrequency.MANUAL
+		: codePush.CheckFrequency.ON_APP_RESUME,
+	installMode: codePush.InstallMode.IMMEDIATE,
+	updateDialog: {},
+};
+
+codePush.sync({
+	...codePushOptions,
+	deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
+});
+
+ReactNative.AppState.addEventListener("change",(e)=>{
+	if (e==="active") {
+		codePush.sync({
+			...codePushOptions,
+			deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
+		});
+	}
+})
 const AccountPage = class extends Component {
 	static navigatorStyle = global.navbarStyle;
 
