@@ -15,9 +15,6 @@ Notifications.android.createChannel(channel);
 var PushManager = class {
     static token = null;
     static onNotification = null;
-
-    isMobile: true;
-
     getInitialNotification = () => Notifications.getInitialNotification();
 
     subscribe = (topic) => {
@@ -107,6 +104,7 @@ var push = new PushManager();
 
 global.API = {
 
+    isMobile: true,
 
     log: function () {
 

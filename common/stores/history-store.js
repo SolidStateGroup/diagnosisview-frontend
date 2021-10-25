@@ -59,6 +59,7 @@ var controller = {
                             "date": v.dateAdded
                         }
                     });
+                    AsyncStorage.setItem("history", JSON.stringify(store.model))
                     store.loaded();
                 })
         },

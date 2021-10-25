@@ -132,6 +132,9 @@ var controller = {
             if (!API.isMobile) return true
             return AccountStore.isAdmin() || (store.subscription && moment(store.subscription.expiryDate).isAfter(moment()));
         },
+        isMobileSubscription: function () {
+            return AccountStore.hasActiveSubscription() && !!store.subscription
+        },
         isSubscriptionAutoRenewing: function () {
             return store.subscription && store.subscription.autoRenewing;
         },
