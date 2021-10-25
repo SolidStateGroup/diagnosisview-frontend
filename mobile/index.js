@@ -121,6 +121,7 @@ const getSubscription = new Promise((resolve) => {
     })
 })
 
+console.log("TEST RN RESPONSE")
 Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, getSubscription, iconsLoaded]).then(([user, retrySubscription]) => {
     global.iconsMap = iconsMap;
 

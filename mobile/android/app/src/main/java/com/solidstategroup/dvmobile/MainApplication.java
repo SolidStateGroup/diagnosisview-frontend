@@ -2,7 +2,6 @@
 package com.solidstategroup.dvmobile;
 import android.app.Application;
 import com.facebook.react.ReactApplication;
-import com.microsoft.codepush.react.CodePush;
 import com.dooboolab.RNIap.RNIapPackage;
 import com.clipsub.rnbottomsheet.RNBottomSheetPackage;
 // import com.wix.interactable.Interactable;
@@ -51,17 +50,10 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import com.entria.views.RNViewOverflowPackage;
 
 public class MainApplication extends NavigationApplication {
-    private final MyReactNativeHost mReactNativeHost = new MyReactNativeHost(this);
-
     @Override
     public boolean isDebug() {
         return BuildConfig.DEBUG;
     }
-
-     @Override
-     protected String getJSBundleFile() {
-        return CodePush.getJSBundleFile();
-     }
 
     @Nullable
     @Override
@@ -84,7 +76,6 @@ public class MainApplication extends NavigationApplication {
                                new RNBranchPackage(),
                                new RNIapPackage(),
                                new LinearGradientPackage(),
-                               new CodePush("deployment-key-here", MainApplication.this, BuildConfig.DEBUG),
                                new RNViewOverflowPackage()
                         );
     }
@@ -95,7 +86,6 @@ public class MainApplication extends NavigationApplication {
 
  @Override
   public void onCreate() {
-        CodePush.setReactInstanceHolder(mReactNativeHost);
         super.onCreate();
         RNBranchModule.getAutoInstance(this);
   }
