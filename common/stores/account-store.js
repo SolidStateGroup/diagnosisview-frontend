@@ -29,15 +29,8 @@ var controller = {
             data.setToken(token);
         },
         adminLogin: (details) => {
-            store.loading();
-            data.post(Project.api + 'admin/login', details)
-                .then(res => {
-                    controller.onLogin(res);
-                    store.loaded();
-                })
-                .catch(e => {
-                    controller.login(details)
-                });
+            //deprecated
+            return controller.login(details)
         },
         login: (details) => {
             store.loading();
@@ -54,12 +47,8 @@ var controller = {
                         controller.subscribe(SubscriptionStore.getPurchase(), true);
                     }
 
-                    if (SubscriptionStore.isSubscribed() && (favouritesToSync.length || historyToSync.length)) {
                         controller.setToken(res && res.token);
-                        return controller.processUser(res);
-                    } else {
-                        return res;
-                    }
+                    return res;
                 })
                 .then(res => {
                     controller.onLogin(res);
