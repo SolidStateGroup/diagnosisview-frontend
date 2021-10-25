@@ -47,7 +47,6 @@
     "react-native-view-overflow": "0.0.4"
   },
   "devDependencies": {
-    "detox": "^12.11.1",
     "mocha": "^5.0.4",
     "@babel/core": "^7.4.5",
     "@babel/runtime": "^7.4.5",

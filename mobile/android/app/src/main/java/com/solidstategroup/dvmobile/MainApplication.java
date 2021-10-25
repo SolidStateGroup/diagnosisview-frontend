@@ -4,7 +4,7 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.dooboolab.RNIap.RNIapPackage;
 import com.clipsub.rnbottomsheet.RNBottomSheetPackage;
-import com.wix.interactable.Interactable;
+// import com.wix.interactable.Interactable;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -60,7 +60,7 @@ public class MainApplication extends NavigationApplication {
     public List<ReactPackage> createAdditionalReactPackages() {
            return Arrays.<ReactPackage>asList(
                                  new RNBottomSheetPackage(),
-                                 new Interactable(),
+//                                  new Interactable(),
 
                                //REACT_NATIVE_FIRE_BASE
                                    new RNFirebasePackage(),
