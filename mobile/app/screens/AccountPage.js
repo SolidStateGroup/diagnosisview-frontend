@@ -2,6 +2,7 @@
  * Created by kylejohnson on 28/01/2017.
  */
 import React, {Component, PropTypes} from 'react';
+import { TouchableOpacity } from "react-native";
 
 const AccountPage = class extends Component {
 	static navigatorStyle = global.navbarStyle;
@@ -355,10 +356,15 @@ const AccountPage = class extends Component {
 		</View>
 	);
 
+	openInfo = (text)=>{
+		routeHelper.showInfo(this.props.navigator, text)
+	}
+
 	render() {
 		const manageSubscriptionLink = Platform.OS === 'android' ?
 			`https://play.google.com/store/account/subscriptions?sku=${iapItemSkus[0]}&package=${DeviceInfo.getBundleId()}` :
-			`itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions`;
+			`itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.wo
+			a/wa/manageSubscriptions`;
 
 		return (
 			<AccountProvider ref={c => this.accountProvider = c} onLogin={this.onLogin} onLogout={this.onLogout} onSave={this.onLogin}>
@@ -396,15 +402,37 @@ const AccountPage = class extends Component {
 														) : subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : null}
 														{!user ? (
 															<React.Fragment>
+
 															<Text style={[Styles.textMedium, Styles.paragraph]}>
 															Register your DiagnosisView account to access the features below, or tap Login if you have one already:
 															</Text>
-															<Text style={[Styles.textMedium, Styles.paragraph]}>
-																- Account holders can have unlimited history and unlimited favourites, and these are synchronised between your devices.
-															</Text>
-															<Text style={[Styles.textMedium, Styles.paragraph]}>
-																- Some paywalled resources are mapped as amber or red links. If you belong to an affiliated institution, direct links may be provided so that you only have to log in once.
-															</Text>
+																<TouchableOpacity onPress={()=>this.openInfo("DiagnosisView account holders can have unlimited history and unlimited favourites, and these are synchronized between your devices")}>
+																	<Row style={[{flexWrap:'nowrap'},Styles.paragraph]}>
+																		<Image source={require('../images/icon-medical.png')} style={{height:24, width:24, marginRight:10, resizeMode:"contain"}}/>
+																		<Text style={[Styles.textMedium, Styles.textAnchor, {width:DeviceWidth-80}]}>
+																			Unlimited history and favourites
+																		</Text>
+																	</Row>
+																</TouchableOpacity>
+																<TouchableOpacity onPress={()=>this.openInfo("Access the web version of DiagnosisView for free via your web browser at www.diagnosisview.org, giving you a large screen view of DiagnosisView along with our partners’ info pages. You may login using the same login email and password.")} >
+																	<Row style={[{flexWrap:'nowrap'},Styles.paragraph]}>
+																		<Image source={require('../images/icon-medical.png')} style={{height:24, width:24, marginRight:10, resizeMode:"contain"}}/>
+																		<Text style={[Styles.textMedium, Styles.textAnchor, {width:DeviceWidth-80}]}>
+																			Immediate access to DiagnosisView Web
+																		</Text>
+																	</Row>
+																</TouchableOpacity>
+
+																<TouchableOpacity onPress={()=>this.openInfo("Some paywalled resources are mapped as amber or red links. If you belong to an affiliated institution, direct links may be provided so that you only have to login once.")} style={[Styles.textMedium, Styles.textAnchor, Styles.paragraph]}>
+																<Row style={[{flexWrap:'nowrap'},Styles.paragraph]}>
+																		<Image source={require('../images/icon-medical.png')} style={{height:24, width:24, marginRight:10, resizeMode:"contain"}}/>
+																		<Text style={[Styles.textMedium, Styles.textAnchor, {width:DeviceWidth-80}]}>
+																			Access paywalled links to your Institution
+																		</Text>
+																	</Row>
+																</TouchableOpacity>
+
+
 															</React.Fragment>
 														) : null}
 													</View>

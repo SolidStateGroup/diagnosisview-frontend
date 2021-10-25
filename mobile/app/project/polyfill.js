@@ -23,8 +23,8 @@ window.RequiredString = PropTypes.string.isRequired;
 window.RequiredNode = PropTypes.node.isRequired;
 window.RequiredElement = PropTypes.node.isRequired;
 
-import Interactable from 'react-native-interactable';
-global.Interactable = Interactable;
+// import Interactable from 'react-native-interactable';
+// global.Interactable = Interactable;
 
 import Animation from 'lottie-react-native';
 global.Animation = Animation;
