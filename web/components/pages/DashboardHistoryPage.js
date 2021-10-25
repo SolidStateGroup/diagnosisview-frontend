@@ -30,7 +30,7 @@ class TheComponent extends Component {
 
         if (!link) return  false;
 
-        return link.friendlyName.toLowerCase().startsWith(this.state.search.toLowerCase())
+        return link.diagnosis.friendlyName.toLowerCase().startsWith(this.state.search.toLowerCase())
     }
 
     render() {
@@ -45,7 +45,7 @@ class TheComponent extends Component {
                             {({ isLoading, categories }) => {
                                 return (
                                     <div>
-                                        <h4 className="mb-4">Favourites</h4>
+                                        <h4 className="mb-4">History</h4>
                                         <div className="row">
                                             <div className="col-xl-8 mb-lg-4 col-lg-12">
                                                 <div className="row mb-4">
@@ -63,7 +63,7 @@ class TheComponent extends Component {
                                                         <HistoryProvider>
                                                             {({ history, isLoading }) => {
 
-                                                                if (!history && isLoading) {
+                                                                if ((!history && isLoading)|| !DiagnosisStore.model) {
                                                                     return <div className="text-center"><Loader/></div>
                                                                 }
                                                                 const results = _.map(_.take(_.reverse(_.sortBy(history, 'date')), AccountStore.hasActiveSubscription()? MAX_RECENT: MAX_RECENT_UNSUBSCRIBED), (entry, i) => {
