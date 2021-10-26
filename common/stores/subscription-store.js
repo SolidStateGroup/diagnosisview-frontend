@@ -9,7 +9,6 @@ var controller = {
             } catch (e) {}
 
             const subscriptions = await RNIap.getSubscriptions(iapItemSkus);
-            debugger
             // console.log('subscriptions', subscriptions);
 
             const transactionReceipt = await AsyncStorage.getItem('transactionReceipt');

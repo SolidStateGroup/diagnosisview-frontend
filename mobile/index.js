@@ -173,10 +173,33 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ge
             }
         }
     });
+    // const codePushOptions = {
+    //     checkFrequency: __DEV__
+    //         ? 2 // Manual
+    //         : 1, // Next resume
+    //     installMode: 0, // Immediate
+    //     updateDialog: {},
+    // };
+    //
+    //
+    // ReactNative.AppState.addEventListener("change",(e)=>{
+    //     if (e==="active") {
+    //         console.log("SYNC CODEPUSH")
+    //         codePush.sync({
+    //             ...codePushOptions,
+    //             deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
+    //         });
+    //     }
+    // })
+    // codePush.sync({
+    //     ...codePushOptions,
+    //     deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
+    // });
+
 });
 
 console.disableYellowBox = true;
 
 
-import crashlytics from 'react-native-fabric-crashlytics';
-crashlytics.init();
+// import crashlytics from 'react-native-fabric-crashlytics';
+// crashlytics.init();
