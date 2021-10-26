@@ -13,6 +13,11 @@ class TheComponent extends Component<ComponentType> {
             <div className="paged-list">
             <div className={this.props.containerClassName}>
                 {this.props.header}
+                {(!data ||!data.length) && this.props.isLoading && (
+                    <div className="text-center">
+                        <Loader/>
+                    </div>
+                )}
                 {
                     data && data.map(this.props.renderItem)
                 }

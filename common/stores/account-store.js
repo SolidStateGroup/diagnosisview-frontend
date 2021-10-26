@@ -2,26 +2,18 @@ var BaseStore = require('./base/_store');
 var data = require('./base/_data');
 
 var controller = {
-        register: (details, historyToSync1 = controller.getHistoryToSync(res.history)) => {
+        register: (details) => {
             store.saving();
             data.post(Project.api + 'register', details)
                 .then(res => {
                     // Get device favourites and history to sync with server
-                    var favouritesToSync = controller.getFavouritesToSync(res.favourites);
-                    var historyToSync = historyToSync1;
-
-                    return (favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res))
-                        .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res))
-                        .then(res => {
-                            controller.onLogin(res);
-                            store.saved();
-                            if (!SubscriptionStore.isSubscribed()) {
-                                AppActions.buySubscription();
-                            } else {
-                                controller.subscribe(SubscriptionStore.getPurchase(), true);
-                            }
-                        })
-
+                    controller.onLogin(res);
+                    store.saved();
+                    if (!SubscriptionStore.isSubscribed()) {
+                        AppActions.buySubscription();
+                    } else {
+                        controller.subscribe(SubscriptionStore.getPurchase(), true);
+                    }
                 })
                 .catch(e => AjaxHandler.error(AccountStore, e));
         },
@@ -34,6 +26,8 @@ var controller = {
         },
         login: (details) => {
             store.loading();
+            AsyncStorage.setItem("history","")
+            AsyncStorage.setItem("favourites","")
             data.post(Project.api + 'login', details)
                 .then(res => {
                     controller.setToken(res && res.token);
