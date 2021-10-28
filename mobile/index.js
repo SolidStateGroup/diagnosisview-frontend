@@ -7,6 +7,7 @@ import styleVariables from './app/style/project/style_variables';
 
 const replaceSuffixPattern = /--(active|big|small|very-big)/g;
 const defaultIconProvider = ION;
+import codePush from 'react-native-code-push'
 
 const icons = {
     "ios-menu": [30, styleVariables.navColor],
@@ -121,6 +122,7 @@ const getSubscription = new Promise((resolve) => {
     })
 })
 
+console.log("TEST RN RESPONSE")
 Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, getSubscription, iconsLoaded]).then(([user, retrySubscription]) => {
     global.iconsMap = iconsMap;
 
@@ -172,10 +174,32 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ge
             }
         }
     });
+    const codePushOptions = {
+        checkFrequency: __DEV__
+            ? codePush.CheckFrequency.MANUAL
+            : codePush.CheckFrequency.MANUAL,
+        installMode: 0, // Immediate
+        updateDialog: {},
+    };
+
+
+    ReactNative.AppState.addEventListener("change",(e)=>{
+        if (e==="active") {
+            codePush.sync({
+                ...codePushOptions,
+                deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
+            });
+        }
+    })
+    codePush.sync({
+        ...codePushOptions,
+        deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
+    });
+
 });
 
 console.disableYellowBox = true;
 
 
-import crashlytics from 'react-native-fabric-crashlytics';
-crashlytics.init();
+// import crashlytics from 'react-native-fabric-crashlytics';
+// crashlytics.init();
