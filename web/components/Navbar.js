@@ -57,11 +57,8 @@ class TheComponent extends Component {
                 this.props.history.replace("/forgot-password?confirm=1&username="+encodeURIComponent(this.state.resetUsername))
             })
             .catch(e => {
-                e.json().then(error => {
-                    this.setState({ isLoading: false, error: error });
-                }).catch(() => {
-                    this.setState({ isLoading: false, error: {message:'Sorry there was a problem, check you entered the correct email address or try again later'} });
-                })
+                this.props.history.replace("/forgot-password?confirm=1&username="+encodeURIComponent(this.state.resetUsername))
+
             });
     }
 
@@ -142,7 +139,7 @@ class TheComponent extends Component {
             firstName: null,
             lastName: null,
             username: null,
-            code: null,
+            code: "",
             resetUsername: null,
             password: null,
             occupation: null,
@@ -390,7 +387,7 @@ class TheComponent extends Component {
                                                     <div>
                                                             <InputGroup
                                                                 id="email"
-                                                                title="Please enter the e-mail address that you used when registering for DiagnosisView"
+                                                                title="Please enter the e-mail address that you used when registering for DiagnosisView. Following this, you will be taken to the next step in the reset procedure."
                                                                 type="email"
                                                                 placeholder="Enter email"
                                                                 className="mb-4"
