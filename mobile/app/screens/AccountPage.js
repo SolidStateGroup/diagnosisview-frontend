@@ -407,26 +407,26 @@ const AccountPage = class extends Component {
 															Register your DiagnosisView account to access the features below, or tap Login if you have one already:
 															</Text>
 																<TouchableOpacity onPress={()=>this.openInfo("DiagnosisView account holders can have unlimited history and unlimited favourites, and these are synchronized between your devices")}>
-																	<Row style={[{flexWrap:'nowrap'},Styles.paragraph]}>
+																	<Row style={[{flexWrap:'nowrap'},Styles.mb5]}>
 																		<Image source={require('../images/icon-medical.png')} style={{height:24, width:24, marginRight:10, resizeMode:"contain"}}/>
-																		<Text style={[Styles.textMedium, Styles.textAnchor, {width:DeviceWidth-80}]}>
+																		<Text style={[Styles.textAnchor, {width:DeviceWidth-80},Styles.textSmall,]}>
 																			Unlimited history and favourites
 																		</Text>
 																	</Row>
 																</TouchableOpacity>
 																<TouchableOpacity onPress={()=>this.openInfo("Access the web version of DiagnosisView for free via your web browser at www.diagnosisview.org, giving you a large screen view of DiagnosisView along with our partners’ info pages. You may login using the same login email and password.")} >
-																	<Row style={[{flexWrap:'nowrap'},Styles.paragraph]}>
+																	<Row style={[{flexWrap:'nowrap'},Styles.mb5]}>
 																		<Image source={require('../images/icon-medical.png')} style={{height:24, width:24, marginRight:10, resizeMode:"contain"}}/>
-																		<Text style={[Styles.textMedium, Styles.textAnchor, {width:DeviceWidth-80}]}>
+																		<Text style={[Styles.textAnchor, {width:DeviceWidth-80},Styles.textSmall,]}>
 																			Immediate access to DiagnosisView Web
 																		</Text>
 																	</Row>
 																</TouchableOpacity>
 
 																<TouchableOpacity onPress={()=>this.openInfo("Some paywalled resources are mapped as amber or red links. If you belong to an affiliated institution, direct links may be provided so that you only have to login once.")} style={[Styles.textMedium, Styles.textAnchor, Styles.paragraph]}>
-																<Row style={[{flexWrap:'nowrap'},Styles.paragraph]}>
+																<Row style={[{flexWrap:'nowrap'},Styles.mb5]}>
 																		<Image source={require('../images/icon-medical.png')} style={{height:24, width:24, marginRight:10, resizeMode:"contain"}}/>
-																		<Text style={[Styles.textMedium, Styles.textAnchor, {width:DeviceWidth-80}]}>
+																	<Text style={[Styles.textAnchor, {width:DeviceWidth-80},Styles.textSmall,]}>
 																			Access paywalled links to your Institution
 																		</Text>
 																	</Row>
