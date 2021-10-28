@@ -95,7 +95,6 @@ class TheComponent extends Component {
                     <WhoFor/>
                 </div>
             </div>
-            <Footer fixed/>
         </div>;
     }
 }
