@@ -39,25 +39,29 @@ class TheComponent extends Component {
     render() {
         const { isLoading, description, links, name } = this.state;
         return (
-            <div className="panel--white mb-4">
-                <h4 className="mb-4 mt-2">
-                    {name}
-                </h4>
-                <div className="mb-4">
-                    {description}
-                </div>
-                <PanelHeader className="mb-4" icon="fa fa-info-circle">Learn More</PanelHeader>
-                {isLoading ? <Loader /> : (
-                    <div>
-                        { _.map(links, link => {
-                            return (
-                                <ResultLink key={link.id} className="mb-3 mx-2" code={this.props.id} name={name} link={link}/>
-                            );
-                        })}
+            <div>
+                <div className="panel--white mb-4">
+                    <h4 className="mb-4 mt-2">
+                        {name}
+                    </h4>
+                    <div className="mb-4">
+                        {description}
                     </div>
-                )}
+                    <PanelHeader className="mb-4" icon="fa fa-info-circle">Learn More</PanelHeader>
+                    {isLoading ? <Loader /> : (
+                        <div>
+                            { _.map(links, link => {
+                                return (
+                                    <ResultLink key={link.id} className="mb-3 mx-2" code={this.props.id} name={name} link={link}/>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
                 <PremiumLinkMessage className="mx-2"/>
+
             </div>
+
         )
     }
 }
