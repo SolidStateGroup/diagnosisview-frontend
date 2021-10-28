@@ -7,6 +7,7 @@ import styleVariables from './app/style/project/style_variables';
 
 const replaceSuffixPattern = /--(active|big|small|very-big)/g;
 const defaultIconProvider = ION;
+import codePush from 'react-native-code-push'
 
 const icons = {
     "ios-menu": [30, styleVariables.navColor],
@@ -173,28 +174,27 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ge
             }
         }
     });
-    // const codePushOptions = {
-    //     checkFrequency: __DEV__
-    //         ? 2 // Manual
-    //         : 1, // Next resume
-    //     installMode: 0, // Immediate
-    //     updateDialog: {},
-    // };
-    //
-    //
-    // ReactNative.AppState.addEventListener("change",(e)=>{
-    //     if (e==="active") {
-    //         console.log("SYNC CODEPUSH")
-    //         codePush.sync({
-    //             ...codePushOptions,
-    //             deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
-    //         });
-    //     }
-    // })
-    // codePush.sync({
-    //     ...codePushOptions,
-    //     deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
-    // });
+    const codePushOptions = {
+        checkFrequency: __DEV__
+            ? codePush.CheckFrequency.MANUAL
+            : codePush.CheckFrequency.MANUAL,
+        installMode: 0, // Immediate
+        updateDialog: {},
+    };
+
+
+    ReactNative.AppState.addEventListener("change",(e)=>{
+        if (e==="active") {
+            codePush.sync({
+                ...codePushOptions,
+                deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
+            });
+        }
+    })
+    codePush.sync({
+        ...codePushOptions,
+        deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
+    });
 
 });
 

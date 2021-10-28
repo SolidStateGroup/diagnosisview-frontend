@@ -49,40 +49,66 @@ import com.BV.LinearGradient.LinearGradientPackage;
 
 import com.entria.views.RNViewOverflowPackage;
 
-public class MainApplication extends NavigationApplication {
+import com.facebook.react.ReactInstanceManager;
+
+// Add CodePush imports
+import com.microsoft.codepush.react.ReactInstanceHolder;
+import com.microsoft.codepush.react.CodePush;
+
+public class MainApplication extends NavigationApplication implements ReactInstanceHolder {
+
+	@Override
+	public boolean isDebug() {
+		// Make sure you are using BuildConfig from your own application
+		return BuildConfig.DEBUG;
+	}
+
+	protected List<ReactPackage> getPackages() {
+		// Add additional packages you require here
+		return Arrays.<ReactPackage>asList(
+			new CodePush("deployment-key-here", getApplicationContext(), BuildConfig.DEBUG),
+			 new RNBottomSheetPackage(),
+            //                                  new Interactable(),
+
+               //REACT_NATIVE_FIRE_BASE
+                   new RNFirebasePackage(),
+                   new RNFirebaseMessagingPackage(),
+                   new RNFirebaseAnalyticsPackage(),
+                   new RNFirebaseNotificationsPackage(),
+               //END OF REACT_NATIVE_FIRE_BASE
+
+               new FabricPackage(),
+               new LottiePackage(),
+               new VectorIconsPackage(),
+               new RNDeviceInfo(true),
+               new RNBranchPackage(),
+               new RNIapPackage(),
+               new LinearGradientPackage(),
+               new RNViewOverflowPackage()
+		);
+	}
+
+	@Override
+	public List<ReactPackage> createAdditionalReactPackages() {
+		return getPackages();
+	}
+
+	@Override
+	public String getJSBundleFile() {
+        // Override default getJSBundleFile method with the one CodePush is providing
+		return CodePush.getJSBundleFile();
+	}
+
+	@Override
+	public String getJSMainModuleName() {
+		return "index";
+	}
+
     @Override
-    public boolean isDebug() {
-        return BuildConfig.DEBUG;
+    public ReactInstanceManager getReactInstanceManager() {
+        // CodePush must be told how to find React Native instance
+        return getReactNativeHost().getReactInstanceManager();
     }
-
-    @Nullable
-    @Override
-    public List<ReactPackage> createAdditionalReactPackages() {
-           return Arrays.<ReactPackage>asList(
-                                 new RNBottomSheetPackage(),
-//                                  new Interactable(),
-
-                               //REACT_NATIVE_FIRE_BASE
-                                   new RNFirebasePackage(),
-                                   new RNFirebaseMessagingPackage(),
-                                   new RNFirebaseAnalyticsPackage(),
-                                   new RNFirebaseNotificationsPackage(),
-                               //END OF REACT_NATIVE_FIRE_BASE
-
-                               new FabricPackage(),
-                               new LottiePackage(),
-                               new VectorIconsPackage(),
-                               new RNDeviceInfo(true),
-                               new RNBranchPackage(),
-                               new RNIapPackage(),
-                               new LinearGradientPackage(),
-                               new RNViewOverflowPackage()
-                        );
-    }
-
-    @Override public
-    String getJSMainModuleName() { return "index"; }
-
 
  @Override
   public void onCreate() {
