@@ -199,6 +199,7 @@ class TheComponent extends Component {
 
                             <Modal
                                 unmountOnClose
+                                onClosed={()=>AccountStore.error = null}
                                 isOpen={this.state.modalOpen||(isSignup && !this.state.forceClose) || (isForgotPassword && !this.state.forceClose)}
                                 toggle={()=>{
                                    this.toggle()
