@@ -184,23 +184,20 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ge
 
 
     ReactNative.AppState.addEventListener("change",(e)=>{
-        if (e==="active") {
-            alert("fetching")
+        if (e==="active" && !__DEV__) {
             codePush.sync({
                 ...codePushOptions,
                 deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
-            }).then((e)=>{
-                alert(e)
-            })
-                .catch((e)=>{
-                alert(e)
-            })
+            });
         }
     })
-    codePush.sync({
-        ...codePushOptions,
-        deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
-    });
+    if(!__DEV__) {
+        codePush.sync({
+            ...codePushOptions,
+            deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
+        });
+    }
+
 
 });
 
