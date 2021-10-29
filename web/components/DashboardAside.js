@@ -78,6 +78,16 @@ const TheComponent = class extends Component {
                                 </a>
                             ))}
                         </Flex>
+                        {isAdmin && (
+                            <NavLink activeClassName="active" className="dashboard-aside__link px-2" to={"/admin"}>
+                                <Row>
+                                    <span className={"fa fa-user-shield " + "mr-2"}/>
+                                    <span className="dashboard-aside__link-text">
+                                        Admin Site
+                                    </span>
+                                </Row>
+                            </NavLink>
+                        )}
                         <span className="dashboard-aside__link cursor-pointer px-2" onClick={AppActions.logout}>
                             <Row>
                                 <span className={"fa fa-sign-out-alt " + "mr-2"}/>
