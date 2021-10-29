@@ -1,8 +1,8 @@
 module.exports = {
-    debug: true,
-    api: 'https://api-staging.diagnosisview.org/api/',
-    codepushIOS: "F2oBF3_9UrNh1-aPSYv5Xr89P2KRDGaC_Txp4",
-    codepushAndroid: "EP2RwbT6jmTHTF1Nj8XkmsQFwt6MCclIq5vxB",
-    public: 'https://api-staging.diagnosisview.org/public/',
+    debug: false,
+    api: 'https://api.diagnosisview.org/api/',
+    public: 'https://api.diagnosisview.org/public/',
+    codepushIOS: "n_v9269jFN38lTv8i3Mbe0p8t6Xw0e4BjVrJp",
+    codepushAndroid: "JHGFbOmwdHWqtkE-Ck4osQ_aJxBD9Sj_nU5Mr",
     ga: ''
 };

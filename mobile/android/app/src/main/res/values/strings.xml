@@ -1,6 +1,6 @@
 <resources>
 	<string moduleConfig="true" name="CodePushDeploymentKey">EP2RwbT6jmTHTF1Nj8XkmsQFwt6MCclIq5vxB</string>
-    <string name="app_name">DiagnosisView</string>
+    <string name="app_name">DiagnosisView Test</string>
     <string name="fb_app_id">276944269330753</string>
     <string name="fb_login_protocol_scheme">fb276944269330753</string>
 </resources>

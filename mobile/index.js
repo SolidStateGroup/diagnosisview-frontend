@@ -185,10 +185,16 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ge
 
     ReactNative.AppState.addEventListener("change",(e)=>{
         if (e==="active") {
+            alert("fetching")
             codePush.sync({
                 ...codePushOptions,
                 deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
-            });
+            }).then((e)=>{
+                alert(e)
+            })
+                .catch((e)=>{
+                alert(e)
+            })
         }
     })
     codePush.sync({

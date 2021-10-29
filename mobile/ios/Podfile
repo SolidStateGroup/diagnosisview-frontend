@@ -11,8 +11,6 @@ target 'DiagnosisView' do
   pod 'Firebase/Core', '~> 6.2.0'
   pod 'Firebase/Messaging', '~> 6.2.0'
 
- pod 'CodePush', :path => '../node_modules/react-native-code-push'
-
  post_install do |installer|
         ## Fix for XCode 12.5
         find_and_replace("../node_modules/react-native/React/CxxBridge/RCTCxxBridge.mm",
