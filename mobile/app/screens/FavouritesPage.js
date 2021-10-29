@@ -104,7 +104,7 @@ const FavouritesPage = class extends Component {
 															return _.map(_.reverse(_.sortBy(favourites, 'date')), (entry, i) => {
 																const { link } = entry;
 																const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
-																if (!SubscriptionStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+																if (!AccountStore.hasActiveSubscription() && link.difficultyLevel != "GREEN" && !link.freeLink) {
 																	return null;
 																}
 																if (Constants.simulate.ALL_FAVES_REMOVED_EXTERNALLY) {

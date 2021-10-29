@@ -8,7 +8,13 @@ var controller = {
             try {
             } catch (e) {}
 
-            const subscriptions = await RNIap.getSubscriptions(iapItemSkus);
+            if (__DEV__) {
+                store.goneABitWest()
+                return
+            }
+            const subscriptions = await RNIap.getSubscriptions(iapItemSkus).catch((e)=>{
+                store.goneABitWest()
+            });
             // console.log('subscriptions', subscriptions);
 
             const transactionReceipt = await AsyncStorage.getItem('transactionReceipt');

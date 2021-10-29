@@ -58,6 +58,7 @@ var controller = {
             } else {
                 AsyncStorage.setItem('user', JSON.stringify(res));
             }
+            SubscriptionStore.trigger("changed")
             controller.setToken(res && res.token);
         },
 
