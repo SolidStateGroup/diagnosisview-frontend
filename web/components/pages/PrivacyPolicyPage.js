@@ -22,6 +22,7 @@ module.exports = class extends React.Component {
     }
 
     render = () => {
+        const showBackToHome =!document.location.href.includes("mobile")
         return (
             <div className="padded">
                 <AccountProvider onError={() => this.setState({password: ''})}>
@@ -29,7 +30,9 @@ module.exports = class extends React.Component {
                         <Flex>
                             <div>
                                 <img className="margin-bottom" src={require('../../images/brand.png')} height="44" />
-                                <Link to='/' style={{float: 'right'}}>Back to Home</Link>
+                                {showBackToHome && (
+                                    <Link to='/' style={{float: 'right'}}>Back to Home</Link>
+                                )}
                                 <h1>Privacy Policy</h1>
 <p>University of Edinburgh built the DiagnosisView app as a Freemium app. This SERVICE is intended for use as is.</p>
 
