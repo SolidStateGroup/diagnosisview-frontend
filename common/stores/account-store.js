@@ -4,6 +4,9 @@ var data = require('./base/_data');
 var controller = {
         register: (details) => {
             store.saving();
+            var favouritesToSync = controller.getFavouritesToSync(FavouritesStore.model);
+            var historyToSync = controller.getHistoryToSync(HistoryStore.model);
+
             data.post(Project.api + 'register', details)
                 .then(res => {
                     // Get device favourites and history to sync with server
@@ -15,6 +18,8 @@ var controller = {
                         controller.subscribe(SubscriptionStore.getPurchase(), true);
                     }
                 })
+                .then(res => favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res)) // Sync favourites
+                .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res)) // Sync history
                 .catch(e => AjaxHandler.error(AccountStore, e));
         },
         setToken: (token) => {
@@ -110,8 +115,6 @@ var controller = {
             const renewal = store.model.paymentData && store.model.paymentData.length ? true : false;
 
             // Get device favourites and history to sync with server
-            var favouritesToSync = controller.getFavouritesToSync(store.model.favourites);
-            var historyToSync = controller.getHistoryToSync(store.model.history);
 
             // Validate purchase
             // console.log(JSON.stringify(purchase));
@@ -153,8 +156,6 @@ var controller = {
                         return data.get(Project.api + 'account');
                     })
                 })
-                .then(res => favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res)) // Sync favourites
-                .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res)) // Sync history
                 .then(res => {
                     // console.log(res);
                     store.model = this.processUser(res);
