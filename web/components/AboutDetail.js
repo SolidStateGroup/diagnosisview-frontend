@@ -6,11 +6,14 @@ class TheComponent extends Component {
     state = {}
 
     render() {
+        const {withoutImage} = this.props;
         return (
             <div>
-                <div>
-                    <img className="margin-bottom" src={require('../images/brand.png')} height="44" />
-                </div>
+                {!withoutImage &&(
+                    <div>
+                        <img className="margin-bottom" src={require('../images/brand.png')} height="44" />
+                    </div>
+                )}
 
                 <strong>
                     DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses
@@ -22,9 +25,11 @@ class TheComponent extends Component {
                     <li className="mb-2">With an optional account you can access professional resources, as well as sync favourites and history across devices</li>
                     <li className="mb-2">See <a href="https://blogs.ed.ac.uk/diagnosisview">blogs.ed.ac.uk/diagnosisview</a> for latest news and a more detailed guide for users, and about joining as an institution</li>
                 </ul>
-                <Button onClick={()=>this.setState({showFeedback:true})} className={'btn btn-lg btn--primary nav__button'}>
-                    <span className="nav__button__text">Give Feedback</span>
-                </Button>
+                {AccountStore.model && (
+                    <Button onClick={()=>this.setState({showFeedback:true})} className={'btn btn-lg btn--primary nav__button'}>
+                        <span className="nav__button__text">Give Feedback</span>
+                    </Button>
+                )}
                 <FeedbackModal modalOpen={this.state.showFeedback} onToggle={(e)=>this.setState({showFeedback:false})}/>
                 <div className="section row p-5 flex align-items-center">
                     <div className="col-md-5">

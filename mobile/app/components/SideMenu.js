@@ -94,13 +94,13 @@ const TheComponent = class extends Component {
                             <Flex/>
                             <SideMenuLink onPress={this.onFeedback} text="Feedback"
                                           image={require('../images/icons/home_active.png')}/>
-                            <SideMenuLink onPress={()=>this.goUrl("https://www.diagnosisview.org/about?mobile=1")} text="About"
+                            <SideMenuLink onPress={()=>this.goUrl(Project.baseUrl + "about?mobile=1")} text="About"
                                           image={require('../images/icons/home_active.png')}/>
 
 
-                            <SideMenuLink onPress={()=>this.goUrl("https://www.diagnosisview.org/privacy-policy?mobile=1")} text="Privacy Policy"
+                            <SideMenuLink onPress={()=>this.goUrl(Project.baseUrl +"privacy-policy?mobile=1")} text="Privacy Policy"
                                           image={require('../images/icons/home_active.png')}/>
-                            <SideMenuLink onPress={()=>this.goUrl("https://www.diagnosisview.org/accessibility-policy?mobile=1")} text="Accessibility Statement"
+                            <SideMenuLink onPress={()=>this.goUrl(Project.baseUrl + "accessibility-policy?mobile=1")} text="Accessibility Statement"
                                           image={require('../images/icons/home_active.png')}/>
                             {!!user && (
                                 <View style={Styles.mt20}>

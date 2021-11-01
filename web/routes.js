@@ -7,6 +7,7 @@ import PrivacyPolicyPage from './components/pages/PrivacyPolicyPage';
 import ManageCodesPage from './components/pages/ManageCodesPage';
 import ManageUsersPage from './components/pages/ManageUsersPage';
 import InstitutionsPage from './components/pages/InstitutionsPage';
+import AboutPage from './components/pages/AboutPage';
 import ManageLinkTransformsPage from './components/pages/ManageLinkTransformsPage';
 import TermsOfUsePage from './components/pages/TermsOfUsePage';
 import ManageLinkLogosPage from './components/pages/ManageLinkLogosPage';
@@ -46,6 +47,7 @@ export default (
             <Route path="/signup" exact component={HomePage}/>
             <Route path="/forgot-password" exact component={HomePage}/>
             <Route path="/search" exact component={SearchPage}/>
+            <Route path="/about" exact component={AboutPage}/>
             <Route path="/terms-of-use" exact component={TermsOfUsePage}/>
             <Route path="/privacy-policy" exact component={PrivacyPolicyPage}/>
             <Route path="/accessibility-policy" exact component={AccessibilityPolicyPage}/>
