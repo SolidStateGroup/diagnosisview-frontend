@@ -3,6 +3,7 @@
  */
 import React, {Component, PropTypes} from 'react';
 import { TouchableOpacity } from "react-native";
+import Captcha from "../components/Captcha";
 
 const AccountPage = class extends Component {
 	static navigatorStyle = global.navbarStyle;
@@ -66,9 +67,13 @@ const AccountPage = class extends Component {
 			return;
 		}
 
-		this.setState({error: ''});
-		this.accountProvider.clearError();
-		AppActions.register({firstName, lastName, username: username.toLowerCase(), password, occupation, institution});
+		this.setState({error: '', captcha: (captchaResponse)=>{
+				this.setState({captcha: null})
+				this.accountProvider.clearError();
+				AppActions.register({firstName,captchaResponse, lastName, username: username.toLowerCase(), password, occupation, institution});
+		}})
+
+
 	}
 
 	invalid = () => {
@@ -466,6 +471,9 @@ const AccountPage = class extends Component {
 																{this.renderAccountForm(user, error, settings)}
 																<Button onPress={this.logout}>Logout</Button>
 															</FormGroup>
+														)}
+														{this.state.captcha && (
+															<Captcha onSuccess={this.state.captcha}/>
 														)}
 													</View>
 												</KeyboardAwareScrollView>
