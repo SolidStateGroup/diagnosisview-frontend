@@ -190,6 +190,9 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ge
                 deploymentKey: Platform.select({ios:Project.codepushIOS,android:Project.codepushAndroid}),
             });
         }
+        AppActions.getAccount()
+        AppActions.getHistory()
+        AppActions.getFavourites()
     })
     if(!__DEV__) {
         codePush.sync({

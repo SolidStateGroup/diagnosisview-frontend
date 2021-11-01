@@ -24,6 +24,7 @@ const FavouritesPage = class extends Component {
 
 	onNavigatorEvent = (event) => {
 		if (event.id == routeHelper.navEvents.SHOW) {
+			AppActions.getFavourites()
 			API.trackPage('Favourites Screen');
 		} else if (event.type == 'NavBarButtonPress') {
 			if (event.id == 'menu') {
