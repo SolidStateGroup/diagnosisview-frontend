@@ -170,7 +170,7 @@ const ForgotPasswordLightbox = class extends Component {
                             })()}
                             {this.state.error ? <Text style={[Styles.textMedium, Styles.textCenter, { color: pallette.error, marginTop: 10 }]}>{this.state.error}</Text> : null}
                             {this.state.captcha && (
-                                <Captcha onSuccess={this.state.captcha}/>
+                                <Captcha onClose={()=>this.setState({captcha:null})} onSuccess={this.state.captcha}/>
                             )}
                         </View>
                     )}

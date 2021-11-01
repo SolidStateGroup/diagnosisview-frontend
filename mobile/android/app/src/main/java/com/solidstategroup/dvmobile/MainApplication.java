@@ -14,7 +14,6 @@ import java.util.List;
 
 //REAT_NATIVE_NAVIGATION
  import com.reactnativenavigation.NavigationApplication;
-import android.support.annotation.Nullable;
 
 
 //REACT_NATIVE_BRANCH
@@ -54,6 +53,7 @@ import com.facebook.react.ReactInstanceManager;
 // Add CodePush imports
 import com.microsoft.codepush.react.ReactInstanceHolder;
 import com.microsoft.codepush.react.CodePush;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 
 public class MainApplication extends NavigationApplication implements ReactInstanceHolder {
 
@@ -71,6 +71,7 @@ public class MainApplication extends NavigationApplication implements ReactInsta
             //                                  new Interactable(),
 
                //REACT_NATIVE_FIRE_BASE
+                   new RNCWebViewPackage(),
                    new RNFirebasePackage(),
                    new RNFirebaseMessagingPackage(),
                    new RNFirebaseAnalyticsPackage(),

@@ -473,7 +473,7 @@ const AccountPage = class extends Component {
 															</FormGroup>
 														)}
 														{this.state.captcha && (
-															<Captcha onSuccess={this.state.captcha}/>
+															<Captcha onClose={()=>this.setState({captcha:null})} onSuccess={this.state.captcha}/>
 														)}
 													</View>
 												</KeyboardAwareScrollView>

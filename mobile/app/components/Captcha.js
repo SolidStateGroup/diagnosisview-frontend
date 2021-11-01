@@ -8,6 +8,7 @@ export default class Captcha extends Component {
         this.ref.open();
     }
     handleClosePress = () => {
+        this.props.onClose && this.props.onClose()
         this.ref.close();
     }
     componentDidMount() {
