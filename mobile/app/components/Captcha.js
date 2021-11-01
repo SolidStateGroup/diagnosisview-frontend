@@ -5,11 +5,11 @@ import { TouchableOpacity } from "react-native";
 export default class Captcha extends Component {
     state = {}
     handleOpenPress = () => {
-        this.ref.open();
+        this.ref && this.ref.open();
     }
     handleClosePress = () => {
         this.props.onClose && this.props.onClose()
-        this.ref.close();
+        this.ref && this.ref.close();
     }
     componentDidMount() {
         this.handleOpenPress()
@@ -32,9 +32,7 @@ export default class Captcha extends Component {
             onExpire={() => alert('onExpire event')}
             onVerify={(res)=>{
                 this.handleClosePress();
-                setTimeout(()=>{
                     onSuccess(res);
-                },0)
             }}
         />;
     }
