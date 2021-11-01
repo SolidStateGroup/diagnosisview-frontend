@@ -37,9 +37,10 @@ class TheComponent extends Component {
     }
 
     invalid = () => {
-        const {firstName, lastName, username, password, repeatPassword, occupation, institution} = this.state;
+        const {firstName,captchaResponse, lastName, username, password, repeatPassword, occupation, institution} = this.state;
 
-        if (!firstName || !lastName || !username || !password || !repeatPassword || !occupation || !institution) {
+
+        if (!captchaResponse || !firstName || !lastName || !username || !password || !repeatPassword || !occupation || !institution) {
             return true;
         }
 
@@ -50,6 +51,7 @@ class TheComponent extends Component {
         Utils.preventDefault(e)
         this.setState({ isLoading: true, error: '' });
         _data.post(Project.api + 'user/forgotten-password', {
+            captchaResponse: this.state.captchaResponseForgot,
             username: this.state.resetUsername
         })
             .then(() => {
@@ -85,7 +87,7 @@ class TheComponent extends Component {
         }
 
         this.setState({error:null})
-        AppActions.register({firstName:this.state.firstName, lastName:this.state.lastName, username: this.state.username, password:this.state.password, occupation:this.state.occupation, institution:this.state.institution});
+        AppActions.register({firstName:this.state.firstName, lastName:this.state.lastName, username: this.state.username, password:this.state.password, occupation:this.state.occupation, institution:this.state.institution, captchaResponse:this.state.captchaResponse});
     }
 
     changePassword = () => {
@@ -304,6 +306,7 @@ class TheComponent extends Component {
 
                                                 </div>
 
+                                                <Captcha onSuccess={(captchaResponse)=>this.setState({captchaResponse})}/>
                                                 <Button disabled={isLoading
                                                 || isSaving || this.invalid()} onClick={this.register} className={'btn btn-lg btn--primary nav__button'}>
                                                     <span className="nav__button__text">{isLoading ? 'Signing up..' : 'Sign up'}</span>
@@ -395,7 +398,9 @@ class TheComponent extends Component {
 
                                                                 onChange={(e) => this.setState({ resetUsername: Utils.safeParseEventValue(e) })}
                                                                 inputClassName="input--default" />
-                                                            <Button disabled={ this.state.isLoading || !this.state.resetUsername
+                                                        <Captcha onSuccess={(captchaResponseForgot)=>this.setState({captchaResponseForgot})}/>
+
+                                                        <Button disabled={ this.state.isLoading || !this.state.resetUsername || !this.state.captchaResponseForgot
                                                             } onClick={this.forgotPassword} className={'btn btn-lg btn--primary nav__button'}>
                                                                 <span className="nav__button__text">{this.state.isLoading ? 'Resetting Password..' : 'Reset Password'}</span>
                                                                 <img src="/images/icon-login.png" alt="login" className="nav__button__icon image--icon"/>
@@ -477,5 +482,6 @@ class TheComponent extends Component {
     }
 }
 import { withRouter } from 'react-router-dom';
+import Captcha from "./Captcha";
 
 export default withRouter(TheComponent)
