@@ -31,9 +31,9 @@ class TheComponent extends Component {
                     </Button>
                 )}
                 <FeedbackModal modalOpen={this.state.showFeedback} onToggle={(e)=>this.setState({showFeedback:false})}/>
-                <div className="section row p-5 flex align-items-center">
-                    <div className="col-md-5">
-                        <div className="panel--white mx-4">
+                <div className="section row p-md-5 flex align-items-center">
+                    <div className="col-md-5 col-sm-8 col-xs-12">
+                        <div className="panel--white mx-md-4">
                             <div className="justify-content-center text-center">
                                 <div>
                                     <img src="../../images/uoe-icon.jpeg" width="100px" />
