@@ -235,7 +235,7 @@ const DashboardPage = class extends Component {
 																				{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
 																					const { link } = entry;
 																					const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
-																					if (!subscription && link.difficultyLevel != "GREEN" && !link.freeLink) {
+																					if (!AccountStore.hasActiveSubscription() && link.difficultyLevel != "GREEN" && !link.freeLink) {
 																						return null;
 																					}
 																					return (
