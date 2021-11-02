@@ -8,10 +8,10 @@ var controller = {
             try {
             } catch (e) {}
 
-            if (__DEV__) {
-                store.goneABitWest()
-                return
-            }
+            // if (__DEV__) {
+            //     store.goneABitWest()
+            //     return
+            // }
             const subscriptions = await RNIap.getSubscriptions(iapItemSkus).catch((e)=>{
                 store.goneABitWest()
             });
@@ -135,6 +135,7 @@ var controller = {
         subscription: null,
         isSubscribed: function () {
             if (!API.isMobile) return true
+            if(!store.subscription) return false
             return AccountStore.isAdmin() || (store.subscription && moment(store.subscription.expiryDate).isAfter(moment()));
         },
         isMobileSubscription: function () {

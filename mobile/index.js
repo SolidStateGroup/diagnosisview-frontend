@@ -193,6 +193,7 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ge
         if (e === "active" && AccountStore.model) {
             AppActions.getAccount()
             AppActions.getHistory()
+            AppActions.checkSubscription();
             AppActions.getFavourites()
         }
     })

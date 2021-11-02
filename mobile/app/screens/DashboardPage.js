@@ -178,7 +178,7 @@ const DashboardPage = class extends Component {
 															</View> */}
 														</View>
 														{(AccountStore.hasActiveSubscription() || AccountStore.hasExpiredSubscription()) && !AccountStore.isAdmin()? (() => {
-															const expiryDate = AccountStore.model.expiryDate;
+															const expiryDate = AccountStore.getExpiryDate();
 															if (!expiryDate || expiryDate.isSameOrBefore(moment())) {
 																return (
 																	<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>

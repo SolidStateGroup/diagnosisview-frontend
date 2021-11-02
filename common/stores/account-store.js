@@ -130,6 +130,7 @@ var controller = {
                 .then(res => {
                     AsyncStorage.setItem("subscriptionLinkedTo", store.model.id.toString());
                     AsyncStorage.removeItem("retrySubscription");
+                    AppActions.getAccount()
                     return res;
                 })
                 .catch(e => {
@@ -228,12 +229,18 @@ var controller = {
         getUser: function () {
             return store.model
         },
+        getExpiryDate: function () {
+            if(store.model) {
+                return store.model.expiryDate
+            }
+            return moment(SubscriptionStore.subscription.expiryDate);
+        },
         hasActiveSubscription: function () {
             if (store.isAdmin())
                 return true
 
-            if (API.isMobile) {
-                return store.model && SubscriptionStore.isSubscribed();
+            if (API.isMobile && !store.model) {
+                return SubscriptionStore.isSubscribed();
             }
             return !store.hasExpiredSubscription() && store.model && store.model.activeSubscription && SubscriptionStore.isSubscribed();
         },
