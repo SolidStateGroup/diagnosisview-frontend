@@ -93,7 +93,7 @@ var controller = {
                                 break;
                         }
                     } else {
-                        Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later.');
+                        Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later.' + e);
                     }
                 });
         },
