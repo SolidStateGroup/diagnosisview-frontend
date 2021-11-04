@@ -36,7 +36,8 @@ module.exports = class extends React.Component {
                                 <h1>Accessibility Statement for the Diagnosis View application</h1>
 
                                 <p>
-                                    Application accessibility statement in line with Public Sector Body (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018
+                                    This accessibility statement applies to the DiagnosisView app described at
+                                    <a href="https://blogs.ed.ac.uk/diagnosisview/">https://blogs.ed.ac.uk/diagnosisview/</a> and available from the Apple App Store, and the Google Play Store.
                                 </p>
 
                                 <p>
@@ -67,7 +68,7 @@ module.exports = class extends React.Component {
                                 <p>
                                     We know some parts We know some parts of this application are not fully accessible:
                                     this application are not fully accessible:
-                                    <li>screen reader technology is not always compatible with the application;</li>
+                                    <li>mobile device screen reader technology is not always fully compatible with the application;</li>
                                     <li>alternative text is not present on all non-text content;</li>
                                     <li>portrait orientation is mandatory;</li>
                                     <li>colour contrasts do not necessarily meet the recommended Web Content Accessibility Guidelines 2.1 AA standard;</li>
@@ -134,6 +135,9 @@ module.exports = class extends React.Component {
                                     <li>The way the content is presented affects its meaning, and a correct reading sequence is not programmatically determined</li>
                                     <li>1.3.2 - Meaningful Sequence</li>
                                     <li>Not all user interface components, including icons and regions, can be correctly identified or labelled</li>
+                                    <li>1.3.4 - Orientation</li>
+                                    <li>Not all user interface components, including icons and regions, can be correctly identified or labelled</li>
+
                                     <li>1.3.6 - Identify Input Purpose</li>
                                     <li>There may not be sufficient colour contrast between font and background colours, especially where the text size is small</li>
                                     <li>1.4.3 - Contrast (Minimum)</li>
@@ -208,7 +212,6 @@ module.exports = class extends React.Component {
                                 <li>
                                     Time limits.
                                 </li>
-
                             </div>
                         </Flex>
                     )}

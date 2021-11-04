@@ -19,6 +19,7 @@ import SearchPage from "./components/pages/SearchPage";
 import DashboardSearchPage from "./components/pages/DashboardSearchPage";
 import DashboardAccountPage from "./components/pages/DashboardAccountPage";
 import AccessibilityPolicyPage from "./components/pages/AccessibilityPolicyPage";
+import AccessibilityPolicyPageMobile from "./components/pages/AccessibilityPolicyPageMobile";
 import DashboardHistoryPage from "./components/pages/DashboardHistoryPage";
 import DashboardFavouritesPage from "./components/pages/DashboardFavouritesPage";
 import DashboardAboutPage from "./components/pages/DashboardAboutPage";
@@ -51,6 +52,7 @@ export default (
             <Route path="/terms-of-use" exact component={TermsOfUsePage}/>
             <Route path="/privacy-policy" exact component={PrivacyPolicyPage}/>
             <Route path="/accessibility-policy" exact component={AccessibilityPolicyPage}/>
+            <Route path="/accessibility-policy/mobile" exact component={AccessibilityPolicyPageMobile}/>
             <Route component={NotFoundPage}/>
         </Switch>
     </App>

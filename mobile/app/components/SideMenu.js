@@ -100,7 +100,7 @@ const TheComponent = class extends Component {
 
                             <SideMenuLink onPress={()=>this.goUrl(Project.baseUrl +"privacy-policy?mobile=1")} text="Privacy Policy"
                                           image={require('../images/icons/home_active.png')}/>
-                            <SideMenuLink onPress={()=>this.goUrl(Project.baseUrl + "accessibility-policy?mobile=1")} text="Accessibility Statement"
+                            <SideMenuLink onPress={()=>this.goUrl(Project.baseUrl + "accessibility-policy/mobile?mobile=1")} text="Accessibility Statement"
                                           image={require('../images/icons/home_active.png')}/>
                             {!!user && (
                                 <View style={Styles.mt20}>
