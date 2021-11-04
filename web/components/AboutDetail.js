@@ -18,7 +18,7 @@ class TheComponent extends Component {
                 <strong>
                     DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses
                 </strong>
-                <ul className="feature-list mt-2">
+                <ul className="mt-2">
                     <li className="mb-2">Info on all of your devices</li>
                     <li className="mb-2">Advanced patient info is the starting point (free)</li>
                     <li className="mb-2">Moving on to practitioner-level and expert-level professional resources</li>
