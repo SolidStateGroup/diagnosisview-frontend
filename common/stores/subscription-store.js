@@ -8,10 +8,10 @@ var controller = {
             try {
             } catch (e) {}
 
-            // if (__DEV__) {
-            //     store.goneABitWest()
-            //     return
-            // }
+            if (__DEV__) {
+                store.goneABitWest()
+                return
+            }
             const subscriptions = await RNIap.getSubscriptions(iapItemSkus).catch((e)=>{
                 store.goneABitWest()
             });
@@ -89,7 +89,7 @@ var controller = {
                             case 'Cancelled.':
                                 break;
                             default:
-                                Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later.');
+                                Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later. ' + e.message);
                                 break;
                         }
                     } else {
