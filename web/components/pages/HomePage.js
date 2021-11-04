@@ -54,27 +54,27 @@ class HomePage extends React.Component {
                                 <div className="col-lg-6 px-5">
                                     <h3 style={{marginTop:100}} className="mb-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h3>
                                     <ul className="feature-list list-unstyled">
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Info on your own mobile or tablet
                                             </Row>
                                         </li>
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Advanced patient info is the starting point (free)
                                             </Row>
                                         </li>
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Moving on to practitioner-level and expert-level professional resources
                                             </Row>
                                         </li>
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> With an optional account you can access professional resources, as well as sync favourites and history across devices
                                             </Row>
                                         </li>
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /><a style={{fontSize:16}} className="text-light ml-1 text-underline" target="_blank" href="https://blogs.ed.ac.uk/diagnosisview/">Help pages and news updates here</a>
 
