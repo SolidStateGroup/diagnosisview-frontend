@@ -231,7 +231,7 @@ var controller = {
         },
         getExpiryDate: function () {
             if(store.model) {
-                return store.model.expiryDate
+                return moment(store.model.expiryDate)
             }
             return moment(SubscriptionStore.subscription.expiryDate);
         },
@@ -242,7 +242,7 @@ var controller = {
             if (API.isMobile && !store.model) {
                 return SubscriptionStore.isSubscribed();
             }
-            return !store.hasExpiredSubscription() && store.model && store.model.activeSubscription && SubscriptionStore.isSubscribed();
+            return !store.hasExpiredSubscription() && store.model && store.model.activeSubscription;
         },
         hasExpiredSubscription: function () {
             if (store.isAdmin())

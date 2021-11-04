@@ -92,8 +92,10 @@ const TheComponent = class extends Component {
 
                                 )}
                             <Flex/>
-                            <SideMenuLink onPress={this.onFeedback} text="Feedback"
-                                          image={require('../images/icons/home_active.png')}/>
+                            {!!AccountStore.model && (
+                                <SideMenuLink onPress={this.onFeedback} text="Feedback"
+                                              image={require('../images/icons/home_active.png')}/>
+                            )}
                             <SideMenuLink onPress={()=>this.goUrl(Project.baseUrl + "about?mobile=1")} text="About"
                                           image={require('../images/icons/home_active.png')}/>
 
