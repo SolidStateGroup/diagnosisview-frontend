@@ -15,22 +15,17 @@ class TheComponent extends Component {
                     </div>
                 )}
 
-                <strong>
+                <h4>About</h4>
+                <p>
                     DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses
-                </strong>
-                <ul className="mt-2">
-                    <li className="mb-2">Info on all of your devices</li>
-                    <li className="mb-2">Advanced patient info is the starting point (free)</li>
-                    <li className="mb-2">Moving on to practitioner-level and expert-level professional resources</li>
-                    <li className="mb-2">With an optional account you can access professional resources, as well as sync favourites and history across devices</li>
-                    <li className="mb-2">See <a href="https://blogs.ed.ac.uk/diagnosisview">blogs.ed.ac.uk/diagnosisview</a> for latest news and a more detailed guide for users, and about joining as an institution</li>
+                </p>
+                <ul className="mt-2 list-unstyled">
+                    <li className="mb-2"><span className="text-success mr-2 fa fa-check-circle"/>Info on all of your devices</li>
+                    <li className="mb-2"><span className="text-success mr-2 fa fa-check-circle"/>Advanced patient info is the starting point (free)</li>
+                    <li className="mb-2"><span className="text-success mr-2 fa fa-check-circle"/>Moving on to practitioner-level and expert-level professional resources</li>
+                    <li className="mb-2"><span className="text-success mr-2 fa fa-check-circle"/>With an optional account you can access professional resources, as well as sync favourites and history across devices</li>
+                    <li className="mb-2"><span className="text-success mr-2 fa fa-check-circle"/>See <a href="https://blogs.ed.ac.uk/diagnosisview">blogs.ed.ac.uk/diagnosisview</a> for latest news and a more detailed guide for users, and about joining as an institution</li>
                 </ul>
-                {AccountStore.model && (
-                    <Button onClick={()=>this.setState({showFeedback:true})} className={'btn btn-lg btn--primary nav__button'}>
-                        <span className="nav__button__text">Give Feedback</span>
-                    </Button>
-                )}
-                <FeedbackModal modalOpen={this.state.showFeedback} onToggle={(e)=>this.setState({showFeedback:false})}/>
                 <div className="section row p-md-5 flex align-items-center">
                     <div className="col-md-5 col-sm-8 col-xs-12">
                         <div className="panel--white mx-md-4">
