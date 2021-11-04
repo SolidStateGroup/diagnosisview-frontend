@@ -11,27 +11,48 @@ const AccountPage = class extends Component {
 	constructor(props, context) {
 		super(props, context);
 		const prefill = Constants.simulate.PRE_FILLED_REGISTER;
-		this.state = {
-			firstName: prefill ? "SSG" : '',
-			lastName: prefill ? "Test" : '',
-			username: prefill ? "test@solidstategroup.com" : '',
-			password: prefill ? "password" : '',
-			repeatPassword: prefill ? "password" : '',
-		};
+		const user = AccountStore.getUser();
+		if (user) {
+			this.state = {
+				firstName: user.firstName,
+				lastName: user.lastName,
+				occupation: user.occupation || '',
+				institution: user.institution || ''
+			}
+		} else {
+			this.state = {
+				firstName: prefill ? "SSG" : '',
+				lastName: prefill ? "Test" : '',
+				username: prefill ? "test@solidstategroup.com" : '',
+				password: prefill ? "password" : '',
+				repeatPassword: prefill ? "password" : '',
+			};
+		}
+
 		ES6Component(this);
 		routeHelper.handleNavEvent(props.navigator, 'account', this.onNavigatorEvent);
 	}
 
 	componentDidMount() {
-		this.listenTo(AccountStore, 'change', () => this.forceUpdate());
+		this.listenTo(AccountStore, 'loaded', () => {
+			const user = AccountStore.getUser();
+			if (user) {
+				this.setState({
+					firstName: user.firstName,
+					lastName: user.lastName,
+					occupation: user.occupation || '',
+					institution: user.institution || ''
+
+				});
+
+			}
+		});
 	}
 
 	onNavigatorEvent = (event) => {
 		if (event.id == routeHelper.navEvents.SHOW) {
+			AppActions.getAccount()
 			API.trackPage('Account Screen');
-			if (AccountStore.getUser()) {
-				this.onLogin();
-			}
 		} else if (event.type == 'NavBarButtonPress') {
 			if (event.id == 'menu') {
 				this.props.navigator.toggleDrawer({ side: 'left' });
@@ -170,18 +191,6 @@ const AccountPage = class extends Component {
 
 	onLogout = () => {
 		this.setState({firstName: '', lastName: '', password: '', repeatPassword: '', username: '', occupation: '', institution: ''});
-	}
-
-	onLogin = () => {
-		const user = AccountStore.getUser();
-		if (user) {
-			this.setState({
-				firstName: user.firstName,
-				lastName: user.lastName,
-				occupation: user.occupation || '',
-				institution: user.institution || ''
-			});
-		}
 	}
 
 	updateAccount = () => {
@@ -372,7 +381,7 @@ const AccountPage = class extends Component {
 			a/wa/manageSubscriptions`;
 
 		return (
-			<AccountProvider ref={c => this.accountProvider = c} onLogin={this.onLogin} onLogout={this.onLogout} onSave={this.onLogin}>
+			<AccountProvider ref={c => this.accountProvider = c} onLogout={this.onLogout} onSave={this.onLogin}>
 				{({user, isLoading, isSaving, error})=>(
 					<SubscriptionProvider>
 						{({subscription, isLoading: subscriptionLoading}) => (
