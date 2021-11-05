@@ -128,9 +128,9 @@ var controller = {
                     return data.post(`${Project.api}user/validate/${Platform.OS}`, purchase)
                 })
                 .then(res => {
+                    AppActions.getAccount()
                     AsyncStorage.setItem("subscriptionLinkedTo", store.model.id.toString());
                     AsyncStorage.removeItem("retrySubscription");
-                    AppActions.getAccount()
                     return res;
                 })
                 .catch(e => {
