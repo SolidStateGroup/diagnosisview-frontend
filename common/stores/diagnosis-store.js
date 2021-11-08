@@ -37,7 +37,7 @@ var controller = {
             var results = [];
             term = term.toLowerCase();
             results = _.sortBy(_.filter(store.model, diagnosis => {
-                return !diagnosis.deleted && diagnosis.friendlyName && diagnosis.friendlyName.toLowerCase().indexOf(term) !== -1;
+                return !diagnosis.deleted && diagnosis.friendlyName && Format.removeAccents(diagnosis.friendlyName).toLowerCase().indexOf(term) !== -1;
             }), 'friendlyName');
             return results;
         },
