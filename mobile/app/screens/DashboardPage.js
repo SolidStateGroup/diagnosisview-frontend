@@ -151,6 +151,9 @@ const DashboardPage = class extends Component {
 									<SettingsProvider>
 									{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
 										let institution = settings && user && user.institution && _.find(settings.institutions, i => i.id === user.institution);
+
+										const noAutoRenewal = SubscriptionStore.subscription && SubscriptionStore.subscription.autoRenewing === false;
+
 										if (institution && (institution.id === 'OTHER' || institution.id === 'NONE')) {
 											institution = null;
 										}
@@ -179,7 +182,7 @@ const DashboardPage = class extends Component {
 															</View> */}
 															</View>
 														)}
-														{(AccountStore.hasExpiredSubscription()) ? (() => {
+														{(AccountStore.hasExpiredSubscription()||noAutoRenewal) ? (() => {
 															const expiryDate = AccountStore.getExpiryDate();
 															if (!expiryDate || expiryDate.isSameOrBefore(moment())) {
 																return (

@@ -205,6 +205,24 @@ global.API = {
         return initialLink ? cb(link) : null;
     },
     push,
+    finalisePurchases: () => {
+        RNIap.getPurchaseHistory().then((res)=>{
+            if (res[0] && res[0].purchaseToken) {
+                RNIap.acknowledgePurchaseAndroid(res[0].purchaseToken)
+                return
+            }
+            const receipt = res[0] && res[0].transactionReceipt
+                ? res[0].transactionReceipt
+                : res[0] && res[0].originalJson;
+            if (receipt) {
+                RNIap.finishTransaction(receipt)
+                    .then((r)=>{
+                    })
+                    .catch((v)=>{
+                    })
+            }
+        })
+    },
     validateReceipt: async (receipt, originalPurchase) => {
         const isTestApp = DeviceInfo.getBundleId().indexOf('test') !== -1;
         const result = await Platform.select({

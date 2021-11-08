@@ -78,6 +78,7 @@ var controller = {
             controller.setUser(null);
             AppActions.clearDeviceFavourites();
             AppActions.clearDeviceHistory();
+            AsyncStorage.setItem("subscriptionLinkedTo", "")
             AsyncStorage.setItem("history","")
             AsyncStorage.setItem("favourites","")
             API.push && API.push.cancelAllNotifications();
@@ -125,6 +126,7 @@ var controller = {
                     }
                     return data.post(`${Project.api}user/validate/${Platform.OS}`, purchase)
                         .then((res)=>{
+                            API.finalisePurchases()
                             return res
                         })
                 })

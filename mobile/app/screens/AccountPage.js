@@ -387,6 +387,8 @@ const AccountPage = class extends Component {
 						{({ isLoading: subscriptionLoading}) => (
 							<SettingsProvider>
 								{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
+									const noAutoRenewal = SubscriptionStore.subscription && SubscriptionStore.subscription.autoRenewing === false;
+
 									return (
 										<Flex>
 											<NetworkBar />
@@ -397,7 +399,7 @@ const AccountPage = class extends Component {
 														{(AccountStore.hasActiveSubscription() || user) ? (
 															<View style={[Styles.whitePanel, Styles.padded, (!AccountStore.hasActiveSubscription() || !user) ? Styles.mb10 : {}]}>
 																{user ? <Text style={[Styles.textCenter, Styles.semiBold]}>{user.emailAddress}</Text> : null}
-																{AccountStore.hasActiveSubscription() ? (
+																{AccountStore.hasActiveSubscription() && !noAutoRenewal ? (
 																	<React.Fragment>
 																		<Text style={[Styles.textCenter]}>Your subscription is active.</Text>
 																		{SubscriptionStore.isMobileSubscription() &&(
@@ -407,14 +409,14 @@ const AccountPage = class extends Component {
 																) : null}
 															</View>
 														) : null}
-														{(!AccountStore.hasActiveSubscription() || !user) ? (
+														{(!AccountStore.hasActiveSubscription() || !user || noAutoRenewal) ? (
 															<View style={[Styles.whitePanel, Styles.padded, AccountStore.hasActiveSubscription() ? Styles.mt10 : {}]}>
-																{(!AccountStore.hasActiveSubscription() && !subscriptionLoading) ? (
+																{(noAutoRenewal || (!AccountStore.hasActiveSubscription() && !subscriptionLoading)) ? (
 																	<React.Fragment>
 																		<Text style={[Styles.textMedium, Styles.paragraph]}>
 																			Subscribe to access professional resources that are unavailable in the free version. The fee helps us to cover maintenance and improvement costs.
 																		</Text>
-																		<Button style={[Styles.mb10, Styles.mt5]} onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe')}</Button>
+																		<Button style={[Styles.mb10, Styles.mt5]} onPress={this.subscribe}>{((user && user.paymentData && user.paymentData.length) || noAutoRenewal ? 'Renew' : 'Subscribe')}</Button>
 																	</React.Fragment>
 																) : subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : null}
 																{!user ? (

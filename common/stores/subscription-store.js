@@ -127,23 +127,7 @@ var controller = {
                 })
                 AppActions.subscribe(purchase, true);
             } else if (user && user.activeSubscription && receipt) {
-                RNIap.getPurchaseHistory().then((res)=>{
-                    if (res[0] && res[0].purchaseToken) {
-                        RNIap.acknowledgePurchaseAndroid(res[0].purchaseToken)
-                        return
-                    }
-                    const receipt = res[0] && res[0].transactionReceipt
-                        ? res[0].transactionReceipt
-                        : res[0] && res[0].originalJson;
-                    if (receipt) {
-                        RNIap.finishTransaction(receipt)
-                            .then((r)=>{
-                            })
-                            .catch((v)=>{
-                            })
-                    }
-
-                })
+               API.finalisePurchases()
             }
             store.subscription = { autoRenewing, expiryDate: expiryDate.valueOf(), receipt };
             AsyncStorage.setItem('subscription', JSON.stringify(store.subscription));
