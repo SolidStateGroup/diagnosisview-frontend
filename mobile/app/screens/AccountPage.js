@@ -384,7 +384,7 @@ const AccountPage = class extends Component {
 			<AccountProvider ref={c => this.accountProvider = c} onLogout={this.onLogout} onSave={this.onLogin}>
 				{({user, isLoading, isSaving, error})=>(
 					<SubscriptionProvider>
-						{({subscription, isLoading: subscriptionLoading}) => (
+						{({ isLoading: subscriptionLoading}) => (
 							<SettingsProvider>
 								{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
 									return (
@@ -394,10 +394,10 @@ const AccountPage = class extends Component {
 												<KeyboardAwareScrollView style={{backgroundColor:pallette.backgroundBase}} keyboardShouldPersistTaps="handled">
 													<View style={Styles.hero}></View>
 													<View style={[ Styles.stacked, Styles.padded]}>
-														{(subscription || user) ? (
-															<View style={[Styles.whitePanel, Styles.padded, (!subscription || !user) ? Styles.mb10 : {}]}>
+														{(AccountStore.hasActiveSubscription() || user) ? (
+															<View style={[Styles.whitePanel, Styles.padded, (!AccountStore.hasActiveSubscription() || !user) ? Styles.mb10 : {}]}>
 																{user ? <Text style={[Styles.textCenter, Styles.semiBold]}>{user.emailAddress}</Text> : null}
-																{subscription ? (
+																{AccountStore.hasActiveSubscription() ? (
 																	<React.Fragment>
 																		<Text style={[Styles.textCenter]}>Your subscription is active.</Text>
 																		{SubscriptionStore.isMobileSubscription() &&(
@@ -408,8 +408,8 @@ const AccountPage = class extends Component {
 															</View>
 														) : null}
 														{(!AccountStore.hasActiveSubscription() || !user) ? (
-															<View style={[Styles.whitePanel, Styles.padded, subscription ? Styles.mt10 : {}]}>
-																{(!subscription && !subscriptionLoading) ? (
+															<View style={[Styles.whitePanel, Styles.padded, AccountStore.hasActiveSubscription() ? Styles.mt10 : {}]}>
+																{(!AccountStore.hasActiveSubscription() && !subscriptionLoading) ? (
 																	<React.Fragment>
 																		<Text style={[Styles.textMedium, Styles.paragraph]}>
 																			Subscribe to access professional resources that are unavailable in the free version. The fee helps us to cover maintenance and improvement costs.

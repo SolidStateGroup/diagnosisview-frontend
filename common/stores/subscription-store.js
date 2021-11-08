@@ -8,10 +8,10 @@ var controller = {
             try {
             } catch (e) {}
 
-            if (__DEV__) {
-                store.goneABitWest()
-                return
-            }
+            // if (__DEV__) {
+            //     store.goneABitWest()
+            //     return
+            // }
             const subscriptions = await RNIap.getSubscriptions(iapItemSkus).catch((e)=>{
                 store.goneABitWest()
             });
@@ -56,10 +56,11 @@ var controller = {
             RNIap.requestSubscription(iapItemSkus[0])
                 .then(purchase => {
                     // console.log(JSON.stringify(purchase));
-                    return API.validateReceipt(Platform.OS === 'ios' ? purchase.transactionReceipt : purchase.purchaseToken);
+                    return API.validateReceipt(Platform.OS === 'ios' ? purchase.transactionReceipt : purchase.purchaseToken)
                 })
                 .then(() => {
                     Alert.alert('', !renewal ? "Your subscription is active" : `Your subscription has been successfully extended to ${moment().add(1, 'y').format('DD/MM/YYYY')}`);
+                    AppActions.getAccount()
                     store.loaded()
                 })
                 .catch(e => {
@@ -125,6 +126,24 @@ var controller = {
                     android: { data: JSON.stringify({ packageName: DeviceInfo.getBundleId(), productId: iapItemSkus[0], purchaseToken: receipt }) },
                 })
                 AppActions.subscribe(purchase, true);
+            } else if (user && user.activeSubscription && receipt) {
+                RNIap.getPurchaseHistory().then((res)=>{
+                    if (res[0] && res[0].purchaseToken) {
+                        RNIap.acknowledgePurchaseAndroid(res[0].purchaseToken)
+                        return
+                    }
+                    const receipt = res[0] && res[0].transactionReceipt
+                        ? res[0].transactionReceipt
+                        : res[0] && res[0].originalJson;
+                    if (receipt) {
+                        RNIap.finishTransaction(receipt)
+                            .then((r)=>{
+                            })
+                            .catch((v)=>{
+                            })
+                    }
+
+                })
             }
             store.subscription = { autoRenewing, expiryDate: expiryDate.valueOf(), receipt };
             AsyncStorage.setItem('subscription', JSON.stringify(store.subscription));

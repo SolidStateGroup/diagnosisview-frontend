@@ -112,8 +112,6 @@ var controller = {
 
             store.saving();
 
-            const renewal = store.model.paymentData && store.model.paymentData.length ? true : false;
-
             // Get device favourites and history to sync with server
 
             // Validate purchase
@@ -126,6 +124,9 @@ var controller = {
                         return Promise.reject(new Error('Attempted to activate subscription on device which already linked subscription to another account'));
                     }
                     return data.post(`${Project.api}user/validate/${Platform.OS}`, purchase)
+                        .then((res)=>{
+                            return res
+                        })
                 })
                 .then(res => {
                     AppActions.getAccount()
@@ -234,6 +235,12 @@ var controller = {
                 return moment(store.model.expiryDate)
             }
             return moment(SubscriptionStore.subscription.expiryDate);
+        },
+        neverSubscribed: function () {
+            if (API.isMobile && !store.model) {
+                return !SubscriptionStore.subscription;
+            }
+            return !store.model || !store.model.expiryDate
         },
         hasActiveSubscription: function () {
             if (store.isAdmin())

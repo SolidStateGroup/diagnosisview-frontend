@@ -205,7 +205,7 @@ global.API = {
         return initialLink ? cb(link) : null;
     },
     push,
-    validateReceipt: async (receipt) => {
+    validateReceipt: async (receipt, originalPurchase) => {
         const isTestApp = DeviceInfo.getBundleId().indexOf('test') !== -1;
         const result = await Platform.select({
             ios: RNIap.validateReceiptIos({
@@ -233,20 +233,20 @@ global.API = {
                 return;
             }
             const expiryDate = moment(parseInt(latestReceipt.purchase_date_ms)).add(1, result.receipt.receipt_type.toLowerCase().includes('sandbox') ? 'hour' : 'year');
-            if (expiryDate.isSameOrBefore(moment())) {
-                console.log('Receipt has expired.')
-                return;
-            }
+            // if (expiryDate.isSameOrBefore(moment())) {
+            //     console.log('Receipt has expired.')
+            //     return;
+            // }
             AppActions.setSubscription({autoRenewing: false, expiryDate, result, receipt});
             AsyncStorage.setItem('transactionReceipt', receipt);
         } else {
             if (!result) return;
             const expiryDate = moment(parseInt(result.expiryTimeMillis));
             const autoRenewing = result.autoRenewing;
-            if (expiryDate.isSameOrBefore(moment())) {
-                console.log('Receipt has expired.')
-                return;
-            }
+            // if (expiryDate.isSameOrBefore(moment())) {
+            //     console.log('Receipt has expired.')
+            //     return;
+            // }
             AppActions.setSubscription({autoRenewing, expiryDate, result, receipt});
             AsyncStorage.setItem('transactionReceipt', receipt);
         }
