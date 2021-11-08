@@ -21,7 +21,7 @@ const TheComponent = ({link, code, name,date, className}) => {
                 <FavouritesProvider>
                     {({favourites})=>{
                         const isFavourite = _.find(favourites, f => f.code === code && f.link.id === link.id);
-                        const logoImageUrl = Utils.getLinkLogo(linkLogos, link) || Constants.linkIcons[link.linkType.value];
+                        const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
                         let style = {};
                         const limit =   FavouritesStore.model && FavouritesStore.model.length > 3 && !AccountStore.hasActiveSubscription()
                         if (!link.displayLink) {
@@ -32,11 +32,17 @@ const TheComponent = ({link, code, name,date, className}) => {
                         const {colour,text} = Constants.difficultyLevels(link.difficultyLevel)
                         return (
                             <Row className={className + " result-link cursor-pointer"}>
-                                    <Row onClick={onLinkClick} style={{width:250}}>
+                                    <Row className="flex-align-start" onClick={onLinkClick} style={{width:250}}>
                                         <div id={`link${link.id}`}>
                                             <span style={style} className={"fa fa-info-circle text-" + link.difficultyLevel.toLowerCase()}/>
                                         </div>
-                                        <img className="mx-3" src={logoImageUrl} height={20}/>
+                                        <div>
+                                            <img className="mx-3" src={logoImageUrl||Constants.linkIcons[link.linkType.value]} height={20}/>
+                                            <div>
+                                                {(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <span>{link.name}</span> : null}
+
+                                            </div>
+                                        </div>
                                     </Row>
                                 <Flex onClick={onLinkClick}>
                                     <Row>

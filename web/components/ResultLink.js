@@ -21,7 +21,7 @@ const TheComponent = ({link, code, name, className}) => {
                 <FavouritesProvider>
                     {({favourites})=>{
                         const isFavourite = _.find(favourites, f => f.code === code && f.link.id === link.id);
-                        const logoImageUrl = Utils.getLinkLogo(linkLogos, link) || Constants.linkIcons[link.linkType.value];
+                        const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
                         let style = {};
                         const limit =    !!FavouritesStore.model && FavouritesStore.model.length >= 5 && !AccountStore.hasActiveSubscription()
                         if (!link.displayLink) {
@@ -35,8 +35,8 @@ const TheComponent = ({link, code, name, className}) => {
                                 <div onClick={onLinkClick} id={`link${link.id}`}>
                                 <span style={style} className={"fa fa-info-circle text-" + link.difficultyLevel.toLowerCase()}/>
                                 </div>
-                                <img onClick={onLinkClick} className="ml-3" src={logoImageUrl} height={20}/>
-
+                                <img onClick={onLinkClick} className="ml-3" src={logoImageUrl|| Constants.linkIcons[link.linkType.value]} height={20}/>
+                                {(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <span>{link.name}</span> : null}
                                 <UncontrolledTooltip placement="top" target={`link${link.id}`}>
                                     {`Level = '${colour}', ${text}`}
                                 </UncontrolledTooltip>
