@@ -33,11 +33,13 @@ module.exports = class extends React.Component {
                                 {showBackToHome && (
                                     <Link to='/' style={{float: 'right'}}>Back to Home</Link>
                                 )}
-                                <h1>Accessibility Statement for the Diagnosis View application</h1>
-
+                                <Row>
+                                    <h1 className="mr-2">Accessibility Statement for the</h1>
+                                    <a href="https://blogs.ed.ac.uk/diagnosisview/" target="_blank"><h1>Diagnosis View application - mobile app</h1></a>
+                                </Row>
                                 <p>
                                     This accessibility statement applies to the DiagnosisView app described at
-                                    <a href="https://blogs.ed.ac.uk/diagnosisview/">https://blogs.ed.ac.uk/diagnosisview/</a> and available from the Apple App Store, and the Google Play Store.
+                                    <a className="mx-1" href="https://blogs.ed.ac.uk/diagnosisview/">https://blogs.ed.ac.uk/diagnosisview/</a> and available from the Apple App Store, and the Google Play Store.
                                 </p>
 
                                 <p>
@@ -56,11 +58,17 @@ module.exports = class extends React.Component {
                                 </h4>
                                 <p>
                                     AbilityNet has advice on making your device easier to use if you have a disability. This is an external site with suggestions to make your computer more accessible:
-                                    AbilityNet - My Computer My Way
+                                    <a className="mx-1" href="https://mcmw.abilitynet.org.uk/" target="_blank">
+                                        AbilityNet - My Computer My Way
+                                    </a>
                                     With a few simple steps you can customise the appearance of our website using your browser settings to make it easier to read and navigate:
-                                    Additional information on how to customise our website appearance
+                                    <a className="mx-1" href="https://www.ed.ac.uk/about/website/accessibility/customising-site" target="_blank">
+                                        Additional information on how to customise our website appearance
+                                    </a>
                                     If you are a member of University staff or a student, you can use the free SensusAccess accessible document conversion service:
-                                    Information on SensusAccess
+                                    <a className="mx-1" href="https://www.ed.ac.uk/student-disability-service/staff/supporting-students/accessible-technology" target="_blank">
+                                        Information on SensusAccess
+                                    </a>
                                 </p>
                                 <h4>
                                     How accessible this application is
@@ -78,7 +86,7 @@ module.exports = class extends React.Component {
                                 <p>
                                     If you need information on this application in a different format, including accessible PDF, large print, audio recording or braille:
                                     <li>email <a href="mailto:diagnosisview@ed.ac.uk">diagnosisview@ed.ac.uk</a></li>
-                                    <li>British Sign Language (BSL) users can contact us via contactSCOTLAND-BSL, the on-line BSL interpreting service.</li>
+                                    <li>British Sign Language (BSL) users can contact us via <a href="https://contactscotland-bsl.org/" target="_blank">contactSCOTLAND-BSL</a>, the on-line BSL interpreting service.</li>
                                     We will consider your request and get back to you in 5 working days.
                                 </p>
                                 <h4>
@@ -87,16 +95,16 @@ module.exports = class extends React.Component {
                                 <p>
                                     We are always looking to improve the accessibility of this application. If you find any problems not listed on this page, or think we’re not meeting accessibility requirements, please contact:
                                     <li>email <a href="mailto:diagnosisview@ed.ac.uk">diagnosisview@ed.ac.uk</a></li>
-                                    <li>British Sign Language (BSL) users can contact us via contactSCOTLAND-BSL, the on-line BSL interpreting service.</li>
+                                    <li>British Sign Language (BSL) users can contact us via <a href="https://contactscotland-bsl.org/" target="_blank">contactSCOTLAND-BSL</a>, the on-line BSL interpreting service.</li>
                                 </p>
                                 <h4>
                                     Enforcement procedure
                                 </h4>
                                 <p>
                                     The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’). If you’re not happy with how we respond to your complaint please contact the Equality Advisory and Support Service (EASS) directly:
-                                    Contact details for the Equality Advisory and Support Service (EASS)
+                                    <a className="mx-1" href="https://www.equalityadvisoryservice.com/" target="_blank">Contact details for the Equality Advisory and Support Service (EASS)</a>
                                     The government has produced information on how to report accessibility issues:
-                                    Reporting an accessibility problem on a public sector website
+                                    <a className="mx-1" href="https://www.gov.uk/reporting-accessibility-problem-public-sector-website" target="_blank">Reporting an accessibility problem on a public sector website</a>
                                 </p>
 
                                 <h4>
@@ -106,7 +114,7 @@ module.exports = class extends React.Component {
                                     contactSCOTLAND-BSL runs a service for British Sign Language users and all of Scotland’s public bodies using video relay. This enables sign language users to contact public bodies and vice versa. The service operates 24 hours a day, 7 days a week:
                                 </p>
                                 <p>
-                                    contactSCOTLAND-BSL service details
+                                    <a href="https://contactscotland-bsl.org/" target="_blank">contactSCOTLAND-BSL service details</a>
                                 </p>
                                 <h4>
                                     Technical information about this application’s accessibility
@@ -117,7 +125,7 @@ module.exports = class extends React.Component {
                                 The University of Edinburgh is committed to making its websites and applications accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.
                                 This application is partially compliant with the Web Content Accessibility Guidelines (WCAG) 2.1 AA standard, due to the non-compliances listed below.
                                 The full guidelines are available at:
-                                Web Content Accessibility Guidelines (WCAG) 2.1 AA standard
+                                <a className="mx-1" href="https://www.w3.org/TR/WCAG21/" target="_blank">Web Content Accessibility Guidelines (WCAG) 2.1 AA standard</a>
                                 <h4>
                                     Non accessible content
                                 </h4>
@@ -131,24 +139,42 @@ module.exports = class extends React.Component {
                                 <p>
                                     The following items to not comply with the WCAG 2.1 AA success criteria:
                                     <li>Not all non-text content presented to users has alternative text</li>
-                                    <li>1.1.1 - Non-text Content</li>
+                                    <li>
+                                        <a href="https://www.w3.org/TR/WCAG21/#non-text-content" target="_blank">1.1.1 - Non-text Content</a>
+                                    </li>
                                     <li>The way the content is presented affects its meaning, and a correct reading sequence is not programmatically determined</li>
-                                    <li>1.3.2 - Meaningful Sequence</li>
+                                    <li>
+                                        <a href="https://www.w3.org/TR/WCAG21/#meaningful-sequence" target="_blank">1.3.2 - Meaningful Sequence</a>
+                                    </li>
                                     <li>Not all user interface components, including icons and regions, can be correctly identified or labelled</li>
-                                    <li>1.3.4 - Orientation</li>
+                                    <li>
+                                        <a href="https://www.w3.org/TR/WCAG21/#orientation" target="_blank">1.3.4 - Orientation</a>
+                                    </li>
                                     <li>Not all user interface components, including icons and regions, can be correctly identified or labelled</li>
 
-                                    <li>1.3.6 - Identify Input Purpose</li>
+                                    <li>
+                                        <a href="https://www.w3.org/TR/WCAG21/#identify-input-purpose" target="_blank">1.3.6 - Identify Input Purpose</a>
+                                    </li>
                                     <li>There may not be sufficient colour contrast between font and background colours, especially where the text size is small</li>
-                                    <li>1.4.3 - Contrast (Minimum)</li>
+                                    <li>
+                                        <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum" target="_blank">1.4.3 - Contrast (Minimum)</a>
+                                    </li>
                                     <li>Text can not always be resized without use of assistive technology</li>
-                                    <li>1.4.4 - Resize text</li>
+                                    <li>
+                                        <a href="https://www.w3.org/TR/WCAG21/#resize-text" target="_blank">1.4.4 - Resize text</a>
+                                    </li>
                                     <li>Information is conveyed as an image of text rather than as text itself, making it not compatible with screen readers and other assistive technology</li>
-                                    <li>1.4.5 - Images of text</li>
+                                    <li>
+                                        <a href="https://www.w3.org/TR/WCAG21/#images-of-text" target="_blank">1.4.5 - Images of text</a>
+                                    </li>
                                     <li>Not all headings and labels necessarily describe the page topic or purpose</li>
-                                    <li>2.4.6 - Headings and Labels</li>
+                                    <li>
+                                        <a href="https://www.w3.org/TR/WCAG21/#headings-and-labels" target="_blank">2.4.6 - Headings and Labels</a>
+                                    </li>
                                     <li>Screen reader assistive technology can not help users to interact with the application</li>
-                                    <li>4.1.1 - Parsing</li>
+                                    <li>
+                                        <a href="https://www.w3.org/TR/WCAG21/#parsing" target="_blank">4.1.1 - Parsing</a>
+                                    </li>
                                     Unless specified otherwise, a complete solution, or significant improvement, will be in place for those items within our control by May 2022.
                                 </p>
                                 <h4>
