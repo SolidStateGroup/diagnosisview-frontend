@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import CodePush from "react-native-code-push";
 
 const SideMenuLink = (props) => (
     <TouchableOpacity onPress={()=>props.onPress(props.to)} style={Styles.menuItem}>
@@ -30,9 +31,16 @@ const TheComponent = class extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {};
+        this.state = {
+            label:"0"
+        };
     }
 
+    componentDidMount() {
+        CodePush.getUpdateMetadata().then((v)=>{
+            this.setState({label:v && v.label.replace("v","")})
+        })
+    }
 
     linkPressed = (link) => {
         routeHelper.closeDrawer(this.props.navigator);
@@ -115,7 +123,7 @@ const TheComponent = class extends Component {
                          </FormGroup> */}
                         {Project.debug && (
                             <Text style={[Styles.textSmall, Styles.textLight, Styles.alignCenter, Styles.mt10, Styles.mb10]}>
-                                Staging environment
+                                Staging environment {DeviceInfo.getReadableVersion()}{this.state.label}
                             </Text>
                         )}
                         <View style={Styles.sideNavHeader}>

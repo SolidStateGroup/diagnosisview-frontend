@@ -15,6 +15,16 @@ var controller = {
             const subscriptions = await RNIap.getSubscriptions(iapItemSkus).catch((e)=>{
                 store.goneABitWest()
             });
+            if (typeof Platform !== 'undefined') {
+                if (Platform.OS == "android" && SubscriptionStore.subscription) {
+                    RNIap.getAvailablePurchases().then((res)=>{
+                        if (res[0] && res[0].autoRenewingAndroid !==  SubscriptionStore.subscription.autoRenewing ) {
+                            SubscriptionStore.subscription.autoRenewing = res[0].autoRenewingAndroid
+                            store.changed()
+                        }
+                    })
+                }
+            }
             // console.log('subscriptions', subscriptions);
 
             const transactionReceipt = await AsyncStorage.getItem('transactionReceipt');

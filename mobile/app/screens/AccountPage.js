@@ -409,6 +409,9 @@ const AccountPage = class extends Component {
 																) : null}
 															</View>
 														) : null}
+														{Constants.simulate.MANAGE_SUBSCRIPTION && (
+															<Text style={[Styles.textCenter, { color: '#fff', padding:20, textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
+														)}
 														{(!AccountStore.hasActiveSubscription() || !user || noAutoRenewal) ? (
 															<View style={[Styles.whitePanel, Styles.padded, AccountStore.hasActiveSubscription() ? Styles.mt10 : {}]}>
 																{(noAutoRenewal || (!AccountStore.hasActiveSubscription() && !subscriptionLoading)) ? (

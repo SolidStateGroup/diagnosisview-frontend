@@ -40,14 +40,15 @@ var Constants = {
     pages: {},
     strings: {},
 
-    simulate: {
+    simulate: false ? {
         SUBSCRIBED: false,
+        MANAGE_SUBSCRIPTION: true,
         LOGGED_IN: false,
         PRE_FILLED_REGISTER: false,
         ALL_FAVES_REMOVED_EXTERNALLY: false,
         EXPIRY: false, // Doesn't work unless subscribed is set to true
         SHOW_WELCOME: false
-    },
+    }: {},
 
     tagColours: {
         'CORE_CONDITION': 'rgba(81, 204, 81, 0.8)',

@@ -164,7 +164,7 @@ const DashboardPage = class extends Component {
 													<View style={Styles.hero}></View>
 
 													<View style={Styles.padded}>
-														{!AccountStore.hasActiveSubscription() && !AccountStore.hasExpiredSubscription() && (
+														{!AccountStore.hasActiveSubscription() && !AccountStore.hasExpiredSubscription() && !noAutoRenewal&& (
 															<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
 																<Row>
 																	{institution && institution.logoUrl && <Image source={{uri: institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}} style={Styles.dashboardInstitutionLogo} />}

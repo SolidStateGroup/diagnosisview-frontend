@@ -55,6 +55,10 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
     });
   },
   setSubscription: function (details) {
+    if (details && details.result && details.result.acknowledgementState === 1) {
+      console.log("Receipt already acknowledged, skipping")
+      return
+    }
     Dispatcher.handleViewAction({
       actionType: Actions.SET_SUBSCRIPTION,
       details,
