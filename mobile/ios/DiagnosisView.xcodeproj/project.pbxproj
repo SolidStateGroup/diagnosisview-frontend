@@ -1104,7 +1104,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = RS9E45N5W4;
+						DevelopmentTeam = 8UFDJCMUH2;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
@@ -1904,9 +1904,9 @@
 				CODE_SIGN_ENTITLEMENTS = DiagnosisView.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 41;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = RS9E45N5W4;
+				DEVELOPMENT_TEAM = 8UFDJCMUH2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
@@ -1927,7 +1927,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile;
 				PRODUCT_NAME = DiagnosisView;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1942,8 +1942,8 @@
 				CODE_SIGN_ENTITLEMENTS = DiagnosisView.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 41;
-				DEVELOPMENT_TEAM = RS9E45N5W4;
+				CURRENT_PROJECT_VERSION = 43;
+				DEVELOPMENT_TEAM = 8UFDJCMUH2;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
@@ -1964,9 +1964,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile.test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile;
 				PRODUCT_NAME = DiagnosisView;
-				PROVISIONING_PROFILE_SPECIFIER = "DV Test";
+				PROVISIONING_PROFILE_SPECIFIER = "DiagnosisView Provisioning Profile";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
