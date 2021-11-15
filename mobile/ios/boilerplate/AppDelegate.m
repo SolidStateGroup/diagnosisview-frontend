@@ -15,7 +15,7 @@
 #import <React/RCTLinkingManager.h>
 
 //REACT_NATIVE_BRANCH
-#import <react-native-branch/RNBranch.h>
+//#import <react-native-branch/RNBranch.h>
 
 //REACT_NATIVE_FABRIC
 #import <Fabric/Fabric.h>
@@ -35,7 +35,7 @@
 {
   
   //REACT_NATIVE_BRANCH
-  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
+//  [RNBranch initSessionWithLaunchOptions:launchOptions isReferrable:YES]; // <-- add this
 
   //REACT_NATIVE_FABRIC
  // [Fabric with:@[[Crashlytics class]]];
@@ -78,9 +78,9 @@
   // Facebook/Google/Branch.io URL handling
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
   
-  if ([RNBranch.branch application:application openURL:url sourceApplication:sourceApplication annotation:annotation]) {
-    return YES;
-  }
+//  if ([RNBranch.branch application:application openURL:url sourceApplication:sourceApplication annotation:annotation]) {
+//    return YES;
+//  }
 //    if( [url.absoluteString rangeOfString: @"com.googleusercontent.apps" ].location != NSNotFound ) {
 //      return [[GIDSignIn sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation];
 //    }

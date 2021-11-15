@@ -17,8 +17,8 @@ import java.util.List;
 
 
 //REACT_NATIVE_BRANCH
-import io.branch.rnbranch.RNBranchPackage;
-import io.branch.rnbranch.RNBranchModule;
+// import io.branch.rnbranch.RNBranchPackage;
+// import io.branch.rnbranch.RNBranchModule;
 
 //REACT_NATIVE_CRASHLYTICS
 import com.smixx.fabric.FabricPackage;
@@ -81,8 +81,8 @@ public class MainApplication extends NavigationApplication implements ReactInsta
                new FabricPackage(),
                new LottiePackage(),
                new VectorIconsPackage(),
-               new RNDeviceInfo(true),
-               new RNBranchPackage(),
+               new RNDeviceInfo(),
+//                new RNBranchPackage(),
                new RNIapPackage(),
                new LinearGradientPackage(),
                new RNViewOverflowPackage()
@@ -114,7 +114,7 @@ public class MainApplication extends NavigationApplication implements ReactInsta
  @Override
   public void onCreate() {
         super.onCreate();
-        RNBranchModule.getAutoInstance(this);
+//         RNBranchModule.getAutoInstance(this);
   }
 
 }

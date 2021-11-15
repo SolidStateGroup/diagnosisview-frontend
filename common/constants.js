@@ -40,7 +40,7 @@ var Constants = {
     pages: {},
     strings: {},
 
-    simulate: false ? {
+    simulate: true ? {
         SUBSCRIBED: false,
         MANAGE_SUBSCRIPTION: true,
         LOGGED_IN: false,

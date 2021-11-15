@@ -11,9 +11,20 @@ target 'DiagnosisView' do
   pod 'Firebase/Core', '~> 6.2.0'
   pod 'Firebase/Messaging', '~> 6.2.0'
 
- pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+#  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
 
  post_install do |installer|
+     # REMOVE ALL WEB VIEWS
+      react_project = Xcodeproj::Project.open("../node_modules/react-native/React/React.xcodeproj")
+      react_project.main_group["React/Views"].files.each do |file|
+
+         if file.path.match(/^RCTWebView/)
+            file.remove_from_project
+         end
+
+       end
+       react_project.save
         ## Fix for XCode 12.5
         find_and_replace("../node_modules/react-native/React/CxxBridge/RCTCxxBridge.mm",
         "_initializeModules:(NSArray<id<RCTBridgeModule>> *)modules", "_initializeModules:(NSArray<Class> *)modules")

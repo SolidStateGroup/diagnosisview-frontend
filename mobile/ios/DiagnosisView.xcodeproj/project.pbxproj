@@ -24,7 +24,6 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		261EDD656DDF4F4694647006 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4E4EBDD5EA3F471C8BA89919 /* FontAwesome.ttf */; };
 		272E416F20DA5655004AADEE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 272E416D20DA5655004AADEE /* LaunchScreen.xib */; };
-		277DA67D20CF1CA800767B45 /* libreact-native-branch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 277DA67B20CF1C5900767B45 /* libreact-native-branch.a */; };
 		277DA6EF20CF221800767B45 /* branch.json in Resources */ = {isa = PBXBuildFile; fileRef = 277DA6C820CF221800767B45 /* branch.json */; };
 		277DA6F220CF22AA00767B45 /* branch.debug.json in Resources */ = {isa = PBXBuildFile; fileRef = 277DA6F120CF22A900767B45 /* branch.debug.json */; };
 		279B97F921022DC400F24663 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 279B97C321022DC300F24663 /* OpenSans-Bold.ttf */; };
@@ -139,13 +138,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
-		};
-		277DA67A20CF1C5900767B45 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 277DA67620CF1C5900767B45 /* RNBranch.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B3A3CC361C5B0A070016AC52;
-			remoteInfo = RNBranch;
 		};
 		27BB7D1F20CF384500E8012B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -537,7 +529,6 @@
 		18FA4840B27A4DF8AC5BC93F /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		21FAD9516A99756900D0D3FF /* libPods-DiagnosisView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DiagnosisView.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		272E416E20DA5655004AADEE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = app/Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		277DA67620CF1C5900767B45 /* RNBranch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNBranch.xcodeproj; path = "../node_modules/react-native-branch/ios/RNBranch.xcodeproj"; sourceTree = "<group>"; };
 		277DA6C820CF221800767B45 /* branch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = branch.json; path = boilerplate/branch.json; sourceTree = "<group>"; };
 		277DA6F120CF22A900767B45 /* branch.debug.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = branch.debug.json; path = boilerplate/branch.debug.json; sourceTree = "<group>"; };
 		279B97C321022DC300F24663 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -600,7 +591,6 @@
 				A3A7EA3B2100B77300E06766 /* libRNIap.a in Frameworks */,
 				27BB7E4520CF4FCF00E8012B /* libRNDeviceInfo.a in Frameworks */,
 				27BB7DDF20CF4CF800E8012B /* libLottieReactNative.a in Frameworks */,
-				277DA67D20CF1CA800767B45 /* libreact-native-branch.a in Frameworks */,
 				27BB7DA420CF45EA00E8012B /* libRNFirebase.a in Frameworks */,
 				27BB7E4420CF4FC300E8012B /* libRNVectorIcons.a in Frameworks */,
 				27BB7D2320CF385900E8012B /* libSMXCrashlytics.a in Frameworks */,
@@ -787,14 +777,6 @@
 			name = React;
 			sourceTree = "<group>";
 		};
-		277DA67720CF1C5900767B45 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				277DA67B20CF1C5900767B45 /* libreact-native-branch.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		27BB7CF520CF384500E8012B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -924,7 +906,6 @@
 				277DA65020CF1C4000767B45 /* React */,
 				27BB7DCB20CF4C8300E8012B /* Lottie.xcodeproj */,
 				27BB7DA520CF4C4700E8012B /* LottieReactNative.xcodeproj */,
-				277DA67620CF1C5900767B45 /* RNBranch.xcodeproj */,
 				27BB7E0220CF4F9600E8012B /* RNDeviceInfo.xcodeproj */,
 				7042FE30F0AB4E5ABA177A42 /* RNFirebase.xcodeproj */,
 				27BB7E3E20CF4FB300E8012B /* RNVectorIcons.xcodeproj */,
@@ -1123,8 +1104,8 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 8UFDJCMUH2;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = RS9E45N5W4;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
@@ -1229,10 +1210,6 @@
 					ProjectRef = F1418E7B40BE4084ACA9A9A9 /* ReactNativeNavigation.xcodeproj */;
 				},
 				{
-					ProductGroup = 277DA67720CF1C5900767B45 /* Products */;
-					ProjectRef = 277DA67620CF1C5900767B45 /* RNBranch.xcodeproj */;
-				},
-				{
 					ProductGroup = E5B7ACBB272C438600A256C2 /* Products */;
 					ProjectRef = E5B7ACBA272C438600A256C2 /* RNCWebView.xcodeproj */;
 				},
@@ -1322,13 +1299,6 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		277DA67B20CF1C5900767B45 /* libreact-native-branch.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libreact-native-branch.a";
-			remoteRef = 277DA67A20CF1C5900767B45 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		27BB7D2020CF384500E8012B /* libSMXCrashlytics.a */ = {
@@ -1932,11 +1902,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DiagnosisView.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 20;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 41;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 8UFDJCMUH2;
+				DEVELOPMENT_TEAM = RS9E45N5W4;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
@@ -1951,15 +1921,15 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile.test;
 				PRODUCT_NAME = DiagnosisView;
-				PROVISIONING_PROFILE_SPECIFIER = "DiagnosisView Provisioning Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1972,8 +1942,8 @@
 				CODE_SIGN_ENTITLEMENTS = DiagnosisView.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 20;
-				DEVELOPMENT_TEAM = 8UFDJCMUH2;
+				CURRENT_PROJECT_VERSION = 41;
+				DEVELOPMENT_TEAM = RS9E45N5W4;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
@@ -1988,15 +1958,15 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile;
+				PRODUCT_BUNDLE_IDENTIFIER = com.solidstategroup.dvmobile.test;
 				PRODUCT_NAME = DiagnosisView;
-				PROVISIONING_PROFILE_SPECIFIER = "DiagnosisView Provisioning Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "DV Test";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

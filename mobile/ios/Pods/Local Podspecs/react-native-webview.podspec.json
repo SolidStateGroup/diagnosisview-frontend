@@ -16,10 +16,5 @@
     "git": "https://github.com/react-native-community/react-native-webview.git",
     "tag": "v9.4.0"
   },
-  "source_files": "apple/**/*.{h,m}",
-  "dependencies": {
-    "React": [
-
-    ]
-  }
+  "source_files": "apple/**/*.{h,m}"
 }

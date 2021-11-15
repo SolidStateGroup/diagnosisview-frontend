@@ -18,7 +18,7 @@ var controller = {
             if (typeof Platform !== 'undefined') {
                 if (Platform.OS == "android" && SubscriptionStore.subscription) {
                     RNIap.getAvailablePurchases().then((res)=>{
-                        if (res[0] && res[0].autoRenewingAndroid !==  SubscriptionStore.subscription.autoRenewing ) {
+                        if (res[0] && res[0].autoRenewingAndroid !==  (SubscriptionStore.subscription && SubscriptionStore.subscription.autoRenewing) ) {
                             SubscriptionStore.subscription.autoRenewing = res[0].autoRenewingAndroid
                             store.changed()
                         }
@@ -32,20 +32,29 @@ var controller = {
             if (!transactionReceipt) {
                 store.purchases = await RNIap.getAvailablePurchases();
                 // console.log('available purchases', store.purchases);
-
                 // todo: set active subscription to true if there is a valid purchase
-                const validPurchases = _.sortBy(store.purchases, ({transactionDate}) => -transactionDate);
+                const validPurchases = _.filter(_.sortBy(store.purchases, ({transactionDate}) => -transactionDate),(v)=>{
+                    if (Platform.OS === "android"){
+                        return !v.isAcknowledgedAndroid
+                    }
+                    return true
+                });
                 if (!validPurchases.length) {
                     store.loaded();
                     if (onDone) onDone();
                     return;
                 };
 
-                receiptToValidate = validPurchases[0].transactionReceipt;
+                receiptToValidate = Platform.OS === 'ios' ? validPurchases[0].transactionReceipt : validPurchases[0].purchaseToken;
             } else {
                 receiptToValidate = transactionReceipt
             }
 
+            if(!receiptToValidate) {
+                store.loaded();
+                if (onDone) onDone();
+                return;
+            }
             const result = await API.validateReceipt(receiptToValidate);
 
             if (store.subscription && !result) {
@@ -62,51 +71,60 @@ var controller = {
             store.loading();
 
             const renewal = store.isSubscribed();
-
-            RNIap.requestSubscription(iapItemSkus[0])
-                .then(purchase => {
-                    // console.log(JSON.stringify(purchase));
-                    return API.validateReceipt(Platform.OS === 'ios' ? purchase.transactionReceipt : purchase.purchaseToken)
-                })
-                .then(() => {
-                    Alert.alert('', !renewal ? "Your subscription is active" : `Your subscription has been successfully extended to ${moment().add(1, 'y').format('DD/MM/YYYY')}`);
-                    AppActions.getAccount()
-                    store.loaded()
-                })
-                .catch(e => {
-                    AjaxHandler.error(SubscriptionStore, e)
-                    console.error(e);
-                    if (typeof e === 'object') {
-                        switch (e.message) {
-                            case 'You already own this item.': // Android only
-                                if (store.purchases) {
-                                    const sortedPurchases = _.sortBy(store.purchases, ({transactionDate}) => -transactionDate);
-                                    const latestPurchase = sortedPurchases && sortedPurchases[0];
-                                    if (!latestPurchase) {
-                                        Alert.alert('', 'You have already purchased a subscription on this device but we are unable to retrieve the purchase from Play Store. Please contact support.');
-                                        break;
+            RNIap.initConnection()
+                .then(()=>{
+                    RNIap.getProducts([iapItemSkus[0]])
+                        .then((res)=>{
+                            Platform.select({ios:RNIap.clearTransactionIOS, android:Promise.resolve})()
+                            RNIap.requestSubscription(iapItemSkus[0])
+                                .then(purchase => {
+                                    // console.log(JSON.stringify(purchase));
+                                    return API.validateReceipt(Platform.OS === 'ios' ? purchase.transactionReceipt : purchase.purchaseToken)
+                                })
+                                .then(() => {
+                                    Alert.alert('', !renewal ? "Your subscription is active" : `Your subscription has been successfully extended to ${moment().add(1, 'y').format('DD/MM/YYYY')}`);
+                                    AppActions.getAccount()
+                                    store.loaded()
+                                })
+                                .catch(e => {
+                                    AjaxHandler.error(SubscriptionStore, e)
+                                    console.error(e);
+                                    if (typeof e === 'object') {
+                                        switch (e.message) {
+                                            case 'You already own this item.': // Android only
+                                                if (store.purchases) {
+                                                    const sortedPurchases = _.sortBy(store.purchases, ({transactionDate}) => -transactionDate);
+                                                    const latestPurchase = sortedPurchases && sortedPurchases[0];
+                                                    if (!latestPurchase) {
+                                                        Alert.alert('', 'You have already purchased a subscription on this device but we are unable to retrieve the purchase from Play Store. Please contact support.');
+                                                        break;
+                                                    }
+                                                    store.loading();
+                                                    API.validateReceipt(latestPurchase.purchaseToken)
+                                                        .then(() => store.loaded())
+                                                        .catch(err => {
+                                                            AjaxHandler.error(SubscriptionStore, err);
+                                                            Alert.alert('', 'You have already purchased a subscription on this device but we were unable to validate it. Please contact support.');
+                                                        });
+                                                } else {
+                                                    Alert.alert('', 'You have already purchased a subscription on this device but we are unable to retrieve the purchase from Play Store. Please contact support.');
+                                                }
+                                                break;
+                                            case 'Cancelled.':
+                                                break;
+                                            default:
+                                                Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later. ' + e.message);
+                                                break;
+                                        }
+                                    } else {
+                                        Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later.' + e);
                                     }
-                                    store.loading();
-                                    API.validateReceipt(latestPurchase.purchaseToken)
-                                        .then(() => store.loaded())
-                                        .catch(err => {
-                                            AjaxHandler.error(SubscriptionStore, err);
-                                            Alert.alert('', 'You have already purchased a subscription on this device but we were unable to validate it. Please contact support.');
-                                        });
-                                } else {
-                                    Alert.alert('', 'You have already purchased a subscription on this device but we are unable to retrieve the purchase from Play Store. Please contact support.');
-                                }
-                                break;
-                            case 'Cancelled.':
-                                break;
-                            default:
-                                Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later. ' + e.message);
-                                break;
-                        }
-                    } else {
-                        Alert.alert('', 'Sorry there was a problem with the subscription service. Please try again later.' + e);
-                    }
-                });
+                                });
+                        }).catch((e)=>{
+                    })
+                })
+
+
         },
         scheduleExpiryNotifications: (expiryDate) => {
             const now = moment();
@@ -130,16 +148,17 @@ var controller = {
                 API.push.cancelAllNotifications();
             }
             const user = AccountStore.getUser();
-            if (user && !user.activeSubscription && moment(store.subscription.expiryDate).isAfter(moment())) {
+            store.subscription = { autoRenewing, expiryDate: expiryDate.valueOf(), receipt };
+
+            if (user && (!user.activeSubscription||!autoRenewing) && moment(store.subscription.expiryDate).isAfter(moment())) {
                 const purchase = Platform.select({
-                    ios: { transactionReceipt: result.latest_receipt },
+                    ios: { transactionReceipt: receipt },
                     android: { data: JSON.stringify({ packageName: DeviceInfo.getBundleId(), productId: iapItemSkus[0], purchaseToken: receipt }) },
                 })
                 AppActions.subscribe(purchase, true);
-            } else if (user && user.activeSubscription && receipt) {
+            } else {
                API.finalisePurchases()
             }
-            store.subscription = { autoRenewing, expiryDate: expiryDate.valueOf(), receipt };
             AsyncStorage.setItem('subscription', JSON.stringify(store.subscription));
         },
     },

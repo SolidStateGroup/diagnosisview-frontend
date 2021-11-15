@@ -80,6 +80,7 @@ var controller = {
             AppActions.clearDeviceHistory();
             AsyncStorage.setItem("subscriptionLinkedTo", "")
             AsyncStorage.setItem("history","")
+            SubscriptionStore.subscription = null;
             AsyncStorage.setItem("favourites","")
             API.push && API.push.cancelAllNotifications();
         },
@@ -236,7 +237,7 @@ var controller = {
             if(store.model) {
                 return moment(store.model.expiryDate)
             }
-            return moment(SubscriptionStore.subscription.expiryDate);
+            return SubscriptionStore.subscription && moment(SubscriptionStore.subscription.expiryDate);
         },
         neverSubscribed: function () {
             if (API.isMobile && !store.model) {
