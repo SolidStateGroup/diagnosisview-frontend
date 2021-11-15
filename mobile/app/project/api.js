@@ -234,7 +234,13 @@ let result;
             result = await RNIap.validateReceiptIos({
                 'receipt-data': receipt,
                 password: isTestApp ? '9f8e85c251bb4d6094c9f630b94be9b3' : undefined
-            }, __DEV__)
+            }, false)
+            if (result.status !== 0) {
+                result = await RNIap.validateReceiptIos({
+                    'receipt-data': receipt,
+                    password: isTestApp ? '9f8e85c251bb4d6094c9f630b94be9b3' : undefined
+                }, true)
+            }
         } else {
             try {
                 result = await _data.post(`${Project.api}user/validate/android/public`, { packageName: DeviceInfo.getBundleId(), productId: iapItemSkus[0], purchaseToken: receipt });
@@ -246,7 +252,12 @@ let result;
 
 
         if (Platform.OS === 'ios') {
-            if (result.status !== 0) return;
+            if (result.status !== 0) {
+                if (result.status === 21007 || result.status === 21008 || result.status=== 21003) {
+                    alert(result.status)
+                }
+                return;
+            }
             const sortedReceipts = _.sortBy(result.receipt.in_app, ({purchase_date_ms}) => -purchase_date_ms);
             const latestReceipt = sortedReceipts && sortedReceipts.length && sortedReceipts[0];
             if (!latestReceipt) {
