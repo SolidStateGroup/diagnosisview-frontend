@@ -33,10 +33,7 @@ module.exports = class extends React.Component {
                                 {showBackToHome && (
                                     <Link to='/' style={{float: 'right'}}>Back to Home</Link>
                                 )}
-                                <Row>
-                                    <h1 className="mr-2">Accessibility Statement for the</h1>
-                                    <a href="https://blogs.ed.ac.uk/diagnosisview/" target="_blank"><h1>Diagnosis View application - mobile app</h1></a>
-                                </Row>
+                                <h1>Accessibility Statement for the <a href="https://blogs.ed.ac.uk/diagnosisview/" target="_blank">Diagnosis View application - mobile app</a></h1>
                                 <p>
                                     This accessibility statement applies to the DiagnosisView app described at
                                     <a className="mx-1" href="https://blogs.ed.ac.uk/diagnosisview/">https://blogs.ed.ac.uk/diagnosisview/</a> and available from the Apple App Store, and the Google Play Store.
