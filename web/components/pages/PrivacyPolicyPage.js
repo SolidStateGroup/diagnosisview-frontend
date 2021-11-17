@@ -33,7 +33,108 @@ module.exports = class extends React.Component {
                                 {showBackToHome && (
                                     <Link to='/' style={{float: 'right'}}>Back to Home</Link>
                                 )}
-                                <h1>Privacy Policy</h1>
+                                <h1>DiagnosisView Privacy policy</h1>
+                                <p>
+                                    ANT v1.0  03 Nov 2021
+                                </p>
+                                <h4>
+                                    Why we collect your information
+                                </h4>
+                                <p>
+                                    We use your personal details to provide you with information, products or services that you request.
+                                    This could be as part of the registration process, or in response to you contacting us.
+                                    The relevant legal basis is usually through legitimate interests but at times we may explicitly seek consent.
+
+                                </p>
+                                <h4>
+                                    What data we hold about you
+                                </h4>
+                                <p>
+                                    DiagnosisView stores
+                                    <ul>
+                                        <li>
+                                            Your full name
+                                        </li>
+                                        <li>
+                                            Your email address
+                                        </li>
+                                        <li>
+                                            The institution you identify as belonging to, in order to offer tailored links and proxy servers to deliver paywalled resources via your institutional login
+                                        </li>
+                                        <li>
+                                            Your broad role (e.g. student, professional), in order to understand who is using our services.
+                                        </li>
+                                    </ul>
+                                </p>
+                                <h4>
+                                    Ways we contact you
+                                </h4>
+                                <p>
+                                    We may contact you by the email address you have given us, or other method you offer in messaging, with important information about the functionality of the service. With additional consent we may offer non-essential updates and news.
+                                </p>
+
+                                <h4>
+                                    Storing your information
+                                </h4>
+                                <p>
+                                    Personal data is stored on Amazon Web Services servers.
+                                </p>
+                                <h4>
+                                    How we use your information
+                                </h4>
+                                <p>
+                                    Your personal details can be used to provide you with information, products or services as well as helping us tailor the website to your preferences.
+                                    <ul>
+                                        <li>
+                                            ensure that content from the website is presented in the most effective manner for you and for your computer
+                                        </li>
+                                        <li>
+                                            In order to administer, support, improve and develop the website we do analyse some information we collect during your visit to our website.
+                                        </li>
+                                        <li>
+                                            notify you about changes to our service
+                                        </li>
+                                    </ul>
+                                    For additional information on the University's approach to data protection, your rights and the legal basis for contract and consent see our legal information pages
+                                    {" "}
+                                    <a href="https://www.ed.ac.uk/about/website/privacy/legal-information">
+                                        Legal information
+                                    </a>
+                                </p>
+
+                                <h4>
+                                    Automated processing and profiling
+                                </h4>
+                                <p>
+                                    We do not use profiling or automated decision-making processes.
+
+                                </p>
+
+                                <h4>
+                                    Storage of your information
+                                </h4>
+                                <p>
+                                    Your information is securely transmitted via our website. Once we have received your information, we will also use strict procedures and security features to prevent unauthorised access.
+                                    How long we keep your data depends on the purpose for which the information was supplied and the active duration of the DiagnosisView system.
+                                </p>
+                                <h4>
+                                    Passwords
+                                </h4>
+                                <p>
+                                    Where we have given you (or where you have chosen) a password to access certain parts of the website, you are responsible for keeping this password safe and confidential. You must not share a password with anyone.
+                                </p>
+                                <h4>
+                                    Online transactions
+                                </h4>
+                                <p>
+                                    All payment transactions will be encrypted.
+                                    Areas of the website that process online transactions make use of - and transfer data to - third party software and service providers. All third-party software and service providers that we use are compliant with the relevant Payment Card Industry standards.
+                                    {" "}
+                                    <a href="https://www.pcisecuritystandards.org/">
+                                        Payment card data security standards
+                                    </a>
+                                </p>
+
 <p>University of Edinburgh built the DiagnosisView app as a Freemium app. This SERVICE is intended for use as is.</p>
 
 <p>This page is used to inform visitors regarding our policies with the collection, use, and disclosure of personal information if you decide to use our Service.</p>
