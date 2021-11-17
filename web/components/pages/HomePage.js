@@ -37,6 +37,7 @@ class HomePage extends React.Component {
     }
 
     render = () => {
+        const price = 2.49
         return (
 
             <div>
@@ -132,12 +133,12 @@ class HomePage extends React.Component {
                                                     "Synchronise between mobile app, website and unlimited devices",
                                                 ]} title="Starter">
                                         <Link to={"/signup"}>
-                                            <a className="button button--rounded full-width">
+                                            <a style={{marginBottom:65}} className="button button--rounded full-width">
                                                 Sign Up
                                             </a>
                                         </Link>
                                     </PricePanel>
-                                    <PricePanel subtitle="Only £3/Year (special launch offer)." className="ml-md-4 ml-sm-0" price={Math.ceil(3)} points={[
+                                    <PricePanel subtitle={"Only £"+price+"/Year (special launch offer)."} className="ml-md-4 ml-sm-0" price={price} points={[
                                         "Student/practitioner level (amber) links",
                                         "Expert level (red) links",
                                         "Unlimited search history",
@@ -145,11 +146,14 @@ class HomePage extends React.Component {
                                         "Activate paywalled links to your institution",
                                     ]} title="Professional">
 
-                                        <Link to={"/signup?plan=pro"}>
+                                        {/*<Link to={"/signup?plan=pro"}>*/}
                                             <Button className="button btn--primary button--rounded full-width">
-                                                Sign Up
+                                                Coming soon*
                                             </Button>
-                                        </Link>
+                                        {/*</Link>*/}
+                                        <div style={{height:56}} className="text-left mt-2 text-small">
+                                            * For now, use our mobile app to buy a Professional subscription, then login here
+                                        </div>
                                     </PricePanel>
                                 </Row>
                             </div>
