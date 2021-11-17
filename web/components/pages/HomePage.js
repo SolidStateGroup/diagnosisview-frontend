@@ -37,7 +37,7 @@ class HomePage extends React.Component {
     }
 
     render = () => {
-        const price = 2.49
+        const price = 3.49
         return (
 
             <div>
