@@ -29,9 +29,9 @@ module.exports = class extends React.Component {
                     {({error, isLoading}, {clearError}) => (
                         <Flex>
                             <div>
-                                <img className="margin-bottom" src="{require('../../images/brand.png')}" height="44">
+                                <img className="margin-bottom" src={require('../../images/brand.png')} height="44" />
                                     {showBackToHome && (
-                                        <link to="/" style="{{float:" 'right'}}="">Back to Home
+                                        <Link to='/' style={{float: 'right'}}>Back to Home</Link>
                                     )}
                                     <h1>DiagnosisView Privacy policy</h1>
                                     <p>
