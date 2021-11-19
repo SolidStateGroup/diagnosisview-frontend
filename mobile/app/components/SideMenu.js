@@ -121,19 +121,13 @@ const TheComponent = class extends Component {
                         {/* <FormGroup>
                          <SideMenuLink onPress={this.linkPressed} text="Logout" to="logout" icon="ios-exit"/>
                          </FormGroup> */}
-                        {Project.debug && (
                             <>
 
                                 <Text style={[Styles.textSmall, Styles.textLight, Styles.alignCenter, Styles.mt10, Styles.mb10]}>
-                                    Staging environment {DeviceInfo.getReadableVersion()}{this.state.label}
-                                </Text>
-
-                                <Text style={[Styles.textSmall, Styles.textLight, Styles.alignCenter, Styles.mt10, Styles.mb10]}>
-                                    {DeviceInfo.getBundleId()}
+                                    {Project.debug ? "Staging environment":""} {DeviceInfo.getReadableVersion()}{this.state.label}
                                 </Text>
 
                             </>
-                        )}
                         <View style={Styles.sideNavHeader}>
                             <AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]}
                                              source={require('../images/brand-medium-white.png')}/>

@@ -178,7 +178,7 @@ Promise.all([getUser, retrySubscription, getFavourites, getHistory, getCodes, ge
         checkFrequency: __DEV__
             ? codePush.CheckFrequency.MANUAL
             : codePush.CheckFrequency.MANUAL,
-        installMode: 0, // Immediate
+        installMode: codePush.InstallMode.IMMEDIATE, // Immediate
         updateDialog: {},
     };
 
