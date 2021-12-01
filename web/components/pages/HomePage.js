@@ -57,7 +57,7 @@ class HomePage extends React.Component {
                                     <ul className="feature-list list-unstyled">
                                         <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
-                                                <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Info on your own mobile or tablet
+                                                <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Info on your mobile or on the web
                                             </Row>
                                         </li>
                                         <li className="mb-3 text-white">
