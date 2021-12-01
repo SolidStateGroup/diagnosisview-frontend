@@ -48,7 +48,7 @@ const HistoryPage = class extends Component {
 			<AccountProvider>
 				{({user, isLoading})=>(
 					<SubscriptionProvider>
-						{({subscription, isLoading: subscriptionLoading}) => (
+						{({ isLoading: subscriptionLoading}) => (
 							<Flex>
 								<NetworkBar />
 								<ScrollView>
@@ -59,7 +59,7 @@ const HistoryPage = class extends Component {
 												{subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
 													<>
 														<Text style={[Styles.textCenter, Styles.paragraph]}>Displays search history on this device from the last 20 searches only.</Text>
-														<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited search history across all your devices, please {(!user && !subscription) ? 'subscribe' : !subscription ? 'subscribe' : 'register'}.</Text>
+														<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited search history across all your devices, please {(!user && !AccountStore.hasActiveSubscription()) ? 'subscribe' : !AccountStore.hasActiveSubscription() ? 'subscribe' : 'register'}.</Text>
 														<Button onPress={this.subscribe}>{(!user ? 'Subscribe' : 'Subscribe') + ' now'}</Button>
 													</>
 												)}

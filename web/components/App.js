@@ -117,8 +117,9 @@ export default class App extends Component {
         const { location } = this.context.router.history;
         const redirect = location.query && location.query.redirect ? `?redirect=${location.query.redirect}` : "";
         const pageHasAside = location.pathname.indexOf('dashboard') !== -1;
-        const pageHasNav = location.pathname.indexOf('admin') === -1 && location.pathname.indexOf('dashboard') === -1 && location.pathname.indexOf('accessibility-policy') === -1 && location.pathname.indexOf('terms-of-use') === -1 && location.pathname.indexOf('privacy-policy') === -1;
+        const pageHasNav = location.pathname.indexOf('admin') === -1 && location.pathname.indexOf('dashboard') === -1 && location.pathname.indexOf('about') === -1 &&  location.pathname.indexOf('accessibility-policy') === -1 && location.pathname.indexOf('terms-of-use') === -1 && location.pathname.indexOf('privacy-policy') === -1;
         const pageHasAdminAside = location.pathname.indexOf('admin') !== -1 ;
+        const pageHasFooter = location.pathname.startsWith("/search") || location.pathname === "/" || location.pathname.startsWith("/codes")
         return (
             <div className={pageHasAdminAside ? 'admin-body' : ''}>
                 <AccountProvider onNoUser={this.onNoUser} onLogout={this.onLogout} onLogin={this.onLogin}>
@@ -158,9 +159,8 @@ export default class App extends Component {
                                     <div>
                                         {pageHasAside ? <DashboardAside /> : null}
                                         <div className={pageHasAside && "dashboard-aside__content"}>
-                                            <div className="col-md-12">
                                                 {pageHasAside && <DashboardNavbar/>}
-                                                <div className={pageHasAside&&"dashboard-container"}>
+                                                <div className={"dashboard-container"}>
                                                     {AccountStore.hasExpiredSubscription() && (
                                                         <div className="col-md-6 mb-4">
                                                             <ErrorAlert>
@@ -170,12 +170,17 @@ export default class App extends Component {
                                                             </ErrorAlert>
                                                         </div>
                                                     )}
-                                                    {this.props.children}
+                                                    <div className="col-md-12">
+
+                                                        {this.props.children}
+                                                    </div>
                                                     {pageHasAside &&(
                                                         <Footer light/>
                                                     )}
+                                                    {pageHasFooter && (
+                                                        <Footer fixed/>
+                                                    )}
                                                 </div>
-                                            </div>
                                         </div>
                                     </div>
 

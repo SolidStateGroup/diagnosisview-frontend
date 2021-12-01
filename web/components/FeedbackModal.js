@@ -31,6 +31,9 @@ class TheComponent extends Component {
                     Give us some feedback
                 </ModalHeader>
                 <ModalBody>
+                    <p>
+                        This message will include your email address for replies. We read all, but may not be able to reply personally to all.
+                    </p>
                     <textarea maxLength={1000} value={this.state.feedback} rows={5} onChange={(e)=>this.setState({feedback:Utils.safeParseEventValue(e)})}/>
                     {this.state.error && (
                         <div className="text-danger mv-2">{this.state.error}</div>

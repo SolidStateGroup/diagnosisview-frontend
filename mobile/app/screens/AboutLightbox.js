@@ -25,7 +25,7 @@ const About = class extends Component {
 			<View style={Styles.lightboxOuter}>
 				<View style={[Styles.lightbox,{paddingTop:10}]}>
 					<KeyboardAwareScrollView keyboardShouldPersistTaps="handled" enableOnAndroid={true}>
-						{this.state.showForm ? this.renderForm() : this.renderAboutText()}
+						{this.renderForm()}
 					</KeyboardAwareScrollView>
 				</View>
 			</View>
@@ -35,8 +35,11 @@ const About = class extends Component {
 	renderForm = () => {
 		return (
 			<View style={[Styles.padded]}>
-				<AutoHeightImage width={150} style={[Styles.alignCenter, Styles.stacked]} source={require('../images/brand-medium.png')} />
-				<H3 style={[Styles.textCenter,{color:'#2e2e2e'}]}>Give us some feedback</H3>
+				<AutoHeightImage width={150} style={[Styles.alignCenter]} source={require('../images/brand-medium.png')} />
+				<H3 style={[Styles.textCenter,{marginVertical: 10, color:'#2e2e2e'}]}>Give us some feedback</H3>
+				<Text>
+					This message will include your email address for replies. We read all, but may not be able to reply personally to all.
+				</Text>
 				<FormGroup>
 					<TextInput
 						onChangeText={(feedback) => this.setState({ feedback })}

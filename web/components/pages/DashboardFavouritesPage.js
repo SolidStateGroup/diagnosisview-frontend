@@ -29,7 +29,7 @@ class TheComponent extends Component {
         if (!AccountStore.hasActiveSubscription() && link.difficultyLevel != "GREEN" && !link.freeLink) {
             return false;
         }
-        return link.name.toLowerCase().startsWith(this.state.search.toLowerCase())
+        return Format.removeAccents(link.name.toLowerCase()).startsWith(Format.removeAccents(this.state.search.toLowerCase()))
     }
 
     render() {

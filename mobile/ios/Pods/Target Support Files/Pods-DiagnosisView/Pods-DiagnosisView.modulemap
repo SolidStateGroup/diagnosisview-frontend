@@ -1,0 +1,6 @@
+framework module Pods_DiagnosisView {
+  umbrella header "Pods-DiagnosisView-umbrella.h"
+
+  export *
+  module * { export * }
+}

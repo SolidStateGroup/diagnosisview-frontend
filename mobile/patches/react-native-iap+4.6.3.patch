@@ -1,0 +1,73 @@
+diff --git a/node_modules/react-native-iap/ios/RNIap.xcodeproj/project.pbxproj b/node_modules/react-native-iap/ios/RNIap.xcodeproj/project.pbxproj
+index 3f6c268..01ba5fd 100644
+--- a/node_modules/react-native-iap/ios/RNIap.xcodeproj/project.pbxproj
++++ b/node_modules/react-native-iap/ios/RNIap.xcodeproj/project.pbxproj
+@@ -7,9 +7,7 @@
+ 	objects = {
+ 
+ /* Begin PBXBuildFile section */
+-		070744692296C0EF00B1DC9D /* IAPPromotionObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CBF363220349F6005F51AC /* IAPPromotionObserver.m */; };
+ 		0707446A2296C0EF00B1DC9D /* RNIapIos.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNIapIos.m */; };
+-		28CBF364220349F6005F51AC /* IAPPromotionObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CBF363220349F6005F51AC /* IAPPromotionObserver.m */; };
+ 		B3E7B58A1CC2AC0600A0062D /* RNIapIos.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* RNIapIos.m */; };
+ /* End PBXBuildFile section */
+ 
+@@ -37,8 +35,6 @@
+ /* Begin PBXFileReference section */
+ 		070744702296C0EF00B1DC9D /* libRNIap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNIap.a; sourceTree = BUILT_PRODUCTS_DIR; };
+ 		134814201AA4EA6300B7C361 /* libRNIap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNIap.a; sourceTree = BUILT_PRODUCTS_DIR; };
+-		28CBF362220349F6005F51AC /* IAPPromotionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPPromotionObserver.h; sourceTree = "<group>"; };
+-		28CBF363220349F6005F51AC /* IAPPromotionObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAPPromotionObserver.m; sourceTree = "<group>"; };
+ 		B3E7B5881CC2AC0600A0062D /* RNIapIos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNIapIos.h; sourceTree = "<group>"; };
+ 		B3E7B5891CC2AC0600A0062D /* RNIapIos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNIapIos.m; sourceTree = "<group>"; };
+ /* End PBXFileReference section */
+@@ -74,8 +70,6 @@
+ 			children = (
+ 				B3E7B5881CC2AC0600A0062D /* RNIapIos.h */,
+ 				B3E7B5891CC2AC0600A0062D /* RNIapIos.m */,
+-				28CBF362220349F6005F51AC /* IAPPromotionObserver.h */,
+-				28CBF363220349F6005F51AC /* IAPPromotionObserver.m */,
+ 				134814211AA4EA7D00B7C361 /* Products */,
+ 				070744702296C0EF00B1DC9D /* libRNIap.a */,
+ 			);
+@@ -156,7 +150,6 @@
+ 			isa = PBXSourcesBuildPhase;
+ 			buildActionMask = 2147483647;
+ 			files = (
+-				070744692296C0EF00B1DC9D /* IAPPromotionObserver.m in Sources */,
+ 				0707446A2296C0EF00B1DC9D /* RNIapIos.m in Sources */,
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+@@ -165,7 +158,6 @@
+ 			isa = PBXSourcesBuildPhase;
+ 			buildActionMask = 2147483647;
+ 			files = (
+-				28CBF364220349F6005F51AC /* IAPPromotionObserver.m in Sources */,
+ 				B3E7B58A1CC2AC0600A0062D /* RNIapIos.m in Sources */,
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+diff --git a/node_modules/react-native-iap/ios/RNIap.xcodeproj/xcuserdata/kylejohnson.xcuserdatad/xcschemes/xcschememanagement.plist b/node_modules/react-native-iap/ios/RNIap.xcodeproj/xcuserdata/kylejohnson.xcuserdatad/xcschemes/xcschememanagement.plist
+new file mode 100644
+index 0000000..225b0ba
+--- /dev/null
++++ b/node_modules/react-native-iap/ios/RNIap.xcodeproj/xcuserdata/kylejohnson.xcuserdatad/xcschemes/xcschememanagement.plist
+@@ -0,0 +1,19 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
++<plist version="1.0">
++<dict>
++	<key>SchemeUserState</key>
++	<dict>
++		<key>RNIap-tvOS.xcscheme_^#shared#^_</key>
++		<dict>
++			<key>orderHint</key>
++			<integer>48</integer>
++		</dict>
++		<key>RNIap.xcscheme_^#shared#^_</key>
++		<dict>
++			<key>orderHint</key>
++			<integer>3</integer>
++		</dict>
++	</dict>
++</dict>
++</plist>

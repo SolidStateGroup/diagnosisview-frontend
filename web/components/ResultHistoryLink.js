@@ -20,7 +20,7 @@ const TheComponent = ({link, code, name, className}) => {
             {({ linkLogos, isLoading }) => (
                 <FavouritesProvider>
                     {({favourites})=>{
-                        const logoImageUrl = Utils.getLinkLogo(linkLogos, link) || Constants.linkIcons[link.linkType.value];
+                        const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
                         let style = {};
                         const limit =   FavouritesStore.model && FavouritesStore.model.length > 3 && !AccountStore.hasActiveSubscription()
                         if (!link.displayLink) {
@@ -54,7 +54,8 @@ const TheComponent = ({link, code, name, className}) => {
                                     </div>
                                 )}
                                 <Flex style={{height:"30px"}} onClick={onLinkClick}/>
-                                <img onClick={onLinkClick} className="ml-3 mr-3" src={logoImageUrl} height={20}/>
+                                <img onClick={onLinkClick} className="ml-3 mr-3" src={logoImageUrl||Constants.linkIcons[link.linkType.value]} height={20}/>
+                                {(!logoImageUrl && link.linkType.value === 'CUSTOM') ? <span className="mr-3">{link.name}</span> : null}
 
                                 <span onClick={onLinkClick} className="fas fa-chevron-right"/>
                             </Row>

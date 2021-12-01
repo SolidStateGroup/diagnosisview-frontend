@@ -24,7 +24,8 @@ class TheComponent extends Component {
         const newCategory = Utils.fromParam(this.props.location.search).category;
     }
 
-    search = (terms) => {
+    search = (search) => {
+        const terms = Format.removeAccents(search)
         let searchResults = [];
         let fuzzySearchResults = this.state.fuzzySearchResults;
         let fuzzySearchLoading = false;

@@ -30,7 +30,7 @@ class TheComponent extends Component {
 
         if (!link) return  false;
 
-        return link.diagnosis.friendlyName.toLowerCase().startsWith(this.state.search.toLowerCase())
+        return Format.removeAccents(link.diagnosis.friendlyName).toLowerCase().startsWith(Format.removeAccents(this.state.search.toLowerCase()))
     }
 
     render() {
@@ -63,7 +63,7 @@ class TheComponent extends Component {
                                                         <HistoryProvider>
                                                             {({ history, isLoading }) => {
 
-                                                                if (!history && isLoading) {
+                                                                if ((!history && isLoading)|| !DiagnosisStore.model) {
                                                                     return <div className="text-center"><Loader/></div>
                                                                 }
                                                                 const results = _.map(_.take(_.reverse(_.sortBy(history, 'date')), AccountStore.hasActiveSubscription()? MAX_RECENT: MAX_RECENT_UNSUBSCRIBED), (entry, i) => {

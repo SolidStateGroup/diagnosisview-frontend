@@ -2,6 +2,8 @@
  * Created by kylejohnson on 28/01/2017.
  */
 import React, {Component, PropTypes} from 'react';
+import { TouchableOpacity } from "react-native";
+import Captcha from "../components/Captcha";
 
 const AccountPage = class extends Component {
 	static navigatorStyle = global.navbarStyle;
@@ -9,27 +11,48 @@ const AccountPage = class extends Component {
 	constructor(props, context) {
 		super(props, context);
 		const prefill = Constants.simulate.PRE_FILLED_REGISTER;
-		this.state = {
-			firstName: prefill ? "SSG" : '',
-			lastName: prefill ? "Test" : '',
-			username: prefill ? "test@solidstategroup.com" : '',
-			password: prefill ? "password" : '',
-			repeatPassword: prefill ? "password" : '',
-		};
+		const user = AccountStore.getUser();
+		if (user) {
+			this.state = {
+				firstName: user.firstName,
+				lastName: user.lastName,
+				occupation: user.occupation || '',
+				institution: user.institution || ''
+			}
+		} else {
+			this.state = {
+				firstName: prefill ? "SSG" : '',
+				lastName: prefill ? "Test" : '',
+				username: prefill ? "test@solidstategroup.com" : '',
+				password: prefill ? "password" : '',
+				repeatPassword: prefill ? "password" : '',
+			};
+		}
+
 		ES6Component(this);
 		routeHelper.handleNavEvent(props.navigator, 'account', this.onNavigatorEvent);
 	}
 
 	componentDidMount() {
-		this.listenTo(AccountStore, 'change', () => this.forceUpdate());
+		this.listenTo(AccountStore, 'loaded', () => {
+			const user = AccountStore.getUser();
+			if (user) {
+				this.setState({
+					firstName: user.firstName,
+					lastName: user.lastName,
+					occupation: user.occupation || '',
+					institution: user.institution || ''
+
+				});
+
+			}
+		});
 	}
 
 	onNavigatorEvent = (event) => {
 		if (event.id == routeHelper.navEvents.SHOW) {
+			AppActions.getAccount()
 			API.trackPage('Account Screen');
-			if (AccountStore.getUser()) {
-				this.onLogin();
-			}
 		} else if (event.type == 'NavBarButtonPress') {
 			if (event.id == 'menu') {
 				this.props.navigator.toggleDrawer({ side: 'left' });
@@ -65,9 +88,13 @@ const AccountPage = class extends Component {
 			return;
 		}
 
-		this.setState({error: ''});
-		this.accountProvider.clearError();
-		AppActions.register({firstName, lastName, username: username.toLowerCase(), password, occupation, institution});
+		this.setState({error: '', captcha: (captchaResponse)=>{
+				this.setState({captcha: null})
+				this.accountProvider.clearError();
+				AppActions.register({firstName,captchaResponse, lastName, username: username.toLowerCase(), password, occupation, institution});
+		}})
+
+
 	}
 
 	invalid = () => {
@@ -164,18 +191,6 @@ const AccountPage = class extends Component {
 
 	onLogout = () => {
 		this.setState({firstName: '', lastName: '', password: '', repeatPassword: '', username: '', occupation: '', institution: ''});
-	}
-
-	onLogin = () => {
-		const user = AccountStore.getUser();
-		if (user) {
-			this.setState({
-				firstName: user.firstName,
-				lastName: user.lastName,
-				occupation: user.occupation || '',
-				institution: user.institution || ''
-			});
-		}
 	}
 
 	updateAccount = () => {
@@ -355,92 +370,131 @@ const AccountPage = class extends Component {
 		</View>
 	);
 
+	openInfo = (text)=>{
+		routeHelper.showInfo(this.props.navigator, text)
+	}
+
 	render() {
 		const manageSubscriptionLink = Platform.OS === 'android' ?
 			`https://play.google.com/store/account/subscriptions?sku=${iapItemSkus[0]}&package=${DeviceInfo.getBundleId()}` :
-			`itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions`;
+			`itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.wo
+			a/wa/manageSubscriptions`;
 
 		return (
-			<AccountProvider ref={c => this.accountProvider = c} onLogin={this.onLogin} onLogout={this.onLogout} onSave={this.onLogin}>
+			<AccountProvider ref={c => this.accountProvider = c} onLogout={this.onLogout} onSave={this.onLogin}>
 				{({user, isLoading, isSaving, error})=>(
 					<SubscriptionProvider>
-						{({subscription, isLoading: subscriptionLoading}) => (
+						{({ isLoading: subscriptionLoading}) => (
 							<SettingsProvider>
-								{({settings, isLoading: settingsIsLoading, error: settingsError}) => (
-									<Flex>
-										<NetworkBar />
-										{(isLoading || isSaving || settingsIsLoading || !settings) ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
-										<KeyboardAwareScrollView style={{backgroundColor:pallette.backgroundBase}} keyboardShouldPersistTaps="handled">
-												<View style={Styles.hero}></View>
-												<View style={[ Styles.stacked, Styles.padded]}>
-												{(subscription || user) ? (
-													<View style={[Styles.whitePanel, Styles.padded, (!subscription || !user) ? Styles.mb10 : {}]}>
-														{user ? <Text style={[Styles.textCenter, Styles.semiBold]}>{user.emailAddress}</Text> : null}
-														{subscription ? (
-															<React.Fragment>
-																<Text style={[Styles.textCenter]}>Your subscription is active.</Text>
-																<Text style={[Styles.textCenter, { color: '#2980b9', textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
-															</React.Fragment>
-														) : null}
-													</View>
-												) : null}
-												{(!subscription || !user) ? (
-													<View style={[Styles.whitePanel, Styles.padded, subscription ? Styles.mt10 : {}]}>
-														{(!subscription && !subscriptionLoading) ? (
-															<React.Fragment>
-																<Text style={[Styles.textMedium, Styles.paragraph]}>
-																	Subscribe to access professional resources that are unavailable in the free version. The fee helps us to cover maintenance and improvement costs.
-																</Text>
-																<Button style={[Styles.mb10, Styles.mt5]} onPress={this.subscribe}>{(user && user.paymentData && user.paymentData.length ? 'Renew' : 'Subscribe')}</Button>
-															</React.Fragment>
-														) : subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : null}
-														{!user ? (
-															<React.Fragment>
-															<Text style={[Styles.textMedium, Styles.paragraph]}>
-															Register your DiagnosisView account to access the features below, or tap Login if you have one already:
-															</Text>
-															<Text style={[Styles.textMedium, Styles.paragraph]}>
-																- Account holders can have unlimited history and unlimited favourites, and these are synchronised between your devices.
-															</Text>
-															<Text style={[Styles.textMedium, Styles.paragraph]}>
-																- Some paywalled resources are mapped as amber or red links. If you belong to an affiliated institution, direct links may be provided so that you only have to log in once.
-															</Text>
-															</React.Fragment>
-														) : null}
-													</View>
-												) : null}
-												{!user ? (
-													<FormGroup>
-														<Row style={{alignItems:'center', marginBottom:10, justifyContent:'center'}}>
-															<Button
-																onPress={this.showRegisterForm}
-																style={this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlLeft] : Styles.segmentedControl}
-																textStyle={this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
-															>
-																Register
-															</Button>
-															<Button
-																onPress={this.showLoginForm}
-																style={!this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlRight, {alignSelf: 'auto'}] : [Styles.segmentedControl,{alignSelf: 'auto'}]}
-																textStyle={!this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
-															>
-																Login
-															</Button>
-														</Row>
-														{!this.state.login ? this.renderRegisterForm(error, settings) : this.renderLoginForm(error)}
-													</FormGroup>
+								{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
+									const noAutoRenewal = SubscriptionStore.subscription && SubscriptionStore.subscription.autoRenewing === false;
 
-												) : (
-													<FormGroup>
-														{this.renderAccountForm(user, error, settings)}
-														<Button onPress={this.logout}>Logout</Button>
-													</FormGroup>
-												)}
-											</View>
-										</KeyboardAwareScrollView>
-										)}
-									</Flex>
-								)}
+									return (
+										<Flex>
+											<NetworkBar />
+											{(isLoading || isSaving || settingsIsLoading || !settings) ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
+												<KeyboardAwareScrollView style={{backgroundColor:pallette.backgroundBase}} keyboardShouldPersistTaps="handled">
+													<View style={Styles.hero}></View>
+													<View style={[ Styles.stacked, Styles.padded]}>
+														{(AccountStore.hasActiveSubscription() || user) ? (
+															<View style={[Styles.whitePanel, Styles.padded, (!AccountStore.hasActiveSubscription() || !user) ? Styles.mb10 : {}]}>
+																{user ? <Text style={[Styles.textCenter, Styles.semiBold]}>{user.emailAddress}</Text> : null}
+																{AccountStore.hasActiveSubscription() && !noAutoRenewal ? (
+																	<React.Fragment>
+																		<Text style={[Styles.textCenter]}>Your subscription is active.</Text>
+																		{SubscriptionStore.isMobileSubscription() &&(
+																			<Text style={[Styles.textCenter, { color: '#2980b9', textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
+																		)}
+																	</React.Fragment>
+																) : null}
+															</View>
+														) : null}
+														{Constants.simulate.MANAGE_SUBSCRIPTION && (
+															<Text style={[Styles.textCenter, { color: '#fff', padding:20, textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
+														)}
+														{(!AccountStore.hasActiveSubscription() || !user || noAutoRenewal) ? (
+															<View style={[Styles.whitePanel, Styles.padded, AccountStore.hasActiveSubscription() ? Styles.mt10 : {}]}>
+																{(noAutoRenewal || (!AccountStore.hasActiveSubscription() && !subscriptionLoading)) ? (
+																	<React.Fragment>
+																		<Text style={[Styles.textMedium, Styles.paragraph]}>
+																			Subscribe to access professional resources that are unavailable in the free version. The fee helps us to cover maintenance and improvement costs.
+																		</Text>
+																		<Button style={[Styles.mb10, Styles.mt5]} onPress={this.subscribe}>{((user && user.paymentData && user.paymentData.length) || noAutoRenewal ? 'Renew' : 'Subscribe')}</Button>
+																	</React.Fragment>
+																) : subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : null}
+																{!user ? (
+																	<React.Fragment>
+
+																		<Text style={[Styles.textMedium, Styles.paragraph]}>
+																			Register your DiagnosisView account to access the features below, or tap Login if you have one already:
+																		</Text>
+																		<TouchableOpacity onPress={()=>this.openInfo("DiagnosisView account holders can have unlimited history and unlimited favourites, and these are synchronized between your devices")}>
+																			<Row style={[{flexWrap:'nowrap'},Styles.mb5]}>
+																				<Image source={require('../images/icon-medical.png')} style={{height:24, width:24, marginRight:10, resizeMode:"contain"}}/>
+																				<Text style={[Styles.textAnchor, {width:DeviceWidth-80},Styles.textSmall,]}>
+																					Unlimited history and favourites
+																				</Text>
+																			</Row>
+																		</TouchableOpacity>
+																		<TouchableOpacity onPress={()=>this.openInfo("Access the web version of DiagnosisView for free via your web browser at www.diagnosisview.org, giving you a large screen view of DiagnosisView along with our partners’ info pages. You may login using the same login email and password.")} >
+																			<Row style={[{flexWrap:'nowrap'},Styles.mb5]}>
+																				<Image source={require('../images/icon-medical.png')} style={{height:24, width:24, marginRight:10, resizeMode:"contain"}}/>
+																				<Text style={[Styles.textAnchor, {width:DeviceWidth-80},Styles.textSmall,]}>
+																					Immediate access to DiagnosisView Web
+																				</Text>
+																			</Row>
+																		</TouchableOpacity>
+
+																		<TouchableOpacity onPress={()=>this.openInfo("Some paywalled resources are mapped as amber or red links. If you belong to an affiliated institution, direct links may be provided so that you only have to login once.")} style={[Styles.textMedium, Styles.textAnchor, Styles.paragraph]}>
+																			<Row style={[{flexWrap:'nowrap'},Styles.mb5]}>
+																				<Image source={require('../images/icon-medical.png')} style={{height:24, width:24, marginRight:10, resizeMode:"contain"}}/>
+																				<Text style={[Styles.textAnchor, {width:DeviceWidth-80},Styles.textSmall,]}>
+																					Access paywalled links to your Institution
+																				</Text>
+																			</Row>
+																		</TouchableOpacity>
+
+
+																	</React.Fragment>
+																) : null}
+															</View>
+														) : null}
+														{!user ? (
+															<FormGroup>
+																<Row style={{alignItems:'center', marginBottom:10, justifyContent:'center'}}>
+																	<Button
+																		onPress={this.showRegisterForm}
+																		style={this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlLeft] : Styles.segmentedControl}
+																		textStyle={this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
+																	>
+																		Register
+																	</Button>
+																	<Button
+																		onPress={this.showLoginForm}
+																		style={!this.state.login ? [Styles.segmentedControl, Styles.segmentedControlActive, Styles.segmentedControlRight, {alignSelf: 'auto'}] : [Styles.segmentedControl,{alignSelf: 'auto'}]}
+																		textStyle={!this.state.login ? [Styles.segmentedControlText,Styles.segmentedControlTextActive] : Styles.segmentedControlText}
+																	>
+																		Login
+																	</Button>
+																</Row>
+																{!this.state.login ? this.renderRegisterForm(error, settings) : this.renderLoginForm(error)}
+															</FormGroup>
+
+														) : (
+															<FormGroup>
+																{this.renderAccountForm(user, error, settings)}
+																<Button onPress={this.logout}>Logout</Button>
+															</FormGroup>
+														)}
+														{this.state.captcha && (
+															<Captcha onClose={()=>this.setState({captcha:null})} onSuccess={this.state.captcha}/>
+														)}
+													</View>
+												</KeyboardAwareScrollView>
+											)}
+										</Flex>
+									)
+								}}
 							</SettingsProvider>
 						)}
 					</SubscriptionProvider>

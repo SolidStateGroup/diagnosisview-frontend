@@ -15,9 +15,6 @@ Notifications.android.createChannel(channel);
 var PushManager = class {
     static token = null;
     static onNotification = null;
-
-    isMobile: true;
-
     getInitialNotification = () => Notifications.getInitialNotification();
 
     subscribe = (topic) => {
@@ -107,6 +104,7 @@ var push = new PushManager();
 
 global.API = {
 
+    isMobile: true,
 
     log: function () {
 
@@ -207,48 +205,80 @@ global.API = {
         return initialLink ? cb(link) : null;
     },
     push,
-    validateReceipt: async (receipt) => {
-        const isTestApp = DeviceInfo.getBundleId().indexOf('test') !== -1;
-        const result = await Platform.select({
-            ios: RNIap.validateReceiptIos({
-                'receipt-data': receipt,
-                password: isTestApp ? '9f8e85c251bb4d6094c9f630b94be9b3' : 'todo'
-            }, isTestApp),
-            android: (async () => {
-                try {
-                    const res = await _data.post(`${Project.api}user/validate/android/public`, { packageName: DeviceInfo.getBundleId(), productId: iapItemSkus[0], purchaseToken: receipt });
-                    // console.log(res);
-                    return res;
-                } catch (e) {
-                    // console.log(e);
-                    return false;
+    finalisePurchases: () => {
+
+        RNIap.initConnection().then(()=>{
+            Platform.select({android:RNIap.getPurchaseHistory,ios:RNIap.getPurchaseHistory})().then((res)=>{
+                if (res[0] && res[0].purchaseToken) {
+                    RNIap.acknowledgePurchaseAndroid(res[0].purchaseToken)
+                    return
                 }
-            })()
+                const receipt = res[0] && res[0].transactionReceipt
+                    ? res[0].transactionReceipt
+                    : res[0] && res[0].originalJson;
+                if (receipt) {
+                    RNIap.finishTransaction(receipt)
+                        .then((r)=>{
+                        })
+                        .catch((v)=>{
+                        })
+                }
+            })
         })
 
+    },
+    validateReceipt: async (receipt, originalPurchase) => {
+        const isTestApp = DeviceInfo.getBundleId().indexOf('test') !== -1;
+let result;
+        if (Platform.OS === "ios") {
+            result = await RNIap.validateReceiptIos({
+                'receipt-data': receipt,
+                password: isTestApp ? '9f8e85c251bb4d6094c9f630b94be9b3' : undefined
+            }, false)
+            if (result.status !== 0) {
+                result = await RNIap.validateReceiptIos({
+                    'receipt-data': receipt,
+                    password: isTestApp ? '9f8e85c251bb4d6094c9f630b94be9b3' : undefined
+                }, true)
+            }
+        } else {
+            try {
+                result = await _data.post(`${Project.api}user/validate/android/public`, { packageName: DeviceInfo.getBundleId(), productId: iapItemSkus[0], purchaseToken: receipt });
+            } catch (e) {
+                // console.log(e);
+                result = false;
+            }
+        }
+
+
         if (Platform.OS === 'ios') {
-            if (result.status !== 0) return;
-            const sortedReceipts = _.sortBy(result.latest_receipt_info, ({purchase_date_ms}) => -purchase_date_ms);
+            if (result.status !== 0) {
+                if (result.status === 21007 || result.status === 21008 || result.status=== 21003) {
+                    alert(result.status)
+                }
+                return;
+            }
+            const sortedReceipts = _.sortBy(result.receipt.in_app, ({purchase_date_ms}) => -purchase_date_ms);
             const latestReceipt = sortedReceipts && sortedReceipts.length && sortedReceipts[0];
             if (!latestReceipt) {
                 console.log('Latest receipt could not be determined.')
                 return;
             }
             const expiryDate = moment(parseInt(latestReceipt.purchase_date_ms)).add(1, result.receipt.receipt_type.toLowerCase().includes('sandbox') ? 'hour' : 'year');
-            if (expiryDate.isSameOrBefore(moment())) {
-                console.log('Receipt has expired.')
-                return;
-            }
+            // if (expiryDate.isSameOrBefore(moment())) {
+            //     console.log('Receipt has expired.')
+            //     return;
+            // }
             AppActions.setSubscription({autoRenewing: false, expiryDate, result, receipt});
             AsyncStorage.setItem('transactionReceipt', receipt);
         } else {
             if (!result) return;
             const expiryDate = moment(parseInt(result.expiryTimeMillis));
             const autoRenewing = result.autoRenewing;
-            if (expiryDate.isSameOrBefore(moment())) {
-                console.log('Receipt has expired.')
-                return;
-            }
+            // if (expiryDate.isSameOrBefore(moment())) {
+            //     console.log('Receipt has expired.')
+            //     return;
+            // }
             AppActions.setSubscription({autoRenewing, expiryDate, result, receipt});
             AsyncStorage.setItem('transactionReceipt', receipt);
         }
@@ -262,29 +292,29 @@ var initialLinkCb = null;
 var link = null;
 var checkedInitialLink = null;
 var initialLink = null;
-import branch from 'react-native-branch';
-
-
-branch.subscribe(({error, params}) => {
-    if (error) {
-        console.error('Error from Branch: ' + error)
-        return
-    }
-
-    if (params['+clicked_branch_link']) {
-
-        link = params;
-
-        if (!checkedInitialLink) {
-            initialLink = params;
-            if (initialLinkCb)
-                initialLinkCb(params)
-        }
-
-        if (linkCb) {
-            linkCb(params)
-        }
-
-    }
-    checkedInitialLink = true;
-});
+// import branch from 'react-native-branch';
+//
+//
+// branch.subscribe(({error, params}) => {
+//     if (error) {
+//         console.error('Error from Branch: ' + error)
+//         return
+//     }
+//
+//     if (params['+clicked_branch_link']) {
+//
+//         link = params;
+//
+//         if (!checkedInitialLink) {
+//             initialLink = params;
+//             if (initialLinkCb)
+//                 initialLinkCb(params)
+//         }
+//
+//         if (linkCb) {
+//             linkCb(params)
+//         }
+//
+//     }
+//     checkedInitialLink = true;
+// });

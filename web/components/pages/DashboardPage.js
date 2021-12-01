@@ -45,7 +45,7 @@ class TheComponent extends Component {
                                                               Recent Searches
                                                           </PanelHeader>
                                                           <div className="panel--white mt-2 mb-4">
-                                                              {DiagnosisStore.getCodes() && (
+                                                              {DiagnosisStore.getCodes() ? (
                                                                   <HistoryProvider>
                                                                       {({ history, isLoading }) => {
 
@@ -62,7 +62,7 @@ class TheComponent extends Component {
                                                                           )
                                                                       }}
                                                                   </HistoryProvider>
-                                                              )}
+                                                              ): <div className="text-center"><Loader/></div> }
 
                                                           </div>
                                                       </div>

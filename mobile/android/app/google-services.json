@@ -44,42 +44,6 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:557831347069:android:115cf124ac9bc9b2",
-        "android_client_info": {
-          "package_name": "com.solidstategroup.dvmobile.test"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "557831347069-5q4ott5tu7ganiiggt9f08dneevbi0d9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDPRpgI3lgXFI4nkE5aIdSYQqXAKx5TH6I"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "557831347069-5q4ott5tu7ganiiggt9f08dneevbi0d9.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "557831347069-rd9j4g9on2m2tlkos0kkcdgaajcjeakg.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.solidstategroup.dvmobile.test"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:557831347069:android:a04f204f0e8ee78f",
         "android_client_info": {
           "package_name": "com.solidstategroup.dvmobile.test2"

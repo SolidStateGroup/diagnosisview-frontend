@@ -25,7 +25,6 @@ const DiagnosisDetailPage = class extends Component {
 						<WhoFor/>
 					</div>
 				</div>
-<Footer fixed/>
 			</div>
 		)
 	}

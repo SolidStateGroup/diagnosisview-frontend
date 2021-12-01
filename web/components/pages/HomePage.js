@@ -37,6 +37,7 @@ class HomePage extends React.Component {
     }
 
     render = () => {
+        const price = 2.99
         return (
 
             <div>
@@ -54,27 +55,27 @@ class HomePage extends React.Component {
                                 <div className="col-lg-6 px-5">
                                     <h3 style={{marginTop:100}} className="mb-4">DiagnosisView gives healthcare students and practitioners immediate access to selected reliable information on over 1,000 common diagnoses</h3>
                                     <ul className="feature-list list-unstyled">
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Info on your own mobile or tablet
                                             </Row>
                                         </li>
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Advanced patient info is the starting point (free)
                                             </Row>
                                         </li>
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> Moving on to practitioner-level and expert-level professional resources
                                             </Row>
                                         </li>
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /> With an optional account you can access professional resources, as well as sync favourites and history across devices
                                             </Row>
                                         </li>
-                                        <li className="mb-3">
+                                        <li className="mb-3 text-white">
                                             <Row className="no-wrap align-items-start">
                                                 <img className="icon--list" src="/images/icon-medical.png" alt="Medical circle" /><a style={{fontSize:16}} className="text-light ml-1 text-underline" target="_blank" href="https://blogs.ed.ac.uk/diagnosisview/">Help pages and news updates here</a>
 
@@ -132,12 +133,12 @@ class HomePage extends React.Component {
                                                     "Synchronise between mobile app, website and unlimited devices",
                                                 ]} title="Starter">
                                         <Link to={"/signup"}>
-                                            <a className="button button--rounded full-width">
+                                            <a style={{marginBottom:65}} className="button button--rounded full-width">
                                                 Sign Up
                                             </a>
                                         </Link>
                                     </PricePanel>
-                                    <PricePanel subtitle="Only £3/Year (special launch offer)." className="ml-md-4 ml-sm-0" price={Math.ceil(3)} points={[
+                                    <PricePanel subtitle={"Only £"+price+"/Year (special launch offer)."} className="ml-md-4 ml-sm-0" price={price} points={[
                                         "Student/practitioner level (amber) links",
                                         "Expert level (red) links",
                                         "Unlimited search history",
@@ -145,11 +146,14 @@ class HomePage extends React.Component {
                                         "Activate paywalled links to your institution",
                                     ]} title="Professional">
 
-                                        <Link to={"/signup?plan=pro"}>
+                                        {/*<Link to={"/signup?plan=pro"}>*/}
                                             <Button className="button btn--primary button--rounded full-width">
-                                                Sign Up
+                                                Coming soon*
                                             </Button>
-                                        </Link>
+                                        {/*</Link>*/}
+                                        <div style={{height:56}} className="text-left mt-2 text-small">
+                                            * For now, use our mobile app to buy a Professional plan, then login here
+                                        </div>
                                     </PricePanel>
                                 </Row>
                             </div>
@@ -175,7 +179,6 @@ class HomePage extends React.Component {
 
                     </div>
                 </div>
-                <Footer/>
             </div>
         );
     }

@@ -25,6 +25,11 @@ class TheComponent extends Component {
             institution: user.institution || ''
         }
     }
+
+    componentDidMount() {
+        AppActions.getAccount()
+    }
+
     save = (e)=> {
         e.preventDefault()
         this.accountProvider.clearError();

@@ -4,47 +4,35 @@ var data = require('./base/_data');
 var controller = {
         register: (details) => {
             store.saving();
-            data.post(Project.api + 'register', details)
-                .then(async res => {
-                    // Get device favourites and history to sync with server
-                    var favouritesToSync = controller.getFavouritesToSync(res.favourites);
-                    var historyToSync = await AsyncStorage.getItem("history");
-                    if(historyToSync) {
-                        historyToSync = JSON.parse(historyToSync)
-                    } else {
-                        historyToSync = []
-                    }
-                    return (favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res))
-                        .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res))
-                        .then(res => {
-                            controller.onLogin(res);
-                            store.saved();
-                            if (!SubscriptionStore.isSubscribed()) {
-                                AppActions.buySubscription();
-                            } else {
-                                controller.subscribe(SubscriptionStore.getPurchase(), true);
-                            }
-                        })
+            var favouritesToSync = controller.getFavouritesToSync(FavouritesStore.model);
+            var historyToSync = controller.getHistoryToSync(HistoryStore.model);
 
+            data.post(Project.api + 'register', details)
+                .then(res => {
+                    // Get device favourites and history to sync with server
+                    controller.onLogin(res);
+                    store.saved();
+                    if (!SubscriptionStore.isSubscribed()) {
+                        AppActions.buySubscription();
+                    } else {
+                        controller.subscribe(SubscriptionStore.getPurchase(), true);
+                    }
                 })
+                .then(res => favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res)) // Sync favourites
+                .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res)) // Sync history
                 .catch(e => AjaxHandler.error(AccountStore, e));
         },
         setToken: (token) => {
             data.setToken(token);
         },
         adminLogin: (details) => {
-            store.loading();
-            data.post(Project.api + 'admin/login', details)
-                .then(res => {
-                    controller.onLogin(res);
-                    store.loaded();
-                })
-                .catch(e => {
-                    controller.login(details)
-                });
+            //deprecated
+            return controller.login(details)
         },
         login: (details) => {
             store.loading();
+            AsyncStorage.setItem("history","")
+            AsyncStorage.setItem("favourites","")
             data.post(Project.api + 'login', details)
                 .then(res => {
                     controller.setToken(res && res.token);
@@ -58,12 +46,8 @@ var controller = {
                         controller.subscribe(SubscriptionStore.getPurchase(), true);
                     }
 
-                    if (SubscriptionStore.isSubscribed()) {
                         controller.setToken(res && res.token);
-                        return controller.processUser(res);
-                    } else {
-                        return res;
-                    }
+                    return res;
                 })
                 .then(res => {
                     controller.onLogin(res);
@@ -79,6 +63,7 @@ var controller = {
             } else {
                 AsyncStorage.setItem('user', JSON.stringify(res));
             }
+            SubscriptionStore.trigger("changed")
             controller.setToken(res && res.token);
         },
 
@@ -93,7 +78,9 @@ var controller = {
             controller.setUser(null);
             AppActions.clearDeviceFavourites();
             AppActions.clearDeviceHistory();
+            AsyncStorage.setItem("subscriptionLinkedTo", "")
             AsyncStorage.setItem("history","")
+            SubscriptionStore.subscription = null;
             AsyncStorage.setItem("favourites","")
             API.push && API.push.cancelAllNotifications();
         },
@@ -127,11 +114,7 @@ var controller = {
 
             store.saving();
 
-            const renewal = store.model.paymentData && store.model.paymentData.length ? true : false;
-
             // Get device favourites and history to sync with server
-            var favouritesToSync = controller.getFavouritesToSync(store.model.favourites);
-            var historyToSync = controller.getHistoryToSync(store.model.history);
 
             // Validate purchase
             // console.log(JSON.stringify(purchase));
@@ -143,8 +126,13 @@ var controller = {
                         return Promise.reject(new Error('Attempted to activate subscription on device which already linked subscription to another account'));
                     }
                     return data.post(`${Project.api}user/validate/${Platform.OS}`, purchase)
+                        .then((res)=>{
+                            API.finalisePurchases()
+                            return res
+                        })
                 })
                 .then(res => {
+                    AppActions.getAccount()
                     AsyncStorage.setItem("subscriptionLinkedTo", store.model.id.toString());
                     AsyncStorage.removeItem("retrySubscription");
                     return res;
@@ -173,8 +161,6 @@ var controller = {
                         return data.get(Project.api + 'account');
                     })
                 })
-                .then(res => favouritesToSync.length ? data.put(Project.api + 'user/sync/favourites', favouritesToSync) : Promise.resolve(res)) // Sync favourites
-                .then(res => historyToSync.length ? data.put(Project.api + 'user/sync/history', historyToSync) : Promise.resolve(res)) // Sync history
                 .then(res => {
                     // console.log(res);
                     store.model = this.processUser(res);
@@ -247,14 +233,26 @@ var controller = {
         getUser: function () {
             return store.model
         },
+        getExpiryDate: function () {
+            if(store.model) {
+                return moment(store.model.expiryDate)
+            }
+            return SubscriptionStore.subscription && moment(SubscriptionStore.subscription.expiryDate);
+        },
+        neverSubscribed: function () {
+            if (API.isMobile && !store.model) {
+                return !SubscriptionStore.subscription;
+            }
+            return !store.model || !store.model.expiryDate
+        },
         hasActiveSubscription: function () {
             if (store.isAdmin())
                 return true
 
-            if (API.isMobile) {
-                return store.model && SubscriptionStore.isSubscribed();
+            if (API.isMobile && !store.model) {
+                return SubscriptionStore.isSubscribed();
             }
-            return !store.hasExpiredSubscription() && store.model && store.model.activeSubscription && SubscriptionStore.isSubscribed();
+            return !store.hasExpiredSubscription() && store.model && store.model.activeSubscription;
         },
         hasExpiredSubscription: function () {
             if (store.isAdmin())

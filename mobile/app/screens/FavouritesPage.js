@@ -24,6 +24,7 @@ const FavouritesPage = class extends Component {
 
 	onNavigatorEvent = (event) => {
 		if (event.id == routeHelper.navEvents.SHOW) {
+			AppActions.getFavourites()
 			API.trackPage('Favourites Screen');
 		} else if (event.type == 'NavBarButtonPress') {
 			if (event.id == 'menu') {
@@ -63,7 +64,7 @@ const FavouritesPage = class extends Component {
 			<AccountProvider>
 				{({user, isLoading})=>(
 					<SubscriptionProvider>
-						{({subscription, isLoading: subscriptionLoading}) => (
+						{({ isLoading: subscriptionLoading}) => (
 							<Flex>
 								<NetworkBar />
 								<ScrollView>
@@ -74,7 +75,8 @@ const FavouritesPage = class extends Component {
 												{subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : (
 													<>
 														<Text style={[Styles.textCenter, Styles.paragraph]}>Saves up to 5 favourite links on this device only.</Text>
-														<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited favourites across all your devices, please {(!user && !subscription) ? 'subscribe' : !subscription ? 'subscribe' : 'register'}.</Text>
+														<Text style={[Styles.textCenter, Styles.paragraph]}>To activate access to unlimited favourites across all your devices, please {(!user && !AccountStore.hasActiveSubscription()) ? 'subscribe'
+															: !AccountStore.hasActiveSubscription() ? 'subscribe' : 'register'}.</Text>
 														<Button onPress={this.subscribe}>{(!user ? 'Subscribe' : 'Subscribe') + ' now'}</Button>
 													</>
 												)}
@@ -104,7 +106,7 @@ const FavouritesPage = class extends Component {
 															return _.map(_.reverse(_.sortBy(favourites, 'date')), (entry, i) => {
 																const { link } = entry;
 																const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
-																if (!SubscriptionStore.isSubscribed() && link.difficultyLevel != "GREEN" && !link.freeLink) {
+																if (!AccountStore.hasActiveSubscription() && link.difficultyLevel != "GREEN" && !link.freeLink) {
 																	return null;
 																}
 																if (Constants.simulate.ALL_FAVES_REMOVED_EXTERNALLY) {

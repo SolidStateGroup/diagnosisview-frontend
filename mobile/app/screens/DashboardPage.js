@@ -145,13 +145,15 @@ const DashboardPage = class extends Component {
 				{({ user, isLoading }) => {
 					return (
 						<SubscriptionProvider>
-							{({subscription, isLoading: subscriptionLoading}) => {
-								const paymentData = user && user.paymentData && user.paymentData.length && JSON.parse(_.last(user.paymentData).response);
-								const neverSubscribed = !subscriptionLoading && !subscription;
+							{({ isLoading: subscriptionLoading}) => {
+								const neverSubscribed = AccountStore.neverSubscribed();
 								return (
 									<SettingsProvider>
 									{({settings, isLoading: settingsIsLoading, error: settingsError}) => {
 										let institution = settings && user && user.institution && _.find(settings.institutions, i => i.id === user.institution);
+
+										const noAutoRenewal = SubscriptionStore.subscription && SubscriptionStore.subscription.autoRenewing === false;
+
 										if (institution && (institution.id === 'OTHER' || institution.id === 'NONE')) {
 											institution = null;
 										}
@@ -160,25 +162,27 @@ const DashboardPage = class extends Component {
 												<NetworkBar />
 												<ScrollView>
 													<View style={Styles.hero}></View>
+
 													<View style={Styles.padded}>
 														<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
 															<Row>
 																{institution && institution.logoUrl && <Image source={{uri: institution.logoUrl.indexOf('/api/') !== -1 ? Project.api + institution.logoUrl.substr(5) : institution.logoUrl}} style={Styles.dashboardInstitutionLogo} />}
-																<Text style={[institution && institution.logoUrl ? Styles.flex : {}, Styles.textMedium, neverSubscribed ? Styles.paragraph : {}, (institution && institution.logoUrl) ? {} : Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.hyperlink]}>Search Now</Text> or go to your History or Favourites. {user ? (<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]}>You are {subscription ? 'subscribed' : 'logged in'}{institution ? ` and affiliated to the ${institution.name}` : ''}</Text>) : subscription ? <Text style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]} onPress={() => routeHelper.goAccount(this.props.navigator)}>You are subscribed but not registered with DiagnosisView yet.</Text> : null}</Text>
+																<Text style={[institution && institution.logoUrl ? Styles.flex : {}, Styles.textMedium, neverSubscribed ? Styles.paragraph : {}, (institution && institution.logoUrl) ? {} : Styles.textCenter]}>Trusted and graded information links on 1,000+ diagnoses. <Text onPress={this.onSearch} style={[Styles.textMedium, Styles.hyperlink]}>Search Now</Text> or go to your History or Favourites. {user ?
+																	(<Text onPress={this.onLoggedIn} style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]}>You are {AccountStore.hasActiveSubscription() ? 'subscribed' : 'logged in'}{institution ? ` and affiliated to the ${institution.name}` : ''}</Text>)
+																	: AccountStore.hasActiveSubscription() ? <Text style={[Styles.textMedium,Styles.hyperlink, {padding:0, margin:0}]} onPress={() => routeHelper.goAccount(this.props.navigator)}>You are subscribed but not registered with DiagnosisView yet.</Text> : null}</Text>
 															</Row>
-															{neverSubscribed ? (
+														{!AccountStore.hasActiveSubscription() && !AccountStore.hasExpiredSubscription() && !noAutoRenewal&& (
+
 																<View>
 																	{this.renderSubscribeParagraph()}
 																	<Button onPress={this.subscribe}>Subscribe now</Button>
 																</View>
-															) : null}
+														)}
 															{subscriptionLoading ? <Flex style={Styles.centeredContainer}><Loader /></Flex> : null}
-															{/* <View style={[Styles.stackedFormInv]}>
-																<Button onPress={this.onSearch}>Search now</Button>
-															</View> */}
+
 														</View>
-														{subscription && !SubscriptionStore.isSubscriptionAutoRenewing() && !AccountStore.isAdmin() ? (() => {
-															const expiryDate = SubscriptionStore.getSubscriptionExpiryDate() && moment(SubscriptionStore.getSubscriptionExpiryDate());
+														{(AccountStore.hasExpiredSubscription()||noAutoRenewal) ? (() => {
+															const expiryDate = AccountStore.getExpiryDate();
 															if (!expiryDate || expiryDate.isSameOrBefore(moment())) {
 																return (
 																	<View style={[Styles.whitePanel, Styles.stacked, Styles.padded]}>
@@ -235,7 +239,7 @@ const DashboardPage = class extends Component {
 																				{_.map(_.take(_.reverse(_.sortBy(favourites, 'date')), MAX_RECENT), (entry, i) => {
 																					const { link } = entry;
 																					const logoImageUrl = Utils.getLinkLogo(linkLogos, link);
-																					if (!subscription && link.difficultyLevel != "GREEN" && !link.freeLink) {
+																					if (!AccountStore.hasActiveSubscription() && link.difficultyLevel != "GREEN" && !link.freeLink) {
 																						return null;
 																					}
 																					return (

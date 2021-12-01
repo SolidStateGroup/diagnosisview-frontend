@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Captcha from "../components/Captcha";
 const data = require('../../../common/stores/base/_data');
 
 const ForgotPasswordLightbox = class extends Component {
@@ -13,20 +14,22 @@ const ForgotPasswordLightbox = class extends Component {
     }
 
     sendEmail = () => {
-        this.setState({ isLoading: true, error: '' });
-        data.post(Project.api + 'user/forgotten-password', {
-            username: this.state.email
-        })
-            .then(() => {
-                this.setState({ isLoading: false, step: 2 });
-            })
-            .catch(e => {
-                e.json().then(error => {
-                    this.setState({ isLoading: false, step: 2, error: error.message });
-                }).catch(() => {
-                    this.setState({ isLoading: false, step: 2, error: 'Sorry there was a problem, check you entered the correct email address or try again later' });
+        this.setState({  captcha: (captchaResponse)=>{
+                data.post(Project.api + 'user/forgotten-password', {
+                    username: this.state.email,
+                    captchaResponse
                 })
-            });
+                    .then(() => {
+                        this.setState({ isLoading: false, captcha: null, step: 2 });
+                    })
+                    .catch(e => {
+                        e.json().then(error => {
+                            this.setState({ isLoading: false, captcha:null, step: 2, error: error.message });
+                        }).catch(() => {
+                            this.setState({ isLoading: false, captcha:null, step: 2, error: 'Sorry there was a problem, check you entered the correct email address or try again later' });
+                        })
+                    });
+            } });
     }
 
     changePassword = () => {
@@ -166,6 +169,9 @@ const ForgotPasswordLightbox = class extends Component {
                                 }
                             })()}
                             {this.state.error ? <Text style={[Styles.textMedium, Styles.textCenter, { color: pallette.error, marginTop: 10 }]}>{this.state.error}</Text> : null}
+                            {this.state.captcha && (
+                                <Captcha onClose={()=>this.setState({captcha:null})} onSuccess={this.state.captcha}/>
+                            )}
                         </View>
                     )}
                 </View>

@@ -1,5 +1,6 @@
 module.exports = {
     whitePanel:{
+        overflow:"hidden",
         backgroundColor:'#fff',
         borderRadius:10,
         shadowColor: '#000',
