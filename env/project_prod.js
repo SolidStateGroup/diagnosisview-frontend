@@ -9,6 +9,7 @@ module.exports = {
     captchaBaseUrl: "https://www.diagnosisview.org",
     ga: '',
     chargebee: {
-        site: 'flagsmith-test',
+        site: 'diagnosisview-test',
+        product:"monthly-USD-Monthly"
     },
 };

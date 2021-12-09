@@ -122,10 +122,10 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       details
     });
   },
-  updateSubscription: function(res) {
+  updateSubscription: function(token) {
     Dispatcher.handleViewAction({
       actionType: Actions.UPDATE_SUBSCRIPTION,
-      data:res
+      data:{token}
     });
   },
   adminLogin: function (details) {

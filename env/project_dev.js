@@ -9,6 +9,7 @@ module.exports = {
     public: 'https://api-staging.diagnosisview.org/public/',
     ga: '',
     chargebee: {
-        site: 'flagsmith-test',
+        site: 'diagnosisview-test',
+        product:"monthly-USD-Monthly"
     },
 };

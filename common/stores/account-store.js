@@ -319,7 +319,7 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
             controller.setToken(action.token);
             break;
         case Actions.UPDATE_SUBSCRIPTION:
-            controller.updateSubscription(action.token);
+            controller.updateSubscription(action.data);
             break;
         case Actions.ADMIN_LOGIN:
             controller.adminLogin(action.details);

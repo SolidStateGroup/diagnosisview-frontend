@@ -36,10 +36,10 @@ class TheComponent extends Component {
 
                                         <Link to="/dashboard/account?manage=1">
                                             <a
-
-                                                href="javascript:void(0)"
-                                                data-cb-type="checkout"
-                                                data-cb-plan-id={Project.chargebee.product}
+                                                href = "javascript:void(0)"
+                                                data-cb-type = "checkout"
+                                                data-cb-item-0 = {Project.chargebee.product}
+                                                data-cb-item-0-quantity = "1"
                                                 className="button button--rounded full-width mt-4">
                                                 Subscribe Now
                                             </a>
@@ -55,12 +55,11 @@ class TheComponent extends Component {
                                                     <a
                                                         onClick={(()=>{
                                                             Chargebee.getInstance().openCheckout({
-                                                                // todo: this will hit an API
-                                                                // hostedPage() {
-                                                                //     return _data.post(`${Project.api}organisations/${AccountStore.getOrganisation().id}/get-hosted-page-url-for-subscription-upgrade/`, {
-                                                                //         plan_id: props['data-cb-plan-id'],
-                                                                //     });
-                                                                // },
+                                                                hostedPage() {
+                                                                    return _data.get(`${Project.api}user/hosted-page/`, {
+                                                                        plan_id: Project.chargebee.product,
+                                                                    });
+                                                                },
                                                                 success: (res) => {
                                                                     AppActions.updateSubscription(res);
                                                                 },
