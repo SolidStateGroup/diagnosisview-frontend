@@ -273,8 +273,7 @@ var controller = {
             if (Constants.simulate.MOBILE_SUBSCRIBED) {
                 return true
             }
-            //todo:
-            return false
+            return store.hasActiveSubscription() && !store.model.chargebeePlanId
         },
         hasExpiredSubscription: function () {
             if (store.isAdmin())
