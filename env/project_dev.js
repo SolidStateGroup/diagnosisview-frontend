@@ -7,5 +7,8 @@ module.exports = {
     captchaSiteKey: "6LdekQAdAAAAANSJB5HNaHO0fOV8yJUsORpEaM2A",
     captchaBaseUrl: "https://www.diagnosisview.org",
     public: 'https://api-staging.diagnosisview.org/public/',
-    ga: ''
+    ga: '',
+    chargebee: {
+        site: 'flagsmith-test',
+    },
 };

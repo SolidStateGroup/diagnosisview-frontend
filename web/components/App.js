@@ -162,7 +162,7 @@ export default class App extends Component {
                                                 {pageHasAside && <DashboardNavbar/>}
                                                 <div className={"dashboard-container"}>
                                                     {AccountStore.hasExpiredSubscription() && (
-                                                        <div className="col-md-6 mb-4">
+                                                        <div className="col-md-6 ml-4 mb-4">
                                                             <ErrorAlert>
                                                                 Your annual Professional subscription expired on {moment(AccountStore.hasExpiredSubscription()).format("Do MMM HH:mm")}.
                                                                 <br/>
