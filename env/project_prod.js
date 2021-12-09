@@ -7,5 +7,9 @@ module.exports = {
     codepushAndroid: "JHGFbOmwdHWqtkE-Ck4osQ_aJxBD9Sj_nU5Mr",
     captchaSiteKey: "6LdekQAdAAAAANSJB5HNaHO0fOV8yJUsORpEaM2A",
     captchaBaseUrl: "https://www.diagnosisview.org",
-    ga: ''
+    ga: '',
+    chargebee: {
+        site: 'diagnosisview-test',
+        product:"monthly-USD-Monthly"
+    },
 };

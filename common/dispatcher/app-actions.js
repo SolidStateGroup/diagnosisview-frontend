@@ -122,6 +122,12 @@ module.exports = Object.assign({}, require('./base/_app-actions'), {
       details
     });
   },
+  updateSubscription: function(token) {
+    Dispatcher.handleViewAction({
+      actionType: Actions.UPDATE_SUBSCRIPTION,
+      data:{token}
+    });
+  },
   adminLogin: function (details) {
     Dispatcher.handleViewAction({
       actionType: Actions.ADMIN_LOGIN,
