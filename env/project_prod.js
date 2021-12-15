@@ -9,7 +9,8 @@ module.exports = {
     captchaBaseUrl: "https://www.diagnosisview.org",
     ga: '',
     chargebee: {
-        site: 'diagnosisview-test',
-        product:"monthly-USD-Monthly"
+        site: 'diagnosisview',
+        product:"professional-GBP-Yearly",
+        productInternal:"professional",
     },
 };

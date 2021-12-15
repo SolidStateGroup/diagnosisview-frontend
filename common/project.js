@@ -10,6 +10,7 @@ module.exports = {
     ga: '',
     chargebee: {
         site: 'diagnosisview-test',
-        product:"monthly-USD-Monthly"
+        product:"professional-GBP-Yearly",
+        productInternal:"professional",
     },
 };
