@@ -4,7 +4,9 @@ import _data from '../../common/stores/base/_data'
 
 class TheComponent extends Component {
     state = {}
-
+    static contextTypes = {
+        router: React.PropTypes.object.isRequired
+    };
     componentDidMount() {
         Chargebee.init({
             site: Project.chargebee.site,
@@ -15,6 +17,13 @@ class TheComponent extends Component {
                 AppActions.updateSubscription(hostedPageId);
             },
         }));
+
+
+        if (document.location.href.includes("manage")){
+            this.context.router.history.replace("/dashboard/account")
+            $(".js-manage")[0].click()
+
+        }
     }
 
     render() {
@@ -40,7 +49,7 @@ class TheComponent extends Component {
                                                 data-cb-type = "checkout"
                                                 data-cb-item-0 = {Project.chargebee.product}
                                                 data-cb-item-0-quantity = "1"
-                                                className="button button--rounded full-width mt-4">
+                                                className="button button--rounded full-width mt-4 js-manage">
                                                 Subscribe Now
                                             </a>
                                         </Link>
@@ -65,7 +74,7 @@ class TheComponent extends Component {
                                                                 },
                                                             });
                                                         })}
-                                                        className="button button--rounded full-width mt-4">
+                                                        className="button button--rounded full-width mt-4 js-manage">
                                                         Manage Subscription
                                                     </a>
                                                 </Link>
