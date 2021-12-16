@@ -230,7 +230,7 @@ var controller = {
         updateSubscription: function (details) {
             if (!store.model) return;
             store.saving();
-            data.post(Project.api + 'user/chargebee-subscription', details)
+            data.post(Project.api + 'user/subscriptions/chargebee', details)
                 .then(res => {
                     controller.getAccount()
                 })
