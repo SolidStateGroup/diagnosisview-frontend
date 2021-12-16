@@ -133,7 +133,7 @@ class HomePage extends React.Component {
                                                     "Synchronise between mobile app, website and unlimited devices",
                                                 ]} title="Starter">
                                         <Link to={"/signup"}>
-                                            <a style={{marginBottom:65}} className="button button--rounded full-width">
+                                            <a style={{marginBottom:0}} className="button button--rounded full-width">
                                                 Sign Up
                                             </a>
                                         </Link>
