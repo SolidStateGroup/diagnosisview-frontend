@@ -58,28 +58,27 @@ class TheComponent extends Component {
                                 )}
                                 {AccountStore.hasActiveSubscription() && (
                                     <SubscriptionPanel title="You are subscribed to the Professional Plan">
-                                        { AccountStore.isMobileSubscription()? Constants.mobileSubscriptionMessage
-                                            : (
-                                                <Link to="/dashboard/account?manage=1">
-                                                    <a
-                                                        onClick={(()=>{
-                                                            Chargebee.getInstance().openCheckout({
-                                                                hostedPage() {
-                                                                    return _data.get(`${Project.api}user/hosted-page/`, {
-                                                                        plan_id: Project.chargebee.productInternal,
-                                                                    });
-                                                                },
-                                                                success: (res) => {
-                                                                    AppActions.updateSubscription(res);
-                                                                },
-                                                            });
-                                                        })}
-                                                        className="button button--rounded full-width mt-4 js-manage">
-                                                        Manage Subscription
-                                                    </a>
-                                                </Link>
-                                            )}
-
+                                        {/*{ AccountStore.isMobileSubscription()? Constants.mobileSubscriptionMessage*/}
+                                        {/*    : (*/}
+                                        {/*        <Link to="/dashboard/account?manage=1">*/}
+                                        {/*            <a*/}
+                                        {/*                onClick={(()=>{*/}
+                                        {/*                    Chargebee.getInstance().openCheckout({*/}
+                                        {/*                        hostedPage() {*/}
+                                        {/*                            return _data.get(`${Project.api}user/subscriptions/chargebee/hosted-page`, {*/}
+                                        {/*                                plan_id: Project.chargebee.productInternal,*/}
+                                        {/*                            });*/}
+                                        {/*                        },*/}
+                                        {/*                        success: (res) => {*/}
+                                        {/*                            AppActions.updateSubscription(res);*/}
+                                        {/*                        },*/}
+                                        {/*                    });*/}
+                                        {/*                })}*/}
+                                        {/*                className="button button--rounded full-width mt-4 js-manage">*/}
+                                        {/*                Manage Subscription*/}
+                                        {/*            </a>*/}
+                                        {/*        </Link>*/}
+                                        {/*    )}*/}
                                     </SubscriptionPanel>
                                 )}
                             </div>
