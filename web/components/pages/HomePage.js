@@ -151,9 +151,6 @@ class HomePage extends React.Component {
                                                 Sign Up
                                             </Button>
                                         </Link>
-                                        <div style={{height:56}} className="text-left mt-2 text-small">
-                                            * For now, use our mobile app to buy a Professional plan, then login here
-                                        </div>
                                     </PricePanel>
                                 </Row>
                             </div>
