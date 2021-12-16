@@ -42,18 +42,18 @@ class TheComponent extends Component {
                                         <div>
                                             Subscribing also unlocks unlimited history / favourites synchronised between devices and activates paywalled links to your institution.
                                         </div>
-
-                                        <Link to="/dashboard/account?manage=1">
-                                            <a
-                                                href = "javascript:void(0)"
-                                                data-cb-type = "checkout"
-                                                data-cb-item-0 = {Project.chargebee.product}
-                                                data-cb-item-0-quantity = "1"
-                                                className="button button--rounded full-width mt-4 js-manage">
-                                                Subscribe Now
-                                            </a>
-                                        </Link>
-
+                                        {AccountStore.isSaving ? <div className="centered-container"><Loader/></div>: (
+                                            <Link to="/dashboard/account?manage=1">
+                                                <a
+                                                    href = "javascript:void(0)"
+                                                    data-cb-type = "checkout"
+                                                    data-cb-item-0 = {Project.chargebee.product}
+                                                    data-cb-item-0-quantity = "1"
+                                                    className="button button--rounded full-width mt-4 js-manage">
+                                                    Subscribe Now
+                                                </a>
+                                            </Link>
+                                        ) }
                                     </SubscriptionPanel>
                                 )}
                                 {AccountStore.hasActiveSubscription() && (
