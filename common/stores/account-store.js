@@ -112,6 +112,9 @@ var controller = {
         subscribe: function (purchase, silent) {
             if (!store.model) return;
 
+            if (typeof Platform === "undefined") {
+                return
+            }
             store.saving();
 
             // Get device favourites and history to sync with server

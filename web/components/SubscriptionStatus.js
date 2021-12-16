@@ -66,7 +66,7 @@ class TheComponent extends Component {
                                                             Chargebee.getInstance().openCheckout({
                                                                 hostedPage() {
                                                                     return _data.get(`${Project.api}user/hosted-page/`, {
-                                                                        plan_id: Project.chargebee.product,
+                                                                        plan_id: Project.chargebee.productInternal,
                                                                     });
                                                                 },
                                                                 success: (res) => {
