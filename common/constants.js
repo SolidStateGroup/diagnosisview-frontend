@@ -41,10 +41,10 @@ var Constants = {
     strings: {},
     mobileSubscriptionMessage: "You have an active subscription via the mobile app. To manage your subscription please log into the mobile app.",
     webSubscriptionMessage: "Your web subscription is active. Login to diagnosisview.org to manage.",
-    simulate: true ? {
+    simulate: false ? {
         SUBSCRIBED: false,
         MOBILE_SUBSCRIBED: false,
-        MANAGE_SUBSCRIPTION: true,
+        MANAGE_SUBSCRIPTION: false,
         LOGGED_IN: false,
         PRE_FILLED_REGISTER: false,
         ALL_FAVES_REMOVED_EXTERNALLY: false,

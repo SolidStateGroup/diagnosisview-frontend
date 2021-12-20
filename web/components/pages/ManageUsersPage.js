@@ -31,7 +31,7 @@ const ExpandRow = hot(module)(class extends React.Component {
 
     }
     render() {
-        const { id, dateCreated, paymentData } = this.props.row.original;
+        const { id, dateCreated, paymentData, currentSubscription } = this.props.row.original;
         const { isSaving, onChange, changes } = this.props;
         const activeSubscription = (changes && changes[id] && _.has(changes[id], 'activeSubscription')) ? changes[id].activeSubscription : this.props.row.original.activeSubscription;
         const expiryDate = (changes && changes[id] && _.has(changes[id], 'expiryDate')) ? changes[id].expiryDate : this.props.row.original.expiryDate;
@@ -42,7 +42,14 @@ const ExpandRow = hot(module)(class extends React.Component {
                     readOnly
                     value={dateCreated ? moment(dateCreated).format('DD/MM/YYYY HH:mm') : '--/--/---- --:--'} />
                 <Row>
-                    <label className="label-margin-right">Active Subscription</label>
+                    <label className="label-margin-right">
+                        Active Subscription
+                        {activeSubscription && (
+                            <label className="label-margin-right ml-1">
+                                {currentSubscription === "CHARGEBEE"?"- Chargebee" : "- Web"}
+                            </label>
+                        )}
+                    </label>
                     <Switch
                         checked={activeSubscription}
                         onChange={this.onActiveSubscription}

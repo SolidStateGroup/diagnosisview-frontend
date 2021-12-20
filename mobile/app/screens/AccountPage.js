@@ -404,7 +404,7 @@ const AccountPage = class extends Component {
 																		<Text style={[Styles.textCenter]}>{
 																			!AccountStore.isMobileSubscription()? Constants.webSubscriptionMessage: "Your subscription is active."
 																		}</Text>
-																		{SubscriptionStore.isMobileSubscription() &&(
+																		{AccountStore.isMobileSubscription() &&(
 																			<Text style={[Styles.textCenter, { color: '#2980b9', textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
 																		)}
 																	</React.Fragment>
