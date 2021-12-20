@@ -46,7 +46,7 @@ const ExpandRow = hot(module)(class extends React.Component {
                         Active Subscription
                         {activeSubscription && (
                             <label className="label-margin-right ml-1">
-                                {currentSubscription === "CHARGEBEE"?"- Chargebee" : "- Web"}
+                                {currentSubscription === "CHARGEBEE"?"- Chargebee" : "- Mobile"}
                             </label>
                         )}
                     </label>
