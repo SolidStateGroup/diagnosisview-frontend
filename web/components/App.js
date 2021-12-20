@@ -166,7 +166,7 @@ export default class App extends Component {
                                                             <ErrorAlert>
                                                                 Your annual Professional subscription expired on {moment(AccountStore.hasExpiredSubscription()).format("Do MMM HH:mm")}.
                                                                 <br/>
-                                                                <Link to="/account?manage=1">Click here to renew</Link>
+                                                                <Link to="/dashboard/account?manage=1">Click here to renew</Link>
                                                             </ErrorAlert>
                                                         </div>
                                                     )}
