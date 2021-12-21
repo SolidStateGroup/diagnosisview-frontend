@@ -19,12 +19,21 @@ class TheComponent extends Component {
         }));
 
 
-        if (document.location.href.includes("manage")){
-            this.context.router.history.replace("/dashboard/account")
-            $(".js-manage")[0].click()
+       this.interval  = setInterval(()=>{
+           if (document.location.href.includes("manage")){
+               this.context.router.history.replace("/dashboard/account")
+               $(".js-manage")[0].click()
+           }
+        }, 200)
 
-        }
     }
+
+componentWillUnmount() {
+        if (this.interval) {
+            clearInterval(this.interval)
+            this.interval = null
+        }
+}
 
     render() {
         return (
