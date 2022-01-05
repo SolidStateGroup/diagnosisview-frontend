@@ -97,6 +97,10 @@ module.exports = {
     },
 
     openWebModal: (uri, title) => {
+        if (ReactNative.Platform.OS === "ios"){
+            ReactNative.Linking.openURL(uri)
+            return
+        }
         Navigation.showModal({
             screen: "/webmodal",
             title: title || '',
