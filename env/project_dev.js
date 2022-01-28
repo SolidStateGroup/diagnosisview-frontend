@@ -9,7 +9,7 @@ module.exports = {
     public: 'https://api-staging.diagnosisview.org/public/',
     ga: '',
     chargebee: {
-        site: 'diagnosisview-test',
+        site: 'diagnosisview',
         product:"professional-GBP-Yearly",
         productInternal:"professional",
     },
