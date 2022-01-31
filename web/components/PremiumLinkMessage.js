@@ -12,7 +12,7 @@ const PremiumLinkMessage = ({className}) => {
 
             </Row>
             <div className="mt-4 text-center">
-                <Link to={Constants.webPayments?"/#pricing":"/signup"}>
+                <Link to={"/signup?plan=pro"}>
                 <Button className={'btn btn--primary nav__button'}>
                     <span className="nav__button__text">{ 'Sign up Now'}</span>
                 </Button>
