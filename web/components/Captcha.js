@@ -8,8 +8,20 @@ export default class Captcha extends Component {
     componentDidMount() {
         this.handleOpenPress()
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(prevProps.ts !== this.props.ts) {
+            this.setState({revalidate:true})
+            setTimeout(()=>{
+                this.setState({revalidate:false})
+            },500)
+        }
+    }
+
     render() {
         const { onSuccess} =this.props
+        if(this.state.revalidate) {
+            return null
+        }
         return (
         <div className="mb-2">
             <Recaptcha
@@ -19,7 +31,6 @@ export default class Captcha extends Component {
                 baseUrl={Project.captchaBaseUrl}
                 size="normal"
                 theme="light"
-                onExpire={() => alert('onExpire event')}
                 onVerify={(res)=>{
                     onSuccess(res);
                 }}
