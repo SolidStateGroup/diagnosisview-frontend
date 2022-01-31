@@ -12,11 +12,9 @@ const PremiumLinkMessage = ({className}) => {
 
             </Row>
             <div className="mt-4 text-center">
-                <Link to={"/signup?plan=pro"}>
-                <Button className={'btn btn--primary nav__button'}>
+                <Button onClick={()=>document.getElementsByClassName("js-manage")[0].click()} className={'btn btn--primary nav__button'}>
                     <span className="nav__button__text">{ 'Sign up Now'}</span>
                 </Button>
-                </Link>
             </div>
         </div>
 
