@@ -16,6 +16,7 @@ module.exports = Object.assign({}, require('./base/_action-constants'), {
   "DELETE_USER": "DELETE_USER",
   "SET_TOKEN": "SET_TOKEN",
   "UPDATE_USER": "UPDATE_USER",
+  "UPDATE_SUBSCRIPTION": "UPDATE_SUBSCRIPTION",
   "ADMIN_LOGIN": "ADMIN_LOGIN",
   "UPDATE_CODE": "UPDATE_CODE",
   "UPDATE_LINK": "UPDATE_LINK",

@@ -32,7 +32,7 @@ class TheComponent extends Component {
                                     </strong>
                                 </Link>
                             {!AccountStore.hasActiveSubscription() && Constants.webPayments && (
-                                <Link to="/dashboard/account">
+                                <Link to="/dashboard/account?manage=1">
                                     <Button onClick={()=>this.setState({modalOpen:true})} className={'btn btn--primary nav__button'}>
                                         <span className="nav__button__text">{'Subscribe now'}</span>
                                     </Button>

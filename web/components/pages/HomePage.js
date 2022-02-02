@@ -133,7 +133,7 @@ class HomePage extends React.Component {
                                                     "Synchronise between mobile app, website and unlimited devices",
                                                 ]} title="Starter">
                                         <Link to={"/signup"}>
-                                            <a style={{marginBottom:65}} className="button button--rounded full-width">
+                                            <a style={{marginBottom:0}} className="button button--rounded full-width">
                                                 Sign Up
                                             </a>
                                         </Link>
@@ -146,14 +146,11 @@ class HomePage extends React.Component {
                                         "Activate paywalled links to your institution",
                                     ]} title="Professional">
 
-                                        {/*<Link to={"/signup?plan=pro"}>*/}
+                                        <Link to={"/signup?plan=pro"}>
                                             <Button className="button btn--primary button--rounded full-width">
-                                                Coming soon*
+                                                Sign Up
                                             </Button>
-                                        {/*</Link>*/}
-                                        <div style={{height:56}} className="text-left mt-2 text-small">
-                                            * For now, use our mobile app to buy a Professional plan, then login here
-                                        </div>
+                                        </Link>
                                     </PricePanel>
                                 </Row>
                             </div>

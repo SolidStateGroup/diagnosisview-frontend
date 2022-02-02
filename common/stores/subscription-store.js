@@ -8,10 +8,10 @@ var controller = {
             try {
             } catch (e) {}
 
-            // if (__DEV__) {
-            //     store.goneABitWest()
-            //     return
-            // }
+            if (__DEV__) {
+                store.goneABitWest()
+                return
+            }
             const subscriptions = await RNIap.getSubscriptions(iapItemSkus).catch((e)=>{
                 store.goneABitWest()
             });

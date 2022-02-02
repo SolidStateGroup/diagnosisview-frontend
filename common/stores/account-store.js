@@ -112,6 +112,9 @@ var controller = {
         subscribe: function (purchase, silent) {
             if (!store.model) return;
 
+            if (typeof Platform === "undefined") {
+                return
+            }
             store.saving();
 
             // Get device favourites and history to sync with server
@@ -227,6 +230,18 @@ var controller = {
                 })
                 .catch(e => AjaxHandler.error(AccountStore, e));
         },
+        updateSubscription: function (details) {
+            if (!store.model) return;
+            store.saving();
+            data.post(Project.api + 'user/subscriptions/chargebee', details)
+                .then(res => {
+                    controller.getAccount()
+                })
+                .then(res => {
+                    store.saved();
+                })
+                .catch(e => AjaxHandler.error(AccountStore, e));
+        },
     },
     store = Object.assign({}, BaseStore, {
         id: 'account',
@@ -246,6 +261,9 @@ var controller = {
             return !store.model || !store.model.expiryDate
         },
         hasActiveSubscription: function () {
+            if (Constants.simulate.SUBSCRIBED) {
+                return true
+            }
             if (store.isAdmin())
                 return true
 
@@ -253,6 +271,12 @@ var controller = {
                 return SubscriptionStore.isSubscribed();
             }
             return !store.hasExpiredSubscription() && store.model && store.model.activeSubscription;
+        },
+        isMobileSubscription: function (){
+            if (Constants.simulate.MOBILE_SUBSCRIBED) {
+                return true
+            }
+            return store.hasActiveSubscription() && store.model.currentSubscription !== "CHARGEBEE"
         },
         hasExpiredSubscription: function () {
             if (store.isAdmin())
@@ -295,6 +319,9 @@ store.dispatcherIndex = Dispatcher.register(store, function (payload) {
             break;
         case Actions.SET_TOKEN:
             controller.setToken(action.token);
+            break;
+        case Actions.UPDATE_SUBSCRIPTION:
+            controller.updateSubscription(action.data);
             break;
         case Actions.ADMIN_LOGIN:
             controller.adminLogin(action.details);

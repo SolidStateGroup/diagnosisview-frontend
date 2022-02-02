@@ -401,8 +401,10 @@ const AccountPage = class extends Component {
 																{user ? <Text style={[Styles.textCenter, Styles.semiBold]}>{user.emailAddress}</Text> : null}
 																{AccountStore.hasActiveSubscription() && !noAutoRenewal ? (
 																	<React.Fragment>
-																		<Text style={[Styles.textCenter]}>Your subscription is active.</Text>
-																		{SubscriptionStore.isMobileSubscription() &&(
+																		<Text style={[Styles.textCenter]}>{
+																			!AccountStore.isMobileSubscription()? Constants.webSubscriptionMessage: "Your subscription is active."
+																		}</Text>
+																		{AccountStore.isMobileSubscription() &&(
 																			<Text style={[Styles.textCenter, { color: '#2980b9', textDecorationLine: 'underline' }]} onPress={() => Linking.openURL(manageSubscriptionLink)}>Manage your subscription</Text>
 																		)}
 																	</React.Fragment>

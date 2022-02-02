@@ -12,11 +12,14 @@ const PremiumLinkMessage = ({className}) => {
 
             </Row>
             <div className="mt-4 text-center">
-                <Link to={Constants.webPayments?"/#pricing":"/signup"}>
-                <Button className={'btn btn--primary nav__button'}>
+                <Button onClick={()=>{
+                    if (!AccountStore.model){
+                        document.location = "/#pricing"
+                    }
+                    document.getElementsByClassName("js-manage")[0].click()
+                }} className={'btn btn--primary nav__button'}>
                     <span className="nav__button__text">{ 'Sign up Now'}</span>
                 </Button>
-                </Link>
             </div>
         </div>
 

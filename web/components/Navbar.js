@@ -13,6 +13,10 @@ class TheComponent extends Component {
     }
 
     componentDidMount() {
+        ES6Component(this)
+        this.listenTo(AccountStore, 'problem',()=>{
+            this.setState({ts:Date.now().valueOf()})
+        })
         const isSignup = this.props.location.pathname === "/signup"
         if(isSignup) {
             setTimeout(()=>{
@@ -122,9 +126,9 @@ class TheComponent extends Component {
              })
             .catch(e => {
                 e.json().then(error => {
-                    this.setState({ isLoading: false, step: 2, error: error });
+                    this.setState({ isLoading: false, ts:Date.now().valueOf(), step: 2, error: error });
                 }).catch(() => {
-                    this.setState({ isLoading: false, step: 2, error: {message:'Sorry there was a problem resetting your password, try again later' }});
+                    this.setState({ isLoading: false, ts:Date.now().valueOf(), step: 2, error: {message:'Sorry there was a problem resetting your password, try again later' }});
                 })
             });
     }
@@ -306,7 +310,7 @@ class TheComponent extends Component {
 
                                                 </div>
 
-                                                <Captcha onSuccess={(captchaResponse)=>this.setState({captchaResponse})}/>
+                                                <Captcha ts={this.state.ts} onSuccess={(captchaResponse)=>this.setState({captchaResponse})}/>
                                                 <Button disabled={isLoading
                                                 || isSaving || this.invalid()} onClick={this.register} className={'btn btn-lg btn--primary nav__button'}>
                                                     <span className="nav__button__text">{isLoading ? 'Signing up..' : 'Sign up'}</span>
@@ -398,7 +402,7 @@ class TheComponent extends Component {
 
                                                                 onChange={(e) => this.setState({ resetUsername: Utils.safeParseEventValue(e) })}
                                                                 inputClassName="input--default" />
-                                                        <Captcha onSuccess={(captchaResponseForgot)=>this.setState({captchaResponseForgot})}/>
+                                                        <Captcha ts={this.state.ts} onSuccess={(captchaResponseForgot)=>this.setState({captchaResponseForgot})}/>
 
                                                         <Button disabled={ this.state.isLoading || !this.state.resetUsername || !this.state.captchaResponseForgot
                                                             } onClick={this.forgotPassword} className={'btn btn-lg btn--primary nav__button'}>

@@ -39,10 +39,12 @@ var Constants = {
     occupations: [{value: 'Healthcare Student'}, {value: 'Healthcare Practitioner'}, {value: 'Patient'}, {value: 'Other'}],
     pages: {},
     strings: {},
-
+    mobileSubscriptionMessage: "You have an active subscription via the mobile app. To manage your subscription please log into the mobile app.",
+    webSubscriptionMessage: "Your web subscription is active. Login to diagnosisview.org to manage.",
     simulate: false ? {
         SUBSCRIBED: false,
-        MANAGE_SUBSCRIPTION: true,
+        MOBILE_SUBSCRIBED: false,
+        MANAGE_SUBSCRIPTION: false,
         LOGGED_IN: false,
         PRE_FILLED_REGISTER: false,
         ALL_FAVES_REMOVED_EXTERNALLY: false,
