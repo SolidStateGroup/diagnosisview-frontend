@@ -39,7 +39,7 @@
     "image-webpack-loader": "2.0.0",
     "ionicons": "^4.0.0",
     "json-loader": "0.5.4",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.21",
     "moment": "^2.22.2",
     "node-fetch": "^2.1.2",
     "node-sass": "^6.0.1",
