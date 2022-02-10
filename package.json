@@ -42,7 +42,7 @@
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "node-fetch": "^2.1.2",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "patch-package": "^6.4.7",
     "polyfill-react-native": "^1.0.5",
     "postcss-loader": "2.1.2",
