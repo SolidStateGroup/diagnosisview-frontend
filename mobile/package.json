@@ -35,7 +35,7 @@
     "inputmask-core": "^2.2.0",
     "jetifier": "^2.0.0",
     "lottie-react-native": "^2.5.11",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "patch-package": "^6.4.7",
     "react": "^16.8.3",
     "react-native": "^0.59.9",
